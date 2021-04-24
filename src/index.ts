@@ -1,4 +1,4 @@
-import { Engine, Actor, Loader } from "excalibur";
+import { Engine, Actor, Loader, vec } from "excalibur";
 import { CellType, Level } from "./level";
 import { Resources } from "./resources";
 
@@ -39,6 +39,7 @@ game.start(loader).then(() => {
       }
     }
   }
-  game.add("test_level", new Level(game, map, []));
+  const players = [{ spawnTile: vec(0, 0) }, { spawnTile: vec(15, 15) }];
+  game.add("test_level", new Level(game, map, players));
   game.goToScene("test_level");
 });
