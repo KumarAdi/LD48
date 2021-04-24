@@ -52,6 +52,7 @@ export class Level extends Scene {
 
   private characters: Character[];
   private enemies: Enemy[] = [];
+  private players: Player[] = [];
   private terrain_data: CellType[][];
   private map_data: MapCell[][];
   private tilemap: TileMap;
@@ -59,6 +60,7 @@ export class Level extends Scene {
 
   private selectedPlayer?: Character;
   private moveOverlay: Actor[] = [];
+  private attackOverlay: Actor[] = [];
 
   public playerTurn: boolean;
 
@@ -162,9 +164,9 @@ export class Level extends Scene {
     character: Character
   ) => {
     const path = this.pathfind(oldPos, newPos).map(this.tileToPixelCoords);
-    character.goTo(path);
     this.map_data[oldPos.x][oldPos.y].character = undefined;
     this.map_data[newPos.x][newPos.y].character = character;
+    return character.goTo(path);
   };
 
   public pathfind(from: Vector, to: Vector): Vector[] {
@@ -174,7 +176,9 @@ export class Level extends Scene {
       for (let j = 0; j < this.terrain_data[i].length; j++) {
         if (
           CELL_TYPE_DATA[this.terrain_data[i][j]].solid ||
-          (this.map_data[i][j].character && !(from.x == i && from.y == j))
+          (this.map_data[i][j].character &&
+            !(from.x == i && from.y == j) &&
+            !(to.x == i && to.y == j))
         ) {
           path_matrix[i].push(1);
         } else {
@@ -221,7 +225,9 @@ export class Level extends Scene {
 
   private spawnPlayer: (spawnPoint: SpawnPoint) => Character = (spawnPoint) => {
     const pixelCoords = this.tileToPixelCoords(spawnPoint.spawnTile);
-    return new Player(pixelCoords);
+    const player = new Player(pixelCoords);
+    this.players.push(player);
+    return player;
   };
 
   private spawnEnemy: (spawnPoint: SpawnPoint) => Character = (spawnPoint) => {
@@ -236,11 +242,22 @@ export class Level extends Scene {
     const playerPos = this.pixelToTileCoords(player.pos);
     console.log(playerPos);
     const moveDistance = player.moveDistance();
+    const attackRange = player.attackRange();
 
+    this.generateOverlay(playerPos, moveDistance, attackRange);
+    this.selectedPlayer = player;
+  };
+
+  private generateOverlay = (
+    playerPos: Vector,
+    moveDistance: number,
+    attackRange: number
+  ) => {
     const possibleDestinations = this.getTilesWithinDist(
       playerPos,
       moveDistance
     );
+
     this.moveOverlay = possibleDestinations.map((point) => {
       const overlayPos = this.tileToPixelCoords(point);
       const tile = new Actor({
@@ -267,7 +284,52 @@ export class Level extends Scene {
       return tile;
     });
 
-    this.selectedPlayer = player;
+    const enemiesInRange = this.enemies
+      .map((enemy) => {
+        return {
+          enemy,
+          enemyPos: this.pixelToTileCoords(enemy.pos),
+        };
+      })
+      .filter(({ enemyPos }) =>
+        possibleDestinations.some(
+          (pos) => enemyPos.sub(pos).dot(Vector.One) <= attackRange
+        )
+      );
+
+    console.log(enemiesInRange.map(({ enemyPos }) => enemyPos));
+
+    this.attackOverlay = enemiesInRange.map(({ enemy, enemyPos }) => {
+      const overlayPos = this.tileToPixelCoords(enemyPos);
+      const tile = new Actor({
+        x: overlayPos.x,
+        y: overlayPos.y,
+        width: Level.TILE_SIZE,
+        height: Level.TILE_SIZE,
+        color: Color.Red,
+        opacity: 0.5,
+      });
+
+      tile.on("pointerdown", (evt) => {
+        if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
+          // we have player selected
+          const src = this.pixelToTileCoords(this.selectedPlayer.pos);
+          const pathToEnemy = this.pathfind(src, enemyPos);
+          const attackFrom =
+            pathToEnemy[pathToEnemy.length - (1 + attackRange)];
+          this.moveCharacter(src, attackFrom, this.selectedPlayer).then(() => {
+            console.log(`attacking enemy ${enemy.id} at ${enemyPos}`);
+          });
+          this.deselectPlayer();
+
+          this.nextTurn();
+        }
+      });
+
+      this.add(tile);
+
+      return tile;
+    });
   };
 
   private getTilesWithinDist = (pos: Vector, dist: number): Vector[] => {
@@ -318,6 +380,13 @@ export class Level extends Scene {
       actor.kill();
     });
     this.moveOverlay = [];
+
+    this.attackOverlay.forEach((actor) => {
+      actor.off("pointerdown");
+      actor.enableCapturePointer = false;
+      actor.kill();
+    });
+    this.attackOverlay = [];
     this.selectedPlayer = undefined;
   };
 

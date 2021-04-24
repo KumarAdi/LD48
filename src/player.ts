@@ -22,19 +22,22 @@ export abstract class Character extends Actor {
   public goTo = (path: Vector[]) => {
     console.log(path);
     const action = this.actions.delay(0);
-    path.forEach((waypoint) =>
-      action.moveTo(waypoint.x, waypoint.y, Character.SPEED)
+    const moveActions = path.map((waypoint) =>
+      action.moveTo(waypoint.x, waypoint.y, Character.SPEED).asPromise()
     );
+    return moveActions[moveActions.length - 1];
   };
 
   abstract isControllable: () => boolean;
 
   abstract moveDistance: () => number;
+  abstract attackRange: () => number;
 }
 
 export class Player extends Character {
   health: number;
   moveDistance = () => 3;
+  attackRange = () => 1;
 
   constructor(spawnPosition: Vector) {
     super(spawnPosition);
@@ -53,6 +56,7 @@ export class Player extends Character {
 export class Enemy extends Character {
   health: number;
   moveDistance = () => 3;
+  attackRange = () => 1;
 
   constructor(spawnPosition: Vector) {
     super(spawnPosition);
