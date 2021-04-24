@@ -1,23 +1,11 @@
 import { Engine, Actor, Loader, vec } from "excalibur";
-import { CellType, Level } from "./level";
+import { CellType, Level, SpawnCharacterType } from "./level";
 import { Resources } from "./resources";
 
 const game = new Engine({
   width: 800,
   height: 600,
 });
-
-const paddle = new Actor({
-  x: 150,
-  // game.drawHeight is the logical height in pixels after HiDPI and scaling
-  y: game.drawHeight - 40,
-  width: 25,
-  height: 25,
-});
-
-paddle.onInitialize = () => paddle.addDrawing(Resources.Sword);
-
-game.add(paddle);
 
 const loader = new Loader();
 
@@ -39,7 +27,11 @@ game.start(loader).then(() => {
       }
     }
   }
-  const players = [{ spawnTile: vec(0, 0) }, { spawnTile: vec(15, 15) }];
+  const players = [
+    { characterType: SpawnCharacterType.PLAYER, spawnTile: vec(1, 1) },
+    { characterType: SpawnCharacterType.PLAYER, spawnTile: vec(15, 15) },
+  ];
+
   game.add("test_level", new Level(game, map, players));
   game.goToScene("test_level");
 });

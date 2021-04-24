@@ -7,20 +7,19 @@ import {
   SpriteSheet,
   TileSprite,
   vec,
+  Actor,
+  Color,
 } from "excalibur";
 
-import { Player } from "./player";
+import { Character, Enemy, Player } from "./player";
 import { AStarFinder, Finder, Grid } from "pathfinding";
 import { Resources } from "./resources";
+import { PointerDownEvent } from "excalibur/dist/Input/PointerEvents";
 
 export enum CellType {
   WALL,
   FLOOR,
 }
-
-export type SpawnPoint = {
-  spawnTile: Vector;
-};
 
 const CELL_TYPE_DATA = {
   [CellType.WALL]: {
@@ -32,7 +31,17 @@ const CELL_TYPE_DATA = {
 };
 
 type MapCell = {
-  player?: Player;
+  player?: Character;
+};
+
+export enum SpawnCharacterType {
+  PLAYER,
+  ENEMY,
+}
+
+export type SpawnPoint = {
+  characterType: SpawnCharacterType;
+  spawnTile: Vector;
 };
 
 export class Level extends Scene {
@@ -41,13 +50,16 @@ export class Level extends Scene {
 
   private engine: Engine;
 
-  private players: Player[];
+  private characters: Character[];
   private terrain_data: CellType[][];
   private map_data: MapCell[][];
   private tilemap: TileMap;
   private path_finder: Finder;
 
-  private selectedPlayer?: Player;
+  private selectedPlayer?: Character;
+  private moveOverlay: Actor[] = [];
+
+  public playerTurn: boolean;
 
   constructor(
     engine: Engine,
@@ -79,33 +91,58 @@ export class Level extends Scene {
     });
 
     this.tilemap.registerSpriteSheet("tile", this.tilesheet);
-    this.players = spawnPoints.map(this.spawnPlayer);
+    this.characters = spawnPoints.map(this.spawnCharacter);
 
     this.engine = engine;
 
     this.path_finder = new AStarFinder();
+
+    this.playerTurn = true;
   }
 
   onInitialize(engine: Engine) {
     engine.add(this.tilemap);
-    this.players.forEach((player: Player) => {
+    this.characters.forEach((player: Character) => {
       engine.add(player);
     });
     this.syncTerrainData();
 
-    this.engine.input.pointers.primary.on("down", (evt) => {
-      if (!this.actors.some((actor) => actor.contains(evt.pos.x, evt.pos.y))) {
-        // did not click on some actor
-        if (this.selectedPlayer) {
-          // we have player selected
-          const src = this.pixelToTileCoords(this.selectedPlayer.pos);
-          const dest = this.pixelToTileCoords(evt.pos);
-          const path = this.pathfind(src, dest).map(this.tileToPixelCoords);
-          this.selectedPlayer.goTo(path);
+    this.engine.input.pointers.primary.on("down", this.onClick);
+  }
+
+  private onClick = (evt: PointerDownEvent) => {
+    if (!this.playerTurn) {
+      return;
+    }
+
+    const clickedOnCharacter = this.characters.find((character) =>
+      character.contains(evt.pos.x, evt.pos.y)
+    );
+    if (!clickedOnCharacter) {
+      // did not click on some actor
+      if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
+        // we have player selected
+        const src = this.pixelToTileCoords(this.selectedPlayer.pos);
+        const dest = this.pixelToTileCoords(evt.pos);
+        const path = this.pathfind(src, dest).map(this.tileToPixelCoords);
+        this.selectedPlayer.goTo(path);
+        this.deselectPlayer();
+
+        this.nextTurn();
+      }
+    } else {
+      if (clickedOnCharacter.isControllable()) {
+        if (
+          this.selectedPlayer &&
+          this.selectedPlayer.id == clickedOnCharacter.id
+        ) {
+          this.deselectPlayer();
+        } else {
+          this.selectPlayer(clickedOnCharacter);
         }
       }
-    });
-  }
+    }
+  };
 
   syncTerrainData() {
     this.tilemap.data.forEach((cell: Cell, i) => {
@@ -159,12 +196,107 @@ export class Level extends Scene {
     return vec(Math.floor(tileCoords.x), Math.floor(tileCoords.y));
   }
 
-  private spawnPlayer: (spawnPoint: SpawnPoint) => Player = (spawnPoint) => {
+  private spawnCharacter = (spawnPoint: SpawnPoint) => {
+    switch (spawnPoint.characterType) {
+      case SpawnCharacterType.PLAYER:
+        return this.spawnPlayer(spawnPoint);
+      case SpawnCharacterType.ENEMY:
+        return this.spawnEnemy(spawnPoint);
+    }
+  };
+
+  private spawnPlayer: (spawnPoint: SpawnPoint) => Character = (spawnPoint) => {
     const pixelCoords = this.tileToPixelCoords(spawnPoint.spawnTile);
     return new Player(pixelCoords);
   };
 
-  public selectPlayer = (player: Player) => {
+  private spawnEnemy: (spawnPoint: SpawnPoint) => Character = (spawnPoint) => {
+    const pixelCoords = this.tileToPixelCoords(spawnPoint.spawnTile);
+    return new Enemy(pixelCoords);
+  };
+
+  private selectPlayer = (player: Character) => {
+    this.deselectPlayer();
+
+    const playerPos = this.pixelToTileCoords(player.pos);
+    const moveDistance = player.moveDistance();
+
+    const possibleDestinations = this.getTilesWithinDist(
+      playerPos,
+      moveDistance
+    );
+    this.moveOverlay = possibleDestinations.map((point) => {
+      const overlayPos = this.tileToPixelCoords(point);
+      const tile = new Actor({
+        x: overlayPos.x,
+        y: overlayPos.y,
+        width: Level.TILE_SIZE,
+        height: Level.TILE_SIZE,
+        color: Color.Blue,
+        opacity: 0.75,
+      });
+      this.add(tile);
+      return tile;
+    });
+
     this.selectedPlayer = player;
   };
+
+  private getTilesWithinDist = (pos: Vector, dist: number): Vector[] => {
+    console.log(pos);
+
+    let ret = new Array<{ point: Vector; dist: number }>();
+    let toGo = new Array<{ point: Vector; dist: number }>();
+
+    const candidateDirections = [
+      Vector.Up,
+      Vector.Down,
+      Vector.Left,
+      Vector.Right,
+    ];
+
+    toGo.push({ point: pos, dist });
+
+    while (toGo.length > 0) {
+      const curr = toGo.shift()!;
+      ret.push(curr);
+
+      if (curr.dist == 0) {
+        continue;
+      }
+
+      const candidatePoints = candidateDirections
+        .map((point) => curr.point.add(point))
+        .filter((point) => point.x >= 0 && point.y >= 0)
+        .filter(
+          (point) => !CELL_TYPE_DATA[this.terrain_data[point.x][point.y]].solid
+        )
+        .filter((point) => !ret.some((pt) => pt.point.equals(point)))
+        .filter((point) => !toGo.some((pt) => pt.point.equals(point)));
+
+      candidatePoints.forEach((point) => {
+        toGo.push({ point, dist: curr.dist - 1 });
+      });
+    }
+
+    ret.shift(); // remove origin
+
+    return ret.map((point) => point.point);
+  };
+
+  private deselectPlayer = () => {
+    this.moveOverlay.forEach((actor) => actor.kill());
+    this.moveOverlay = [];
+    this.selectedPlayer = undefined;
+  };
+
+  public nextTurn = () => {
+    this.playerTurn = !this.playerTurn;
+
+    if (!this.playerTurn) {
+      this.enemyTurn();
+    }
+  };
+
+  private enemyTurn = () => {};
 }
