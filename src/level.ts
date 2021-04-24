@@ -231,7 +231,6 @@ export class Level extends Scene {
   };
 
   private spawnEnemy: (spawnPoint: SpawnPoint) => Character = (spawnPoint) => {
-    console.log("enemy spawn");
     const pixelCoords = this.tileToPixelCoords(spawnPoint.spawnTile);
     const enemy = new Enemy(pixelCoords);
     this.enemies.push(enemy);
@@ -240,7 +239,6 @@ export class Level extends Scene {
 
   private selectPlayer = (player: Character) => {
     const playerPos = this.pixelToTileCoords(player.pos);
-    console.log(playerPos);
     const moveDistance = player.moveDistance();
     const attackRange = player.attackRange();
 
@@ -273,10 +271,10 @@ export class Level extends Scene {
         if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
           // we have player selected
           const src = this.pixelToTileCoords(this.selectedPlayer.pos);
-          this.moveCharacter(src, point, this.selectedPlayer);
+          this.moveCharacter(src, point, this.selectedPlayer).then(() => {
+            this.nextTurn();
+          });
           this.deselectPlayer();
-
-          this.nextTurn();
         }
       });
 
@@ -296,8 +294,6 @@ export class Level extends Scene {
           (pos) => enemyPos.sub(pos).dot(Vector.One) <= attackRange
         )
       );
-
-    console.log(enemiesInRange.map(({ enemyPos }) => enemyPos));
 
     this.attackOverlay = enemiesInRange.map(({ enemy, enemyPos }) => {
       const overlayPos = this.tileToPixelCoords(enemyPos);
@@ -323,10 +319,9 @@ export class Level extends Scene {
             console.log(
               `attacking enemy ${enemy.id} at ${enemyPos}, its health is now ${enemy.health}`
             );
+            this.nextTurn();
           });
           this.deselectPlayer();
-
-          this.nextTurn();
         }
       });
 
@@ -403,6 +398,73 @@ export class Level extends Scene {
   };
 
   private enemyTurn = () => {
-    this.nextTurn();
+    let i = 0;
+
+    const calculateNextEnemyMove = () => {
+      if (i < this.enemies.length) {
+        this.calculateEnemyMove(this.enemies[i]).then(calculateNextEnemyMove);
+        i++;
+      } else {
+        this.nextTurn();
+      }
+    };
+    calculateNextEnemyMove();
+  };
+
+  private calculateEnemyMove = (enemy: Enemy) => {
+    const enemyPos = this.pixelToTileCoords(enemy.pos);
+    const moveDistance = enemy.moveDistance();
+    const attackRange = enemy.attackRange();
+    const attackDamage = enemy.attackDamage();
+
+    const possibleDestinations = this.getTilesWithinDist(
+      enemyPos,
+      moveDistance
+    );
+
+    const playersInRange = this.players
+      .map((player) => {
+        return {
+          player,
+          playerPos: this.pixelToTileCoords(player.pos),
+        };
+      })
+      .filter(({ playerPos }) =>
+        possibleDestinations.some(
+          (pos) => playerPos.sub(pos).dot(Vector.One) <= attackRange
+        )
+      );
+
+    if (playersInRange.length > 0) {
+      const closestPlayer = playersInRange.sort(
+        (playerA, playerB) =>
+          playerB.playerPos.sub(enemyPos).dot(Vector.One) -
+          playerA.playerPos.sub(enemyPos).dot(Vector.One)
+      )[0];
+      const pathToPlayer = this.pathfind(enemyPos, closestPlayer.playerPos);
+      const attackFrom = pathToPlayer[pathToPlayer.length - (1 + attackRange)];
+      return this.moveCharacter(enemyPos, attackFrom, enemy).then(() => {
+        closestPlayer.player.health -= enemy.attackDamage();
+        console.log(
+          `attacking player ${closestPlayer.player.id} at ${closestPlayer.playerPos}, its health is now ${closestPlayer.player.health}`
+        );
+      });
+    }
+
+    const closestPlayer = this.players
+      .map((player) => {
+        return {
+          player,
+          playerPos: this.pixelToTileCoords(player.pos),
+        };
+      })
+      .sort(
+        (playerA, playerB) =>
+          playerB.playerPos.sub(enemyPos).dot(Vector.One) -
+          playerA.playerPos.sub(enemyPos).dot(Vector.One)
+      )[0];
+    const pathToPlayer = this.pathfind(enemyPos, closestPlayer.playerPos);
+    const moveTo = pathToPlayer[moveDistance];
+    return this.moveCharacter(enemyPos, moveTo, enemy);
   };
 }
