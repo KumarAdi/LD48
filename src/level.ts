@@ -6,8 +6,10 @@ import {
   Vector,
   SpriteSheet,
   TileSprite,
+  vec,
 } from "excalibur";
-import { Player } from "./actors";
+
+import { Player } from "./player";
 import { Resources } from "./resources";
 
 export enum CellType {
@@ -15,15 +17,27 @@ export enum CellType {
   FLOOR,
 }
 
+export type SpawnPoint = {
+  spawnTile: Vector;
+};
+
 export class Level extends Scene {
   public static readonly TILE_SIZE = 16;
   private tilesheet: SpriteSheet;
+
+  private engine: Engine;
 
   private players: Player[];
   private terrain_data: CellType[][];
   private tilemap: TileMap;
 
-  constructor(engine: Engine, terrain_data: CellType[][], players: Player[]) {
+  private selectedPlayer: Player;
+
+  constructor(
+    engine: Engine,
+    terrain_data: CellType[][],
+    spawnPoints: SpawnPoint[]
+  ) {
     super(engine);
     this.terrain_data = terrain_data;
     this.tilemap = new TileMap(
@@ -43,7 +57,9 @@ export class Level extends Scene {
     });
 
     this.tilemap.registerSpriteSheet("tile", this.tilesheet);
-    this.players = players;
+    this.players = spawnPoints.map(this.spawnPlayer);
+
+    this.engine = engine;
   }
 
   onInitialize(engine: Engine) {
@@ -52,9 +68,19 @@ export class Level extends Scene {
       engine.add(player);
     });
     this.updateTileMap();
+
+    this.engine.input.pointers.primary.on("down", (evt) => {
+      if (!this.actors.some((actor) => actor.contains(evt.pos.x, evt.pos.y))) {
+        // did not click on some actor
+        if (this.selectedPlayer) {
+          // we have player selected
+          this.selectedPlayer.goTo(evt.pos);
+        }
+      }
+    });
   }
 
-  updateTileMap() {
+  private updateTileMap() {
     this.tilemap.data.forEach((cell: Cell, i) => {
       cell.clearSprites();
       const x = Math.floor(i / this.tilemap.cols);
@@ -78,6 +104,24 @@ export class Level extends Scene {
   // }
 
   public tileToPixelCoords(tileCoords: Vector): Vector {
-    return tileCoords.scale(1 / Level.TILE_SIZE);
+    return tileCoords
+      .sub(vec(this.tilemap.x, this.tilemap.y))
+      .scale(Level.TILE_SIZE);
   }
+
+  public pixelToTileCoords(pixelCoords: Vector): Vector {
+    return pixelCoords
+      .scale(1 / Level.TILE_SIZE)
+      .add(vec(this.tilemap.x, this.tilemap.y));
+  }
+
+  private spawnPlayer: (spawnPoint: SpawnPoint) => Player = (spawnPoint) => {
+    const pixelCoords = this.tileToPixelCoords(spawnPoint.spawnTile);
+    console.log(pixelCoords);
+    return new Player(pixelCoords);
+  };
+
+  public selectPlayer = (player: Player) => {
+    this.selectedPlayer = player;
+  };
 }

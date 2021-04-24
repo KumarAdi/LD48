@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "excalibur": "^0.24.5",
+    "level": "^7.0.0",
     "resources": "^0.4.3"
   }
 }
