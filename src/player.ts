@@ -4,6 +4,9 @@ import { Resources } from "./resources";
 
 export abstract class Character extends Actor {
   private static readonly SPEED = 16;
+
+  abstract health: number;
+
   constructor(spawnPosition: Vector) {
     super({
       pos: spawnPosition,
@@ -11,6 +14,10 @@ export abstract class Character extends Actor {
       height: 16,
     });
   }
+
+  private getLevel = () => {
+    return this.scene as Level;
+  };
 
   public goTo = (path: Vector[]) => {
     console.log(path);
@@ -26,11 +33,15 @@ export abstract class Character extends Actor {
 }
 
 export class Player extends Character {
+  health: number;
   moveDistance = () => 3;
 
-  onInitialize() {
-    const level = this.scene as Level;
+  constructor(spawnPosition: Vector) {
+    super(spawnPosition);
+    this.health = 100;
+  }
 
+  onInitialize() {
     this.addDrawing(Resources.Sword);
   }
 
@@ -40,11 +51,15 @@ export class Player extends Character {
 }
 
 export class Enemy extends Character {
+  health: number;
   moveDistance = () => 3;
 
-  onInitialize() {
-    const level = this.scene as Level;
+  constructor(spawnPosition: Vector) {
+    super(spawnPosition);
+    this.health = 100;
+  }
 
+  onInitialize() {
     this.addDrawing(Resources.Sword);
   }
 

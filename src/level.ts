@@ -31,7 +31,7 @@ const CELL_TYPE_DATA = {
 };
 
 type MapCell = {
-  player?: Character;
+  character?: Character;
 };
 
 export enum SpawnCharacterType {
@@ -51,6 +51,7 @@ export class Level extends Scene {
   private engine: Engine;
 
   private characters: Character[];
+  private enemies: Enemy[] = [];
   private terrain_data: CellType[][];
   private map_data: MapCell[][];
   private tilemap: TileMap;
@@ -77,8 +78,10 @@ export class Level extends Scene {
       terrain_data[0].length
     );
     this.map_data = new Array(this.terrain_data.length).fill(null).map(() =>
-      new Array(this.terrain_data[0].length).fill({
-        player: null,
+      Array.from({ length: this.terrain_data[0].length }, () => {
+        return {
+          character: undefined,
+        };
       })
     );
 
@@ -92,7 +95,6 @@ export class Level extends Scene {
 
     this.tilemap.registerSpriteSheet("tile", this.tilesheet);
     this.characters = spawnPoints.map(this.spawnCharacter);
-
     this.engine = engine;
 
     this.path_finder = new AStarFinder();
@@ -102,8 +104,8 @@ export class Level extends Scene {
 
   onInitialize(engine: Engine) {
     engine.add(this.tilemap);
-    this.characters.forEach((player: Character) => {
-      engine.add(player);
+    this.characters.forEach((character: Character) => {
+      engine.add(character);
     });
     this.syncTerrainData();
 
@@ -154,6 +156,17 @@ export class Level extends Scene {
     });
   }
 
+  private moveCharacter = (
+    oldPos: Vector,
+    newPos: Vector,
+    character: Character
+  ) => {
+    const path = this.pathfind(oldPos, newPos).map(this.tileToPixelCoords);
+    character.goTo(path);
+    this.map_data[oldPos.x][oldPos.y].character = undefined;
+    this.map_data[newPos.x][newPos.y].character = character;
+  };
+
   public pathfind(from: Vector, to: Vector): Vector[] {
     let path_matrix: number[][] = [];
     for (let i = 0; i < this.terrain_data.length; i++) {
@@ -161,7 +174,7 @@ export class Level extends Scene {
       for (let j = 0; j < this.terrain_data[i].length; j++) {
         if (
           CELL_TYPE_DATA[this.terrain_data[i][j]].solid ||
-          (this.map_data[i][j].player && !(from.x == i && from.y == j))
+          (this.map_data[i][j].character && !(from.x == i && from.y == j))
         ) {
           path_matrix[i].push(1);
         } else {
@@ -189,12 +202,21 @@ export class Level extends Scene {
   }
 
   private spawnCharacter = (spawnPoint: SpawnPoint) => {
+    let spawnedCharacter: Character;
     switch (spawnPoint.characterType) {
       case SpawnCharacterType.PLAYER:
-        return this.spawnPlayer(spawnPoint);
+        spawnedCharacter = this.spawnPlayer(spawnPoint);
+        break;
       case SpawnCharacterType.ENEMY:
-        return this.spawnEnemy(spawnPoint);
+        spawnedCharacter = this.spawnEnemy(spawnPoint);
+        break;
     }
+
+    this.map_data[spawnPoint.spawnTile.x][
+      spawnPoint.spawnTile.y
+    ].character = spawnedCharacter;
+
+    return spawnedCharacter;
   };
 
   private spawnPlayer: (spawnPoint: SpawnPoint) => Character = (spawnPoint) => {
@@ -203,12 +225,16 @@ export class Level extends Scene {
   };
 
   private spawnEnemy: (spawnPoint: SpawnPoint) => Character = (spawnPoint) => {
+    console.log("enemy spawn");
     const pixelCoords = this.tileToPixelCoords(spawnPoint.spawnTile);
-    return new Enemy(pixelCoords);
+    const enemy = new Enemy(pixelCoords);
+    this.enemies.push(enemy);
+    return enemy;
   };
 
   private selectPlayer = (player: Character) => {
     const playerPos = this.pixelToTileCoords(player.pos);
+    console.log(playerPos);
     const moveDistance = player.moveDistance();
 
     const possibleDestinations = this.getTilesWithinDist(
@@ -223,18 +249,17 @@ export class Level extends Scene {
         width: Level.TILE_SIZE,
         height: Level.TILE_SIZE,
         color: Color.Blue,
-        opacity: 0.75,
+        opacity: 0.5,
       });
 
       tile.on("pointerdown", (evt) => {
         if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
           // we have player selected
           const src = this.pixelToTileCoords(this.selectedPlayer.pos);
-          const path = this.pathfind(src, point).map(this.tileToPixelCoords);
-          this.selectedPlayer.goTo(path);
+          this.moveCharacter(src, point, this.selectedPlayer);
           this.deselectPlayer();
 
-          // this.nextTurn();
+          this.nextTurn();
         }
       });
 
@@ -246,8 +271,6 @@ export class Level extends Scene {
   };
 
   private getTilesWithinDist = (pos: Vector, dist: number): Vector[] => {
-    console.log(pos);
-
     let ret = new Array<{ point: Vector; dist: number }>();
     let toGo = new Array<{ point: Vector; dist: number }>();
 
@@ -270,9 +293,10 @@ export class Level extends Scene {
 
       const candidatePoints = candidateDirections
         .map((point) => curr.point.add(point))
-        .filter((point) => point.x >= 0 && point.y >= 0)
         .filter(
-          (point) => !CELL_TYPE_DATA[this.terrain_data[point.x][point.y]].solid
+          (point) =>
+            !CELL_TYPE_DATA[this.terrain_data[point.x][point.y]].solid &&
+            !this.map_data[point.x][point.y].character
         )
         .filter((point) => !ret.some((pt) => pt.point.equals(point)))
         .filter((point) => !toGo.some((pt) => pt.point.equals(point)));
@@ -305,5 +329,7 @@ export class Level extends Scene {
     }
   };
 
-  private enemyTurn = () => {};
+  private enemyTurn = () => {
+    this.nextTurn();
+  };
 }

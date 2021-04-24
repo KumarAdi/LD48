@@ -27,11 +27,13 @@ game.start(loader).then(() => {
       }
     }
   }
-  const players = [
+  const spawnPoints = [
     { characterType: SpawnCharacterType.PLAYER, spawnTile: vec(1, 1) },
     { characterType: SpawnCharacterType.PLAYER, spawnTile: vec(15, 15) },
+    { characterType: SpawnCharacterType.ENEMY, spawnTile: vec(20, 20) },
+    { characterType: SpawnCharacterType.ENEMY, spawnTile: vec(20, 15) },
   ];
 
-  game.add("test_level", new Level(game, map, players));
+  game.add("test_level", new Level(game, map, spawnPoints));
   game.goToScene("test_level");
 });
