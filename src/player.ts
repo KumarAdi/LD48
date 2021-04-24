@@ -1,18 +1,44 @@
-import { Actor, SpriteSheet, vec, Vector } from "excalibur";
+import { Actor, Color, SpriteSheet, vec, Vector } from "excalibur";
 import { Level } from "level";
 import { Resources } from "./resources";
 
 export abstract class Character extends Actor {
-  private static readonly SPEED = 30;
+  private static readonly SPEED = 50;
 
-  abstract health: number;
+  protected maxHealth: number;
+  protected health: number;
 
-  constructor(spawnPosition: Vector) {
+  private healthBar?: Actor;
+
+  constructor(spawnPosition: Vector, maxHealth: number) {
     super({
       pos: spawnPosition,
       width: 16,
       height: 16,
     });
+
+    this.maxHealth = maxHealth;
+    this.health = maxHealth;
+  }
+
+  onInitialize() {
+    this.healthBar = new Actor({
+      x: 0,
+      y: 20,
+      width: 16,
+      height: 4,
+      color: Color.Red,
+    });
+    this.add(
+      new Actor({
+        x: this.healthBar.pos.x,
+        y: this.healthBar.pos.y,
+        width: this.healthBar.width + 4,
+        height: this.healthBar.height + 4,
+        color: Color.Black,
+      })
+    );
+    this.add(this.healthBar);
   }
 
   private getLevel = () => {
@@ -27,6 +53,17 @@ export abstract class Character extends Actor {
     return moveActions[moveActions.length - 1];
   };
 
+  public damage(damage: number) {
+    this.health -= damage;
+    const newWidth = (this.health / this.maxHealth) * 16;
+    this.healthBar.pos.x -= (this.healthBar.width - newWidth) / 2;
+    this.healthBar.width = newWidth;
+  }
+
+  public getHealth(): number {
+    return this.health;
+  }
+
   abstract isControllable: () => boolean;
 
   abstract moveDistance: () => number;
@@ -35,17 +72,16 @@ export abstract class Character extends Actor {
 }
 
 export class Player extends Character {
-  health: number;
   moveDistance = () => 3;
   attackRange = () => 1;
   attackDamage = () => 10;
 
   constructor(spawnPosition: Vector) {
-    super(spawnPosition);
-    this.health = 100;
+    super(spawnPosition, 100);
   }
 
   onInitialize() {
+    super.onInitialize();
     this.addDrawing(Resources.Sword);
   }
 
@@ -55,17 +91,16 @@ export class Player extends Character {
 }
 
 export class Enemy extends Character {
-  health: number;
   moveDistance = () => 3;
   attackRange = () => 1;
   attackDamage = () => 10;
 
   constructor(spawnPosition: Vector) {
-    super(spawnPosition);
-    this.health = 100;
+    super(spawnPosition, 100);
   }
 
   onInitialize() {
+    super.onInitialize();
     this.addDrawing(Resources.Sword);
   }
 

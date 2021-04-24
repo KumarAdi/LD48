@@ -319,9 +319,9 @@ export class Level extends Scene {
             pathToEnemy[pathToEnemy.length - (1 + attackRange)];
           const selectedPlayer = this.selectedPlayer;
           this.moveCharacter(src, attackFrom, this.selectedPlayer).then(() => {
-            enemy.health -= selectedPlayer.attackDamage();
+            enemy.damage(selectedPlayer.attackDamage());
             console.log(
-              `attacking enemy ${enemy.id} at ${enemyPos}, its health is now ${enemy.health}`
+              `attacking enemy ${enemy.id} at ${enemyPos}, its health is now ${enemy.getHealth}`
             );
             this.nextTurn();
           });
@@ -448,9 +448,11 @@ export class Level extends Scene {
       const pathToPlayer = this.pathfind(enemyPos, closestPlayer.playerPos);
       const attackFrom = pathToPlayer[pathToPlayer.length - (1 + attackRange)];
       return this.moveCharacter(enemyPos, attackFrom, enemy).then(() => {
-        closestPlayer.player.health -= attackDamage;
+        closestPlayer.player.damage(attackDamage);
         console.log(
-          `attacking player ${closestPlayer.player.id} at ${closestPlayer.playerPos}, its health is now ${closestPlayer.player.health}`
+          `attacking player ${closestPlayer.player.id} at ${
+            closestPlayer.playerPos
+          }, its health is now ${closestPlayer.player.getHealth()}`
         );
       });
     }
