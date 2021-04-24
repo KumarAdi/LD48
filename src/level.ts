@@ -44,6 +44,10 @@ export type SpawnPoint = {
   spawnTile: Vector;
 };
 
+export function manhattanDistance(a: Vector, b: Vector) {
+  return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+}
+
 export class Level extends Scene {
   public static readonly TILE_SIZE = 16;
   private tilesheet: SpriteSheet;
@@ -291,7 +295,7 @@ export class Level extends Scene {
       })
       .filter(({ enemyPos }) =>
         possibleDestinations.some(
-          (pos) => enemyPos.sub(pos).dot(Vector.One) <= attackRange
+          (pos) => manhattanDistance(enemyPos, pos) <= attackRange
         )
       );
 
@@ -431,20 +435,20 @@ export class Level extends Scene {
       })
       .filter(({ playerPos }) =>
         possibleDestinations.some(
-          (pos) => playerPos.sub(pos).dot(Vector.One) <= attackRange
+          (pos) => manhattanDistance(playerPos, pos) <= attackRange
         )
       );
 
     if (playersInRange.length > 0) {
       const closestPlayer = playersInRange.sort(
         (playerA, playerB) =>
-          playerB.playerPos.sub(enemyPos).dot(Vector.One) -
-          playerA.playerPos.sub(enemyPos).dot(Vector.One)
+          manhattanDistance(playerB.playerPos, enemyPos) -
+          manhattanDistance(playerA.playerPos, enemyPos)
       )[0];
       const pathToPlayer = this.pathfind(enemyPos, closestPlayer.playerPos);
       const attackFrom = pathToPlayer[pathToPlayer.length - (1 + attackRange)];
       return this.moveCharacter(enemyPos, attackFrom, enemy).then(() => {
-        closestPlayer.player.health -= enemy.attackDamage();
+        closestPlayer.player.health -= attackDamage;
         console.log(
           `attacking player ${closestPlayer.player.id} at ${closestPlayer.playerPos}, its health is now ${closestPlayer.player.health}`
         );
@@ -460,8 +464,8 @@ export class Level extends Scene {
       })
       .sort(
         (playerA, playerB) =>
-          playerB.playerPos.sub(enemyPos).dot(Vector.One) -
-          playerA.playerPos.sub(enemyPos).dot(Vector.One)
+          manhattanDistance(playerB.playerPos, enemyPos) -
+          manhattanDistance(playerA.playerPos, enemyPos)
       )[0];
     const pathToPlayer = this.pathfind(enemyPos, closestPlayer.playerPos);
     const moveTo = pathToPlayer[moveDistance];

@@ -20,7 +20,6 @@ export abstract class Character extends Actor {
   };
 
   public goTo = (path: Vector[]) => {
-    console.log(path);
     const action = this.actions.delay(0);
     const moveActions = path.map((waypoint) =>
       action.moveTo(waypoint.x, waypoint.y, Character.SPEED).asPromise()
