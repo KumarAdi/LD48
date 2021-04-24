@@ -1,4 +1,4 @@
-import { Resource, Texture } from "excalibur";
+import { Texture } from "excalibur";
 import sword from "./images/sword.png";
 
 let Resources = {

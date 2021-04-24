@@ -1,18 +1,28 @@
-import { Engine, Loader } from "excalibur";
-import { Player } from "./player";
+import { Engine, Actor, Loader } from "excalibur";
 import { Resources } from "./resources";
 
-class Game extends Engine {
-  initialize() {
-    const player = new Player();
-    this.add(player);
+const game = new Engine({
+  width: 800,
+  height: 600,
+});
 
-    const loader = new Loader();
-    loader.addResource(Resources.Sword);
-    this.start(loader);
-  }
-}
+const paddle = new Actor({
+  x: 150,
+  // game.drawHeight is the logical height in pixels after HiDPI and scaling
+  y: game.drawHeight - 40,
+  width: 25,
+  height: 25,
+});
 
-export const game = new Game();
+paddle.onInitialize = () => paddle.addDrawing(Resources.Sword);
 
-game.initialize();
+game.add(paddle);
+
+const loader = new Loader();
+
+loader.addResource(Resources.Sword);
+
+loader.suppressPlayButton = true;
+loader.logo = "";
+
+game.start(loader);
