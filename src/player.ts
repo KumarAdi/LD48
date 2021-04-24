@@ -23,7 +23,11 @@ export class Player extends Actor {
     });
   }
 
-  public goTo = (dest: Vector) => {
-    this.actions.moveTo(dest.x, dest.y, Player.SPEED);
+  public goTo = (path: Vector[]) => {
+    console.log(path);
+    const action = this.actions.delay(0);
+    path.forEach((waypoint) =>
+      action.moveTo(waypoint.x, waypoint.y, Player.SPEED)
+    );
   };
 }

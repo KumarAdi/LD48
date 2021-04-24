@@ -98,7 +98,10 @@ export class Level extends Scene {
         // did not click on some actor
         if (this.selectedPlayer) {
           // we have player selected
-          this.selectedPlayer.goTo(evt.pos);
+          const src = this.pixelToTileCoords(this.selectedPlayer.pos);
+          const dest = this.pixelToTileCoords(evt.pos);
+          const path = this.pathfind(src, dest).map(this.tileToPixelCoords);
+          this.selectedPlayer.goTo(path);
         }
       }
     });
@@ -129,7 +132,7 @@ export class Level extends Scene {
       for (let j = 0; j < this.terrain_data[i].length; j++) {
         if (
           CELL_TYPE_DATA[this.terrain_data[i][j]].solid ||
-          this.map_data[i][j].player
+          (this.map_data[i][j].player && !(from.x == i && from.y == j))
         ) {
           path_matrix[i].push(1);
         } else {
@@ -142,21 +145,22 @@ export class Level extends Scene {
       .map((step) => new Vector(step[0], step[1]));
   }
 
-  public tileToPixelCoords(tileCoords: Vector): Vector {
+  public tileToPixelCoords = (tileCoords: Vector) => {
     return tileCoords
       .sub(vec(this.tilemap.x, this.tilemap.y))
       .scale(Level.TILE_SIZE);
-  }
+  };
 
   public pixelToTileCoords(pixelCoords: Vector): Vector {
-    return pixelCoords
+    const tileCoords = pixelCoords
       .scale(1 / Level.TILE_SIZE)
       .add(vec(this.tilemap.x, this.tilemap.y));
+
+    return vec(Math.floor(tileCoords.x), Math.floor(tileCoords.y));
   }
 
   private spawnPlayer: (spawnPoint: SpawnPoint) => Player = (spawnPoint) => {
     const pixelCoords = this.tileToPixelCoords(spawnPoint.spawnTile);
-    console.log(pixelCoords);
     return new Player(pixelCoords);
   };
 
