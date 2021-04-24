@@ -3,7 +3,7 @@ import { Level } from "level";
 import { Resources } from "./resources";
 
 export abstract class Character extends Actor {
-  private static readonly SPEED = 16;
+  private static readonly SPEED = 30;
 
   abstract health: number;
 
@@ -32,12 +32,14 @@ export abstract class Character extends Actor {
 
   abstract moveDistance: () => number;
   abstract attackRange: () => number;
+  abstract attackDamage: () => number;
 }
 
 export class Player extends Character {
   health: number;
   moveDistance = () => 3;
   attackRange = () => 1;
+  attackDamage = () => 10;
 
   constructor(spawnPosition: Vector) {
     super(spawnPosition);
@@ -57,6 +59,7 @@ export class Enemy extends Character {
   health: number;
   moveDistance = () => 3;
   attackRange = () => 1;
+  attackDamage = () => 10;
 
   constructor(spawnPosition: Vector) {
     super(spawnPosition);

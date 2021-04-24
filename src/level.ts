@@ -317,8 +317,12 @@ export class Level extends Scene {
           const pathToEnemy = this.pathfind(src, enemyPos);
           const attackFrom =
             pathToEnemy[pathToEnemy.length - (1 + attackRange)];
+          const selectedPlayer = this.selectedPlayer;
           this.moveCharacter(src, attackFrom, this.selectedPlayer).then(() => {
-            console.log(`attacking enemy ${enemy.id} at ${enemyPos}`);
+            enemy.health -= selectedPlayer.attackDamage();
+            console.log(
+              `attacking enemy ${enemy.id} at ${enemyPos}, its health is now ${enemy.health}`
+            );
           });
           this.deselectPlayer();
 
