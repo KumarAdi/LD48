@@ -7,20 +7,19 @@ import {
   SpriteSheet,
   TileSprite,
   vec,
+  Actor,
+  Color,
 } from "excalibur";
 
-import { Player } from "./player";
+import { Character, Enemy, Player } from "./player";
 import { AStarFinder, Finder, Grid } from "pathfinding";
 import { Resources } from "./resources";
+import { PointerDownEvent } from "excalibur/dist/Input/PointerEvents";
 
 export enum CellType {
   WALL,
   FLOOR,
 }
-
-export type SpawnPoint = {
-  spawnTile: Vector;
-};
 
 const CELL_TYPE_DATA = {
   [CellType.WALL]: {
@@ -32,7 +31,17 @@ const CELL_TYPE_DATA = {
 };
 
 type MapCell = {
-  player?: Player;
+  character?: Character;
+};
+
+export enum SpawnCharacterType {
+  PLAYER,
+  ENEMY,
+}
+
+export type SpawnPoint = {
+  characterType: SpawnCharacterType;
+  spawnTile: Vector;
 };
 
 export class Level extends Scene {
@@ -41,13 +50,19 @@ export class Level extends Scene {
 
   private engine: Engine;
 
-  private players: Player[];
+  private characters: Character[];
+  private enemies: Enemy[] = [];
+  private players: Player[] = [];
   private terrain_data: CellType[][];
   private map_data: MapCell[][];
   private tilemap: TileMap;
   private path_finder: Finder;
 
-  private selectedPlayer?: Player;
+  private selectedPlayer?: Character;
+  private moveOverlay: Actor[] = [];
+  private attackOverlay: Actor[] = [];
+
+  public playerTurn: boolean;
 
   constructor(
     engine: Engine,
@@ -65,8 +80,10 @@ export class Level extends Scene {
       terrain_data[0].length
     );
     this.map_data = new Array(this.terrain_data.length).fill(null).map(() =>
-      new Array(this.terrain_data[0].length).fill({
-        player: null,
+      Array.from({ length: this.terrain_data[0].length }, () => {
+        return {
+          character: undefined,
+        };
       })
     );
 
@@ -79,33 +96,49 @@ export class Level extends Scene {
     });
 
     this.tilemap.registerSpriteSheet("tile", this.tilesheet);
-    this.players = spawnPoints.map(this.spawnPlayer);
-
+    this.characters = spawnPoints.map(this.spawnCharacter);
     this.engine = engine;
 
     this.path_finder = new AStarFinder();
+
+    this.playerTurn = true;
   }
 
   onInitialize(engine: Engine) {
     engine.add(this.tilemap);
-    this.players.forEach((player: Player) => {
-      engine.add(player);
+    this.characters.forEach((character: Character) => {
+      engine.add(character);
     });
     this.syncTerrainData();
 
-    this.engine.input.pointers.primary.on("down", (evt) => {
-      if (!this.actors.some((actor) => actor.contains(evt.pos.x, evt.pos.y))) {
-        // did not click on some actor
-        if (this.selectedPlayer) {
-          // we have player selected
-          const src = this.pixelToTileCoords(this.selectedPlayer.pos);
-          const dest = this.pixelToTileCoords(evt.pos);
-          const path = this.pathfind(src, dest).map(this.tileToPixelCoords);
-          this.selectedPlayer.goTo(path);
+    this.engine.input.pointers.primary.on("down", this.onClick);
+  }
+
+  private onClick = (evt: PointerDownEvent) => {
+    if (!this.playerTurn) {
+      return;
+    }
+
+    const clickedOnCharacter = this.characters.find((character) =>
+      character.contains(evt.pos.x, evt.pos.y)
+    );
+
+    if (clickedOnCharacter) {
+      if (clickedOnCharacter.isControllable()) {
+        if (
+          this.selectedPlayer &&
+          this.selectedPlayer.id == clickedOnCharacter.id
+        ) {
+          this.deselectPlayer();
+        } else {
+          if (this.selectedPlayer) {
+            this.deselectPlayer();
+          }
+          this.selectPlayer(clickedOnCharacter);
         }
       }
-    });
-  }
+    }
+  };
 
   syncTerrainData() {
     this.tilemap.data.forEach((cell: Cell, i) => {
@@ -125,6 +158,17 @@ export class Level extends Scene {
     });
   }
 
+  private moveCharacter = (
+    oldPos: Vector,
+    newPos: Vector,
+    character: Character
+  ) => {
+    const path = this.pathfind(oldPos, newPos).map(this.tileToPixelCoords);
+    this.map_data[oldPos.x][oldPos.y].character = undefined;
+    this.map_data[newPos.x][newPos.y].character = character;
+    return character.goTo(path);
+  };
+
   public pathfind(from: Vector, to: Vector): Vector[] {
     let path_matrix: number[][] = [];
     for (let i = 0; i < this.terrain_data.length; i++) {
@@ -132,7 +176,9 @@ export class Level extends Scene {
       for (let j = 0; j < this.terrain_data[i].length; j++) {
         if (
           CELL_TYPE_DATA[this.terrain_data[i][j]].solid ||
-          (this.map_data[i][j].player && !(from.x == i && from.y == j))
+          (this.map_data[i][j].character &&
+            !(from.x == i && from.y == j) &&
+            !(to.x == i && to.y == j))
         ) {
           path_matrix[i].push(1);
         } else {
@@ -159,12 +205,204 @@ export class Level extends Scene {
     return vec(Math.floor(tileCoords.x), Math.floor(tileCoords.y));
   }
 
-  private spawnPlayer: (spawnPoint: SpawnPoint) => Player = (spawnPoint) => {
-    const pixelCoords = this.tileToPixelCoords(spawnPoint.spawnTile);
-    return new Player(pixelCoords);
+  private spawnCharacter = (spawnPoint: SpawnPoint) => {
+    let spawnedCharacter: Character;
+    switch (spawnPoint.characterType) {
+      case SpawnCharacterType.PLAYER:
+        spawnedCharacter = this.spawnPlayer(spawnPoint);
+        break;
+      case SpawnCharacterType.ENEMY:
+        spawnedCharacter = this.spawnEnemy(spawnPoint);
+        break;
+    }
+
+    this.map_data[spawnPoint.spawnTile.x][
+      spawnPoint.spawnTile.y
+    ].character = spawnedCharacter;
+
+    return spawnedCharacter;
   };
 
-  public selectPlayer = (player: Player) => {
+  private spawnPlayer: (spawnPoint: SpawnPoint) => Character = (spawnPoint) => {
+    const pixelCoords = this.tileToPixelCoords(spawnPoint.spawnTile);
+    const player = new Player(pixelCoords);
+    this.players.push(player);
+    return player;
+  };
+
+  private spawnEnemy: (spawnPoint: SpawnPoint) => Character = (spawnPoint) => {
+    console.log("enemy spawn");
+    const pixelCoords = this.tileToPixelCoords(spawnPoint.spawnTile);
+    const enemy = new Enemy(pixelCoords);
+    this.enemies.push(enemy);
+    return enemy;
+  };
+
+  private selectPlayer = (player: Character) => {
+    const playerPos = this.pixelToTileCoords(player.pos);
+    console.log(playerPos);
+    const moveDistance = player.moveDistance();
+    const attackRange = player.attackRange();
+
+    this.generateOverlay(playerPos, moveDistance, attackRange);
     this.selectedPlayer = player;
+  };
+
+  private generateOverlay = (
+    playerPos: Vector,
+    moveDistance: number,
+    attackRange: number
+  ) => {
+    const possibleDestinations = this.getTilesWithinDist(
+      playerPos,
+      moveDistance
+    );
+
+    this.moveOverlay = possibleDestinations.map((point) => {
+      const overlayPos = this.tileToPixelCoords(point);
+      const tile = new Actor({
+        x: overlayPos.x,
+        y: overlayPos.y,
+        width: Level.TILE_SIZE,
+        height: Level.TILE_SIZE,
+        color: Color.Blue,
+        opacity: 0.5,
+      });
+
+      tile.on("pointerdown", (evt) => {
+        if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
+          // we have player selected
+          const src = this.pixelToTileCoords(this.selectedPlayer.pos);
+          this.moveCharacter(src, point, this.selectedPlayer);
+          this.deselectPlayer();
+
+          this.nextTurn();
+        }
+      });
+
+      this.add(tile);
+      return tile;
+    });
+
+    const enemiesInRange = this.enemies
+      .map((enemy) => {
+        return {
+          enemy,
+          enemyPos: this.pixelToTileCoords(enemy.pos),
+        };
+      })
+      .filter(({ enemyPos }) =>
+        possibleDestinations.some(
+          (pos) => enemyPos.sub(pos).dot(Vector.One) <= attackRange
+        )
+      );
+
+    console.log(enemiesInRange.map(({ enemyPos }) => enemyPos));
+
+    this.attackOverlay = enemiesInRange.map(({ enemy, enemyPos }) => {
+      const overlayPos = this.tileToPixelCoords(enemyPos);
+      const tile = new Actor({
+        x: overlayPos.x,
+        y: overlayPos.y,
+        width: Level.TILE_SIZE,
+        height: Level.TILE_SIZE,
+        color: Color.Red,
+        opacity: 0.5,
+      });
+
+      tile.on("pointerdown", (evt) => {
+        if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
+          // we have player selected
+          const src = this.pixelToTileCoords(this.selectedPlayer.pos);
+          const pathToEnemy = this.pathfind(src, enemyPos);
+          const attackFrom =
+            pathToEnemy[pathToEnemy.length - (1 + attackRange)];
+          const selectedPlayer = this.selectedPlayer;
+          this.moveCharacter(src, attackFrom, this.selectedPlayer).then(() => {
+            enemy.health -= selectedPlayer.attackDamage();
+            console.log(
+              `attacking enemy ${enemy.id} at ${enemyPos}, its health is now ${enemy.health}`
+            );
+          });
+          this.deselectPlayer();
+
+          this.nextTurn();
+        }
+      });
+
+      this.add(tile);
+
+      return tile;
+    });
+  };
+
+  private getTilesWithinDist = (pos: Vector, dist: number): Vector[] => {
+    let ret = new Array<{ point: Vector; dist: number }>();
+    let toGo = new Array<{ point: Vector; dist: number }>();
+
+    const candidateDirections = [
+      Vector.Up,
+      Vector.Down,
+      Vector.Left,
+      Vector.Right,
+    ];
+
+    toGo.push({ point: pos, dist });
+
+    while (toGo.length > 0) {
+      const curr = toGo.shift()!;
+      ret.push(curr);
+
+      if (curr.dist == 0) {
+        continue;
+      }
+
+      const candidatePoints = candidateDirections
+        .map((point) => curr.point.add(point))
+        .filter(
+          (point) =>
+            !CELL_TYPE_DATA[this.terrain_data[point.x][point.y]].solid &&
+            !this.map_data[point.x][point.y].character
+        )
+        .filter((point) => !ret.some((pt) => pt.point.equals(point)))
+        .filter((point) => !toGo.some((pt) => pt.point.equals(point)));
+
+      candidatePoints.forEach((point) => {
+        toGo.push({ point, dist: curr.dist - 1 });
+      });
+    }
+
+    ret.shift(); // remove origin
+
+    return ret.map((point) => point.point);
+  };
+
+  private deselectPlayer = () => {
+    this.moveOverlay.forEach((actor) => {
+      actor.off("pointerdown");
+      actor.enableCapturePointer = false;
+      actor.kill();
+    });
+    this.moveOverlay = [];
+
+    this.attackOverlay.forEach((actor) => {
+      actor.off("pointerdown");
+      actor.enableCapturePointer = false;
+      actor.kill();
+    });
+    this.attackOverlay = [];
+    this.selectedPlayer = undefined;
+  };
+
+  public nextTurn = () => {
+    this.playerTurn = !this.playerTurn;
+
+    if (!this.playerTurn) {
+      this.enemyTurn();
+    }
+  };
+
+  private enemyTurn = () => {
+    this.nextTurn();
   };
 }
