@@ -118,19 +118,8 @@ export class Level extends Scene {
     const clickedOnCharacter = this.characters.find((character) =>
       character.contains(evt.pos.x, evt.pos.y)
     );
-    if (!clickedOnCharacter) {
-      // did not click on some actor
-      if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
-        // we have player selected
-        const src = this.pixelToTileCoords(this.selectedPlayer.pos);
-        const dest = this.pixelToTileCoords(evt.pos);
-        const path = this.pathfind(src, dest).map(this.tileToPixelCoords);
-        this.selectedPlayer.goTo(path);
-        this.deselectPlayer();
 
-        this.nextTurn();
-      }
-    } else {
+    if (clickedOnCharacter) {
       if (clickedOnCharacter.isControllable()) {
         if (
           this.selectedPlayer &&
@@ -138,6 +127,9 @@ export class Level extends Scene {
         ) {
           this.deselectPlayer();
         } else {
+          if (this.selectedPlayer) {
+            this.deselectPlayer();
+          }
           this.selectPlayer(clickedOnCharacter);
         }
       }
@@ -216,8 +208,6 @@ export class Level extends Scene {
   };
 
   private selectPlayer = (player: Character) => {
-    this.deselectPlayer();
-
     const playerPos = this.pixelToTileCoords(player.pos);
     const moveDistance = player.moveDistance();
 
@@ -235,6 +225,19 @@ export class Level extends Scene {
         color: Color.Blue,
         opacity: 0.75,
       });
+
+      tile.on("pointerdown", (evt) => {
+        if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
+          // we have player selected
+          const src = this.pixelToTileCoords(this.selectedPlayer.pos);
+          const path = this.pathfind(src, point).map(this.tileToPixelCoords);
+          this.selectedPlayer.goTo(path);
+          this.deselectPlayer();
+
+          // this.nextTurn();
+        }
+      });
+
       this.add(tile);
       return tile;
     });
@@ -285,7 +288,11 @@ export class Level extends Scene {
   };
 
   private deselectPlayer = () => {
-    this.moveOverlay.forEach((actor) => actor.kill());
+    this.moveOverlay.forEach((actor) => {
+      actor.off("pointerdown");
+      actor.enableCapturePointer = false;
+      actor.kill();
+    });
     this.moveOverlay = [];
     this.selectedPlayer = undefined;
   };
