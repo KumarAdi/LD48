@@ -9,6 +9,7 @@ import {
   vec,
   Actor,
   Color,
+  ScreenElement,
 } from "excalibur";
 
 import { Character, Enemy, Player } from "./player";
@@ -68,6 +69,7 @@ export class Level extends Scene {
   private selectedPlayer?: Character;
   private moveOverlay: Actor[] = [];
   private attackOverlay: Actor[] = [];
+  private nextTurnButton?: Actor;
 
   public playerTurn: boolean;
 
@@ -117,6 +119,18 @@ export class Level extends Scene {
       engine.add(character);
     });
     this.syncTerrainData();
+
+    this.nextTurnButton = new ScreenElement({
+      x: engine.drawWidth - 100,
+      y: engine.drawHeight - 100,
+      width: 50,
+      height: 50,
+      color: Color.Green,
+    });
+
+    this.nextTurnButton.on("pointerdown", this.nextTurn);
+
+    this.add(this.nextTurnButton);
 
     this.engine.input.pointers.primary.on("down", this.onClick);
   }
@@ -299,9 +313,7 @@ export class Level extends Scene {
         if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
           // we have player selected
           const src = this.pixelToTileCoords(this.selectedPlayer.pos);
-          this.moveCharacter(src, point, this.selectedPlayer).then(() => {
-            this.nextTurn();
-          });
+          this.moveCharacter(src, point, this.selectedPlayer).then(() => {});
           this.deselectPlayer();
         }
       });
@@ -347,7 +359,6 @@ export class Level extends Scene {
             console.log(
               `attacking enemy ${enemy.id} at ${enemyPos}, its health is now ${enemy.getHealth}`
             );
-            this.nextTurn();
           });
           this.deselectPlayer();
         }
@@ -422,6 +433,9 @@ export class Level extends Scene {
 
     if (!this.playerTurn) {
       this.enemyTurn();
+      this.nextTurnButton!.visible = false;
+    } else {
+      this.nextTurnButton!.visible = true;
     }
   };
 
