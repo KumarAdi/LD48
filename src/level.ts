@@ -20,6 +20,7 @@ import {
   PointerButton,
   PointerDownEvent,
 } from "excalibur/dist/Input/PointerEvents";
+import { generateLevel } from "./index";
 
 export enum CellType {
   WALL,
@@ -243,7 +244,16 @@ export class Level extends Scene {
     this.map_data[oldPos.x][oldPos.y].character = undefined;
     this.map_data[newPos.x][newPos.y].character = character;
     character.spendEnergy(character.moveCost() * (path.length - 1));
-    return character.goTo(path);
+    return character.goTo(path).then(() => {
+      if (
+        character.isControllable() &&
+        this.terrain_data[newPos.x][newPos.y] == CellType.STAIR
+      ) {
+        console.log("Exit Level!");
+        this.engine.add("test_level", generateLevel(this.engine));
+        this.engine.goToScene("test_level");
+      }
+    });
   };
 
   public pathfind(from: Vector, to: Vector): Vector[] {

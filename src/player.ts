@@ -76,6 +76,11 @@ export abstract class Character extends Actor {
 
   public damage(damage: number) {
     this.health -= damage;
+
+    if (this.health <= 0) {
+      this.kill();
+    }
+
     const newWidth = (this.health / this.maxHealth) * 30;
     this.healthBar.pos.x -= (this.healthBar.width - newWidth) / 2;
     this.healthBar.width = newWidth;
