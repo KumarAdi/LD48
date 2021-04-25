@@ -21,6 +21,7 @@ import {
   PointerDownEvent,
 } from "excalibur/dist/Input/PointerEvents";
 import { generateLevel } from "./index";
+import { Keys } from "excalibur/dist/Input/Keyboard";
 
 export enum CellType {
   WALL,
@@ -71,6 +72,7 @@ export function manhattanDistance(a: Vector, b: Vector) {
 
 export class Level extends Scene {
   public static readonly TILE_SIZE = 30;
+  private static readonly CAMERA_SPEED = 200;
   private tilesheet: SpriteSheet;
 
   private engine: Engine;
@@ -155,26 +157,38 @@ export class Level extends Scene {
     this.add(this.nextTurnButton);
 
     this.engine.input.pointers.primary.on("down", this.onClick);
+    this.engine.input.keyboard.on("press", (evt) => {
+      switch (evt.key) {
+        case Keys.A:
+          this.camera.vel.x = -Level.CAMERA_SPEED;
+          break;
+        case Keys.D:
+          this.camera.vel.x = Level.CAMERA_SPEED;
+          break;
+        case Keys.W:
+          this.camera.vel.y = -Level.CAMERA_SPEED;
+          break;
+        case Keys.S:
+          this.camera.vel.y = Level.CAMERA_SPEED;
+          break;
+      }
+    });
+
+    this.engine.input.keyboard.on("release", (evt) => {
+      switch (evt.key) {
+        case Keys.A:
+        case Keys.D:
+          this.camera.vel.x = 0;
+          break;
+        case Keys.W:
+        case Keys.S:
+          this.camera.vel.y = 0;
+          break;
+      }
+    });
   }
 
   private onClick = (evt: PointerDownEvent) => {
-    if (evt.button == PointerButton.Right) {
-      this.engine.input.pointers.primary.on("move", (evt) => {
-        this.camera.pos.addEqual(
-          new Vector(-evt.ev.movementX, -evt.ev.movementY)
-        );
-      });
-
-      this.engine.input.pointers.primary.on("up", (evt) => {
-        if (evt.button == PointerButton.Right) {
-          this.engine.input.pointers.primary.off("move");
-          this.engine.input.pointers.primary.off("up");
-        }
-      });
-
-      return;
-    }
-
     if (!this.playerTurn) {
       return;
     }
