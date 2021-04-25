@@ -205,7 +205,14 @@ export class Level extends Scene {
       switch (this.terrain_data[x][y]) {
         case CellType.WALL:
           cell.solid = CELL_TYPE_DATA[CellType.WALL].solid;
-          cell.pushSprite(new TileSprite("tile", 1));
+          let tileNum = 0;
+          if (
+            this.terrain_data[x][y + 1] &&
+            this.terrain_data[x][y + 1] == CellType.FLOOR
+          ) {
+            tileNum = 1;
+          }
+          cell.pushSprite(new TileSprite("tile", tileNum));
           break;
         case CellType.FLOOR:
           cell.solid = CELL_TYPE_DATA[CellType.FLOOR].solid;
