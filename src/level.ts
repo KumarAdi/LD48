@@ -74,8 +74,6 @@ export class Level extends Scene {
   private tilesheet: SpriteSheet;
 
   private engine: Engine;
-
-  private characters: Character[];
   private enemies: Character[] = [];
   private players: Character[] = [];
   private terrain_data: CellType[][];
@@ -125,12 +123,16 @@ export class Level extends Scene {
     });
 
     this.tilemap.registerSpriteSheet("tile", this.tilesheet);
-    this.characters = spawnPoints.map(this.spawnCharacter);
+    spawnPoints.forEach(this.spawnCharacter);
     this.engine = engine;
 
     this.path_finder = new AStarFinder();
 
     this.playerTurn = true;
+  }
+
+  get characters() {
+    return [...this.enemies, ...this.players];
   }
 
   onInitialize(engine: Engine) {
@@ -392,9 +394,6 @@ export class Level extends Scene {
       const victimPos = this.pixelToTileCoords(victim.pos);
       this.players = this.players.filter((player) => player.id != victim.id);
       this.enemies = this.enemies.filter((player) => player.id != victim.id);
-      this.characters = this.characters.filter(
-        (player) => player.id != victim.id
-      );
 
       this.map_data[victimPos.x][victimPos.y].character = undefined;
     }
@@ -421,7 +420,12 @@ export class Level extends Scene {
         victimPos,
         attacker.attackRange()
       )
-        .sort((a, b) => a.sub(attackerPos).size - b.sub(attackerPos).size)
+        .map((point) => ({
+          point,
+          dist: this.pathfind(attackerPos, point).length,
+        }))
+        .sort((a, b) => a.dist - b.dist)
+        .map(({ point }) => point)
         .shift()!;
       console.log(
         `character ${attacker.id} is currently at ${attackerPos}, moving to ${attackFrom} to attack victim at ${victimPos}`
