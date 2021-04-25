@@ -23,7 +23,7 @@ document.oncontextmenu = () => {
 
 game.start(loader).then(() => {
   let dungeon = new Dungeon(2);
-  let player_spawns = dungeon.getPlayerSpawnPoints(2);
+  let player_spawns = dungeon.getPlayerSpawnPoints(3);
   let enemy_spawns: Vector[][] = dungeon.getEnemySpawnPoints(0.5, 2, 3);
 
   const spawnPoints = [
@@ -36,6 +36,11 @@ game.start(loader).then(() => {
       alignment: CharacterAlignment.PLAYER,
       class: CharacterClass.SWORD,
       spawnTile: player_spawns[1],
+    },
+    {
+      alignment: CharacterAlignment.PLAYER,
+      class: CharacterClass.MAGIC,
+      spawnTile: player_spawns[2],
     },
   ];
 
