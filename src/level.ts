@@ -421,7 +421,12 @@ export class Level extends Scene {
         victimPos,
         attacker.attackRange()
       )
-        .sort((a, b) => a.sub(attackerPos).size - b.sub(attackerPos).size)
+        .map((point) => ({
+          point,
+          dist: this.pathfind(attackerPos, point).length,
+        }))
+        .sort((a, b) => a.dist - b.dist)
+        .map(({ point }) => point)
         .shift()!;
       console.log(
         `character ${attacker.id} is currently at ${attackerPos}, moving to ${attackFrom} to attack victim at ${victimPos}`
