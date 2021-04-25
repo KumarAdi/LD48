@@ -4,8 +4,8 @@ import { CellType, Level, CharacterAlignment, CharacterClass } from "./level";
 import { Resources } from "./resources";
 
 const game = new Engine({
-  width: 1200,
-  height: 900,
+  width: 720,
+  height: 480,
 });
 
 const loader = new Loader();
@@ -22,9 +22,9 @@ document.oncontextmenu = () => {
 };
 
 export function generateLevel(game: Engine) {
-  let dungeon = new Dungeon(2);
+  let dungeon = new Dungeon(1);
   let player_spawns = dungeon.getPlayerSpawnPoints(3);
-  let enemy_spawns: Vector[][] = dungeon.getEnemySpawnPoints(0.5, 2, 3);
+  let enemy_spawns: Vector[][] = dungeon.getEnemySpawnPoints(1, 2, 3);
 
   const spawnPoints = [
     {

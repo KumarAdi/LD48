@@ -392,11 +392,12 @@ export class Dungeon {
 
   resolveMap(chunk: Chunk) {
     const seenNodesSet: Set<Chunk> = new Set();
+    const room_options = [new Floor(), new Connecter(getRandomInt(1, 2))];
     chunk.connectable = new Room(
-      new Floor(),
-      new Floor(),
-      new Floor(),
-      new Floor()
+      room_options[getRandomInt(0, 1)],
+      room_options[getRandomInt(0, 1)],
+      room_options[getRandomInt(0, 1)],
+      room_options[getRandomInt(0, 1)]
     );
 
     const resolveQueue: Chunk[] = [chunk];

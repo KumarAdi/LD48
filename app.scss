@@ -1,1 +1,12 @@
 // Styles go here
+body {
+  padding: 0;
+  margin: 0;
+}
+
+canvas {
+  image-rendering: pixelated !important;
+  image-rendering: -moz-crisp-edges !important;
+  width: 100% !important;
+  height: auto !important;
+}
