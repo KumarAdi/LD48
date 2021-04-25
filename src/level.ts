@@ -49,7 +49,7 @@ export function manhattanDistance(a: Vector, b: Vector) {
 }
 
 export class Level extends Scene {
-  public static readonly TILE_SIZE = 16;
+  public static readonly TILE_SIZE = 30;
   private tilesheet: SpriteSheet;
 
   private engine: Engine;
@@ -152,11 +152,11 @@ export class Level extends Scene {
       switch (this.terrain_data[x][y]) {
         case CellType.WALL:
           cell.solid = CELL_TYPE_DATA[CellType.WALL].solid;
-          cell.pushSprite(new TileSprite("tile", 49));
+          cell.pushSprite(new TileSprite("tile", 1));
           break;
         case CellType.FLOOR:
           cell.solid = CELL_TYPE_DATA[CellType.FLOOR].solid;
-          cell.pushSprite(new TileSprite("tile", 73));
+          cell.pushSprite(new TileSprite("tile", 2));
           break;
       }
     });
@@ -198,11 +198,13 @@ export class Level extends Scene {
   public tileToPixelCoords = (tileCoords: Vector) => {
     return tileCoords
       .sub(vec(this.tilemap.x, this.tilemap.y))
-      .scale(Level.TILE_SIZE);
+      .scale(Level.TILE_SIZE)
+      .add(Vector.One.scale(Level.TILE_SIZE / 2));
   };
 
   public pixelToTileCoords(pixelCoords: Vector): Vector {
     const tileCoords = pixelCoords
+      .sub(Vector.One.scale(Level.TILE_SIZE / 2))
       .scale(1 / Level.TILE_SIZE)
       .add(vec(this.tilemap.x, this.tilemap.y));
 

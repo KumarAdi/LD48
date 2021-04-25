@@ -8,13 +8,13 @@ export abstract class Character extends Actor {
   protected maxHealth: number;
   protected health: number;
 
-  private healthBar?: Actor;
+  private healthBar!: Actor;
 
   constructor(spawnPosition: Vector, maxHealth: number) {
     super({
       pos: spawnPosition,
-      width: 16,
-      height: 16,
+      width: 30,
+      height: 30,
     });
 
     this.maxHealth = maxHealth;
@@ -25,7 +25,7 @@ export abstract class Character extends Actor {
     this.healthBar = new Actor({
       x: 0,
       y: 20,
-      width: 16,
+      width: 30,
       height: 4,
       color: Color.Red,
     });
@@ -55,7 +55,7 @@ export abstract class Character extends Actor {
 
   public damage(damage: number) {
     this.health -= damage;
-    const newWidth = (this.health / this.maxHealth) * 16;
+    const newWidth = (this.health / this.maxHealth) * 30;
     this.healthBar.pos.x -= (this.healthBar.width - newWidth) / 2;
     this.healthBar.width = newWidth;
   }
