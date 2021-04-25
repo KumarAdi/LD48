@@ -74,16 +74,18 @@ export abstract class Character extends Actor {
     return action.asPromise().then(() => this.setDrawing("idle"));
   };
 
-  public damage(damage: number) {
+  public damage(damage: number): Boolean {
     this.health -= damage;
 
     if (this.health <= 0) {
       this.kill();
+      return true;
     }
 
     const newWidth = (this.health / this.maxHealth) * 30;
     this.healthBar.pos.x -= (this.healthBar.width - newWidth) / 2;
     this.healthBar.width = newWidth;
+    return false;
   }
 
   public getHealth(): number {

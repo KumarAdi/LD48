@@ -250,6 +250,8 @@ export class Level extends Scene {
         this.terrain_data[newPos.x][newPos.y] == CellType.STAIR
       ) {
         console.log("Exit Level!");
+        this.engine.input.pointers.primary.off("up");
+        this.engine.input.pointers.primary.off("move");
         this.engine.add("test_level", generateLevel(this.engine));
         this.engine.goToScene("test_level");
       }
@@ -383,7 +385,19 @@ export class Level extends Scene {
       attacker.setDrawing("idle");
     }, 1000);
 
-    victim.damage(attacker.attackDamage());
+    const victimDead = victim.damage(attacker.attackDamage());
+
+    if (victimDead) {
+      const victimPos = this.pixelToTileCoords(victim.pos);
+      this.players = this.players.filter((player) => player.id != victim.id);
+      this.enemies = this.enemies.filter((player) => player.id != victim.id);
+      this.characters = this.characters.filter(
+        (player) => player.id != victim.id
+      );
+
+      this.map_data[victimPos.x][victimPos.y].character = undefined;
+    }
+
     attacker.spendEnergy(attacker.attackCost());
     console.log(
       `${attacker.id} attacking ${victim.id} at ${this.pixelToTileCoords(
