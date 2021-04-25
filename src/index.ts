@@ -1,5 +1,5 @@
 import { Engine, Actor, Loader, vec, Vector } from "excalibur";
-import { Dungeon } from "./dungeon";
+import { Dungeon, getRandomInt } from "./dungeon";
 import { CellType, Level, CharacterAlignment, CharacterClass } from "./level";
 import { Resources } from "./resources";
 
@@ -45,10 +45,18 @@ export function generateLevel(game: Engine) {
   ];
 
   enemy_spawns.forEach((points) => {
+    const classes = [
+      CharacterClass.SWORD,
+      CharacterClass.SWORD,
+      CharacterClass.BOW,
+      CharacterClass.BOW,
+      CharacterClass.MAGIC,
+      CharacterClass.MAGIC,
+    ];
     points.forEach((point) =>
       spawnPoints.push({
         alignment: CharacterAlignment.ENEMY,
-        class: CharacterClass.SWORD,
+        class: classes.splice(getRandomInt(0, classes.length - 1), 1)[0],
         spawnTile: point,
       })
     );
