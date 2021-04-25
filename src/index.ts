@@ -10,8 +10,9 @@ const game = new Engine({
 
 const loader = new Loader();
 
-loader.addResource(Resources.Sword);
-loader.addResource(Resources.TileTexture);
+for (let key in Resources) {
+  loader.addResource(Resources[key]);
+}
 
 loader.suppressPlayButton = true;
 loader.logo = "";

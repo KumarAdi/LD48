@@ -1,4 +1,4 @@
-import { Actor, Color, SpriteSheet, vec, Vector } from "excalibur";
+import { Actor, Color, Engine, SpriteSheet, vec, Vector } from "excalibur";
 import { Level } from "level";
 import { Resources } from "./resources";
 
@@ -16,8 +16,8 @@ export abstract class Character extends Actor {
   constructor(spawnPosition: Vector, maxHealth: number, maxEnergy: number) {
     super({
       pos: spawnPosition,
-      width: 30,
-      height: 30,
+      width: 40,
+      height: 40,
     });
 
     this.maxHealth = maxHealth;
@@ -27,10 +27,10 @@ export abstract class Character extends Actor {
     this.energy = maxEnergy;
   }
 
-  onInitialize() {
+  onInitialize(engine: Engine) {
     this.healthBar = new Actor({
       x: 0,
-      y: 20,
+      y: 24,
       width: 30,
       height: 4,
       color: Color.Red,
@@ -52,11 +52,15 @@ export abstract class Character extends Actor {
   };
 
   public goTo = (path: Vector[]) => {
+    this.setDrawing("walk");
     const action = this.actions.delay(0);
-    const moveActions = path.map((waypoint) =>
-      action.moveTo(waypoint.x, waypoint.y, Character.SPEED).asPromise()
+    const moveActions = path.map((waypoint) => {
+      this.currentDrawing.flipHorizontal = waypoint.x < this.pos.x;
+      return action.moveTo(waypoint.x, waypoint.y, Character.SPEED).asPromise();
+    });
+    return moveActions[moveActions.length - 1].then(() =>
+      this.setDrawing("idle")
     );
-    return moveActions[moveActions.length - 1];
   };
 
   public damage(damage: number) {
@@ -100,9 +104,18 @@ export class Player extends Character {
     super(spawnPosition, 100, 3);
   }
 
-  onInitialize() {
-    super.onInitialize();
-    this.addDrawing(Resources.Sword);
+  onInitialize(engine: Engine) {
+    super.onInitialize(engine);
+    const idleSheet = new SpriteSheet(Resources.SwordIdle, 4, 1, 40, 40);
+    this.addDrawing("idle", idleSheet.getAnimationForAll(engine, 1000 / 6));
+    const atkSheet = new SpriteSheet(Resources.SwordAtk, 6, 1, 40, 40);
+    const atkAnim = atkSheet.getAnimationForAll(engine, 1000 / 6);
+    atkAnim.loop = false;
+    this.addDrawing("atk", atkAnim);
+    const walkSheet = new SpriteSheet(Resources.SwordWalk, 6, 1, 40, 40);
+    this.addDrawing("walk", walkSheet.getAnimationForAll(engine, 1000 / 6));
+
+    this.setDrawing("idle");
   }
 
   isControllable = () => {
@@ -120,9 +133,14 @@ export class Enemy extends Character {
     super(spawnPosition, 100, 3);
   }
 
-  onInitialize() {
-    super.onInitialize();
-    this.addDrawing(Resources.Sword);
+  onInitialize(engine: Engine) {
+    super.onInitialize(engine);
+    const idleSheet = new SpriteSheet(Resources.SwordIdle, 4, 1, 40, 40);
+    this.addDrawing("idle", idleSheet.getAnimationForAll(engine, 1000 / 6));
+    const atkSheet = new SpriteSheet(Resources.SwordAtk, 4, 1, 40, 40);
+    this.addDrawing("atk", atkSheet.getAnimationForAll(engine, 1000 / 6));
+    const walkSheet = new SpriteSheet(Resources.SwordWalk, 4, 1, 40, 40);
+    this.addDrawing("walk", walkSheet.getAnimationForAll(engine, 1000 / 6));
   }
 
   isControllable = () => {
