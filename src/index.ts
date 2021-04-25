@@ -15,6 +15,10 @@ loader.addResource(Resources.TileTexture);
 loader.suppressPlayButton = true;
 loader.logo = "";
 
+document.oncontextmenu = () => {
+  return false;
+};
+
 game.start(loader).then(() => {
   let map: CellType[][] = [];
   for (let i = 0; i < 30; i++) {
