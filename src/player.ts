@@ -131,3 +131,28 @@ export class Sword extends Character {
     this.setDrawing("idle");
   }
 }
+
+export class Bow extends Character {
+  moveCost = () => 1;
+  attackCost = () => 2;
+  attackRange = () => 2;
+  attackDamage = () => 20;
+
+  constructor(spawnPosition: Vector, controllable: boolean) {
+    super(spawnPosition, 75, 5, controllable);
+  }
+
+  onInitialize(engine: Engine) {
+    super.onInitialize(engine);
+    const idleSheet = new SpriteSheet(Resources.BowIdle, 4, 1, 40, 40);
+    this.addDrawing("idle", idleSheet.getAnimationForAll(engine, 1000 / 6));
+    const atkSheet = new SpriteSheet(Resources.BowAtk, 6, 1, 40, 40);
+    const atkAnim = atkSheet.getAnimationForAll(engine, 1000 / 6);
+    atkAnim.loop = false;
+    this.addDrawing("atk", atkAnim);
+    const walkSheet = new SpriteSheet(Resources.BowWalk, 6, 1, 40, 40);
+    this.addDrawing("walk", walkSheet.getAnimationForAll(engine, 1000 / 6));
+
+    this.setDrawing("idle");
+  }
+}
