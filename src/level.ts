@@ -181,14 +181,17 @@ export class Level extends Scene {
           this.selectPlayer(clickedOnCharacter);
         }
       }
+    } else {
+      let coords = this.pixelToTileCoords(evt.pos);
+      console.log(coords, this.terrain_data[coords.y][coords.x]);
     }
   };
 
   syncTerrainData() {
     this.tilemap.data.forEach((cell: Cell, i) => {
       cell.clearSprites();
-      const x = Math.floor(i / this.tilemap.cols);
-      const y = i % this.tilemap.cols;
+      const y = Math.floor(i / this.tilemap.cols);
+      const x = i % this.tilemap.cols;
       switch (this.terrain_data[x][y]) {
         case CellType.WALL:
           cell.solid = CELL_TYPE_DATA[CellType.WALL].solid;
@@ -433,7 +436,7 @@ export class Level extends Scene {
         .map((point) => curr.point.add(point))
         .filter(
           (point) =>
-            !CELL_TYPE_DATA[this.terrain_data[point.y][point.x]].solid &&
+            !CELL_TYPE_DATA[this.terrain_data[point.x][point.y]].solid &&
             !this.map_data[point.x][point.y].character
         )
         .filter((point) => !ret.some((pt) => pt.point.equals(point)))

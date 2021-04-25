@@ -1,3 +1,4 @@
+import { Vector } from "excalibur";
 import { CellType } from "./level";
 
 const CHUNK_SIZE = 9;
@@ -216,27 +217,41 @@ class Room implements Connectable {
   }
 }
 
+function resolveRequirement(
+  req: Requirement,
+  can_floor?: boolean
+): StrictRequirement {
+  const options = [new Floor(), new Wall(), new Connecter(getRandomInt(1, 2))];
+  return req.type === "any" ? options[getRandomInt(can_floor ? 0 : 1, 2)] : req;
+}
+
 function connetableFromRequirement(
   left: Requirement,
   top: Requirement,
   right: Requirement,
   bottom: Requirement
 ): Connectable {
-  const options = [new Floor(), new Wall(), new Connecter(getRandomInt(1, 2))];
-  const l = left.type === "any" ? options[getRandomInt(0, 2)] : left;
-  const t = top.type === "any" ? options[getRandomInt(0, 2)] : top;
-  const r = right.type === "any" ? options[getRandomInt(0, 2)] : right;
-  const b = bottom.type === "any" ? options[getRandomInt(0, 2)] : bottom;
-
-  if (
-    l.type !== "floor" &&
-    t.type !== "floor" &&
-    r.type !== "floor" &&
-    b.type !== "floor"
-  ) {
-    return Math.random() > 0.2 ? new Road(l, t, r, b) : new Room(l, t, r, b);
+  if ([left, top, right, bottom].every((side) => side.type !== "floor")) {
+    return Math.random() > 0.5
+      ? new Road(
+          resolveRequirement(left),
+          resolveRequirement(top),
+          resolveRequirement(right),
+          resolveRequirement(bottom)
+        )
+      : new Room(
+          resolveRequirement(left, true),
+          resolveRequirement(top, true),
+          resolveRequirement(right, true),
+          resolveRequirement(bottom, true)
+        );
   } else {
-    return new Room(l, t, r, b);
+    return new Room(
+      resolveRequirement(left, true),
+      resolveRequirement(top, true),
+      resolveRequirement(right, true),
+      resolveRequirement(bottom, true)
+    );
   }
 }
 
@@ -311,40 +326,16 @@ export class Dungeon {
   constructor(max_depth: number) {
     this.map = new ChunkMap(max_depth);
     this.resolveMap(this.map.getCenterChunk());
-    console.log(this.map);
-  }
-
-  asCell2dArray(): CellType[][] {
-    const cell_array_root: CellType[][] = [];
-
-    for (let i = 0; i < this.map.map.length; i++) {
-      for (let x = 0; x < CHUNK_SIZE; x++) cell_array_root.push([]);
-      for (let j = 0; j < this.map.map[i].length; j++) {
-        for (let y = 0; y < CHUNK_SIZE; y++)
-          cell_array_root[i * CHUNK_SIZE + y].push(CellType.NONE);
-        const cell_array = this.map.map[i][j].connectable?.asCell2dArray();
-        if (cell_array) {
-          for (let x = 0; x < CHUNK_SIZE; x++) {
-            for (let y = 0; y < CHUNK_SIZE; y++) {
-              cell_array_root[i * CHUNK_SIZE + x][j * CHUNK_SIZE + y] =
-                cell_array[x][y];
-            }
-          }
-        }
-      }
-    }
-
-    return cell_array_root;
   }
 
   resolveMap(chunk: Chunk) {
     const seenNodesSet: Set<Chunk> = new Set();
-    chunk.connectable = new Room(
-      new Floor(),
-      new Floor(),
-      new Floor(),
-      new Floor()
-    );
+    // chunk.connectable = new Room(
+    //   new Floor(),
+    //   new Floor(),
+    //   new Floor(),
+    //   new Floor()
+    // );
 
     const resolveQueue: Chunk[] = [chunk];
 
@@ -386,5 +377,41 @@ export class Dungeon {
       if (right) resolveQueue.push(right);
       if (bottom) resolveQueue.push(bottom);
     }
+  }
+
+  asCell2dArray(): CellType[][] {
+    const cell_array_root: CellType[][] = [];
+
+    for (let i = 0; i < this.map.map.length; i++) {
+      for (let x = 0; x < CHUNK_SIZE; x++) cell_array_root.push([]);
+      for (let j = 0; j < this.map.map[i].length; j++) {
+        for (let y = 0; y < CHUNK_SIZE; y++)
+          cell_array_root[i * CHUNK_SIZE + y].push(CellType.NONE);
+        const cell_array = this.map.map[i][j].connectable?.asCell2dArray();
+        if (cell_array) {
+          for (let x = 0; x < CHUNK_SIZE; x++) {
+            for (let y = 0; y < CHUNK_SIZE; y++) {
+              cell_array_root[i * CHUNK_SIZE + x][j * CHUNK_SIZE + y] =
+                cell_array[x][y];
+            }
+          }
+        }
+      }
+    }
+
+    // Fix the matrix by transposing it
+    const final_cell_array_root: CellType[][] = [];
+    for (let i = 0; i < cell_array_root[0].length; i++) {
+      final_cell_array_root.push([]);
+      for (let j = 0; j < cell_array_root.length; j++) {
+        final_cell_array_root[i][j] = cell_array_root[j][i];
+      }
+    }
+
+    return final_cell_array_root;
+  }
+
+  getPlayerSpawnPoints(num_players: number): Vector[] {
+    return [];
   }
 }
