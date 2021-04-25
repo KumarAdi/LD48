@@ -478,14 +478,19 @@ export class Level extends Scene {
         opacity: 0.5,
       });
 
-      tile.on("pointerdown", (evt) => {
-        if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
-          // we have player selected
-          const src = this.pixelToTileCoords(this.selectedPlayer.pos);
-          this.moveCharacter(src, point, this.selectedPlayer).then(() => {});
-          this.deselectPlayer();
-        }
-      });
+      const tileSelect = () =>
+        tile.on("pointerdown", (evt) => {
+          if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
+            // we have player selected
+            const src = this.pixelToTileCoords(this.selectedPlayer.pos);
+            this.moveCharacter(src, point, this.selectedPlayer).then(() => {});
+            this.deselectPlayer();
+          }
+
+          this.engine.input.pointers.primary.off("up", tileSelect);
+        });
+
+      this.engine.input.pointers.primary.on("up", tileSelect);
 
       this.add(tile);
       return tile;
