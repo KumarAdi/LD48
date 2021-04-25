@@ -1,6 +1,6 @@
 import { SpriteSheet, Texture } from "excalibur";
 import sword from "./images/sword.png";
-import tilesheet from "./images/dungeon_tiles_0.png";
+import tilesheet from "./images/dungeontiles_1.png";
 
 let Resources = {
   Sword: new Texture(sword),
