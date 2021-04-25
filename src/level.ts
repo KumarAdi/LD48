@@ -13,7 +13,7 @@ import {
   GameEvent,
 } from "excalibur";
 
-import { Bow, Character, Sword } from "./player";
+import { Bow, Character, Magic, Sword } from "./player";
 import { AStarFinder, Finder, Grid } from "pathfinding";
 import { Resources } from "./resources";
 import {
@@ -55,7 +55,7 @@ export enum CharacterAlignment {
 export enum CharacterClass {
   SWORD,
   BOW,
-  MAGE,
+  MAGIC,
 }
 
 export type SpawnPoint = {
@@ -298,8 +298,9 @@ export class Level extends Scene {
       case CharacterClass.BOW:
         spawnedCharacter = new Bow(pixelCoords, controllable);
         break;
-      default:
-        throw Error("Haven't implemented any other classes yet");
+      case CharacterClass.MAGIC:
+        spawnedCharacter = new Magic(pixelCoords, controllable);
+        break;
     }
 
     if (controllable) {
