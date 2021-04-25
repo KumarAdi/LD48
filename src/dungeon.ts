@@ -322,12 +322,12 @@ class ChunkMap {
   public map: Chunk[][];
   private center: number[];
 
-  constructor(max_size: number) {
+  constructor(half_size: number) {
     this.map = [];
-    this.center = [max_size, max_size];
-    for (let i = 0; i < max_size * 2 + 1; i++) {
+    this.center = [half_size, half_size];
+    for (let i = 0; i < half_size * 2 + 1; i++) {
       this.map.push([]);
-      for (let j = 0; j < max_size * 2 + 1; j++) {
+      for (let j = 0; j < half_size * 2 + 1; j++) {
         this.map[i].push(new Chunk(this.map, i, j));
       }
     }

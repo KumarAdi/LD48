@@ -141,11 +141,9 @@ export class Level extends Scene {
 
   private onClick = (evt: PointerDownEvent) => {
     if (evt.button == PointerButton.Right) {
-      let startDragMousePos = evt.pos;
-      let startDragCameraPos = this.camera.pos;
       this.engine.input.pointers.primary.on("move", (evt) => {
-        this.camera.pos = startDragCameraPos.sub(
-          evt.pos.sub(startDragMousePos)
+        this.camera.pos.addEqual(
+          new Vector(-evt.ev.movementX, -evt.ev.movementY)
         );
       });
 
@@ -227,10 +225,10 @@ export class Level extends Scene {
       path_matrix.push([]);
       for (let j = 0; j < this.terrain_data[i].length; j++) {
         if (
-          CELL_TYPE_DATA[this.terrain_data[i][j]].solid ||
-          (this.map_data[i][j].character &&
-            !(from.x == i && from.y == j) &&
-            !(to.x == i && to.y == j))
+          CELL_TYPE_DATA[this.terrain_data[j][i]].solid ||
+          (this.map_data[j][i].character &&
+            !(from.x == j && from.y == i) &&
+            !(to.x == j && to.y == i))
         ) {
           path_matrix[i].push(1);
         } else {

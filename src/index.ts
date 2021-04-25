@@ -22,10 +22,10 @@ document.oncontextmenu = () => {
 };
 
 game.start(loader).then(() => {
-  let dungeon = new Dungeon(5);
+  let dungeon = new Dungeon(2);
   let player_spawns = dungeon.getPlayerSpawnPoints(2);
   let enemy_spawns: Vector[][] = dungeon.getEnemySpawnPoints(0.5, 2, 3);
-  console.log(enemy_spawns);
+  console.log(player_spawns);
 
   const spawnPoints = [
     { characterType: SpawnCharacterType.PLAYER, spawnTile: player_spawns[0] },
