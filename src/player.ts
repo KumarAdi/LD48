@@ -14,11 +14,13 @@ export abstract class Character extends Actor {
   protected healthBarColor: Color;
   private healthBar!: Actor;
 
+  private controllable: boolean;
+
   constructor(
     spawnPosition: Vector,
     maxHealth: number,
     maxEnergy: number,
-    healthBarColor: Color = Color.Red
+    controllable: boolean
   ) {
     super({
       pos: spawnPosition,
@@ -28,10 +30,12 @@ export abstract class Character extends Actor {
 
     this.maxHealth = maxHealth;
     this.health = maxHealth;
-    this.healthBarColor = healthBarColor;
+    this.healthBarColor = controllable ? Color.Green : Color.Red;
 
     this.maxEnergy = maxEnergy;
     this.energy = maxEnergy;
+
+    this.controllable = controllable;
   }
 
   onInitialize(engine: Engine) {
@@ -60,14 +64,14 @@ export abstract class Character extends Actor {
 
   public goTo = (path: Vector[]) => {
     this.setDrawing("walk");
-    const action = this.actions.delay(0);
-    const moveActions = path.map((waypoint) => {
-      this.currentDrawing.flipHorizontal = waypoint.x < this.pos.x;
-      return action.moveTo(waypoint.x, waypoint.y, Character.SPEED).asPromise();
-    });
-    return moveActions[moveActions.length - 1].then(() =>
-      this.setDrawing("idle")
-    );
+    let action = this.actions.delay(0);
+    for (let waypoint of path) {
+      action.asPromise().then(() => {
+        this.currentDrawing.flipHorizontal = waypoint.x < this.pos.x;
+      });
+      action = action.moveTo(waypoint.x, waypoint.y, Character.SPEED);
+    }
+    return action.asPromise().then(() => this.setDrawing("idle"));
   };
 
   public damage(damage: number) {
@@ -93,7 +97,9 @@ export abstract class Character extends Actor {
     this.energy = this.maxEnergy;
   }
 
-  abstract isControllable: () => boolean;
+  public isControllable() {
+    return this.controllable;
+  }
 
   abstract moveCost: () => number;
   abstract attackCost: () => number;
@@ -101,14 +107,14 @@ export abstract class Character extends Actor {
   abstract attackDamage: () => number;
 }
 
-export class Player extends Character {
+export class Sword extends Character {
   moveCost = () => 1;
   attackCost = () => 1;
   attackRange = () => 1;
   attackDamage = () => 10;
 
-  constructor(spawnPosition: Vector) {
-    super(spawnPosition, 100, 3, Color.Green);
+  constructor(spawnPosition: Vector, controllable: boolean) {
+    super(spawnPosition, 100, 3, controllable);
   }
 
   onInitialize(engine: Engine) {
@@ -124,33 +130,29 @@ export class Player extends Character {
 
     this.setDrawing("idle");
   }
-
-  isControllable = () => {
-    return true;
-  };
 }
 
-export class Enemy extends Character {
+export class Bow extends Character {
   moveCost = () => 1;
-  attackCost = () => 1;
-  attackRange = () => 1;
-  attackDamage = () => 10;
+  attackCost = () => 2;
+  attackRange = () => 2;
+  attackDamage = () => 20;
 
-  constructor(spawnPosition: Vector) {
-    super(spawnPosition, 100, 3);
+  constructor(spawnPosition: Vector, controllable: boolean) {
+    super(spawnPosition, 75, 5, controllable);
   }
 
   onInitialize(engine: Engine) {
     super.onInitialize(engine);
-    const idleSheet = new SpriteSheet(Resources.SwordIdle, 4, 1, 40, 40);
+    const idleSheet = new SpriteSheet(Resources.BowIdle, 4, 1, 40, 40);
     this.addDrawing("idle", idleSheet.getAnimationForAll(engine, 1000 / 6));
-    const atkSheet = new SpriteSheet(Resources.SwordAtk, 4, 1, 40, 40);
-    this.addDrawing("atk", atkSheet.getAnimationForAll(engine, 1000 / 6));
-    const walkSheet = new SpriteSheet(Resources.SwordWalk, 4, 1, 40, 40);
+    const atkSheet = new SpriteSheet(Resources.BowAtk, 6, 1, 40, 40);
+    const atkAnim = atkSheet.getAnimationForAll(engine, 1000 / 6);
+    atkAnim.loop = false;
+    this.addDrawing("atk", atkAnim);
+    const walkSheet = new SpriteSheet(Resources.BowWalk, 6, 1, 40, 40);
     this.addDrawing("walk", walkSheet.getAnimationForAll(engine, 1000 / 6));
-  }
 
-  isControllable = () => {
-    return false;
-  };
+    this.setDrawing("idle");
+  }
 }
