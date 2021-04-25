@@ -14,7 +14,10 @@ import {
 import { Character, Enemy, Player } from "./player";
 import { AStarFinder, Finder, Grid } from "pathfinding";
 import { Resources } from "./resources";
-import { PointerDownEvent } from "excalibur/dist/Input/PointerEvents";
+import {
+  PointerButton,
+  PointerDownEvent,
+} from "excalibur/dist/Input/PointerEvents";
 
 export enum CellType {
   WALL,
@@ -119,6 +122,25 @@ export class Level extends Scene {
   }
 
   private onClick = (evt: PointerDownEvent) => {
+    if (evt.button == PointerButton.Right) {
+      let startDragMousePos = evt.pos;
+      let startDragCameraPos = this.camera.pos;
+      this.engine.input.pointers.primary.on("move", (evt) => {
+        this.camera.pos = startDragCameraPos.sub(
+          evt.pos.sub(startDragMousePos)
+        );
+      });
+
+      this.engine.input.pointers.primary.on("up", (evt) => {
+        if (evt.button == PointerButton.Right) {
+          this.engine.input.pointers.primary.off("move");
+          this.engine.input.pointers.primary.off("up");
+        }
+      });
+
+      return;
+    }
+
     if (!this.playerTurn) {
       return;
     }
