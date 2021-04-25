@@ -21,7 +21,7 @@ document.oncontextmenu = () => {
   return false;
 };
 
-game.start(loader).then(() => {
+export function generateLevel(game: Engine) {
   let dungeon = new Dungeon(2);
   let player_spawns = dungeon.getPlayerSpawnPoints(3);
   let enemy_spawns: Vector[][] = dungeon.getEnemySpawnPoints(0.5, 2, 3);
@@ -54,6 +54,10 @@ game.start(loader).then(() => {
     );
   });
 
-  game.add("test_level", new Level(game, dungeon.asCell2dArray(), spawnPoints));
+  return new Level(game, dungeon.asCell2dArray(), spawnPoints);
+}
+
+game.start(loader).then(() => {
+  game.add("test_level", generateLevel(game));
   game.goToScene("test_level");
 });
