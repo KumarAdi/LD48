@@ -137,6 +137,7 @@ class Room implements Connectable {
   public top: StrictRequirement;
   public right: StrictRequirement;
   public bottom: StrictRequirement;
+  public finalRoom: boolean = false;
 
   constructor(
     left: StrictRequirement,
@@ -231,6 +232,11 @@ class Room implements Connectable {
         data[x][CHUNK_SIZE - 1] = CellType.FLOOR;
       }
     }
+
+    if (this.finalRoom) {
+      data[(CHUNK_SIZE - 1) / 2][(CHUNK_SIZE - 1) / 2] = CellType.STAIR;
+    }
+
     return data;
   }
 }
@@ -341,13 +347,47 @@ class ChunkMap {
 export class Dungeon {
   private map: ChunkMap;
   private size: number;
-  private player_spawn_chunk?: Chunk;
+  private player_spawn_chunk: Chunk;
+  private next_level_chunk: Chunk;
 
   constructor(size: number) {
     this.map = new ChunkMap(size);
     this.size = size;
     this.resolveMap(this.map.getCenterChunk());
-    // console.log(this.getPlayerSpawnPoints(4));
+    // Select chunk for player spawn and floor spawn
+    const rooms = [
+      ...this.getRoomChunksFromOuterLayer(0),
+      ...this.getRoomChunksFromOuterLayer(1),
+    ];
+
+    this.player_spawn_chunk = rooms.splice(
+      getRandomInt(0, rooms.length - 1),
+      1
+    )[0];
+    let player_spawn_chunk_point = new Vector(
+      this.player_spawn_chunk.x,
+      this.player_spawn_chunk.y
+    );
+    let sorted_rooms = rooms.sort((r1, r2) => {
+      let r1d = new Vector(r1.x, r1.y).distance(player_spawn_chunk_point);
+      let r2d = new Vector(r2.x, r2.y).distance(player_spawn_chunk_point);
+      let r1w = 0;
+      let r2w = 0;
+
+      if (r1.connectable?.left.type === "floor") r1w -= 1;
+      if (r1.connectable?.top.type === "floor") r1w -= 1;
+      if (r1.connectable?.right.type === "floor") r1w -= 1;
+      if (r1.connectable?.bottom.type === "floor") r1w -= 1;
+
+      if (r2.connectable?.left.type === "floor") r2w -= 1;
+      if (r2.connectable?.top.type === "floor") r2w -= 1;
+      if (r2.connectable?.right.type === "floor") r2w -= 1;
+      if (r2.connectable?.bottom.type === "floor") r2w -= 1;
+
+      return r2w + r2d - (r1w + r1d);
+    });
+    this.next_level_chunk = sorted_rooms[0];
+    (this.next_level_chunk.connectable as Room).finalRoom = true;
   }
 
   resolveMap(chunk: Chunk) {
@@ -464,14 +504,6 @@ export class Dungeon {
 
   // Always spawns in a new room
   getPlayerSpawnPoints(num_players: number): Vector[] {
-    // Spawn the player one of the first two layers
-    let spawnable_rooms = this.getRoomChunksFromOuterLayer(getRandomInt(0, 1));
-
-    // Select a room
-    let room_to_spawn_in =
-      spawnable_rooms[getRandomInt(0, spawnable_rooms.length - 1)];
-    this.player_spawn_chunk = room_to_spawn_in;
-
     let offsets = getNRandomPointsIn(
       num_players,
       CHUNK_SIZE - 2,
@@ -480,8 +512,8 @@ export class Dungeon {
     let spawn_offsets = new Array(num_players)
       .fill(
         new Vector(
-          room_to_spawn_in.x * CHUNK_SIZE,
-          room_to_spawn_in.y * CHUNK_SIZE
+          this.player_spawn_chunk.x * CHUNK_SIZE,
+          this.player_spawn_chunk.y * CHUNK_SIZE
         )
       )
       .map(

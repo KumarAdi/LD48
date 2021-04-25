@@ -23,6 +23,7 @@ import {
 export enum CellType {
   WALL,
   FLOOR,
+  STAIR,
   NONE,
 }
 
@@ -31,6 +32,9 @@ const CELL_TYPE_DATA = {
     solid: true,
   },
   [CellType.FLOOR]: {
+    solid: false,
+  },
+  [CellType.STAIR]: {
     solid: false,
   },
   [CellType.NONE]: {
@@ -198,6 +202,10 @@ export class Level extends Scene {
         case CellType.FLOOR:
           cell.solid = CELL_TYPE_DATA[CellType.FLOOR].solid;
           cell.pushSprite(new TileSprite("tile", 2));
+          break;
+        case CellType.STAIR:
+          cell.solid = CELL_TYPE_DATA[CellType.STAIR].solid;
+          cell.pushSprite(new TileSprite("tile", 3));
           break;
         case CellType.NONE:
           cell.solid = CELL_TYPE_DATA[CellType.NONE].solid;
