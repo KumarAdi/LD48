@@ -12,7 +12,7 @@ import {
   ScreenElement,
 } from "excalibur";
 
-import { Character, Enemy, Player } from "./player";
+import { Character, Sword } from "./player";
 import { AStarFinder, Finder, Grid } from "pathfinding";
 import { Resources } from "./resources";
 import {
@@ -67,8 +67,8 @@ export class Level extends Scene {
   private engine: Engine;
 
   private characters: Character[];
-  private enemies: Enemy[] = [];
-  private players: Player[] = [];
+  private enemies: Character[] = [];
+  private players: Character[] = [];
   private terrain_data: CellType[][];
   private map_data: MapCell[][];
   private tilemap: TileMap;
@@ -266,14 +266,16 @@ export class Level extends Scene {
   }
 
   private spawnCharacter = (spawnPoint: SpawnPoint) => {
-    let spawnedCharacter: Character;
-    switch (spawnPoint.characterType) {
-      case SpawnCharacterType.PLAYER:
-        spawnedCharacter = this.spawnPlayer(spawnPoint);
-        break;
-      case SpawnCharacterType.ENEMY:
-        spawnedCharacter = this.spawnEnemy(spawnPoint);
-        break;
+    const pixelCoords = this.tileToPixelCoords(spawnPoint.spawnTile);
+
+    const controllable = spawnPoint.characterType == SpawnCharacterType.PLAYER;
+
+    let spawnedCharacter = new Sword(pixelCoords, controllable);
+
+    if (controllable) {
+      this.players.push(spawnedCharacter);
+    } else {
+      this.enemies.push(spawnedCharacter);
     }
 
     this.map_data[spawnPoint.spawnTile.x][
@@ -281,20 +283,6 @@ export class Level extends Scene {
     ].character = spawnedCharacter;
 
     return spawnedCharacter;
-  };
-
-  private spawnPlayer: (spawnPoint: SpawnPoint) => Character = (spawnPoint) => {
-    const pixelCoords = this.tileToPixelCoords(spawnPoint.spawnTile);
-    const player = new Player(pixelCoords);
-    this.players.push(player);
-    return player;
-  };
-
-  private spawnEnemy: (spawnPoint: SpawnPoint) => Character = (spawnPoint) => {
-    const pixelCoords = this.tileToPixelCoords(spawnPoint.spawnTile);
-    const enemy = new Enemy(pixelCoords);
-    this.enemies.push(enemy);
-    return enemy;
   };
 
   private selectPlayer = (player: Character) => {
@@ -363,7 +351,7 @@ export class Level extends Scene {
     );
   };
 
-  private generateOverlay = (player: Player) => {
+  private generateOverlay = (player: Sword) => {
     const possibleMoves = this.getPossibleMoves(player, this.enemies);
 
     this.moveOverlay = possibleMoves.moves.map((point) => {
@@ -487,14 +475,17 @@ export class Level extends Scene {
 
   public nextTurn = () => {
     this.playerTurn = !this.playerTurn;
+    console.log(`next turn: ${this.playerTurn ? "player" : "enemy"}`);
 
     if (!this.playerTurn) {
       this.enemies.forEach((enemy) => enemy.restoreEnergy());
       this.enemyTurn();
       this.nextTurnButton!.visible = false;
+      this.nextTurnButton!.off("pointerdown");
     } else {
-      this.players.forEach((enemy) => enemy.restoreEnergy());
+      this.players.forEach((player) => player.restoreEnergy());
       this.nextTurnButton!.visible = true;
+      this.nextTurnButton!.on("pointerdown", this.nextTurn);
     }
   };
 
@@ -502,6 +493,7 @@ export class Level extends Scene {
     let i = 0;
 
     const calculateNextEnemyMove = () => {
+      console.log(`moving enemy ${i}`);
       if (i < this.enemies.length) {
         this.calculateEnemyMove(this.enemies[i]).then(calculateNextEnemyMove);
         i++;
@@ -512,7 +504,7 @@ export class Level extends Scene {
     calculateNextEnemyMove();
   };
 
-  private calculateEnemyMove = (me: Enemy) => {
+  private calculateEnemyMove = (me: Character) => {
     const myPos = this.pixelToTileCoords(me.pos);
 
     const { moves, attackableEnemies } = this.getPossibleMoves(
