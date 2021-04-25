@@ -95,6 +95,9 @@ export class Level extends Scene {
     spawnPoints: SpawnPoint[]
   ) {
     super(engine);
+
+    engine.backgroundColor = Color.Black;
+
     this.terrain_data = terrain_data;
     this.tilemap = new TileMap(
       0,
