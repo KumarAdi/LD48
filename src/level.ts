@@ -10,6 +10,7 @@ import {
   Actor,
   Color,
   ScreenElement,
+  GameEvent,
 } from "excalibur";
 
 import { Bow, Character, Sword } from "./player";
@@ -143,7 +144,7 @@ export class Level extends Scene {
       color: Color.Green,
     });
 
-    this.nextTurnButton.on("pointerdown", this.nextTurn);
+    this.nextTurnButton.on("pointerdown", this.nextTurnButtonClick);
 
     this.add(this.nextTurnButton);
 
@@ -383,12 +384,11 @@ export class Level extends Scene {
         victimPos,
         attacker.attackRange()
       )
-        .sort(
-          (a, b) =>
-            manhattanDistance(a, attackerPos) -
-            manhattanDistance(b, attackerPos)
-        )
+        .sort((a, b) => a.sub(attackerPos).size - b.sub(attackerPos).size)
         .shift()!;
+      console.log(
+        `currently at ${attackerPos}, moving to ${attackFrom} to attack victim at ${victimPos}`
+      );
     }
 
     return this.moveCharacter(attackerPos, attackFrom, attacker).then(() =>
@@ -538,19 +538,30 @@ export class Level extends Scene {
     this.selectedPlayer = undefined;
   };
 
+  private nextTurnButtonClick = (evt: GameEvent<Actor, Actor>) => {
+    let event = evt as PointerDownEvent;
+    console.log(`next turn button clicked!`);
+    if (this.nextTurnButton!.contains(event.screenPos.x, event.screenPos.y)) {
+      this.nextTurn();
+    }
+  };
+
   public nextTurn = () => {
+    if (this.playerTurn) {
+      this.deselectPlayer();
+    }
     this.playerTurn = !this.playerTurn;
     console.log(`next turn: ${this.playerTurn ? "player" : "enemy"}`);
 
-    if (!this.playerTurn) {
+    if (this.playerTurn) {
+      this.players.forEach((player) => player.restoreEnergy());
+      this.nextTurnButton!.visible = true;
+      this.nextTurnButton!.on("pointerdown", this.nextTurnButtonClick);
+    } else {
       this.enemies.forEach((enemy) => enemy.restoreEnergy());
       this.enemyTurn();
       this.nextTurnButton!.visible = false;
       this.nextTurnButton!.off("pointerdown");
-    } else {
-      this.players.forEach((player) => player.restoreEnergy());
-      this.nextTurnButton!.visible = true;
-      this.nextTurnButton!.on("pointerdown", this.nextTurn);
     }
   };
 

@@ -64,14 +64,14 @@ export abstract class Character extends Actor {
 
   public goTo = (path: Vector[]) => {
     this.setDrawing("walk");
-    const action = this.actions.delay(0);
-    const moveActions = path.map((waypoint) => {
-      this.currentDrawing.flipHorizontal = waypoint.x < this.pos.x;
-      return action.moveTo(waypoint.x, waypoint.y, Character.SPEED).asPromise();
-    });
-    return moveActions[moveActions.length - 1].then(() =>
-      this.setDrawing("idle")
-    );
+    let action = this.actions.delay(0);
+    for (let waypoint of path) {
+      action.asPromise().then(() => {
+        this.currentDrawing.flipHorizontal = waypoint.x < this.pos.x;
+      });
+      action = action.moveTo(waypoint.x, waypoint.y, Character.SPEED);
+    }
+    return action.asPromise().then(() => this.setDrawing("idle"));
   };
 
   public damage(damage: number) {

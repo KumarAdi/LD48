@@ -25,7 +25,6 @@ game.start(loader).then(() => {
   let dungeon = new Dungeon(2);
   let player_spawns = dungeon.getPlayerSpawnPoints(2);
   let enemy_spawns: Vector[][] = dungeon.getEnemySpawnPoints(0.5, 2, 3);
-  console.log(player_spawns);
 
   const spawnPoints = [
     {
