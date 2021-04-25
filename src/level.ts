@@ -251,6 +251,7 @@ export class Level extends Scene {
       ) {
         console.log("Exit Level!");
         this.engine.input.pointers.primary.off("up");
+        this.engine.input.pointers.primary.off("down", this.onClick);
         this.engine.input.pointers.primary.off("move");
         this.engine.add("test_level", generateLevel(this.engine));
         this.engine.goToScene("test_level");
