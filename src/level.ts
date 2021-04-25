@@ -9,6 +9,7 @@ import {
   vec,
   Actor,
   Color,
+  ScreenElement,
 } from "excalibur";
 
 import { Character, Enemy, Player } from "./player";
@@ -72,6 +73,7 @@ export class Level extends Scene {
   private selectedPlayer?: Character;
   private moveOverlay: Actor[] = [];
   private attackOverlay: Actor[] = [];
+  private nextTurnButton?: Actor;
 
   public playerTurn: boolean;
 
@@ -121,6 +123,18 @@ export class Level extends Scene {
       engine.add(character);
     });
     this.syncTerrainData();
+
+    this.nextTurnButton = new ScreenElement({
+      x: engine.drawWidth - 100,
+      y: engine.drawHeight - 100,
+      width: 50,
+      height: 50,
+      color: Color.Green,
+    });
+
+    this.nextTurnButton.on("pointerdown", this.nextTurn);
+
+    this.add(this.nextTurnButton);
 
     this.engine.input.pointers.primary.on("down", this.onClick);
   }
@@ -200,6 +214,7 @@ export class Level extends Scene {
     const path = this.pathfind(oldPos, newPos).map(this.tileToPixelCoords);
     this.map_data[oldPos.x][oldPos.y].character = undefined;
     this.map_data[newPos.x][newPos.y].character = character;
+    character.spendEnergy(character.moveCost() * (path.length - 1));
     return character.goTo(path);
   };
 
@@ -274,25 +289,57 @@ export class Level extends Scene {
   };
 
   private selectPlayer = (player: Character) => {
-    const playerPos = this.pixelToTileCoords(player.pos);
-    const moveDistance = player.moveDistance();
-    const attackRange = player.attackRange();
-
-    this.generateOverlay(playerPos, moveDistance, attackRange);
+    this.generateOverlay(player);
     this.selectedPlayer = player;
   };
 
-  private generateOverlay = (
-    playerPos: Vector,
-    moveDistance: number,
-    attackRange: number
-  ) => {
+  private getPossibleMoves = (
+    character: Character,
+    potentialEnemies: Character[]
+  ): {
+    moves: Vector[];
+    attackableEnemies: { enemyPos: Vector; enemy: Character }[];
+  } => {
+    const characterPos = this.pixelToTileCoords(character.pos);
+    const energyBudget = character.getEnergy();
+    const attackCost = character.attackCost();
+    const moveCost = character.moveCost();
+    const attackRange = character.attackRange();
+
+    const moveDistance = Math.floor(energyBudget / moveCost);
+
     const possibleDestinations = this.getTilesWithinDist(
-      playerPos,
+      characterPos,
       moveDistance
     );
 
-    this.moveOverlay = possibleDestinations.map((point) => {
+    const placesToAttackFrom = this.getTilesWithinDist(
+      characterPos,
+      Math.floor((energyBudget - attackCost) / moveCost)
+    );
+
+    const enemiesInRange = potentialEnemies
+      .map((enemy) => {
+        return {
+          enemy,
+          enemyPos: this.pixelToTileCoords(enemy.pos),
+        };
+      })
+      .filter(({ enemyPos }) =>
+        placesToAttackFrom.some(
+          (pos) => manhattanDistance(enemyPos, pos) <= attackRange
+        )
+      );
+    return {
+      moves: possibleDestinations,
+      attackableEnemies: enemiesInRange,
+    };
+  };
+
+  private generateOverlay = (player: Player) => {
+    const possibleMoves = this.getPossibleMoves(player, this.enemies);
+
+    this.moveOverlay = possibleMoves.moves.map((point) => {
       const overlayPos = this.tileToPixelCoords(point);
       const tile = new Actor({
         x: overlayPos.x,
@@ -307,9 +354,7 @@ export class Level extends Scene {
         if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
           // we have player selected
           const src = this.pixelToTileCoords(this.selectedPlayer.pos);
-          this.moveCharacter(src, point, this.selectedPlayer).then(() => {
-            this.nextTurn();
-          });
+          this.moveCharacter(src, point, this.selectedPlayer).then(() => {});
           this.deselectPlayer();
         }
       });
@@ -318,56 +363,52 @@ export class Level extends Scene {
       return tile;
     });
 
-    const enemiesInRange = this.enemies
-      .map((enemy) => {
-        return {
-          enemy,
-          enemyPos: this.pixelToTileCoords(enemy.pos),
-        };
-      })
-      .filter(({ enemyPos }) =>
-        possibleDestinations.some(
-          (pos) => manhattanDistance(enemyPos, pos) <= attackRange
-        )
-      );
+    this.attackOverlay = possibleMoves.attackableEnemies.map(
+      ({ enemy, enemyPos }) => {
+        const overlayPos = this.tileToPixelCoords(enemyPos);
+        const tile = new Actor({
+          x: overlayPos.x,
+          y: overlayPos.y,
+          width: Level.TILE_SIZE,
+          height: Level.TILE_SIZE,
+          color: Color.Red,
+          opacity: 0.5,
+        });
 
-    this.attackOverlay = enemiesInRange.map(({ enemy, enemyPos }) => {
-      const overlayPos = this.tileToPixelCoords(enemyPos);
-      const tile = new Actor({
-        x: overlayPos.x,
-        y: overlayPos.y,
-        width: Level.TILE_SIZE,
-        height: Level.TILE_SIZE,
-        color: Color.Red,
-        opacity: 0.5,
-      });
-
-      tile.on("pointerdown", (evt) => {
-        if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
-          // we have player selected
-          const src = this.pixelToTileCoords(this.selectedPlayer.pos);
-          const pathToEnemy = this.pathfind(src, enemyPos);
-          const attackFrom =
-            pathToEnemy[pathToEnemy.length - (1 + attackRange)];
-          const selectedPlayer = this.selectedPlayer;
-          this.moveCharacter(src, attackFrom, this.selectedPlayer).then(() => {
-            enemy.damage(selectedPlayer.attackDamage());
-            console.log(
-              `attacking enemy ${enemy.id} at ${enemyPos}, its health is now ${enemy.getHealth}`
+        tile.on("pointerdown", (evt) => {
+          if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
+            // we have player selected
+            const src = this.pixelToTileCoords(this.selectedPlayer.pos);
+            const pathToEnemy = this.pathfind(src, enemyPos);
+            const attackFrom =
+              pathToEnemy[pathToEnemy.length - (1 + player.attackRange())];
+            const selectedPlayer = this.selectedPlayer;
+            this.moveCharacter(src, attackFrom, this.selectedPlayer).then(
+              () => {
+                enemy.damage(selectedPlayer.attackDamage());
+                selectedPlayer.spendEnergy(selectedPlayer.attackCost());
+                console.log(
+                  `attacking enemy ${
+                    enemy.id
+                  } at ${enemyPos}, its health is now ${enemy.getHealth()}`
+                );
+              }
             );
-            this.nextTurn();
-          });
-          this.deselectPlayer();
-        }
-      });
+            this.deselectPlayer();
+          }
+        });
 
-      this.add(tile);
+        this.add(tile);
 
-      return tile;
-    });
+        return tile;
+      }
+    );
   };
 
   private getTilesWithinDist = (pos: Vector, dist: number): Vector[] => {
+    if (dist <= 0) {
+      return [];
+    }
     let ret = new Array<{ point: Vector; dist: number }>();
     let toGo = new Array<{ point: Vector; dist: number }>();
 
@@ -429,7 +470,12 @@ export class Level extends Scene {
     this.playerTurn = !this.playerTurn;
 
     if (!this.playerTurn) {
+      this.enemies.forEach((enemy) => enemy.restoreEnergy());
       this.enemyTurn();
+      this.nextTurnButton!.visible = false;
+    } else {
+      this.players.forEach((enemy) => enemy.restoreEnergy());
+      this.nextTurnButton!.visible = true;
     }
   };
 
@@ -447,44 +493,30 @@ export class Level extends Scene {
     calculateNextEnemyMove();
   };
 
-  private calculateEnemyMove = (enemy: Enemy) => {
-    const enemyPos = this.pixelToTileCoords(enemy.pos);
-    const moveDistance = enemy.moveDistance();
-    const attackRange = enemy.attackRange();
-    const attackDamage = enemy.attackDamage();
+  private calculateEnemyMove = (me: Enemy) => {
+    const myPos = this.pixelToTileCoords(me.pos);
 
-    const possibleDestinations = this.getTilesWithinDist(
-      enemyPos,
-      moveDistance
+    const { moves, attackableEnemies } = this.getPossibleMoves(
+      me,
+      this.players
     );
 
-    const playersInRange = this.players
-      .map((player) => {
-        return {
-          player,
-          playerPos: this.pixelToTileCoords(player.pos),
-        };
-      })
-      .filter(({ playerPos }) =>
-        possibleDestinations.some(
-          (pos) => manhattanDistance(playerPos, pos) <= attackRange
-        )
-      );
-
-    if (playersInRange.length > 0) {
-      const closestPlayer = playersInRange.sort(
+    if (attackableEnemies.length > 0) {
+      const closestPlayer = attackableEnemies.sort(
         (playerA, playerB) =>
-          manhattanDistance(playerB.playerPos, enemyPos) -
-          manhattanDistance(playerA.playerPos, enemyPos)
+          manhattanDistance(playerB.enemyPos, myPos) -
+          manhattanDistance(playerA.enemyPos, myPos)
       )[0];
-      const pathToPlayer = this.pathfind(enemyPos, closestPlayer.playerPos);
-      const attackFrom = pathToPlayer[pathToPlayer.length - (1 + attackRange)];
-      return this.moveCharacter(enemyPos, attackFrom, enemy).then(() => {
-        closestPlayer.player.damage(attackDamage);
+      const pathToPlayer = this.pathfind(myPos, closestPlayer.enemyPos);
+      const attackFrom =
+        pathToPlayer[pathToPlayer.length - (1 + me.attackRange())];
+      return this.moveCharacter(myPos, attackFrom, me).then(() => {
+        closestPlayer.enemy.damage(me.attackDamage());
+        me.spendEnergy(me.attackCost());
         console.log(
-          `attacking player ${closestPlayer.player.id} at ${
-            closestPlayer.playerPos
-          }, its health is now ${closestPlayer.player.getHealth()}`
+          `attacking player ${closestPlayer.enemy.id} at ${
+            closestPlayer.enemyPos
+          }, its health is now ${closestPlayer.enemy.getHealth()}`
         );
       });
     }
@@ -498,11 +530,18 @@ export class Level extends Scene {
       })
       .sort(
         (playerA, playerB) =>
-          manhattanDistance(playerB.playerPos, enemyPos) -
-          manhattanDistance(playerA.playerPos, enemyPos)
+          manhattanDistance(playerB.playerPos, myPos) -
+          manhattanDistance(playerA.playerPos, myPos)
       )[0];
-    const pathToPlayer = this.pathfind(enemyPos, closestPlayer.playerPos);
-    const moveTo = pathToPlayer[moveDistance];
-    return this.moveCharacter(enemyPos, moveTo, enemy);
+    let dest = myPos;
+    for (let move of moves) {
+      if (
+        manhattanDistance(move, closestPlayer.playerPos) <
+        manhattanDistance(dest, closestPlayer.playerPos)
+      ) {
+        dest = move;
+      }
+    }
+    return this.moveCharacter(myPos, dest, me);
   };
 }
