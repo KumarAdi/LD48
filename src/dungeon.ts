@@ -28,6 +28,24 @@ function getRandomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+function getNRandomPointsIn(
+  n: number,
+  width: number,
+  height: number
+): Vector[] {
+  let array: Vector[] = [];
+
+  for (let i = 0; i < width; i++) {
+    for (let j = 0; j < height; j++) {
+      array.push(new Vector(i, j));
+    }
+  }
+
+  return new Array(n)
+    .fill(0)
+    .map(() => array.splice(getRandomInt(0, array.length - 1), 1)[0]);
+}
+
 interface Connectable {
   left: Requirement;
   top: Requirement;
@@ -257,8 +275,8 @@ function connetableFromRequirement(
 
 class Chunk {
   private parent_map: Chunk[][];
-  private x: number;
-  private y: number;
+  public x: number;
+  public y: number;
   public connectable?: Connectable;
 
   constructor(parent_map: Chunk[][], x: number, y: number) {
@@ -322,20 +340,24 @@ class ChunkMap {
 
 export class Dungeon {
   private map: ChunkMap;
+  private size: number;
+  private player_spawn_chunk?: Chunk;
 
-  constructor(max_depth: number) {
-    this.map = new ChunkMap(max_depth);
+  constructor(size: number) {
+    this.map = new ChunkMap(size);
+    this.size = size;
     this.resolveMap(this.map.getCenterChunk());
+    // console.log(this.getPlayerSpawnPoints(4));
   }
 
   resolveMap(chunk: Chunk) {
     const seenNodesSet: Set<Chunk> = new Set();
-    // chunk.connectable = new Room(
-    //   new Floor(),
-    //   new Floor(),
-    //   new Floor(),
-    //   new Floor()
-    // );
+    chunk.connectable = new Room(
+      new Floor(),
+      new Floor(),
+      new Floor(),
+      new Floor()
+    );
 
     const resolveQueue: Chunk[] = [chunk];
 
@@ -372,21 +394,25 @@ export class Dungeon {
         );
       }
 
-      if (left) resolveQueue.push(left);
-      if (top) resolveQueue.push(top);
-      if (right) resolveQueue.push(right);
-      if (bottom) resolveQueue.push(bottom);
+      if (left && chunk.connectable?.left.type !== "wall")
+        resolveQueue.push(left);
+      if (top && chunk.connectable?.top.type !== "wall") resolveQueue.push(top);
+      if (right && chunk.connectable?.right.type !== "wall")
+        resolveQueue.push(right);
+      if (bottom && chunk.connectable?.bottom.type !== "wall")
+        resolveQueue.push(bottom);
     }
   }
 
   asCell2dArray(): CellType[][] {
     const cell_array_root: CellType[][] = [];
 
-    for (let i = 0; i < this.map.map.length; i++) {
+    for (let i = 0; i < this.size * 2 + 1; i++) {
       for (let x = 0; x < CHUNK_SIZE; x++) cell_array_root.push([]);
-      for (let j = 0; j < this.map.map[i].length; j++) {
-        for (let y = 0; y < CHUNK_SIZE; y++)
-          cell_array_root[i * CHUNK_SIZE + y].push(CellType.NONE);
+      for (let j = 0; j < this.size * 2 + 1; j++) {
+        for (let x = 0; x < CHUNK_SIZE; x++)
+          for (let y = 0; y < CHUNK_SIZE; y++)
+            cell_array_root[i * CHUNK_SIZE + y].push(CellType.WALL);
         const cell_array = this.map.map[i][j].connectable?.asCell2dArray();
         if (cell_array) {
           for (let x = 0; x < CHUNK_SIZE; x++) {
@@ -411,7 +437,97 @@ export class Dungeon {
     return final_cell_array_root;
   }
 
+  getRoomChunksFromOuterLayer(layer: number): Chunk[] {
+    const size = this.size * 2 + 1;
+    let room_chunks: Chunk[] = [];
+
+    for (let x = layer; x < size - layer; x++) {
+      if (this.map.map[x][layer].connectable instanceof Room) {
+        room_chunks.push(this.map.map[x][layer]);
+      }
+      if (this.map.map[x][size - (layer + 1)].connectable instanceof Room) {
+        room_chunks.push(this.map.map[x][size - (layer + 1)]);
+      }
+    }
+
+    for (let y = layer + 1; y < size - (layer + 1); y++) {
+      if (this.map.map[layer][y].connectable instanceof Room) {
+        room_chunks.push(this.map.map[layer][y]);
+      }
+      if (this.map.map[size - (layer + 1)][y].connectable instanceof Room) {
+        room_chunks.push(this.map.map[size - (layer + 1)][y]);
+      }
+    }
+
+    return room_chunks;
+  }
+
+  // Always spawns in a new room
   getPlayerSpawnPoints(num_players: number): Vector[] {
-    return [];
+    // Spawn the player one of the first two layers
+    let spawnable_rooms = this.getRoomChunksFromOuterLayer(getRandomInt(0, 1));
+
+    // Select a room
+    let room_to_spawn_in =
+      spawnable_rooms[getRandomInt(0, spawnable_rooms.length - 1)];
+    this.player_spawn_chunk = room_to_spawn_in;
+
+    let offsets = getNRandomPointsIn(
+      num_players,
+      CHUNK_SIZE - 2,
+      CHUNK_SIZE - 2
+    );
+    let spawn_offsets = new Array(num_players)
+      .fill(
+        new Vector(
+          room_to_spawn_in.x * CHUNK_SIZE,
+          room_to_spawn_in.y * CHUNK_SIZE
+        )
+      )
+      .map(
+        (point, i) =>
+          new Vector(point.y + 1 + offsets[i].y, point.x + 1 + offsets[i].x)
+      );
+
+    return spawn_offsets;
+  }
+
+  // Will return diffrent points everytime
+  getEnemySpawnPoints(
+    chance: number,
+    min_batch_size: number,
+    max_batch_size: number
+  ): Vector[][] {
+    const size = this.size * 2 + 1;
+    let spawnable_chunks = [];
+
+    for (let x = 0; x < size; x++) {
+      for (let y = 0; y < size; y++) {
+        if (
+          this.map.map[x][y].connectable instanceof Room &&
+          this.map.map[x][y] !== this.player_spawn_chunk &&
+          Math.random() > 1 - chance
+        ) {
+          spawnable_chunks.push(this.map.map[x][y]);
+        }
+      }
+    }
+
+    return spawnable_chunks.map((chunk) => {
+      let batch_size = getRandomInt(min_batch_size, max_batch_size);
+      let offsets = getNRandomPointsIn(
+        batch_size,
+        CHUNK_SIZE - 2,
+        CHUNK_SIZE - 2
+      );
+
+      return offsets.map(
+        (offset) =>
+          new Vector(
+            chunk.y * CHUNK_SIZE + offset.y + 1,
+            chunk.x * CHUNK_SIZE + offset.x + 1
+          )
+      );
+    });
   }
 }
