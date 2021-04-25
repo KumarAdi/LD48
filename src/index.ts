@@ -1,10 +1,11 @@
 import { Engine, Actor, Loader, vec } from "excalibur";
+import { Dungeon } from "./dungeon";
 import { CellType, Level, SpawnCharacterType } from "./level";
 import { Resources } from "./resources";
 
 const game = new Engine({
-  width: 800,
-  height: 600,
+  width: 1600,
+  height: 1600,
 });
 
 const loader = new Loader();
@@ -20,17 +21,8 @@ document.oncontextmenu = () => {
 };
 
 game.start(loader).then(() => {
-  let map: CellType[][] = [];
-  for (let i = 0; i < 30; i++) {
-    map.push([]);
-    for (let j = 0; j < 30; j++) {
-      if (i == 0 || i == 29 || j == 0 || j == 29) {
-        map[i].push(CellType.WALL);
-      } else {
-        map[i].push(CellType.FLOOR);
-      }
-    }
-  }
+  let dungeon = new Dungeon(5);
+
   const spawnPoints = [
     { characterType: SpawnCharacterType.PLAYER, spawnTile: vec(1, 1) },
     { characterType: SpawnCharacterType.PLAYER, spawnTile: vec(15, 15) },
@@ -38,6 +30,6 @@ game.start(loader).then(() => {
     { characterType: SpawnCharacterType.ENEMY, spawnTile: vec(20, 15) },
   ];
 
-  game.add("test_level", new Level(game, map, spawnPoints));
+  game.add("test_level", new Level(game, dungeon.asCell2dArray(), spawnPoints));
   game.goToScene("test_level");
 });
