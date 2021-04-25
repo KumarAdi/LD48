@@ -4,8 +4,8 @@ import { CellType, Level, SpawnCharacterType } from "./level";
 import { Resources } from "./resources";
 
 const game = new Engine({
-  width: 1600,
-  height: 1600,
+  width: 800,
+  height: 600,
 });
 
 const loader = new Loader();

@@ -433,7 +433,7 @@ export class Level extends Scene {
         .map((point) => curr.point.add(point))
         .filter(
           (point) =>
-            !CELL_TYPE_DATA[this.terrain_data[point.x][point.y]].solid &&
+            !CELL_TYPE_DATA[this.terrain_data[point.y][point.x]].solid &&
             !this.map_data[point.x][point.y].character
         )
         .filter((point) => !ret.some((pt) => pt.point.equals(point)))
@@ -533,15 +533,9 @@ export class Level extends Scene {
           manhattanDistance(playerB.playerPos, myPos) -
           manhattanDistance(playerA.playerPos, myPos)
       )[0];
-    let dest = myPos;
-    for (let move of moves) {
-      if (
-        manhattanDistance(move, closestPlayer.playerPos) <
-        manhattanDistance(dest, closestPlayer.playerPos)
-      ) {
-        dest = move;
-      }
-    }
-    return this.moveCharacter(myPos, dest, me);
+    const pathToPlayer = this.pathfind(myPos, closestPlayer.playerPos);
+    const moveDistance = Math.floor(me.getEnergy() / me.moveCost());
+    const moveTo = pathToPlayer[moveDistance];
+    return this.moveCharacter(myPos, moveTo, me);
   };
 }

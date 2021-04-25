@@ -76,7 +76,6 @@ export abstract class Character extends Actor {
 
   public spendEnergy(energyLost: number) {
     this.energy -= energyLost;
-    console.log(`spent ${energyLost}, now at ${this.energy} energy`);
   }
 
   public restoreEnergy() {
