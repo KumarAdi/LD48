@@ -238,6 +238,7 @@ export class Level extends Scene {
     newPos: Vector,
     character: Character
   ) => {
+    console.log(`moving character ${character.id}`);
     const path = this.pathfind(oldPos, newPos).map(this.tileToPixelCoords);
     this.map_data[oldPos.x][oldPos.y].character = undefined;
     this.map_data[newPos.x][newPos.y].character = character;
@@ -397,7 +398,7 @@ export class Level extends Scene {
         .sort((a, b) => a.sub(attackerPos).size - b.sub(attackerPos).size)
         .shift()!;
       console.log(
-        `currently at ${attackerPos}, moving to ${attackFrom} to attack victim at ${victimPos}`
+        `character ${attacker.id} is currently at ${attackerPos}, moving to ${attackFrom} to attack victim at ${victimPos}`
       );
     }
 
@@ -615,7 +616,11 @@ export class Level extends Scene {
           manhattanDistance(playerA.enemyPos, myPos) -
           manhattanDistance(playerB.enemyPos, myPos)
       )[0];
-      this.moveToThenAttack(me, closestPlayer.enemy, closestPlayer.enemyPos);
+      return this.moveToThenAttack(
+        me,
+        closestPlayer.enemy,
+        closestPlayer.enemyPos
+      );
     }
 
     let potentialTargets = this.players.map((player) => {
