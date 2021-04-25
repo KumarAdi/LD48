@@ -8,9 +8,12 @@ export abstract class Character extends Actor {
   protected maxHealth: number;
   protected health: number;
 
+  protected maxEnergy: number;
+  protected energy: number;
+
   private healthBar!: Actor;
 
-  constructor(spawnPosition: Vector, maxHealth: number) {
+  constructor(spawnPosition: Vector, maxHealth: number, maxEnergy: number) {
     super({
       pos: spawnPosition,
       width: 30,
@@ -19,6 +22,9 @@ export abstract class Character extends Actor {
 
     this.maxHealth = maxHealth;
     this.health = maxHealth;
+
+    this.maxEnergy = maxEnergy;
+    this.energy = maxEnergy;
   }
 
   onInitialize() {
@@ -64,20 +70,35 @@ export abstract class Character extends Actor {
     return this.health;
   }
 
+  public getEnergy(): number {
+    return this.energy;
+  }
+
+  public spendEnergy(energyLost: number) {
+    this.energy -= energyLost;
+    console.log(`spent ${energyLost}, now at ${this.energy} energy`);
+  }
+
+  public restoreEnergy() {
+    this.energy = this.maxEnergy;
+  }
+
   abstract isControllable: () => boolean;
 
-  abstract moveDistance: () => number;
+  abstract moveCost: () => number;
+  abstract attackCost: () => number;
   abstract attackRange: () => number;
   abstract attackDamage: () => number;
 }
 
 export class Player extends Character {
-  moveDistance = () => 3;
+  moveCost = () => 1;
+  attackCost = () => 1;
   attackRange = () => 1;
   attackDamage = () => 10;
 
   constructor(spawnPosition: Vector) {
-    super(spawnPosition, 100);
+    super(spawnPosition, 100, 3);
   }
 
   onInitialize() {
@@ -91,12 +112,13 @@ export class Player extends Character {
 }
 
 export class Enemy extends Character {
-  moveDistance = () => 3;
+  moveCost = () => 1;
+  attackCost = () => 1;
   attackRange = () => 1;
   attackDamage = () => 10;
 
   constructor(spawnPosition: Vector) {
-    super(spawnPosition, 100);
+    super(spawnPosition, 100, 3);
   }
 
   onInitialize() {
