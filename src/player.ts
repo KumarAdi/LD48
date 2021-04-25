@@ -11,9 +11,15 @@ export abstract class Character extends Actor {
   protected maxEnergy: number;
   protected energy: number;
 
+  protected healthBarColor: Color;
   private healthBar!: Actor;
 
-  constructor(spawnPosition: Vector, maxHealth: number, maxEnergy: number) {
+  constructor(
+    spawnPosition: Vector,
+    maxHealth: number,
+    maxEnergy: number,
+    healthBarColor: Color = Color.Red
+  ) {
     super({
       pos: spawnPosition,
       width: 40,
@@ -22,6 +28,7 @@ export abstract class Character extends Actor {
 
     this.maxHealth = maxHealth;
     this.health = maxHealth;
+    this.healthBarColor = healthBarColor;
 
     this.maxEnergy = maxEnergy;
     this.energy = maxEnergy;
@@ -33,7 +40,7 @@ export abstract class Character extends Actor {
       y: 24,
       width: 30,
       height: 4,
-      color: Color.Red,
+      color: this.healthBarColor,
     });
     this.add(
       new Actor({
@@ -101,7 +108,7 @@ export class Player extends Character {
   attackDamage = () => 10;
 
   constructor(spawnPosition: Vector) {
-    super(spawnPosition, 100, 3);
+    super(spawnPosition, 100, 3, Color.Green);
   }
 
   onInitialize(engine: Engine) {
