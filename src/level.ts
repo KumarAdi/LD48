@@ -339,6 +339,24 @@ export class Level extends Scene {
     };
   };
 
+  private attack = (attacker: Character, victim: Character) => {
+    attacker.setDrawing("atk");
+
+    attacker.currentDrawing.flipHorizontal = victim.pos.x < attacker.pos.x;
+
+    setTimeout(() => {
+      attacker.setDrawing("idle");
+    }, 1000);
+
+    victim.damage(attacker.attackDamage());
+    attacker.spendEnergy(attacker.attackCost());
+    console.log(
+      `${attacker.id} attacking ${victim.id} at ${this.pixelToTileCoords(
+        victim.pos
+      )}, its health is now ${victim.getHealth()}`
+    );
+  };
+
   private generateOverlay = (player: Player) => {
     const possibleMoves = this.getPossibleMoves(player, this.enemies);
 
@@ -386,16 +404,8 @@ export class Level extends Scene {
             const attackFrom =
               pathToEnemy[pathToEnemy.length - (1 + player.attackRange())];
             const selectedPlayer = this.selectedPlayer;
-            this.moveCharacter(src, attackFrom, this.selectedPlayer).then(
-              () => {
-                enemy.damage(selectedPlayer.attackDamage());
-                selectedPlayer.spendEnergy(selectedPlayer.attackCost());
-                console.log(
-                  `attacking enemy ${
-                    enemy.id
-                  } at ${enemyPos}, its health is now ${enemy.getHealth()}`
-                );
-              }
+            this.moveCharacter(src, attackFrom, this.selectedPlayer).then(() =>
+              this.attack(selectedPlayer, enemy)
             );
             this.deselectPlayer();
           }
@@ -513,15 +523,9 @@ export class Level extends Scene {
       const pathToPlayer = this.pathfind(myPos, closestPlayer.enemyPos);
       const attackFrom =
         pathToPlayer[pathToPlayer.length - (1 + me.attackRange())];
-      return this.moveCharacter(myPos, attackFrom, me).then(() => {
-        closestPlayer.enemy.damage(me.attackDamage());
-        me.spendEnergy(me.attackCost());
-        console.log(
-          `attacking player ${closestPlayer.enemy.id} at ${
-            closestPlayer.enemyPos
-          }, its health is now ${closestPlayer.enemy.getHealth()}`
-        );
-      });
+      return this.moveCharacter(myPos, attackFrom, me).then(() =>
+        this.attack(me, closestPlayer.enemy)
+      );
     }
 
     const closestPlayer = this.players
