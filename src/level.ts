@@ -475,7 +475,7 @@ export class Level extends Scene {
       })
       .filter(({ enemyPos }) =>
         placesToAttackFrom.some(
-          (pos) => manhattanDistance(enemyPos, pos) == attackRange
+          (pos) => manhattanDistance(enemyPos, pos) <= attackRange
         )
       );
     return {
@@ -892,8 +892,14 @@ export class Level extends Scene {
       attackFrom = possibleMoves
         .filter(
           (pt) =>
-            manhattanDistance(pt, victimPos) == attacker.cClass.attack.range
+            manhattanDistance(pt, victimPos) <= attacker.cClass.attack.range
         )
+        .sort((a, b) => {
+          return (
+            manhattanDistance(a, attackerPos) -
+            manhattanDistance(b, attackerPos)
+          );
+        })
         .shift()!;
     }
     return attackFrom;
