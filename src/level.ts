@@ -188,13 +188,16 @@ export class Level extends Scene {
                   this.camera.pos.add(vec(270, 220)),
                   () => {
                     this.showTutorialOverlay(
-                      [
-                        "Get to these stairs to move down to the next level",
-                        "Have fun!",
-                      ],
+                      ["Get to these stairs to move down to the next level"],
                       this.tileToPixelCoords(this.stairLocation),
                       () => {
-                        this.endTutorial();
+                        this.showTutorialOverlay(
+                          ["Use the WASD keys to pan the camera", "Have fun!"],
+                          tutorialPlayerPos,
+                          () => {
+                            this.endTutorial();
+                          }
+                        );
                       }
                     );
                   },
