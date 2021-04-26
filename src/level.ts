@@ -142,10 +142,6 @@ export class Level extends Scene {
     this.path_finder = new AStarFinder();
 
     this.playerTurn = true;
-
-    if (this.depth == 1) {
-      this.launchTutorial();
-    }
   }
 
   private launchTutorial = () => {
@@ -154,6 +150,9 @@ export class Level extends Scene {
     const tutorialPlayerPos = this.players
       .slice()
       .sort((a, b) => a.pos.y - b.pos.y)[0].pos;
+
+    this.camera.pos = tutorialPlayerPos.clone();
+
     const tutorialEnemyPos = this.enemies
       .slice()
       .sort(
@@ -363,6 +362,10 @@ export class Level extends Scene {
           break;
       }
     });
+
+    if (this.depth == 1) {
+      this.launchTutorial();
+    }
   }
 
   private onClick = (evt: Input.PointerDownEvent) => {
