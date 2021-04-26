@@ -17,15 +17,15 @@ const game = new Engine({
   height: 480,
 });
 
-const loader = new Loader();
+export const levelLoader = new Loader();
 
 for (let key in Resources) {
-  loader.addResource(Resources[key]);
+  levelLoader.addResource(Resources[key]);
 }
 
-loader.suppressPlayButton = true;
-loader.logo = "";
-loader.backgroundColor = "black";
+levelLoader.suppressPlayButton = true;
+levelLoader.logo = "";
+levelLoader.backgroundColor = "black";
 
 document.oncontextmenu = () => {
   return false;
@@ -93,7 +93,7 @@ title.addDrawing("title", MainMenuResources.title.asSprite());
 
 title.on("pointerdown", () => {
   title.off("pointerdown");
-  game.start(loader).then(() => {
+  game.start(levelLoader).then(() => {
     game.add("test_level", generateLevel(game));
     game.goToScene("test_level");
   });

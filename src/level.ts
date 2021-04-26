@@ -14,12 +14,13 @@ import {
   Label,
   Input,
   Util,
+  Loader,
 } from "excalibur";
 
 import { Bow, Character, Magic, Sword } from "./player";
 import { AStarFinder, Finder, Grid } from "pathfinding";
-import { Resources } from "./resources";
-import { generateLevel } from "./index";
+import { GameOverResources, Resources } from "./resources";
+import { generateLevel, levelLoader } from "./index";
 
 export enum CellType {
   WALL,
@@ -315,14 +316,19 @@ export class Level extends Scene {
         this.terrain_data[newPos.x][newPos.y] == CellType.STAIR
       ) {
         console.log("Exit Level!");
-        this.engine.input.pointers.primary.off("up");
-        this.engine.input.pointers.primary.off("down", this.onClick);
-        this.engine.input.pointers.primary.off("move");
-        this.engine.add("test_level", generateLevel(this.engine));
-        this.engine.goToScene("test_level");
+        const nextLevel = generateLevel(this.engine);
+        this.goToLevel(nextLevel);
       }
     });
   };
+
+  private goToLevel(nextLevel: Scene) {
+    this.engine.input.pointers.primary.off("up");
+    this.engine.input.pointers.primary.off("down", this.onClick);
+    this.engine.input.pointers.primary.off("move");
+    this.engine.add("test_level", nextLevel);
+    this.engine.goToScene("test_level");
+  }
 
   public pathfind(from: Vector, to: Vector): Vector[] {
     let path_matrix: number[][] = [];
@@ -499,6 +505,52 @@ export class Level extends Scene {
       this.enemies = this.enemies.filter((player) => player.id != victim.id);
 
       this.map_data[victimPos.x][victimPos.y].character = undefined;
+
+      if (this.players.length <= 0) {
+        console.log("Game over!");
+
+        const gameOverLoader = new Loader();
+        for (let key in GameOverResources) {
+          gameOverLoader.addResource(GameOverResources[key]);
+        }
+        gameOverLoader.suppressPlayButton = true;
+        gameOverLoader.logo = "";
+        gameOverLoader.backgroundColor = "black";
+
+        const endCard = new Actor({
+          x: 360,
+          y: 240,
+          width: 720,
+          height: 480,
+        });
+        endCard.addDrawing("title", GameOverResources.end.asSprite());
+
+        endCard.on("pointerdown", () => {
+          endCard.off("pointerdown");
+          this.engine.add("test_level", generateLevel(this.engine));
+          this.engine.goToScene("test_level");
+        });
+
+        const clickText = new Label("- Click Anywhere to Try Again -");
+        clickText.fontSize = 20;
+        clickText.fontFamily = "serif";
+        clickText.color = Color.White;
+        clickText.pos = vec(
+          360 - clickText.getTextWidth(this.engine.ctx) / 2,
+          480 - (20 + 10)
+        );
+
+        clickText.actions.blink(500, 500).repeatForever();
+
+        const gameOver = new Scene(this.engine);
+
+        gameOver.add(endCard);
+        gameOver.add(clickText);
+
+        this.engine.start(gameOverLoader).then(() => {
+          this.goToLevel(gameOver);
+        });
+      }
     }
 
     attacker.spendEnergy(attacker.attackCost());

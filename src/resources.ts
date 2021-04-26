@@ -20,9 +20,14 @@ import enemy_magic_atk from "./images/enemymagic_atk.png";
 import tilesheet from "./images/dungeontiles_1.png";
 import next_turn from "./images/endturn.png";
 import title from "./images/title.png";
+import end from "./images/gameover.png";
 
 let MainMenuResources = {
   title: new Texture(title),
+};
+
+let GameOverResources = {
+  end: new Texture(end),
 };
 
 let Resources = {
@@ -48,4 +53,4 @@ let Resources = {
   NextTurnTexture: new Texture(next_turn),
 };
 
-export { Resources, MainMenuResources };
+export { Resources, MainMenuResources, GameOverResources };
