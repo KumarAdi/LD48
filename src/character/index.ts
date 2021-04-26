@@ -111,18 +111,22 @@ export abstract class Character extends Actor {
   public damage(damage: Attack): Boolean {
     let feltDamage = this.cClass.feltDamage(damage);
 
+    const damageLabelActor = new Actor();
+    this.add(damageLabelActor);
     const damageLabel = new Label();
     damageLabel.color = Color.White;
     damageLabel.fontSize = 15;
     damageLabel.fontStyle = FontStyle.Oblique;
     damageLabel.text = `${feltDamage}`;
-    this.add(damageLabel);
+    damageLabel.pos = new Vector(0, 0);
+    damageLabelActor.add(damageLabel);
+    damageLabelActor.actions.moveBy(10, -10, 50);
     damageLabel.actions
-      .delay(0)
       .fade(0, 1000)
-      .moveBy(10, -10, 1000)
-      .delay(1000)
-      .die();
+      .asPromise()
+      .then(() => {
+        this.remove(damageLabelActor);
+      });
     this.currentDrawing.addEffect(Character.DAMAGE_EFFECT);
     this.actions
       .delay(100)
