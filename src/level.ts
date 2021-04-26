@@ -563,6 +563,7 @@ export class Level extends Scene {
           this.selectedPlayer.id == spawnedCharacter.id
         ) {
           this.deselectPlayer();
+          MusicResources.Deselect.play();
         } else {
           if (this.selectedPlayer) {
             this.deselectPlayer();
@@ -614,6 +615,7 @@ export class Level extends Scene {
   };
 
   private selectPlayer = (player: Character) => {
+    MusicResources.Select.play();
     this.generateOverlay(player);
     this.selectedPlayer = player;
   };
