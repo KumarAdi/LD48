@@ -505,24 +505,11 @@ export class Level extends Scene {
   ) => {
     const attackerPos = this.pixelToTileCoords(attacker.pos);
 
-    let attackFrom = attackerPos;
-
-    if (manhattanDistance(victimPos, attackerPos) != attacker.attackRange()) {
-      attackFrom = this.getTilesAtExactlyDistance(
-        victimPos,
-        attacker.attackRange()
-      )
-        .map((point) => ({
-          point,
-          dist: this.pathfind(attackerPos, point).length,
-        }))
-        .sort((a, b) => a.dist - b.dist)
-        .map(({ point }) => point)
-        .shift()!;
-      console.log(
-        `character ${attacker.id} is currently at ${attackerPos}, moving to ${attackFrom} to attack victim at ${victimPos}`
-      );
-    }
+    let attackFrom = this.getAttackStagingPoint(
+      attackerPos,
+      victimPos,
+      attacker
+    );
 
     return this.moveCharacter(attackerPos, attackFrom, attacker).then(() =>
       this.attack(attacker, victim)
@@ -629,6 +616,36 @@ export class Level extends Scene {
             this.deselectPlayer();
           }
         });
+
+        tile.onPostDraw = (ctx, delta) => {
+          if (
+            this.engine.input.pointers.primary.isActorAliveUnderPointer(tile)
+          ) {
+            const playerPos = this.pixelToTileCoords(player.pos);
+
+            const stagingPoint = this.getAttackStagingPoint(
+              playerPos,
+              enemyPos,
+              player
+            );
+
+            const path = this.pathfind(playerPos, stagingPoint)
+              .map(this.tileToPixelCoords)
+              .map((pt) => pt.sub(tile.pos));
+
+            for (let i = 0; i < path.length - 1; i++) {
+              DrawUtil.line(
+                ctx,
+                Color.White,
+                path[i].x,
+                path[i].y,
+                path[i + 1].x,
+                path[i + 1].y,
+                5
+              );
+            }
+          }
+        };
 
         this.add(tile);
 
@@ -796,6 +813,32 @@ export class Level extends Scene {
 
     return this.moveCharacter(myPos, myPos, me);
   };
+
+  private getAttackStagingPoint(
+    attackerPos: Vector,
+    victimPos: Vector,
+    attacker: Character
+  ) {
+    let attackFrom = attackerPos;
+
+    if (manhattanDistance(victimPos, attackerPos) != attacker.attackRange()) {
+      attackFrom = this.getTilesAtExactlyDistance(
+        victimPos,
+        attacker.attackRange()
+      )
+        .map((point) => ({
+          point,
+          dist: this.pathfind(attackerPos, point).length,
+        }))
+        .sort((a, b) => a.dist - b.dist)
+        .map(({ point }) => point)
+        .shift()!;
+      console.log(
+        `character ${attacker.id} is currently at ${attackerPos}, moving to ${attackFrom} to attack victim at ${victimPos}`
+      );
+    }
+    return attackFrom;
+  }
 
   private createStatOverlay(spawnedCharacter: Character) {
     if (this.statOverlay) {
