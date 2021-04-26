@@ -19,6 +19,7 @@ import enemy_magic_walk from "./images/enemymagic_walk.png";
 import enemy_magic_atk from "./images/enemymagic_atk.png";
 import tilesheet from "./images/dungeontiles_1.png";
 import next_turn from "./images/endturn.png";
+import skip_tutorial from "./images/skip.png";
 import title from "./images/title.png";
 import end from "./images/gameover.png";
 
@@ -51,6 +52,7 @@ let Resources = {
   EnemyMagicAtk: new Texture(enemy_magic_atk),
   TileTexture: new Texture(tilesheet),
   NextTurnTexture: new Texture(next_turn),
+  SkipTutorialTexture: new Texture(skip_tutorial),
 };
 
 export { Resources, MainMenuResources, GameOverResources };

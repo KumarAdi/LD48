@@ -72,7 +72,13 @@ export function generateLevel(game: Engine, depth: number) {
     );
   });
 
-  return new Level(game, dungeon.asCell2dArray(), spawnPoints, depth);
+  return new Level(
+    game,
+    dungeon.asCell2dArray(),
+    spawnPoints,
+    depth,
+    dungeon.getstairLocation()
+  );
 }
 
 const mainMenuLoader = new Loader();

@@ -1,4 +1,4 @@
-import { Vector } from "excalibur";
+import { vec, Vector } from "excalibur";
 import { CellType } from "./level";
 
 const CHUNK_SIZE = 9;
@@ -389,6 +389,12 @@ export class Dungeon {
     this.next_level_chunk = sorted_rooms[0];
     (this.next_level_chunk.connectable as Room).finalRoom = true;
   }
+
+  public getstairLocation = () => {
+    return vec(this.next_level_chunk.x, this.next_level_chunk.y)
+      .scale(CHUNK_SIZE)
+      .add(Vector.One.scale((CHUNK_SIZE - 1) / 2));
+  };
 
   resolveMap(chunk: Chunk) {
     const seenNodesSet: Set<Chunk> = new Set();
