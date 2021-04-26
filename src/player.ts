@@ -157,6 +157,8 @@ export abstract class Character extends Actor {
       `MVMT: ${Math.floor(this.getEnergy() / this.moveCost())} / ${Math.floor(
         this.maxEnergy / this.moveCost()
       )}`,
+      `EXP: ${this.storedExp} / ${this.levelUpExpReq()}`,
+      `LVL: ${this.currentLevel}`,
     ];
   };
 
@@ -328,8 +330,8 @@ export class Sword extends Character {
 export class Bow extends Character {
   protected moveCostInner: number = 1;
   protected defenseInner: Defense = new Defense(2, 10);
-  protected attackCostInner: number = 1;
-  protected attackRangeInner: number = 1;
+  protected attackCostInner: number = 3;
+  protected attackRangeInner: number = 4;
   protected attackDamageInner: Damage = new PhysicalDamage(20);
 
   constructor(spawnPosition: Vector, controllable: boolean) {
@@ -372,10 +374,10 @@ export class Bow extends Character {
 }
 
 export class Magic extends Character {
-  protected moveCostInner: number = 1;
+  protected moveCostInner: number = 2;
   protected defenseInner: Defense = new Defense(2, 10);
-  protected attackCostInner: number = 1;
-  protected attackRangeInner: number = 1;
+  protected attackCostInner: number = 3;
+  protected attackRangeInner: number = 4;
   protected attackDamageInner: Damage = new MagicDamage(20);
 
   constructor(spawnPosition: Vector, controllable: boolean) {
