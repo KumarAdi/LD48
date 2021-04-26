@@ -22,7 +22,7 @@ document.oncontextmenu = () => {
   return false;
 };
 
-export function generateLevel(game: Engine) {
+export function generateLevel(game: Engine, depth: number) {
   let dungeon = new Dungeon(1);
   let player_spawns = dungeon.getPlayerSpawnPoints(3);
   let enemy_spawns: Vector[][] = dungeon.getEnemySpawnPoints(1, 2, 3);
@@ -30,17 +30,17 @@ export function generateLevel(game: Engine) {
   const spawnPoints = [
     {
       alignment: CharacterAlignment.PLAYER,
-      class: new Bow(true),
+      class: new Bow(true).levelUp().levelUp(),
       spawnTile: player_spawns[0],
     },
     {
       alignment: CharacterAlignment.PLAYER,
-      class: new Sword(true),
+      class: new Sword(true).levelUp().levelUp(),
       spawnTile: player_spawns[1],
     },
     {
       alignment: CharacterAlignment.PLAYER,
-      class: new Magic(true),
+      class: new Magic(true).levelUp().levelUp(),
       spawnTile: player_spawns[2],
     },
   ];
@@ -63,10 +63,10 @@ export function generateLevel(game: Engine) {
     );
   });
 
-  return new Level(game, dungeon.asCell2dArray(), spawnPoints);
+  return new Level(game, dungeon.asCell2dArray(), spawnPoints, depth);
 }
 
 game.start(loader).then(() => {
-  game.add("test_level", generateLevel(game));
-  game.goToScene("test_level");
+  game.add("level_1", generateLevel(game, 1));
+  game.goToScene("level_1");
 });

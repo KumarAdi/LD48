@@ -81,14 +81,18 @@ export class Level extends Scene {
   private nextTurnButton?: Actor;
   private statOverlay?: Actor;
 
+  private depth: number;
+
   public playerTurn: boolean;
 
   constructor(
     engine: Engine,
     terrain_data: CellType[][],
-    spawnPoints: SpawnPoint[]
+    spawnPoints: SpawnPoint[],
+    depth: number
   ) {
     super(engine);
+    this.depth = depth;
 
     engine.backgroundColor = Color.Black;
 
@@ -311,13 +315,17 @@ export class Level extends Scene {
         this.engine.input.pointers.primary.off("up");
         this.engine.input.pointers.primary.off("down", this.onClick);
         this.engine.input.pointers.primary.off("move");
-        this.engine.add("test_level", generateLevel(this.engine));
-        this.engine.goToScene("test_level");
+        this.engine.add(
+          `level_${this.depth + 1}`,
+          generateLevel(this.engine, this.depth + 1)
+        );
+        this.engine.goToScene(`level_${this.depth + 1}`);
       }
     });
   };
 
   public pathfind(from: Vector, to: Vector): Vector[] {
+    console.log("pathfind: ", from, to);
     let path_matrix: number[][] = [];
     for (let i = 0; i < this.terrain_data.length; i++) {
       path_matrix.push([]);
@@ -435,7 +443,9 @@ export class Level extends Scene {
       characterPos,
       character.moveExhausted.inner ? 0 : character.cClass.moveRange.inner
     );
+    placesToAttackFrom.push(characterPos);
 
+    console.log(potentialEnemies);
     const enemiesInRange = potentialEnemies
       .map((enemy) => {
         return {
@@ -445,7 +455,7 @@ export class Level extends Scene {
       })
       .filter(({ enemyPos }) =>
         placesToAttackFrom.some(
-          (pos) => manhattanDistance(enemyPos, pos) == attackRange
+          (pos) => manhattanDistance(enemyPos, pos) <= attackRange
         )
       );
     return {
@@ -662,10 +672,8 @@ export class Level extends Scene {
   };
 
   private getTilesWithinDist = (pos: Vector, dist: number): Vector[] => {
-    if (dist < 0) {
+    if (dist <= 0) {
       return [];
-    } else if (dist === 0) {
-      return [pos];
     }
     let ret = new Array<{ point: Vector; dist: number }>();
     let toGo = new Array<{ point: Vector; dist: number }>();

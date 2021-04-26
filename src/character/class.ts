@@ -43,7 +43,7 @@ export abstract class CharacterClass {
     return magicDamage + physicalDamage;
   }
 
-  abstract levelUp(): void;
+  abstract levelUp(): CharacterClass;
 
   abstract expForNextLevel(): number;
 
@@ -73,7 +73,7 @@ export class Sword extends CharacterClass {
     }
   }
 
-  levelUp() {
+  levelUp(): Sword {
     this.moveRange.inner += 1;
     this.moveRange.outer += 1;
     this.defence.magic += 5;
@@ -82,6 +82,7 @@ export class Sword extends CharacterClass {
     this.health.maxHealth += 20;
     this.health.healOnNoMove += 10;
     this.level += 1;
+    return this;
   }
 
   expForNextLevel(): number {
@@ -116,7 +117,7 @@ export class Bow extends CharacterClass {
     }
   }
 
-  levelUp() {
+  levelUp(): Bow {
     this.moveRange.inner += 1;
     this.moveRange.outer += 1;
     this.defence.magic += 5;
@@ -125,6 +126,7 @@ export class Bow extends CharacterClass {
     this.health.maxHealth += 20;
     this.health.healOnNoMove += 10;
     this.level += 1;
+    return this;
   }
 
   expForNextLevel(): number {
@@ -159,7 +161,7 @@ export class Magic extends CharacterClass {
     }
   }
 
-  levelUp() {
+  levelUp(): Magic {
     this.moveRange.inner += 1;
     this.moveRange.outer += 1;
     this.defence.magic += 5;
@@ -168,6 +170,7 @@ export class Magic extends CharacterClass {
     this.health.maxHealth += 20;
     this.health.healOnNoMove += 10;
     this.level += 1;
+    return this;
   }
 
   expForNextLevel(): number {
