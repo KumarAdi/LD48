@@ -232,18 +232,6 @@ export class Level extends Scene {
         this.statOverlayCharacter = clickedOnCharacter;
 
         this.add(this.statOverlay);
-      } else if (clickedOnCharacter.isControllable()) {
-        if (
-          this.selectedPlayer &&
-          this.selectedPlayer.id == clickedOnCharacter.id
-        ) {
-          this.deselectPlayer();
-        } else {
-          if (this.selectedPlayer) {
-            this.deselectPlayer();
-          }
-          this.selectPlayer(clickedOnCharacter);
-        }
       }
     } else {
       if (evt.button == Input.PointerButton.Right) {
@@ -402,7 +390,7 @@ export class Level extends Scene {
 
     const controllable = spawnPoint.alignment == CharacterAlignment.PLAYER;
 
-    let spawnedCharacter;
+    let spawnedCharacter!: Character;
 
     switch (spawnPoint.class) {
       case CharacterClass.SWORD:
@@ -417,6 +405,19 @@ export class Level extends Scene {
     }
 
     if (controllable) {
+      spawnedCharacter.on("pointerup", () => {
+        if (
+          this.selectedPlayer &&
+          this.selectedPlayer.id == spawnedCharacter.id
+        ) {
+          this.deselectPlayer();
+        } else {
+          if (this.selectedPlayer) {
+            this.deselectPlayer();
+          }
+          this.selectPlayer(spawnedCharacter);
+        }
+      });
       this.players.push(spawnedCharacter);
     } else {
       this.enemies.push(spawnedCharacter);
@@ -576,19 +577,14 @@ export class Level extends Scene {
         opacity: 0.5,
       });
 
-      const tileSelect = () =>
-        tile.on("pointerdown", (evt) => {
-          if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
-            // we have player selected
-            const src = this.pixelToTileCoords(this.selectedPlayer.pos);
-            this.moveCharacter(src, point, this.selectedPlayer).then(() => {});
-            this.deselectPlayer();
-          }
-
-          this.engine.input.pointers.primary.off("up", tileSelect);
-        });
-
-      this.engine.input.pointers.primary.on("up", tileSelect);
+      tile.on("pointerdown", (evt) => {
+        if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
+          // we have player selected
+          const src = this.pixelToTileCoords(this.selectedPlayer.pos);
+          this.moveCharacter(src, point, this.selectedPlayer).then(() => {});
+          this.deselectPlayer();
+        }
+      });
 
       this.add(tile);
       return tile;
