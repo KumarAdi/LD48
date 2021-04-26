@@ -466,18 +466,24 @@ export class Level extends Scene {
       placesToAttackFrom.push(characterPos);
     }
 
-    const enemiesInRange = potentialEnemies
-      .map((enemy) => {
-        return {
-          enemy,
-          enemyPos: this.pixelToTileCoords(enemy.pos),
-        };
-      })
-      .filter(({ enemyPos }) =>
-        placesToAttackFrom.some(
-          (pos) => manhattanDistance(enemyPos, pos) <= attackRange
+    const enemiesInRange: { enemy: Character; enemyPos: Vector }[] = [];
+
+    if (!character.moveExhausted.outer) {
+      potentialEnemies
+        .map((enemy) => {
+          return {
+            enemy,
+            enemyPos: this.pixelToTileCoords(enemy.pos),
+          };
+        })
+        .filter(({ enemyPos }) =>
+          placesToAttackFrom.some(
+            (pos) => manhattanDistance(enemyPos, pos) <= attackRange
+          )
         )
-      );
+        .forEach((x) => enemiesInRange.push(x));
+    }
+
     return {
       innerMoves: placesToAttackFrom,
       allMoves: possibleDestinations,
