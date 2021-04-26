@@ -229,7 +229,7 @@ export class Level extends Scene {
           return;
         }
 
-        this.statOverlay = this.generateStatOverlay(
+        this.statOverlay = this.generateTextOverlay(
           clickedOnCharacter.getStats(),
           clickedOnCharacter.pos.add(vec(1.75 * Level.TILE_SIZE, 0))
         );
@@ -262,39 +262,44 @@ export class Level extends Scene {
     }
   };
 
-  private generateStatOverlay = (lines: string[], pos: Vector) => {
-    const overlayDimensions = vec(
-      3 * Level.TILE_SIZE,
-      (Level.TILE_SIZE * lines.length) / 2 + 5
+  private generateTextOverlay = (lines: string[], pos: Vector) => {
+    const overlayHeight = (Level.TILE_SIZE * lines.length) / 2 + 5;
+
+    const labels: Label[] = lines.map(
+      (line, i) =>
+        new Label({
+          text: line,
+          color: Color.White,
+          x: 2,
+          y: 15 * (i + 1) - overlayHeight / 2,
+        })
     );
+
+    const overlayWidth =
+      labels
+        .map((label) => label.getTextWidth(this.engine.ctx))
+        .sort()
+        .pop()! + 4;
+
+    labels.forEach((label) => (label.pos.x -= overlayWidth / 2));
 
     const overlayBg = new Actor({
       x: pos.x,
       y: pos.y,
-      width: overlayDimensions.x + 2,
-      height: overlayDimensions.y + 2,
+      width: overlayWidth + 2,
+      height: overlayHeight + 2,
       color: Color.White,
     });
 
     const overlay = new Actor({
       x: 0,
       y: 0,
-      width: overlayDimensions.x,
-      height: overlayDimensions.y,
+      width: overlayWidth + 1,
+      height: overlayHeight,
       color: Color.Black,
     });
 
-    lines
-      .map(
-        (line, i) =>
-          new Label({
-            text: line,
-            color: Color.White,
-            x: -overlay.width / 2 + 5,
-            y: 15 * (i + 1) - overlay.height / 2,
-          })
-      )
-      .forEach((overlayText) => overlay.add(overlayText));
+    labels.forEach((overlayText) => overlay.add(overlayText));
 
     overlayBg.add(overlay);
     return overlayBg;

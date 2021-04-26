@@ -84,9 +84,9 @@ export abstract class Character extends Actor {
       `HP: ${this.health} / ${this.maxHealth}`,
       `ATK: ${this.attackDamage()}`,
       `RNG: ${this.attackRange()}`,
-      `MVMT: ${this.getEnergy() / this.moveCost()} / ${
+      `MVMT: ${Math.floor(this.getEnergy() / this.moveCost())} / ${Math.floor(
         this.maxEnergy / this.moveCost()
-      }`,
+      )}`,
     ];
   };
 
