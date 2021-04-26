@@ -1,4 +1,4 @@
-import { SpriteSheet, Texture } from "excalibur";
+import { Sound, SpriteSheet, Texture } from "excalibur";
 import sword_idle from "./images/sword_idle.png";
 import sword_walk from "./images/sword_walk.png";
 import sword_atk from "./images/sword_atk.png";
@@ -22,9 +22,11 @@ import next_turn from "./images/endturn.png";
 import skip_tutorial from "./images/skip.png";
 import title from "./images/title.png";
 import end from "./images/gameover.png";
+import bg_music from "./music/darkhollows.mp3";
 
 let MainMenuResources = {
   title: new Texture(title),
+  BGMusic: new Sound(bg_music),
 };
 
 let GameOverResources = {
