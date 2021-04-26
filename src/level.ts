@@ -972,7 +972,7 @@ export class Level extends Scene {
   private calculateEnemyMove = (me: Character) => {
     const myPos = this.pixelToTileCoords(me.pos);
 
-    const { innerMoves, attackableEnemies } = this.getPossibleMoves(
+    const { innerMoves, allMoves, attackableEnemies } = this.getPossibleMoves(
       me,
       this.players
     );
@@ -1005,7 +1005,12 @@ export class Level extends Scene {
     );
 
     for (let closestPlayer of potentialTargets) {
-      const pathToPlayer = this.pathfind(myPos, closestPlayer.playerPos);
+      allMoves.sort(
+        (a, b) =>
+          manhattanDistance(a, closestPlayer.playerPos) -
+          manhattanDistance(b, closestPlayer.playerPos)
+      );
+      const pathToPlayer = this.pathfind(myPos, allMoves[0]);
       const moveDistance =
         me.cClass.moveRange.inner + me.cClass.moveRange.outer;
       const moveTo = pathToPlayer[moveDistance];
