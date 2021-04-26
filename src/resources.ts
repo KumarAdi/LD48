@@ -9,6 +9,7 @@ import magic_idle from "./images/magic_idle.png";
 import magic_walk from "./images/magic_walk.png";
 import magic_atk from "./images/magic_atk.png";
 import tilesheet from "./images/dungeontiles_1.png";
+import next_turn from "./images/endturn.png";
 
 let Resources = {
   SwordIdle: new Texture(sword_idle),
@@ -21,6 +22,7 @@ let Resources = {
   MagicWalk: new Texture(magic_walk),
   MagicAtk: new Texture(magic_atk),
   TileTexture: new Texture(tilesheet),
+  NextTurnTexture: new Texture(next_turn),
 };
 
 export { Resources };

@@ -149,10 +149,28 @@ export class Level extends Scene {
 
     this.nextTurnButton = new ScreenElement({
       x: engine.drawWidth - 100,
-      y: engine.drawHeight - 100,
-      width: 50,
-      height: 50,
-      color: Color.Green,
+      y: engine.drawHeight - 40,
+      width: 90,
+      height: 30,
+    });
+
+    const nextTurnSheet = new SpriteSheet(
+      Resources.NextTurnTexture,
+      1,
+      2,
+      90,
+      30
+    );
+    this.nextTurnButton.addDrawing("normal", nextTurnSheet.getSprite(0));
+    this.nextTurnButton.addDrawing("hovered", nextTurnSheet.getSprite(1));
+    this.nextTurnButton.setDrawing("normal");
+
+    this.nextTurnButton.on("pointerenter", () => {
+      this.nextTurnButton?.setDrawing("hovered");
+    });
+
+    this.nextTurnButton.on("pointerleave", () => {
+      this.nextTurnButton?.setDrawing("normal");
     });
 
     this.nextTurnButton.on("pointerdown", this.nextTurnButtonClick);
@@ -549,10 +567,10 @@ export class Level extends Scene {
     this.moveOverlay = possibleMoves.moves.map((point) => {
       const overlayPos = this.tileToPixelCoords(point);
       const tile = new Actor({
-        x: overlayPos.x + 2,
-        y: overlayPos.y + 2,
-        width: Level.TILE_SIZE - 4,
-        height: Level.TILE_SIZE - 4,
+        x: overlayPos.x,
+        y: overlayPos.y,
+        width: Level.TILE_SIZE,
+        height: Level.TILE_SIZE,
         color: Color.Blue,
         opacity: 0.5,
       });
@@ -579,10 +597,10 @@ export class Level extends Scene {
       ({ enemy, enemyPos }) => {
         const overlayPos = this.tileToPixelCoords(enemyPos);
         const tile = new Actor({
-          x: overlayPos.x + 2,
-          y: overlayPos.y + 2,
-          width: Level.TILE_SIZE - 4,
-          height: Level.TILE_SIZE - 4,
+          x: overlayPos.x,
+          y: overlayPos.y,
+          width: Level.TILE_SIZE,
+          height: Level.TILE_SIZE,
           color: Color.Red,
           opacity: 0.5,
         });
