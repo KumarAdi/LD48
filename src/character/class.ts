@@ -1,5 +1,5 @@
 import { SpriteSheet } from "excalibur";
-import { Resources } from "../resources";
+import { MusicResources, Resources } from "../resources";
 
 export type MoveRange = {
   inner: number;
@@ -48,6 +48,8 @@ export abstract class CharacterClass {
   abstract expForNextLevel(): number;
 
   abstract deathExp(): number;
+
+  abstract playAttackSound(): void;
 }
 
 export class Sword extends CharacterClass {
@@ -95,6 +97,10 @@ export class Sword extends CharacterClass {
 
   deathExp(): number {
     return this.level * 5;
+  }
+
+  playAttackSound() {
+    MusicResources.Sword.play();
   }
 }
 
@@ -144,6 +150,10 @@ export class Bow extends CharacterClass {
   deathExp(): number {
     return this.level * 5;
   }
+
+  playAttackSound() {
+    MusicResources.Bow.play();
+  }
 }
 
 export class Magic extends CharacterClass {
@@ -191,5 +201,9 @@ export class Magic extends CharacterClass {
 
   deathExp(): number {
     return this.level * 5;
+  }
+
+  playAttackSound() {
+    MusicResources.Magic.play();
   }
 }

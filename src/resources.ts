@@ -1,4 +1,4 @@
-import { SpriteSheet, Texture } from "excalibur";
+import { Sound, SpriteSheet, Texture } from "excalibur";
 import sword_idle from "./images/sword_idle.png";
 import sword_walk from "./images/sword_walk.png";
 import sword_atk from "./images/sword_atk.png";
@@ -55,4 +55,16 @@ let Resources = {
   SkipTutorialTexture: new Texture(skip_tutorial),
 };
 
-export { Resources, MainMenuResources, GameOverResources };
+let MusicResources = {
+  Bow: new Sound(require("./music/bow.wav")),
+  Sword: new Sound(require("./music/sword.wav")),
+  Magic: new Sound(require("./music/magic.wav")),
+  DarkHollows: new Sound(require("./music/darkhollows.mp3")),
+  Deselect: new Sound(require("./music/deselect.wav")),
+  Die: new Sound(require("./music/die.wav")),
+  Select: new Sound(require("./music/select.wav")),
+  TileChange: new Sound(require("./music/tilechange.wav")),
+  Title: new Sound(require("./music/title.wav")),
+};
+
+export { Resources, MainMenuResources, GameOverResources, MusicResources };

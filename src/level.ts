@@ -19,7 +19,7 @@ import {
 
 import { Character, CharacterClass, Player, Enemy } from "./character";
 import { AStarFinder, Finder, Grid } from "pathfinding";
-import { GameOverResources, Resources } from "./resources";
+import { GameOverResources, MusicResources, Resources } from "./resources";
 import { generateLevel, levelLoader } from "./index";
 
 export enum CellType {
@@ -100,6 +100,7 @@ export class Level extends Scene {
     stairLocation: Vector
   ) {
     super(engine);
+
     this.depth = depth;
     this.level_depth_label = new Label();
     this.level_depth_label.fontSize = 25;
@@ -1012,12 +1013,14 @@ export class Level extends Scene {
           manhattanDistance(a, closestPlayer.playerPos) -
           manhattanDistance(b, closestPlayer.playerPos)
       );
-      const pathToPlayer = this.pathfind(myPos, allMoves[0]);
-      const moveDistance =
-        me.cClass.moveRange.inner + me.cClass.moveRange.outer;
-      const moveTo = pathToPlayer[moveDistance];
-      if (moveTo) {
-        return this.moveCharacter(myPos, moveTo, me);
+      if (allMoves[0]) {
+        const pathToPlayer = this.pathfind(myPos, allMoves[0]);
+        const moveDistance =
+          me.cClass.moveRange.inner + me.cClass.moveRange.outer;
+        const moveTo = pathToPlayer[moveDistance];
+        if (moveTo) {
+          return this.moveCharacter(myPos, moveTo, me);
+        }
       }
     }
 

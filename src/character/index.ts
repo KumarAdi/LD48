@@ -190,6 +190,7 @@ export abstract class Character extends Actor {
   spendAttack() {
     this.moveExhausted.inner = true;
     this.moveExhausted.outer = true;
+    this.cClass.playAttackSound();
   }
 
   nextTurn() {

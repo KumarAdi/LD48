@@ -9,7 +9,7 @@ import {
   Color,
 } from "excalibur";
 import { Dungeon, getRandomInt } from "./dungeon";
-import { MainMenuResources, Resources } from "./resources";
+import { MainMenuResources, Resources, MusicResources } from "./resources";
 import { Level, CharacterAlignment } from "./level";
 import { Sword, Bow, Magic, CharacterClass } from "./character";
 
@@ -22,6 +22,10 @@ export const levelLoader = new Loader();
 for (let key in Resources) {
   levelLoader.addResource(Resources[key]);
 }
+
+Object.values(MusicResources).forEach((music) =>
+  levelLoader.addResource(music)
+);
 
 levelLoader.suppressPlayButton = true;
 levelLoader.logo = "";
