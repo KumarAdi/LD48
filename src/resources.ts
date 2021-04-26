@@ -19,6 +19,11 @@ import enemy_magic_walk from "./images/enemymagic_walk.png";
 import enemy_magic_atk from "./images/enemymagic_atk.png";
 import tilesheet from "./images/dungeontiles_1.png";
 import next_turn from "./images/endturn.png";
+import title from "./images/title.png";
+
+let MainMenuResources = {
+  title: new Texture(title),
+};
 
 let Resources = {
   SwordIdle: new Texture(sword_idle),
@@ -43,4 +48,4 @@ let Resources = {
   NextTurnTexture: new Texture(next_turn),
 };
 
-export { Resources };
+export { Resources, MainMenuResources };
