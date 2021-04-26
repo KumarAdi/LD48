@@ -2,7 +2,6 @@ body {
   padding: 0;
   margin: 0;
 }
-
 main {
   display: flex;
   align-items: center;
@@ -10,10 +9,8 @@ main {
   height: 100%;
   width: 100%;
 }
-
 canvas {
   image-rendering: pixelated !important;
   image-rendering: -moz-crisp-edges !important;
 }
-
-/*# sourceMappingURL=/app.55bab2ff.css.map */
+/*# sourceMappingURL=app.824f74bf.css.map */

@@ -1,152 +1,76 @@
-// modules are defined as an array
-// [ module function, map of requires ]
-//
-// map of requires is short require name -> numeric require
-//
-// anything defined in a previous bundle is accessed via the
-// orig method which is the require for previous bundles
-parcelRequire = (function (modules, cache, entry, globalName) {
-  // Save the require from previous bundle to this closure if any
-  var previousRequire = typeof parcelRequire === "function" && parcelRequire;
-  var nodeRequire = typeof require === "function" && require;
-
-  function newRequire(name, jumped) {
-    if (!cache[name]) {
-      if (!modules[name]) {
-        // if we cannot find the module within our internal map or
-        // cache jump to the current global require ie. the last bundle
-        // that was added to the page.
-        var currentRequire =
-          typeof parcelRequire === "function" && parcelRequire;
-        if (!jumped && currentRequire) {
-          return currentRequire(name, true);
-        }
-
-        // If there are other bundles on this page the require from the
-        // previous one is saved to 'previousRequire'. Repeat this as
-        // many times as there are bundles until the module is found or
-        // we exhaust the require chain.
-        if (previousRequire) {
-          return previousRequire(name, true);
-        }
-
-        // Try the node require function if it exists.
-        if (nodeRequire && typeof name === "string") {
-          return nodeRequire(name);
-        }
-
-        var err = new Error("Cannot find module '" + name + "'");
-        err.code = "MODULE_NOT_FOUND";
-        throw err;
+parcelRequire = (function (e, r, t, n) {
+  var i,
+    o = "function" == typeof parcelRequire && parcelRequire,
+    u = "function" == typeof require && require;
+  function f(t, n) {
+    if (!r[t]) {
+      if (!e[t]) {
+        var i = "function" == typeof parcelRequire && parcelRequire;
+        if (!n && i) return i(t, !0);
+        if (o) return o(t, !0);
+        if (u && "string" == typeof t) return u(t);
+        var c = new Error("Cannot find module '" + t + "'");
+        throw ((c.code = "MODULE_NOT_FOUND"), c);
       }
-
-      localRequire.resolve = resolve;
-      localRequire.cache = {};
-
-      var module = (cache[name] = new newRequire.Module(name));
-
-      modules[name][0].call(
-        module.exports,
-        localRequire,
-        module,
-        module.exports,
-        this
-      );
+      (p.resolve = function (r) {
+        return e[t][1][r] || r;
+      }),
+        (p.cache = {});
+      var l = (r[t] = new f.Module(t));
+      e[t][0].call(l.exports, p, l, l.exports, this);
     }
-
-    return cache[name].exports;
-
-    function localRequire(x) {
-      return newRequire(localRequire.resolve(x));
-    }
-
-    function resolve(x) {
-      return modules[name][1][x] || x;
+    return r[t].exports;
+    function p(e) {
+      return f(p.resolve(e));
     }
   }
-
-  function Module(moduleName) {
-    this.id = moduleName;
-    this.bundle = newRequire;
-    this.exports = {};
-  }
-
-  newRequire.isParcelRequire = true;
-  newRequire.Module = Module;
-  newRequire.modules = modules;
-  newRequire.cache = cache;
-  newRequire.parent = previousRequire;
-  newRequire.register = function (id, exports) {
-    modules[id] = [
-      function (require, module) {
-        module.exports = exports;
-      },
-      {},
-    ];
-  };
-
-  var error;
-  for (var i = 0; i < entry.length; i++) {
+  (f.isParcelRequire = !0),
+    (f.Module = function (e) {
+      (this.id = e), (this.bundle = f), (this.exports = {});
+    }),
+    (f.modules = e),
+    (f.cache = r),
+    (f.parent = o),
+    (f.register = function (r, t) {
+      e[r] = [
+        function (e, r) {
+          r.exports = t;
+        },
+        {},
+      ];
+    });
+  for (var c = 0; c < t.length; c++)
     try {
-      newRequire(entry[i]);
+      f(t[c]);
     } catch (e) {
-      // Save first error but execute all entries
-      if (!error) {
-        error = e;
-      }
+      i || (i = e);
     }
+  if (t.length) {
+    var l = f(t[t.length - 1]);
+    "object" == typeof exports && "undefined" != typeof module
+      ? (module.exports = l)
+      : "function" == typeof define && define.amd
+      ? define(function () {
+          return l;
+        })
+      : n && (this[n] = l);
   }
-
-  if (entry.length) {
-    // Expose entry point to Node, AMD or browser globals
-    // Based on https://github.com/ForbesLindesay/umd/blob/master/template.js
-    var mainExports = newRequire(entry[entry.length - 1]);
-
-    // CommonJS
-    if (typeof exports === "object" && typeof module !== "undefined") {
-      module.exports = mainExports;
-
-      // RequireJS
-    } else if (typeof define === "function" && define.amd) {
-      define(function () {
-        return mainExports;
-      });
-
-      // <script>
-    } else if (globalName) {
-      this[globalName] = mainExports;
-    }
-  }
-
-  // Override the current require with this new one
-  parcelRequire = newRequire;
-
-  if (error) {
-    // throw error from earlier, _after updating parcelRequire_
-    throw error;
-  }
-
-  return newRequire;
+  if (((parcelRequire = f), i)) throw i;
+  return f;
 })(
   {
-    "node_modules/excalibur/dist/excalibur.min.js": [
+    jZN7: [
       function (require, module, exports) {
         var define;
-        /*!
-         * excalibur - 0.24.5 - 2020-9-8
-         * https://github.com/excaliburjs/Excalibur
-         * Copyright (c) 2020 Excalibur.js <https://github.com/excaliburjs/Excalibur/graphs/contributors>
-         * Licensed BSD-2-Clause
-         * @preserve
-         */
-        !(function (t, e) {
+        var t;
+        !(function (e, n) {
           "object" == typeof exports && "object" == typeof module
-            ? (module.exports = e())
-            : "function" == typeof define && define.amd
-            ? define([], e)
+            ? (module.exports = n())
+            : "function" == typeof t && t.amd
+            ? t([], n)
             : "object" == typeof exports
-            ? (exports.ex = e())
-            : (t.ex = e());
+            ? (exports.ex = n())
+            : (e.ex = n());
         })(window, function () {
           return (function (t) {
             var e = {};
@@ -1046,20 +970,19 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                 a = n(34),
                 c = n(89),
                 h = n(44),
-                u = n(32),
-                l = u("IE_PROTO"),
-                p = function () {},
-                d = function (t) {
+                u = n(32)("IE_PROTO"),
+                l = function () {},
+                p = function (t) {
                   return "<script>" + t + "</script>";
                 },
-                f = function () {
+                d = function () {
                   try {
                     i = document.domain && new ActiveXObject("htmlfile");
                   } catch (t) {}
                   var t, e;
-                  f = i
+                  d = i
                     ? (function (t) {
-                        t.write(d("")), t.close();
+                        t.write(p("")), t.close();
                         var e = t.parentWindow.Object;
                         return (t = null), e;
                       })(i)
@@ -1067,24 +990,24 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       c.appendChild(e),
                       (e.src = String("javascript:")),
                       (t = e.contentWindow.document).open(),
-                      t.write(d("document.F=Object")),
+                      t.write(p("document.F=Object")),
                       t.close(),
                       t.F);
-                  for (var n = s.length; n--; ) delete f.prototype[s[n]];
-                  return f();
+                  for (var n = s.length; n--; ) delete d.prototype[s[n]];
+                  return d();
                 };
-              (a[l] = !0),
+              (a[u] = !0),
                 (t.exports =
                   Object.create ||
                   function (t, e) {
                     var n;
                     return (
                       null !== t
-                        ? ((p.prototype = r(t)),
-                          (n = new p()),
-                          (p.prototype = null),
-                          (n[l] = t))
-                        : (n = f()),
+                        ? ((l.prototype = r(t)),
+                          (n = new l()),
+                          (l.prototype = null),
+                          (n[u] = t))
+                        : (n = d()),
                       void 0 === e ? n : o(n, e)
                     );
                   });
@@ -1199,28 +1122,30 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   (e.toString = function () {
                     return this.map(function (e) {
                       var n = (function (t, e) {
-                        var n = t[1] || "",
-                          i = t[3];
-                        if (!i) return n;
+                        var n,
+                          i,
+                          r,
+                          o = t[1] || "",
+                          s = t[3];
+                        if (!s) return o;
                         if (e && "function" == typeof btoa) {
-                          var r =
-                              ((s = i),
-                              (a = btoa(
-                                unescape(encodeURIComponent(JSON.stringify(s)))
+                          var a =
+                              ((n = s),
+                              (i = btoa(
+                                unescape(encodeURIComponent(JSON.stringify(n)))
                               )),
-                              (c = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(
-                                a
+                              (r = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(
+                                i
                               )),
-                              "/*# ".concat(c, " */")),
-                            o = i.sources.map(function (t) {
+                              "/*# ".concat(r, " */")),
+                            c = s.sources.map(function (t) {
                               return "/*# sourceURL="
-                                .concat(i.sourceRoot || "")
+                                .concat(s.sourceRoot || "")
                                 .concat(t, " */");
                             });
-                          return [n].concat(o).concat([r]).join("\n");
+                          return [o].concat(c).concat([a]).join("\n");
                         }
-                        var s, a, c;
-                        return [n].join("\n");
+                        return [o].join("\n");
                       })(e, t);
                       return e[2]
                         ? "@media ".concat(e[2], " {").concat(n, "}")
@@ -2500,481 +2425,481 @@ parcelRequire = (function (modules, cache, entry, globalName) {
               "use strict";
               n.r(e),
                 n.d(e, "EX_VERSION", function () {
-                  return $r;
+                  return Qr;
                 }),
                 n.d(e, "ScrollPreventionMode", function () {
-                  return or;
+                  return tr;
                 }),
                 n.d(e, "Engine", function () {
-                  return lr;
+                  return sr;
                 }),
                 n.d(e, "DisplayMode", function () {
-                  return Vt;
+                  return Nt;
                 }),
                 n.d(e, "Resolution", function () {
-                  return Jt;
+                  return Kt;
                 }),
                 n.d(e, "Screen", function () {
-                  return $t;
+                  return Yt;
                 }),
                 n.d(e, "Actor", function () {
-                  return bn;
+                  return vn;
                 }),
                 n.d(e, "CollisionType", function () {
-                  return ct;
-                }),
-                n.d(e, "Vector", function () {
-                  return V;
-                }),
-                n.d(e, "Ray", function () {
-                  return G;
-                }),
-                n.d(e, "Line", function () {
-                  return X;
-                }),
-                n.d(e, "Projection", function () {
-                  return Q;
-                }),
-                n.d(e, "GlobalCoordinates", function () {
-                  return Z;
-                }),
-                n.d(e, "vec", function () {
-                  return K;
-                }),
-                n.d(e, "StrategyContainer", function () {
-                  return Vn;
-                }),
-                n.d(e, "Axis", function () {
-                  return Mn;
-                }),
-                n.d(e, "LockCameraToActorStrategy", function () {
-                  return Kn;
-                }),
-                n.d(e, "LockCameraToActorAxisStrategy", function () {
-                  return Yn;
-                }),
-                n.d(e, "ElasticToActorStrategy", function () {
-                  return Jn;
-                }),
-                n.d(e, "RadiusAroundActorStrategy", function () {
-                  return $n;
-                }),
-                n.d(e, "LimitCameraBoundsStrategy", function () {
-                  return ti;
-                }),
-                n.d(e, "Camera", function () {
-                  return ei;
-                }),
-                n.d(e, "Class", function () {
-                  return ee;
-                }),
-                n.d(e, "Configurable", function () {
-                  return fe;
-                }),
-                n.d(e, "Debug", function () {
-                  return Si;
-                }),
-                n.d(e, "FrameStats", function () {
-                  return Ci;
-                }),
-                n.d(e, "PhysicsStats", function () {
-                  return Oi;
-                }),
-                n.d(e, "EventDispatcher", function () {
-                  return te;
-                }),
-                n.d(e, "MediaEvent", function () {
-                  return fr;
-                }),
-                n.d(e, "NativeSoundEvent", function () {
-                  return yr;
-                }),
-                n.d(e, "NativeSoundProcessedEvent", function () {
-                  return gr;
-                }),
-                n.d(e, "EventTypes", function () {
-                  return ot;
-                }),
-                n.d(e, "GameEvent", function () {
-                  return ht;
-                }),
-                n.d(e, "KillEvent", function () {
-                  return ut;
-                }),
-                n.d(e, "PreKillEvent", function () {
-                  return lt;
-                }),
-                n.d(e, "PostKillEvent", function () {
-                  return pt;
-                }),
-                n.d(e, "GameStartEvent", function () {
-                  return dt;
-                }),
-                n.d(e, "GameStopEvent", function () {
-                  return ft;
-                }),
-                n.d(e, "PreDrawEvent", function () {
-                  return yt;
-                }),
-                n.d(e, "PostDrawEvent", function () {
-                  return gt;
-                }),
-                n.d(e, "PreDebugDrawEvent", function () {
-                  return _t;
-                }),
-                n.d(e, "PostDebugDrawEvent", function () {
-                  return vt;
-                }),
-                n.d(e, "PreUpdateEvent", function () {
-                  return mt;
-                }),
-                n.d(e, "PostUpdateEvent", function () {
-                  return bt;
-                }),
-                n.d(e, "PreFrameEvent", function () {
-                  return wt;
-                }),
-                n.d(e, "PostFrameEvent", function () {
-                  return xt;
-                }),
-                n.d(e, "GamepadConnectEvent", function () {
-                  return Pt;
-                }),
-                n.d(e, "GamepadDisconnectEvent", function () {
-                  return At;
-                }),
-                n.d(e, "GamepadButtonEvent", function () {
-                  return Et;
-                }),
-                n.d(e, "GamepadAxisEvent", function () {
-                  return St;
-                }),
-                n.d(e, "SubscribeEvent", function () {
-                  return Ct;
-                }),
-                n.d(e, "UnsubscribeEvent", function () {
-                  return Ot;
-                }),
-                n.d(e, "VisibleEvent", function () {
-                  return Tt;
-                }),
-                n.d(e, "HiddenEvent", function () {
-                  return Bt;
-                }),
-                n.d(e, "PreCollisionEvent", function () {
-                  return Mt;
-                }),
-                n.d(e, "PostCollisionEvent", function () {
-                  return Dt;
-                }),
-                n.d(e, "CollisionStartEvent", function () {
-                  return kt;
-                }),
-                n.d(e, "CollisionEndEvent", function () {
-                  return Rt;
-                }),
-                n.d(e, "InitializeEvent", function () {
-                  return jt;
-                }),
-                n.d(e, "ActivateEvent", function () {
-                  return Ft;
-                }),
-                n.d(e, "DeactivateEvent", function () {
-                  return It;
-                }),
-                n.d(e, "ExitViewPortEvent", function () {
-                  return Lt;
-                }),
-                n.d(e, "EnterViewPortEvent", function () {
-                  return zt;
-                }),
-                n.d(e, "EnterTriggerEvent", function () {
-                  return Ht;
-                }),
-                n.d(e, "ExitTriggerEvent", function () {
-                  return Ut;
-                }),
-                n.d(e, "Label", function () {
-                  return ii;
-                }),
-                n.d(e, "FontStyle", function () {
-                  return Zn;
-                }),
-                n.d(e, "FontUnit", function () {
-                  return Gn;
-                }),
-                n.d(e, "TextAlign", function () {
-                  return Xn;
-                }),
-                n.d(e, "BaseAlign", function () {
-                  return Qn;
-                }),
-                n.d(e, "Loader", function () {
-                  return jn;
-                }),
-                n.d(e, "Particle", function () {
-                  return vr;
-                }),
-                n.d(e, "ParticleEmitter", function () {
-                  return mr;
-                }),
-                n.d(e, "EmitterType", function () {
-                  return ur;
-                }),
-                n.d(e, "CollisionResolutionStrategy", function () {
-                  return Y;
-                }),
-                n.d(e, "BroadphaseStrategy", function () {
-                  return J;
-                }),
-                n.d(e, "Integrator", function () {
-                  return $;
-                }),
-                n.d(e, "Physics", function () {
                   return st;
                 }),
+                n.d(e, "Vector", function () {
+                  return q;
+                }),
+                n.d(e, "Ray", function () {
+                  return V;
+                }),
+                n.d(e, "Line", function () {
+                  return G;
+                }),
+                n.d(e, "Projection", function () {
+                  return X;
+                }),
+                n.d(e, "GlobalCoordinates", function () {
+                  return Q;
+                }),
+                n.d(e, "vec", function () {
+                  return Z;
+                }),
+                n.d(e, "StrategyContainer", function () {
+                  return Un;
+                }),
+                n.d(e, "Axis", function () {
+                  return _n;
+                }),
+                n.d(e, "LockCameraToActorStrategy", function () {
+                  return Gn;
+                }),
+                n.d(e, "LockCameraToActorAxisStrategy", function () {
+                  return Xn;
+                }),
+                n.d(e, "ElasticToActorStrategy", function () {
+                  return Qn;
+                }),
+                n.d(e, "RadiusAroundActorStrategy", function () {
+                  return Zn;
+                }),
+                n.d(e, "LimitCameraBoundsStrategy", function () {
+                  return Kn;
+                }),
+                n.d(e, "Camera", function () {
+                  return Yn;
+                }),
+                n.d(e, "Class", function () {
+                  return $t;
+                }),
+                n.d(e, "Configurable", function () {
+                  return pe;
+                }),
+                n.d(e, "Debug", function () {
+                  return xi;
+                }),
+                n.d(e, "FrameStats", function () {
+                  return Pi;
+                }),
+                n.d(e, "PhysicsStats", function () {
+                  return Ai;
+                }),
+                n.d(e, "EventDispatcher", function () {
+                  return Jt;
+                }),
+                n.d(e, "MediaEvent", function () {
+                  return hr;
+                }),
+                n.d(e, "NativeSoundEvent", function () {
+                  return ur;
+                }),
+                n.d(e, "NativeSoundProcessedEvent", function () {
+                  return lr;
+                }),
+                n.d(e, "EventTypes", function () {
+                  return it;
+                }),
+                n.d(e, "GameEvent", function () {
+                  return at;
+                }),
+                n.d(e, "KillEvent", function () {
+                  return ct;
+                }),
+                n.d(e, "PreKillEvent", function () {
+                  return ht;
+                }),
+                n.d(e, "PostKillEvent", function () {
+                  return ut;
+                }),
+                n.d(e, "GameStartEvent", function () {
+                  return lt;
+                }),
+                n.d(e, "GameStopEvent", function () {
+                  return pt;
+                }),
+                n.d(e, "PreDrawEvent", function () {
+                  return dt;
+                }),
+                n.d(e, "PostDrawEvent", function () {
+                  return ft;
+                }),
+                n.d(e, "PreDebugDrawEvent", function () {
+                  return yt;
+                }),
+                n.d(e, "PostDebugDrawEvent", function () {
+                  return gt;
+                }),
+                n.d(e, "PreUpdateEvent", function () {
+                  return _t;
+                }),
+                n.d(e, "PostUpdateEvent", function () {
+                  return vt;
+                }),
+                n.d(e, "PreFrameEvent", function () {
+                  return mt;
+                }),
+                n.d(e, "PostFrameEvent", function () {
+                  return bt;
+                }),
+                n.d(e, "GamepadConnectEvent", function () {
+                  return wt;
+                }),
+                n.d(e, "GamepadDisconnectEvent", function () {
+                  return xt;
+                }),
+                n.d(e, "GamepadButtonEvent", function () {
+                  return Pt;
+                }),
+                n.d(e, "GamepadAxisEvent", function () {
+                  return At;
+                }),
+                n.d(e, "SubscribeEvent", function () {
+                  return Et;
+                }),
+                n.d(e, "UnsubscribeEvent", function () {
+                  return St;
+                }),
+                n.d(e, "VisibleEvent", function () {
+                  return Ct;
+                }),
+                n.d(e, "HiddenEvent", function () {
+                  return Ot;
+                }),
+                n.d(e, "PreCollisionEvent", function () {
+                  return Tt;
+                }),
+                n.d(e, "PostCollisionEvent", function () {
+                  return Bt;
+                }),
+                n.d(e, "CollisionStartEvent", function () {
+                  return Mt;
+                }),
+                n.d(e, "CollisionEndEvent", function () {
+                  return Dt;
+                }),
+                n.d(e, "InitializeEvent", function () {
+                  return kt;
+                }),
+                n.d(e, "ActivateEvent", function () {
+                  return Rt;
+                }),
+                n.d(e, "DeactivateEvent", function () {
+                  return jt;
+                }),
+                n.d(e, "ExitViewPortEvent", function () {
+                  return Ft;
+                }),
+                n.d(e, "EnterViewPortEvent", function () {
+                  return It;
+                }),
+                n.d(e, "EnterTriggerEvent", function () {
+                  return Lt;
+                }),
+                n.d(e, "ExitTriggerEvent", function () {
+                  return zt;
+                }),
+                n.d(e, "Label", function () {
+                  return $n;
+                }),
+                n.d(e, "FontStyle", function () {
+                  return Vn;
+                }),
+                n.d(e, "FontUnit", function () {
+                  return Wn;
+                }),
+                n.d(e, "TextAlign", function () {
+                  return Nn;
+                }),
+                n.d(e, "BaseAlign", function () {
+                  return qn;
+                }),
+                n.d(e, "Loader", function () {
+                  return Mn;
+                }),
+                n.d(e, "Particle", function () {
+                  return dr;
+                }),
+                n.d(e, "ParticleEmitter", function () {
+                  return fr;
+                }),
+                n.d(e, "EmitterType", function () {
+                  return or;
+                }),
+                n.d(e, "CollisionResolutionStrategy", function () {
+                  return K;
+                }),
+                n.d(e, "BroadphaseStrategy", function () {
+                  return Y;
+                }),
+                n.d(e, "Integrator", function () {
+                  return J;
+                }),
+                n.d(e, "Physics", function () {
+                  return rt;
+                }),
                 n.d(e, "PromiseState", function () {
-                  return u;
+                  return h;
                 }),
                 n.d(e, "Promise", function () {
                   return d;
                 }),
                 n.d(e, "Scene", function () {
-                  return xi;
+                  return vi;
                 }),
                 n.d(e, "TileMap", function () {
-                  return Cn;
-                }),
-                n.d(e, "Cell", function () {
-                  return Tn;
-                }),
-                n.d(e, "TileSprite", function () {
-                  return On;
-                }),
-                n.d(e, "Timer", function () {
-                  return En;
-                }),
-                n.d(e, "Trigger", function () {
-                  return si;
-                }),
-                n.d(e, "ScreenElement", function () {
-                  return Pn;
-                }),
-                n.d(e, "UIActor", function () {
                   return An;
                 }),
+                n.d(e, "Cell", function () {
+                  return Sn;
+                }),
+                n.d(e, "TileSprite", function () {
+                  return En;
+                }),
+                n.d(e, "Timer", function () {
+                  return xn;
+                }),
+                n.d(e, "Trigger", function () {
+                  return ni;
+                }),
+                n.d(e, "ScreenElement", function () {
+                  return bn;
+                }),
+                n.d(e, "UIActor", function () {
+                  return wn;
+                }),
                 n.d(e, "ActionContext", function () {
-                  return qe;
+                  return Ue;
                 }),
                 n.d(e, "RotationType", function () {
-                  return ye;
+                  return de;
                 }),
                 n.d(e, "Actions", function () {
                   return o;
                 }),
                 n.d(e, "Internal", function () {
-                  return br;
+                  return yr;
                 }),
                 n.d(e, "Body", function () {
-                  return Ge;
+                  return Ne;
                 }),
                 n.d(e, "isCollider", function () {
-                  return on;
+                  return en;
                 }),
                 n.d(e, "Collider", function () {
-                  return sn;
-                }),
-                n.d(e, "BoundingBox", function () {
-                  return Kt;
-                }),
-                n.d(e, "Circle", function () {
-                  return Xt;
-                }),
-                n.d(e, "CollisionContact", function () {
-                  return Wt;
-                }),
-                n.d(e, "CollisionJumpTable", function () {
-                  return Nt;
-                }),
-                n.d(e, "ClosestLine", function () {
-                  return qt;
-                }),
-                n.d(e, "ClosestLineJumpTable", function () {
-                  return Gt;
-                }),
-                n.d(e, "CollisionGroup", function () {
                   return nn;
                 }),
-                n.d(e, "CollisionGroupManager", function () {
-                  return wr;
-                }),
-                n.d(e, "TreeNode", function () {
-                  return Ln;
-                }),
-                n.d(e, "DynamicTree", function () {
-                  return zn;
-                }),
-                n.d(e, "DynamicTreeCollisionBroadphase", function () {
-                  return Hn;
-                }),
-                n.d(e, "Edge", function () {
+                n.d(e, "BoundingBox", function () {
                   return Qt;
                 }),
+                n.d(e, "Circle", function () {
+                  return Vt;
+                }),
+                n.d(e, "CollisionContact", function () {
+                  return Ht;
+                }),
+                n.d(e, "CollisionJumpTable", function () {
+                  return Ut;
+                }),
+                n.d(e, "ClosestLine", function () {
+                  return Wt;
+                }),
+                n.d(e, "ClosestLineJumpTable", function () {
+                  return qt;
+                }),
+                n.d(e, "CollisionGroup", function () {
+                  return $e;
+                }),
+                n.d(e, "CollisionGroupManager", function () {
+                  return gr;
+                }),
+                n.d(e, "TreeNode", function () {
+                  return Rn;
+                }),
+                n.d(e, "DynamicTree", function () {
+                  return jn;
+                }),
+                n.d(e, "DynamicTreeCollisionBroadphase", function () {
+                  return Fn;
+                }),
+                n.d(e, "Edge", function () {
+                  return Gt;
+                }),
                 n.d(e, "Pair", function () {
-                  return rn;
+                  return tn;
                 }),
                 n.d(e, "ConvexPolygon", function () {
-                  return Zt;
+                  return Xt;
                 }),
                 n.d(e, "Side", function () {
                   return p;
                 }),
                 n.d(e, "Shape", function () {
-                  return Ve;
+                  return We;
                 }),
                 n.d(e, "Animation", function () {
-                  return Pe;
+                  return we;
                 }),
                 n.d(e, "Color", function () {
-                  return et;
+                  return tt;
                 }),
                 n.d(e, "Polygon", function () {
-                  return Pr;
+                  return vr;
                 }),
                 n.d(e, "Sprite", function () {
-                  return ve;
+                  return ge;
                 }),
                 n.d(e, "SpriteSheet", function () {
-                  return Er;
+                  return br;
                 }),
                 n.d(e, "SpriteFont", function () {
-                  return Sr;
+                  return wr;
                 }),
                 n.d(e, "Effects", function () {
                   return r;
                 }),
                 n.d(e, "ExResponse", function () {
-                  return Cr;
+                  return xr;
                 }),
                 n.d(e, "has_initialize", function () {
-                  return Or;
+                  return Pr;
                 }),
                 n.d(e, "hasOnInitialize", function () {
-                  return Tr;
+                  return Ar;
                 }),
                 n.d(e, "has_preupdate", function () {
-                  return Br;
+                  return Er;
                 }),
                 n.d(e, "hasOnPreUpdate", function () {
-                  return Mr;
+                  return Sr;
                 }),
                 n.d(e, "has_postupdate", function () {
-                  return Dr;
+                  return Cr;
                 }),
                 n.d(e, "hasOnPostUpdate", function () {
-                  return kr;
+                  return Or;
                 }),
                 n.d(e, "hasPreDraw", function () {
-                  return Rr;
+                  return Tr;
                 }),
                 n.d(e, "hasPostDraw", function () {
-                  return jr;
+                  return Br;
                 }),
                 n.d(e, "PerlinGenerator", function () {
-                  return Lr;
+                  return kr;
                 }),
                 n.d(e, "PerlinDrawer2D", function () {
-                  return zr;
+                  return Rr;
                 }),
                 n.d(e, "Random", function () {
                   return f;
                 }),
                 n.d(e, "ColorBlindness", function () {
-                  return yi;
-                }),
-                n.d(e, "ColorBlindCorrector", function () {
-                  return Ai;
-                }),
-                n.d(e, "Resource", function () {
-                  return ie;
-                }),
-                n.d(e, "Sound", function () {
-                  return Gr;
-                }),
-                n.d(e, "AudioContextFactory", function () {
-                  return Bn;
-                }),
-                n.d(e, "AudioInstanceFactory", function () {
-                  return Ur;
-                }),
-                n.d(e, "AudioInstance", function () {
-                  return Wr;
-                }),
-                n.d(e, "WebAudioInstance", function () {
-                  return Nr;
-                }),
-                n.d(e, "Texture", function () {
-                  return be;
-                }),
-                n.d(e, "Gif", function () {
-                  return Qr;
-                }),
-                n.d(e, "Stream", function () {
-                  return Yr;
-                }),
-                n.d(e, "ParseGif", function () {
-                  return Jr;
-                }),
-                n.d(e, "Component", function () {
-                  return cn;
-                }),
-                n.d(e, "TagComponent", function () {
-                  return hn;
-                }),
-                n.d(e, "AddedComponent", function () {
-                  return pn;
-                }),
-                n.d(e, "isAddedComponent", function () {
-                  return dn;
-                }),
-                n.d(e, "RemovedComponent", function () {
-                  return fn;
-                }),
-                n.d(e, "isRemovedComponent", function () {
-                  return yn;
-                }),
-                n.d(e, "Entity", function () {
-                  return gn;
-                }),
-                n.d(e, "EntityManager", function () {
-                  return mi;
-                }),
-                n.d(e, "Query", function () {
-                  return _i;
-                }),
-                n.d(e, "QueryManager", function () {
-                  return vi;
-                }),
-                n.d(e, "SystemType", function () {
-                  return ci;
-                }),
-                n.d(e, "System", function () {
-                  return ui;
-                }),
-                n.d(e, "AddedEntity", function () {
                   return li;
                 }),
-                n.d(e, "isAddedSystemEntity", function () {
-                  return pi;
+                n.d(e, "ColorBlindCorrector", function () {
+                  return bi;
                 }),
-                n.d(e, "RemovedEntity", function () {
+                n.d(e, "Resource", function () {
+                  return ee;
+                }),
+                n.d(e, "Sound", function () {
+                  return Ur;
+                }),
+                n.d(e, "AudioContextFactory", function () {
+                  return Cn;
+                }),
+                n.d(e, "AudioInstanceFactory", function () {
+                  return Fr;
+                }),
+                n.d(e, "AudioInstance", function () {
+                  return Ir;
+                }),
+                n.d(e, "WebAudioInstance", function () {
+                  return Lr;
+                }),
+                n.d(e, "Texture", function () {
+                  return ve;
+                }),
+                n.d(e, "Gif", function () {
+                  return Nr;
+                }),
+                n.d(e, "Stream", function () {
+                  return Gr;
+                }),
+                n.d(e, "ParseGif", function () {
+                  return Xr;
+                }),
+                n.d(e, "Component", function () {
+                  return on;
+                }),
+                n.d(e, "TagComponent", function () {
+                  return sn;
+                }),
+                n.d(e, "AddedComponent", function () {
+                  return hn;
+                }),
+                n.d(e, "isAddedComponent", function () {
+                  return un;
+                }),
+                n.d(e, "RemovedComponent", function () {
+                  return ln;
+                }),
+                n.d(e, "isRemovedComponent", function () {
+                  return pn;
+                }),
+                n.d(e, "Entity", function () {
+                  return dn;
+                }),
+                n.d(e, "EntityManager", function () {
+                  return yi;
+                }),
+                n.d(e, "Query", function () {
                   return di;
                 }),
-                n.d(e, "isRemoveSystemEntity", function () {
+                n.d(e, "QueryManager", function () {
                   return fi;
                 }),
+                n.d(e, "SystemType", function () {
+                  return ri;
+                }),
+                n.d(e, "System", function () {
+                  return si;
+                }),
+                n.d(e, "AddedEntity", function () {
+                  return ai;
+                }),
+                n.d(e, "isAddedSystemEntity", function () {
+                  return ci;
+                }),
+                n.d(e, "RemovedEntity", function () {
+                  return hi;
+                }),
+                n.d(e, "isRemoveSystemEntity", function () {
+                  return ui;
+                }),
                 n.d(e, "SystemManager", function () {
-                  return bi;
+                  return gi;
                 }),
                 n.d(e, "Events", function () {
                   return i;
@@ -2986,13 +2911,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   return c;
                 }),
                 n.d(e, "Util", function () {
-                  return h;
+                  return u;
                 }),
                 n.d(e, "BrowserComponent", function () {
-                  return sr;
+                  return er;
                 }),
                 n.d(e, "BrowserEvents", function () {
-                  return ar;
+                  return nr;
                 }),
                 n.d(e, "maxMessages", function () {
                   return z;
@@ -3004,13 +2929,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   return N;
                 }),
                 n.d(e, "Detector", function () {
-                  return In;
+                  return kn;
                 }),
                 n.d(e, "CullingBox", function () {
-                  return Qe;
+                  return Ve;
                 }),
                 n.d(e, "EasingFunctions", function () {
-                  return Ne;
+                  return He;
                 }),
                 n.d(e, "LogLevel", function () {
                   return M;
@@ -3025,366 +2950,307 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   return F;
                 }),
                 n.d(e, "SortedList", function () {
-                  return Un;
+                  return In;
                 }),
                 n.d(e, "BinaryTreeNode", function () {
-                  return Wn;
+                  return Ln;
                 }),
                 n.d(e, "MockedElement", function () {
-                  return Nn;
+                  return zn;
                 });
               var i = {};
               n.r(i),
                 n.d(i, "EventTypes", function () {
-                  return ot;
+                  return it;
                 }),
                 n.d(i, "GameEvent", function () {
-                  return ht;
+                  return at;
                 }),
                 n.d(i, "KillEvent", function () {
-                  return ut;
+                  return ct;
                 }),
                 n.d(i, "PreKillEvent", function () {
-                  return lt;
+                  return ht;
                 }),
                 n.d(i, "PostKillEvent", function () {
-                  return pt;
+                  return ut;
                 }),
                 n.d(i, "GameStartEvent", function () {
-                  return dt;
+                  return lt;
                 }),
                 n.d(i, "GameStopEvent", function () {
-                  return ft;
+                  return pt;
                 }),
                 n.d(i, "PreDrawEvent", function () {
-                  return yt;
+                  return dt;
                 }),
                 n.d(i, "PostDrawEvent", function () {
-                  return gt;
+                  return ft;
                 }),
                 n.d(i, "PreDebugDrawEvent", function () {
-                  return _t;
+                  return yt;
                 }),
                 n.d(i, "PostDebugDrawEvent", function () {
-                  return vt;
+                  return gt;
                 }),
                 n.d(i, "PreUpdateEvent", function () {
-                  return mt;
+                  return _t;
                 }),
                 n.d(i, "PostUpdateEvent", function () {
-                  return bt;
+                  return vt;
                 }),
                 n.d(i, "PreFrameEvent", function () {
-                  return wt;
+                  return mt;
                 }),
                 n.d(i, "PostFrameEvent", function () {
-                  return xt;
+                  return bt;
                 }),
                 n.d(i, "GamepadConnectEvent", function () {
-                  return Pt;
+                  return wt;
                 }),
                 n.d(i, "GamepadDisconnectEvent", function () {
-                  return At;
+                  return xt;
                 }),
                 n.d(i, "GamepadButtonEvent", function () {
-                  return Et;
+                  return Pt;
                 }),
                 n.d(i, "GamepadAxisEvent", function () {
-                  return St;
+                  return At;
                 }),
                 n.d(i, "SubscribeEvent", function () {
-                  return Ct;
+                  return Et;
                 }),
                 n.d(i, "UnsubscribeEvent", function () {
-                  return Ot;
+                  return St;
                 }),
                 n.d(i, "VisibleEvent", function () {
-                  return Tt;
+                  return Ct;
                 }),
                 n.d(i, "HiddenEvent", function () {
-                  return Bt;
+                  return Ot;
                 }),
                 n.d(i, "PreCollisionEvent", function () {
-                  return Mt;
+                  return Tt;
                 }),
                 n.d(i, "PostCollisionEvent", function () {
-                  return Dt;
+                  return Bt;
                 }),
                 n.d(i, "CollisionStartEvent", function () {
-                  return kt;
+                  return Mt;
                 }),
                 n.d(i, "CollisionEndEvent", function () {
-                  return Rt;
+                  return Dt;
                 }),
                 n.d(i, "InitializeEvent", function () {
-                  return jt;
+                  return kt;
                 }),
                 n.d(i, "ActivateEvent", function () {
-                  return Ft;
+                  return Rt;
                 }),
                 n.d(i, "DeactivateEvent", function () {
-                  return It;
+                  return jt;
                 }),
                 n.d(i, "ExitViewPortEvent", function () {
-                  return Lt;
+                  return Ft;
                 }),
                 n.d(i, "EnterViewPortEvent", function () {
-                  return zt;
+                  return It;
                 }),
                 n.d(i, "EnterTriggerEvent", function () {
-                  return Ht;
+                  return Lt;
                 }),
                 n.d(i, "ExitTriggerEvent", function () {
-                  return Ut;
+                  return zt;
                 });
               var r = {};
               n.r(r),
                 n.d(r, "Grayscale", function () {
-                  return re;
+                  return ne;
                 }),
                 n.d(r, "Invert", function () {
-                  return oe;
+                  return ie;
                 }),
                 n.d(r, "Opacity", function () {
-                  return se;
+                  return re;
                 }),
                 n.d(r, "Colorize", function () {
-                  return ae;
+                  return oe;
                 }),
                 n.d(r, "Lighten", function () {
-                  return ce;
+                  return se;
                 }),
                 n.d(r, "Darken", function () {
-                  return he;
+                  return ae;
                 }),
                 n.d(r, "Saturate", function () {
-                  return ue;
+                  return ce;
                 }),
                 n.d(r, "Desaturate", function () {
-                  return le;
+                  return he;
                 }),
                 n.d(r, "Fill", function () {
-                  return pe;
+                  return ue;
                 });
               var o = {};
               n.r(o),
                 n.d(o, "EaseTo", function () {
-                  return Ee;
+                  return Pe;
                 }),
                 n.d(o, "MoveTo", function () {
-                  return Se;
+                  return Ae;
                 }),
                 n.d(o, "MoveBy", function () {
-                  return Ce;
+                  return Ee;
                 }),
                 n.d(o, "Follow", function () {
-                  return Oe;
+                  return Se;
                 }),
                 n.d(o, "Meet", function () {
-                  return Te;
+                  return Ce;
                 }),
                 n.d(o, "RotateTo", function () {
-                  return Be;
+                  return Oe;
                 }),
                 n.d(o, "RotateBy", function () {
-                  return Me;
+                  return Te;
                 }),
                 n.d(o, "ScaleTo", function () {
-                  return De;
+                  return Be;
                 }),
                 n.d(o, "ScaleBy", function () {
-                  return ke;
+                  return Me;
                 }),
                 n.d(o, "Delay", function () {
-                  return Re;
+                  return De;
                 }),
                 n.d(o, "Blink", function () {
-                  return je;
+                  return ke;
                 }),
                 n.d(o, "Fade", function () {
-                  return Fe;
+                  return Re;
                 }),
                 n.d(o, "Die", function () {
-                  return Ie;
+                  return je;
                 }),
                 n.d(o, "CallMethod", function () {
-                  return Le;
+                  return Fe;
                 }),
                 n.d(o, "Repeat", function () {
-                  return ze;
+                  return Ie;
                 }),
                 n.d(o, "RepeatForever", function () {
-                  return He;
+                  return Le;
                 }),
                 n.d(o, "ActionQueue", function () {
-                  return Ue;
+                  return ze;
                 });
               var s = {};
               n.r(s),
                 n.d(s, "line", function () {
-                  return Ye;
+                  return Qe;
                 }),
                 n.d(s, "point", function () {
-                  return Je;
+                  return Ze;
                 }),
                 n.d(s, "vector", function () {
-                  return $e;
+                  return Ke;
                 }),
                 n.d(s, "roundRect", function () {
-                  return tn;
+                  return Ye;
                 }),
                 n.d(s, "circle", function () {
-                  return en;
+                  return Je;
                 });
               var a = {};
               n.r(a),
                 n.d(a, "Gamepads", function () {
-                  return ir;
-                }),
-                n.d(a, "Gamepad", function () {
-                  return rr;
-                }),
-                n.d(a, "Buttons", function () {
                   return Ji;
                 }),
-                n.d(a, "Axes", function () {
+                n.d(a, "Gamepad", function () {
                   return $i;
                 }),
-                n.d(a, "PointerType", function () {
-                  return Bi;
-                }),
-                n.d(a, "PointerScope", function () {
-                  return Mi;
-                }),
-                n.d(a, "Pointer", function () {
-                  return zi;
-                }),
-                n.d(a, "Pointers", function () {
-                  return er;
-                }),
-                n.d(a, "NativePointerButton", function () {
-                  return Fi;
-                }),
-                n.d(a, "PointerButton", function () {
-                  return Ii;
-                }),
-                n.d(a, "WheelDeltaMode", function () {
-                  return Li;
-                }),
-                n.d(a, "PointerEvent", function () {
-                  return Ui;
-                }),
-                n.d(a, "PointerEventFactory", function () {
-                  return Wi;
-                }),
-                n.d(a, "PointerDragEvent", function () {
-                  return Ni;
-                }),
-                n.d(a, "PointerUpEvent", function () {
-                  return qi;
-                }),
-                n.d(a, "PointerDownEvent", function () {
-                  return Vi;
-                }),
-                n.d(a, "PointerMoveEvent", function () {
-                  return Gi;
-                }),
-                n.d(a, "PointerEnterEvent", function () {
+                n.d(a, "Buttons", function () {
                   return Xi;
                 }),
-                n.d(a, "PointerLeaveEvent", function () {
+                n.d(a, "Axes", function () {
                   return Qi;
                 }),
-                n.d(a, "PointerCancelEvent", function () {
-                  return Zi;
+                n.d(a, "PointerType", function () {
+                  return Si;
                 }),
-                n.d(a, "WheelEvent", function () {
+                n.d(a, "PointerScope", function () {
+                  return Ci;
+                }),
+                n.d(a, "Pointer", function () {
+                  return Ri;
+                }),
+                n.d(a, "Pointers", function () {
                   return Ki;
                 }),
-                n.d(a, "createPointerEventByName", function () {
-                  return Yi;
+                n.d(a, "NativePointerButton", function () {
+                  return Mi;
                 }),
-                n.d(a, "Keys", function () {
-                  return Pi;
-                }),
-                n.d(a, "KeyEvent", function () {
+                n.d(a, "PointerButton", function () {
                   return Di;
                 }),
-                n.d(a, "Keyboard", function () {
+                n.d(a, "WheelDeltaMode", function () {
                   return ki;
+                }),
+                n.d(a, "PointerEvent", function () {
+                  return Fi;
+                }),
+                n.d(a, "PointerEventFactory", function () {
+                  return Ii;
+                }),
+                n.d(a, "PointerDragEvent", function () {
+                  return Li;
+                }),
+                n.d(a, "PointerUpEvent", function () {
+                  return zi;
+                }),
+                n.d(a, "PointerDownEvent", function () {
+                  return Hi;
+                }),
+                n.d(a, "PointerMoveEvent", function () {
+                  return Ui;
+                }),
+                n.d(a, "PointerEnterEvent", function () {
+                  return Wi;
+                }),
+                n.d(a, "PointerLeaveEvent", function () {
+                  return Ni;
+                }),
+                n.d(a, "PointerCancelEvent", function () {
+                  return qi;
+                }),
+                n.d(a, "WheelEvent", function () {
+                  return Vi;
+                }),
+                n.d(a, "createPointerEventByName", function () {
+                  return Gi;
+                }),
+                n.d(a, "Keys", function () {
+                  return mi;
+                }),
+                n.d(a, "KeyEvent", function () {
+                  return Oi;
+                }),
+                n.d(a, "Keyboard", function () {
+                  return Ti;
                 });
               var c = {};
               n.r(c),
                 n.d(c, "CapturePointer", function () {
-                  return Ke;
+                  return Xe;
                 }),
                 n.d(c, "OffscreenCulling", function () {
-                  return Ze;
+                  return Ge;
                 }),
                 n.d(c, "TileMapCollisionDetection", function () {
-                  return Xe;
+                  return qe;
                 });
-              var h = {};
-              n.r(h),
-                n.d(h, "TwoPI", function () {
-                  return y;
-                }),
-                n.d(h, "extend", function () {
-                  return g;
-                }),
-                n.d(h, "base64Encode", function () {
-                  return _;
-                }),
-                n.d(h, "nullish", function () {
-                  return v;
-                }),
-                n.d(h, "clamp", function () {
-                  return m;
-                }),
-                n.d(h, "randomInRange", function () {
-                  return b;
-                }),
-                n.d(h, "randomIntInRange", function () {
-                  return w;
-                }),
-                n.d(h, "canonicalizeAngle", function () {
-                  return x;
-                }),
-                n.d(h, "toDegrees", function () {
-                  return P;
-                }),
-                n.d(h, "toRadians", function () {
-                  return A;
-                }),
-                n.d(h, "getPosition", function () {
-                  return E;
-                }),
-                n.d(h, "addItemToArray", function () {
-                  return S;
-                }),
-                n.d(h, "removeItemFromArray", function () {
-                  return C;
-                }),
-                n.d(h, "contains", function () {
-                  return O;
-                }),
-                n.d(h, "getOppositeSide", function () {
-                  return T;
-                }),
-                n.d(h, "getSideFromDirection", function () {
-                  return B;
-                }),
-                n.d(h, "Collection", function () {
-                  return D;
-                }),
-                n.d(h, "fail", function () {
-                  return k;
-                }),
-                n.d(h, "DrawUtil", function () {
-                  return s;
-                });
-              var u;
-              n(73), n(134);
+              var h,
+                u = {};
               function l() {
                 "undefined" == typeof window &&
                   (window = { audioContext: function () {} }),
@@ -3414,15 +3280,75 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     window.devicePixelRatio ||
                     (window.devicePixelRatio = window.devicePixelRatio || 1);
               }
-              !(function (t) {
-                (t[(t.Resolved = 0)] = "Resolved"),
-                  (t[(t.Rejected = 1)] = "Rejected"),
-                  (t[(t.Pending = 2)] = "Pending");
-              })(u || (u = {}));
+              n.r(u),
+                n.d(u, "TwoPI", function () {
+                  return y;
+                }),
+                n.d(u, "extend", function () {
+                  return g;
+                }),
+                n.d(u, "base64Encode", function () {
+                  return _;
+                }),
+                n.d(u, "nullish", function () {
+                  return v;
+                }),
+                n.d(u, "clamp", function () {
+                  return m;
+                }),
+                n.d(u, "randomInRange", function () {
+                  return b;
+                }),
+                n.d(u, "randomIntInRange", function () {
+                  return w;
+                }),
+                n.d(u, "canonicalizeAngle", function () {
+                  return x;
+                }),
+                n.d(u, "toDegrees", function () {
+                  return P;
+                }),
+                n.d(u, "toRadians", function () {
+                  return A;
+                }),
+                n.d(u, "getPosition", function () {
+                  return E;
+                }),
+                n.d(u, "addItemToArray", function () {
+                  return S;
+                }),
+                n.d(u, "removeItemFromArray", function () {
+                  return C;
+                }),
+                n.d(u, "contains", function () {
+                  return O;
+                }),
+                n.d(u, "getOppositeSide", function () {
+                  return T;
+                }),
+                n.d(u, "getSideFromDirection", function () {
+                  return B;
+                }),
+                n.d(u, "Collection", function () {
+                  return D;
+                }),
+                n.d(u, "fail", function () {
+                  return k;
+                }),
+                n.d(u, "DrawUtil", function () {
+                  return s;
+                }),
+                n(73),
+                n(134),
+                (function (t) {
+                  (t[(t.Resolved = 0)] = "Resolved"),
+                    (t[(t.Rejected = 1)] = "Rejected"),
+                    (t[(t.Pending = 2)] = "Pending");
+                })(h || (h = {}));
               var p,
                 d = (function () {
                   function t() {
-                    (this._state = u.Pending),
+                    (this._state = h.Pending),
                       (this._successCallbacks = []),
                       (this._rejectCallback = function () {});
                   }
@@ -3470,7 +3396,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       if (
                         t &&
                         (this._successCallbacks.push(t),
-                        this.state() === u.Resolved)
+                        this.state() === h.Resolved)
                       )
                         try {
                           t.call(this, this._value);
@@ -3480,7 +3406,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       if (
                         e &&
                         ((this._rejectCallback = e),
-                        this.state() === u.Rejected)
+                        this.state() === h.Rejected)
                       )
                         try {
                           e.call(this, this._value);
@@ -3494,13 +3420,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (t.prototype.resolve = function (t) {
                       var e = this;
-                      if (this._state !== u.Pending)
+                      if (this._state !== h.Pending)
                         throw new Error(
                           "Cannot resolve a promise that is not in a pending state!"
                         );
                       this._value = t;
                       try {
-                        (this._state = u.Resolved),
+                        (this._state = h.Resolved),
                           this._successCallbacks.forEach(function (t) {
                             t.call(e, e._value);
                           });
@@ -3510,13 +3436,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       return this;
                     }),
                     (t.prototype.reject = function (t) {
-                      if (this._state !== u.Pending)
+                      if (this._state !== h.Pending)
                         throw new Error(
                           "Cannot reject a promise that is not in a pending state!"
                         );
                       this._value = t;
                       try {
-                        (this._state = u.Rejected),
+                        (this._state = h.Rejected),
                           this._rejectCallback.call(this, this._value);
                       } catch (t) {
                         this._handleError(t);
@@ -3790,7 +3716,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   r = function (t) {
                     (n += t.offsetTop), t.offsetParent && r(t.offsetParent);
                   };
-                return i(t), r(t), new V(e, n);
+                return i(t), r(t), new q(e, n);
               }
               function S(t, e) {
                 return -1 === e.indexOf(t) && (e.push(t), !0);
@@ -3816,7 +3742,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
               }
               function B(t) {
                 for (
-                  var e = [V.Left, V.Right, V.Up, V.Down],
+                  var e = [q.Left, q.Right, q.Up, q.Down],
                     n = [p.Left, p.Right, p.Top, p.Bottom],
                     i = -Number.MAX_VALUE,
                     r = -1,
@@ -4141,28 +4067,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   }
                 );
               }
-              var q = function (t, e, n, i) {
-                  var r,
-                    o = arguments.length,
-                    s =
-                      o < 3
-                        ? e
-                        : null === i
-                        ? (i = Object.getOwnPropertyDescriptor(e, n))
-                        : i;
-                  if (
-                    "object" == typeof Reflect &&
-                    "function" == typeof Reflect.decorate
-                  )
-                    s = Reflect.decorate(t, e, n, i);
-                  else
-                    for (var a = t.length - 1; a >= 0; a--)
-                      (r = t[a]) &&
-                        (s =
-                          (o < 3 ? r(s) : o > 3 ? r(e, n, s) : r(e, n)) || s);
-                  return o > 3 && s && Object.defineProperty(e, n, s), s;
-                },
-                V = (function () {
+              var q = (function () {
                   function t(t, e) {
                     (this.x = t), (this.y = e);
                   }
@@ -4333,7 +4238,28 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype.toString = function () {
                       return "(" + this.x + ", " + this.y + ")";
                     }),
-                    q(
+                    (function (t, e, n, i) {
+                      var r,
+                        o = arguments.length,
+                        s =
+                          o < 3
+                            ? e
+                            : null === i
+                            ? (i = Object.getOwnPropertyDescriptor(e, n))
+                            : i;
+                      if (
+                        "object" == typeof Reflect &&
+                        "function" == typeof Reflect.decorate
+                      )
+                        s = Reflect.decorate(t, e, n, i);
+                      else
+                        for (var a = t.length - 1; a >= 0; a--)
+                          (r = t[a]) &&
+                            (s =
+                              (o < 3 ? r(s) : o > 3 ? r(e, n, s) : r(e, n)) ||
+                              s);
+                      o > 3 && s && Object.defineProperty(e, n, s);
+                    })(
                       [
                         N({
                           message:
@@ -4347,7 +4273,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                G = (function () {
+                V = (function () {
                   function t(t, e) {
                     (this.pos = t), (this.dir = e.normalize());
                   }
@@ -4374,7 +4300,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                X = (function () {
+                G = (function () {
                   function t(t, e) {
                     (this.begin = t), (this.end = e);
                   }
@@ -4448,8 +4374,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       void 0 === t && (t = null), void 0 === e && (e = null);
                       var n = this.slope,
                         i = this.intercept;
-                      if (null !== t) return new V(t, n * t + i);
-                      if (null !== e) return new V((e - i) / n, e);
+                      if (null !== t) return new q(t, n * t + i);
+                      if (null !== e) return new q((e - i) / n, e);
                       throw new Error("You must provide an X or a Y value");
                     }),
                     (t.prototype.hasPoint = function () {
@@ -4459,10 +4385,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         "number" == typeof arguments[0] &&
                         "number" == typeof arguments[1]
                       )
-                        (t = new V(arguments[0], arguments[1])),
+                        (t = new q(arguments[0], arguments[1])),
                           (e = arguments[2] || 0);
                       else {
-                        if (!(arguments[0] instanceof V))
+                        if (!(arguments[0] instanceof q))
                           throw "Could not determine the arguments for Vector.hasPoint";
                         (t = arguments[0]), (e = arguments[1] || 0);
                       }
@@ -4485,7 +4411,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Q = (function () {
+                X = (function () {
                   function t(t, e) {
                     (this.min = t), (this.max = e);
                   }
@@ -4503,7 +4429,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Z = (function () {
+                Q = (function () {
                   function t(t, e, n) {
                     (this.worldPos = t),
                       (this.pagePos = e),
@@ -4513,24 +4439,23 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.fromPagePosition = function (e, n, i) {
                       var r, o, s, a;
                       3 === arguments.length
-                        ? ((s = new V((r = e), (o = n))), (a = i))
+                        ? ((s = new q((r = e), (o = n))), (a = i))
                         : ((r = (s = e).x), (o = s.y), (a = n));
                       var c = r - E(a.canvas).x,
                         h = o - E(a.canvas).y,
-                        u = new V(c, h),
-                        l = a.screenToWorldCoordinates(u);
-                      return new t(l, s, u);
+                        u = new q(c, h);
+                      return new t(a.screenToWorldCoordinates(u), s, u);
                     }),
                     t
                   );
                 })();
-              function K(t, e) {
-                return new V(t, e);
+              function Z(t, e) {
+                return new q(t, e);
               }
-              var Y,
+              var K,
+                Y,
                 J,
-                $,
-                tt = function (t, e, n, i) {
+                $ = function (t, e, n, i) {
                   var r,
                     o = arguments.length,
                     s =
@@ -4551,7 +4476,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           (o < 3 ? r(s) : o > 3 ? r(e, n, s) : r(e, n)) || s);
                   return o > 3 && s && Object.defineProperty(e, n, s), s;
                 },
-                et = (function () {
+                tt = (function () {
                   function t(t, e, n, i) {
                     (this.r = t),
                       (this.g = e),
@@ -4582,27 +4507,27 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (t.fromHSL = function (t, e, n, i) {
                       return (
-                        void 0 === i && (i = 1), new nt(t, e, n, i).toRGBA()
+                        void 0 === i && (i = 1), new et(t, e, n, i).toRGBA()
                       );
                     }),
                     (t.prototype.lighten = function (t) {
                       void 0 === t && (t = 0.1);
-                      var e = nt.fromRGBA(this.r, this.g, this.b, this.a);
+                      var e = et.fromRGBA(this.r, this.g, this.b, this.a);
                       return (e.l += (1 - e.l) * t), e.toRGBA();
                     }),
                     (t.prototype.darken = function (t) {
                       void 0 === t && (t = 0.1);
-                      var e = nt.fromRGBA(this.r, this.g, this.b, this.a);
+                      var e = et.fromRGBA(this.r, this.g, this.b, this.a);
                       return (e.l -= e.l * t), e.toRGBA();
                     }),
                     (t.prototype.saturate = function (t) {
                       void 0 === t && (t = 0.1);
-                      var e = nt.fromRGBA(this.r, this.g, this.b, this.a);
+                      var e = et.fromRGBA(this.r, this.g, this.b, this.a);
                       return (e.s += e.s * t), e.toRGBA();
                     }),
                     (t.prototype.desaturate = function (t) {
                       void 0 === t && (t = 0.1);
-                      var e = nt.fromRGBA(this.r, this.g, this.b, this.a);
+                      var e = et.fromRGBA(this.r, this.g, this.b, this.a);
                       return (e.s -= e.s * t), e.toRGBA();
                     }),
                     (t.prototype.multiply = function (e) {
@@ -4673,7 +4598,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         : "rgb(" + t + ")";
                     }),
                     (t.prototype.toHSLA = function () {
-                      return nt
+                      return et
                         .fromRGBA(this.r, this.g, this.b, this.a)
                         .toString();
                     }),
@@ -4823,7 +4748,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       enumerable: !1,
                       configurable: !0,
                     }),
-                    tt(
+                    $(
                       [
                         N({
                           message:
@@ -4834,7 +4759,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       "mulitiply",
                       null
                     ),
-                    tt(
+                    $(
                       [
                         N({
                           message:
@@ -4849,7 +4774,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                nt = (function () {
+                et = (function () {
                   function t(t, e, n, i) {
                     (this.h = t), (this.s = e), (this.l = n), (this.a = i);
                   }
@@ -4906,7 +4831,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           (n = t.hue2rgb(o, r, this.h)),
                           (i = t.hue2rgb(o, r, this.h - 1 / 3));
                       }
-                      return new et(255 * e, 255 * n, 255 * i, this.a);
+                      return new tt(255 * e, 255 * n, 255 * i, this.a);
                     }),
                     (t.prototype.toString = function () {
                       return (
@@ -4923,48 +4848,27 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     t
                   );
-                })(),
-                it = function (t, e, n, i) {
-                  var r,
-                    o = arguments.length,
-                    s =
-                      o < 3
-                        ? e
-                        : null === i
-                        ? (i = Object.getOwnPropertyDescriptor(e, n))
-                        : i;
-                  if (
-                    "object" == typeof Reflect &&
-                    "function" == typeof Reflect.decorate
-                  )
-                    s = Reflect.decorate(t, e, n, i);
-                  else
-                    for (var a = t.length - 1; a >= 0; a--)
-                      (r = t[a]) &&
-                        (s =
-                          (o < 3 ? r(s) : o > 3 ? r(e, n, s) : r(e, n)) || s);
-                  return o > 3 && s && Object.defineProperty(e, n, s), s;
-                };
+                })();
               !(function (t) {
                 (t[(t.Box = 0)] = "Box"), (t[(t.RigidBody = 1)] = "RigidBody");
-              })(Y || (Y = {})),
+              })(K || (K = {})),
                 (function (t) {
                   (t[(t.Naive = 0)] = "Naive"),
                     (t[(t.DynamicAABBTree = 1)] = "DynamicAABBTree");
-                })(J || (J = {})),
+                })(Y || (Y = {})),
                 (function (t) {
                   t[(t.Euler = 0)] = "Euler";
-                })($ || ($ = {}));
-              var rt,
-                ot,
-                st = (function () {
+                })(J || (J = {}));
+              var nt,
+                it,
+                rt = (function () {
                   function t() {}
                   return (
                     (t.useBoxPhysics = function () {
-                      t.collisionResolutionStrategy = Y.Box;
+                      t.collisionResolutionStrategy = K.Box;
                     }),
                     (t.useRigidBodyPhysics = function () {
-                      t.collisionResolutionStrategy = Y.RigidBody;
+                      t.collisionResolutionStrategy = K.RigidBody;
                     }),
                     Object.defineProperty(t, "dynamicTreeVelocityMultiplyer", {
                       get: function () {
@@ -4976,10 +4880,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       enumerable: !1,
                       configurable: !0,
                     }),
-                    (t.acc = new V(0, 0)),
+                    (t.acc = new q(0, 0)),
                     (t.enabled = !0),
                     (t.collisionPasses = 5),
-                    (t.broadphaseStrategy = J.DynamicAABBTree),
+                    (t.broadphaseStrategy = Y.DynamicAABBTree),
                     (t.broadphaseDebug = !1),
                     (t.showCollisionNormals = !1),
                     (t.showMotionVectors = !1),
@@ -4987,9 +4891,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.showArea = !1),
                     (t.showContacts = !1),
                     (t.showNormals = !1),
-                    (t.collisionResolutionStrategy = Y.Box),
+                    (t.collisionResolutionStrategy = K.Box),
                     (t.defaultMass = 10),
-                    (t.integrator = $.Euler),
+                    (t.integrator = J.Euler),
                     (t.integrationSteps = 1),
                     (t.allowRigidBodyRotation = !0),
                     (t.collisionShift = 0.001),
@@ -4998,7 +4902,28 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.surfaceEpsilon = 0.1),
                     (t.checkForFastBodies = !0),
                     (t.disableMinimumSpeedForFastBody = !1),
-                    it(
+                    (function (t, e, n, i) {
+                      var r,
+                        o = arguments.length,
+                        s =
+                          o < 3
+                            ? e
+                            : null === i
+                            ? (i = Object.getOwnPropertyDescriptor(e, n))
+                            : i;
+                      if (
+                        "object" == typeof Reflect &&
+                        "function" == typeof Reflect.decorate
+                      )
+                        s = Reflect.decorate(t, e, n, i);
+                      else
+                        for (var a = t.length - 1; a >= 0; a--)
+                          (r = t[a]) &&
+                            (s =
+                              (o < 3 ? r(s) : o > 3 ? r(e, n, s) : r(e, n)) ||
+                              s);
+                      o > 3 && s && Object.defineProperty(e, n, s);
+                    })(
                       [
                         N({
                           message:
@@ -5013,9 +4938,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                at =
-                  ((rt = function (t, e) {
-                    return (rt =
+                ot =
+                  ((nt = function (t, e) {
+                    return (nt =
                       Object.setPrototypeOf ||
                       ({ __proto__: [] } instanceof Array &&
                         function (t, e) {
@@ -5031,7 +4956,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     function n() {
                       this.constructor = t;
                     }
-                    rt(t, e),
+                    nt(t, e),
                       (t.prototype =
                         null === e
                           ? Object.create(e)
@@ -5092,9 +5017,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   (t.PointerDragEnter = "pointerdragenter"),
                   (t.PointerDragLeave = "pointerdragleave"),
                   (t.PointerDragMove = "pointerdragmove");
-              })(ot || (ot = {}));
-              var ct,
-                ht = (function () {
+              })(it || (it = {}));
+              var st,
+                at = (function () {
                   function t() {
                     this._bubbles = !0;
                   }
@@ -5115,212 +5040,212 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
+                ct = (function (t) {
+                  function e(e) {
+                    var n = t.call(this) || this;
+                    return (n.target = e), n;
+                  }
+                  return ot(e, t), e;
+                })(at),
+                ht = (function (t) {
+                  function e(e) {
+                    var n = t.call(this) || this;
+                    return (n.target = e), n;
+                  }
+                  return ot(e, t), e;
+                })(at),
                 ut = (function (t) {
                   function e(e) {
                     var n = t.call(this) || this;
                     return (n.target = e), n;
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return ot(e, t), e;
+                })(at),
                 lt = (function (t) {
                   function e(e) {
                     var n = t.call(this) || this;
                     return (n.target = e), n;
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return ot(e, t), e;
+                })(at),
                 pt = (function (t) {
                   function e(e) {
                     var n = t.call(this) || this;
                     return (n.target = e), n;
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return ot(e, t), e;
+                })(at),
                 dt = (function (t) {
-                  function e(e) {
-                    var n = t.call(this) || this;
-                    return (n.target = e), n;
+                  function e(e, n, i) {
+                    var r = t.call(this) || this;
+                    return (r.ctx = e), (r.delta = n), (r.target = i), r;
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return ot(e, t), e;
+                })(at),
                 ft = (function (t) {
-                  function e(e) {
-                    var n = t.call(this) || this;
-                    return (n.target = e), n;
+                  function e(e, n, i) {
+                    var r = t.call(this) || this;
+                    return (r.ctx = e), (r.delta = n), (r.target = i), r;
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return ot(e, t), e;
+                })(at),
                 yt = (function (t) {
-                  function e(e, n, i) {
-                    var r = t.call(this) || this;
-                    return (r.ctx = e), (r.delta = n), (r.target = i), r;
+                  function e(e, n) {
+                    var i = t.call(this) || this;
+                    return (i.ctx = e), (i.target = n), i;
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return ot(e, t), e;
+                })(at),
                 gt = (function (t) {
-                  function e(e, n, i) {
-                    var r = t.call(this) || this;
-                    return (r.ctx = e), (r.delta = n), (r.target = i), r;
+                  function e(e, n) {
+                    var i = t.call(this) || this;
+                    return (i.ctx = e), (i.target = n), i;
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return ot(e, t), e;
+                })(at),
                 _t = (function (t) {
-                  function e(e, n) {
-                    var i = t.call(this) || this;
-                    return (i.ctx = e), (i.target = n), i;
+                  function e(e, n, i) {
+                    var r = t.call(this) || this;
+                    return (r.engine = e), (r.delta = n), (r.target = i), r;
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return ot(e, t), e;
+                })(at),
                 vt = (function (t) {
-                  function e(e, n) {
-                    var i = t.call(this) || this;
-                    return (i.ctx = e), (i.target = n), i;
+                  function e(e, n, i) {
+                    var r = t.call(this) || this;
+                    return (r.engine = e), (r.delta = n), (r.target = i), r;
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return ot(e, t), e;
+                })(at),
                 mt = (function (t) {
-                  function e(e, n, i) {
-                    var r = t.call(this) || this;
-                    return (r.engine = e), (r.delta = n), (r.target = i), r;
-                  }
-                  return at(e, t), e;
-                })(ht),
-                bt = (function (t) {
-                  function e(e, n, i) {
-                    var r = t.call(this) || this;
-                    return (r.engine = e), (r.delta = n), (r.target = i), r;
-                  }
-                  return at(e, t), e;
-                })(ht),
-                wt = (function (t) {
                   function e(e, n) {
                     var i = t.call(this) || this;
                     return (i.engine = e), (i.prevStats = n), (i.target = e), i;
                   }
-                  return at(e, t), e;
-                })(ht),
-                xt = (function (t) {
+                  return ot(e, t), e;
+                })(at),
+                bt = (function (t) {
                   function e(e, n) {
                     var i = t.call(this) || this;
                     return (i.engine = e), (i.stats = n), (i.target = e), i;
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return ot(e, t), e;
+                })(at),
+                wt = (function (t) {
+                  function e(e, n) {
+                    var i = t.call(this) || this;
+                    return (i.index = e), (i.gamepad = n), (i.target = n), i;
+                  }
+                  return ot(e, t), e;
+                })(at),
+                xt = (function (t) {
+                  function e(e, n) {
+                    var i = t.call(this) || this;
+                    return (i.index = e), (i.gamepad = n), (i.target = n), i;
+                  }
+                  return ot(e, t), e;
+                })(at),
                 Pt = (function (t) {
-                  function e(e, n) {
-                    var i = t.call(this) || this;
-                    return (i.index = e), (i.gamepad = n), (i.target = n), i;
-                  }
-                  return at(e, t), e;
-                })(ht),
-                At = (function (t) {
-                  function e(e, n) {
-                    var i = t.call(this) || this;
-                    return (i.index = e), (i.gamepad = n), (i.target = n), i;
-                  }
-                  return at(e, t), e;
-                })(ht),
-                Et = (function (t) {
                   function e(e, n, i) {
                     var r = t.call(this) || this;
                     return (r.button = e), (r.value = n), (r.target = i), r;
                   }
-                  return at(e, t), e;
-                })(ht),
-                St = (function (t) {
+                  return ot(e, t), e;
+                })(at),
+                At = (function (t) {
                   function e(e, n, i) {
                     var r = t.call(this) || this;
                     return (r.axis = e), (r.value = n), (r.target = i), r;
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return ot(e, t), e;
+                })(at),
+                Et = (function (t) {
+                  function e(e, n) {
+                    var i = t.call(this) || this;
+                    return (i.topic = e), (i.handler = n), i;
+                  }
+                  return ot(e, t), e;
+                })(at),
+                St = (function (t) {
+                  function e(e, n) {
+                    var i = t.call(this) || this;
+                    return (i.topic = e), (i.handler = n), i;
+                  }
+                  return ot(e, t), e;
+                })(at),
                 Ct = (function (t) {
-                  function e(e, n) {
-                    var i = t.call(this) || this;
-                    return (i.topic = e), (i.handler = n), i;
+                  function e(e) {
+                    var n = t.call(this) || this;
+                    return (n.target = e), n;
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return ot(e, t), e;
+                })(at),
                 Ot = (function (t) {
-                  function e(e, n) {
-                    var i = t.call(this) || this;
-                    return (i.topic = e), (i.handler = n), i;
+                  function e(e) {
+                    var n = t.call(this) || this;
+                    return (n.target = e), n;
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return ot(e, t), e;
+                })(at),
                 Tt = (function (t) {
-                  function e(e) {
-                    var n = t.call(this) || this;
-                    return (n.target = e), n;
+                  function e(e, n, i, r) {
+                    var o = t.call(this) || this;
+                    return (
+                      (o.other = n),
+                      (o.side = i),
+                      (o.intersection = r),
+                      (o.target = e),
+                      o
+                    );
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return (
+                    ot(e, t),
+                    Object.defineProperty(e.prototype, "actor", {
+                      get: function () {
+                        return this.target;
+                      },
+                      set: function (t) {
+                        this.target = t;
+                      },
+                      enumerable: !1,
+                      configurable: !0,
+                    }),
+                    e
+                  );
+                })(at),
                 Bt = (function (t) {
-                  function e(e) {
-                    var n = t.call(this) || this;
-                    return (n.target = e), n;
+                  function e(e, n, i, r) {
+                    var o = t.call(this) || this;
+                    return (
+                      (o.other = n),
+                      (o.side = i),
+                      (o.intersection = r),
+                      (o.target = e),
+                      o
+                    );
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return (
+                    ot(e, t),
+                    Object.defineProperty(e.prototype, "actor", {
+                      get: function () {
+                        return this.target;
+                      },
+                      set: function (t) {
+                        this.target = t;
+                      },
+                      enumerable: !1,
+                      configurable: !0,
+                    }),
+                    e
+                  );
+                })(at),
                 Mt = (function (t) {
-                  function e(e, n, i, r) {
-                    var o = t.call(this) || this;
-                    return (
-                      (o.other = n),
-                      (o.side = i),
-                      (o.intersection = r),
-                      (o.target = e),
-                      o
-                    );
-                  }
-                  return (
-                    at(e, t),
-                    Object.defineProperty(e.prototype, "actor", {
-                      get: function () {
-                        return this.target;
-                      },
-                      set: function (t) {
-                        this.target = t;
-                      },
-                      enumerable: !1,
-                      configurable: !0,
-                    }),
-                    e
-                  );
-                })(ht),
-                Dt = (function (t) {
-                  function e(e, n, i, r) {
-                    var o = t.call(this) || this;
-                    return (
-                      (o.other = n),
-                      (o.side = i),
-                      (o.intersection = r),
-                      (o.target = e),
-                      o
-                    );
-                  }
-                  return (
-                    at(e, t),
-                    Object.defineProperty(e.prototype, "actor", {
-                      get: function () {
-                        return this.target;
-                      },
-                      set: function (t) {
-                        this.target = t;
-                      },
-                      enumerable: !1,
-                      configurable: !0,
-                    }),
-                    e
-                  );
-                })(ht),
-                kt = (function (t) {
                   function e(e, n, i) {
                     var r = t.call(this) || this;
                     return (r.other = n), (r.pair = i), (r.target = e), r;
                   }
                   return (
-                    at(e, t),
+                    ot(e, t),
                     Object.defineProperty(e.prototype, "actor", {
                       get: function () {
                         return this.target;
@@ -5333,14 +5258,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     e
                   );
-                })(ht),
-                Rt = (function (t) {
+                })(at),
+                Dt = (function (t) {
                   function e(e, n) {
                     var i = t.call(this) || this;
                     return (i.other = n), (i.target = e), i;
                   }
                   return (
-                    at(e, t),
+                    ot(e, t),
                     Object.defineProperty(e.prototype, "actor", {
                       get: function () {
                         return this.target;
@@ -5353,63 +5278,63 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     e
                   );
-                })(ht),
-                jt = (function (t) {
+                })(at),
+                kt = (function (t) {
                   function e(e, n) {
                     var i = t.call(this) || this;
                     return (i.engine = e), (i.target = n), i;
                   }
-                  return at(e, t), e;
-                })(ht),
-                Ft = (function (t) {
+                  return ot(e, t), e;
+                })(at),
+                Rt = (function (t) {
                   function e(e, n) {
                     var i = t.call(this) || this;
                     return (i.oldScene = e), (i.target = n), i;
                   }
-                  return at(e, t), e;
-                })(ht),
-                It = (function (t) {
+                  return ot(e, t), e;
+                })(at),
+                jt = (function (t) {
                   function e(e, n) {
                     var i = t.call(this) || this;
                     return (i.newScene = e), (i.target = n), i;
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return ot(e, t), e;
+                })(at),
+                Ft = (function (t) {
+                  function e(e) {
+                    var n = t.call(this) || this;
+                    return (n.target = e), n;
+                  }
+                  return ot(e, t), e;
+                })(at),
+                It = (function (t) {
+                  function e(e) {
+                    var n = t.call(this) || this;
+                    return (n.target = e), n;
+                  }
+                  return ot(e, t), e;
+                })(at),
                 Lt = (function (t) {
-                  function e(e) {
-                    var n = t.call(this) || this;
-                    return (n.target = e), n;
+                  function e(e, n) {
+                    var i = t.call(this) || this;
+                    return (i.target = e), (i.actor = n), i;
                   }
-                  return at(e, t), e;
-                })(ht),
+                  return ot(e, t), e;
+                })(at),
                 zt = (function (t) {
-                  function e(e) {
-                    var n = t.call(this) || this;
-                    return (n.target = e), n;
-                  }
-                  return at(e, t), e;
-                })(ht),
-                Ht = (function (t) {
                   function e(e, n) {
                     var i = t.call(this) || this;
                     return (i.target = e), (i.actor = n), i;
                   }
-                  return at(e, t), e;
-                })(ht),
-                Ut = (function (t) {
-                  function e(e, n) {
-                    var i = t.call(this) || this;
-                    return (i.target = e), (i.actor = n), i;
-                  }
-                  return at(e, t), e;
-                })(ht);
+                  return ot(e, t), e;
+                })(at);
               !(function (t) {
                 (t.PreventCollision = "PreventCollision"),
                   (t.Passive = "Passive"),
                   (t.Active = "Active"),
                   (t.Fixed = "Fixed");
-              })(ct || (ct = {}));
-              var Wt = (function () {
+              })(st || (st = {}));
+              var Ht = (function () {
                   function t(t, e, n, i, r) {
                     (this.colliderA = t),
                       (this.colliderB = e),
@@ -5419,9 +5344,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   }
                   return (
                     (t.prototype.resolve = function (t) {
-                      if (t === Y.RigidBody) this._resolveRigidBodyCollision();
+                      if (t === K.RigidBody) this._resolveRigidBodyCollision();
                       else {
-                        if (t !== Y.Box)
+                        if (t !== K.Box)
                           throw new Error(
                             "Unknown collision resolution strategy"
                           );
@@ -5429,9 +5354,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       }
                     }),
                     (t.prototype._applyBoxImpulse = function (t, e, n) {
-                      if (t.type === ct.Active && e.type !== ct.Passive) {
-                        t.type === ct.Active &&
-                          e.type === ct.Active &&
+                      if (t.type === st.Active && e.type !== st.Passive) {
+                        t.type === st.Active &&
+                          e.type === st.Active &&
                           (n = n.scale(0.5)),
                           (t.body.pos.y += n.y),
                           (t.body.pos.x += n.x);
@@ -5440,7 +5365,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           var r = i.scale(i.dot(t.body.vel.negate()));
                           t.body.vel = t.body.vel.add(r);
                         }
-                        t.emit("postcollision", new Dt(t, e, B(n), n));
+                        t.emit("postcollision", new Bt(t, e, B(n), n));
                       }
                     }),
                     (t.prototype._resolveBoxCollision = function () {
@@ -5448,11 +5373,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         e = this.mtv.negate();
                       this.colliderA.emit(
                         "precollision",
-                        new Mt(this.colliderA, this.colliderB, t, e)
+                        new Tt(this.colliderA, this.colliderB, t, e)
                       ),
                         this.colliderB.emit(
                           "precollision",
-                          new Mt(
+                          new Tt(
                             this.colliderB,
                             this.colliderA,
                             T(t),
@@ -5480,34 +5405,34 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         if (
                           (this.colliderA.emit(
                             "precollision",
-                            new Mt(this.colliderA, this.colliderB, r, this.mtv)
+                            new Tt(this.colliderA, this.colliderB, r, this.mtv)
                           ),
                           this.colliderB.emit(
                             "precollision",
-                            new Mt(
+                            new Tt(
                               this.colliderB,
                               this.colliderA,
                               T(r),
                               this.mtv.negate()
                             )
                           ),
-                          this.colliderA.type !== ct.Passive &&
-                            this.colliderB.type !== ct.Passive)
+                          this.colliderA.type !== st.Passive &&
+                            this.colliderB.type !== st.Passive)
                         ) {
                           var o =
-                              this.colliderA.type === ct.Fixed
+                              this.colliderA.type === st.Fixed
                                 ? 0
                                 : 1 / this.colliderA.mass,
                             s =
-                              this.colliderB.type === ct.Fixed
+                              this.colliderB.type === st.Fixed
                                 ? 0
                                 : 1 / this.colliderB.mass,
                             a =
-                              this.colliderA.type === ct.Fixed
+                              this.colliderA.type === st.Fixed
                                 ? 0
                                 : 1 / this.colliderA.inertia,
                             c =
-                              this.colliderB.type === ct.Fixed
+                              this.colliderB.type === st.Fixed
                                 ? 0
                                 : 1 / this.colliderB.inertia,
                             h = Math.min(
@@ -5534,19 +5459,19 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             var w =
                               (-(1 + h) * y) / (o + s + a * _ * _ + c * m * m);
                             if (
-                              (this.colliderA.type === ct.Fixed
+                              (this.colliderA.type === st.Fixed
                                 ? ((e.vel = e.vel.add(i.scale(w * s))),
-                                  st.allowRigidBodyRotation &&
+                                  rt.allowRigidBodyRotation &&
                                     (e.rx -= w * c * -d.cross(i)),
                                   e.addMtv(n))
-                                : this.colliderB.type === ct.Fixed
+                                : this.colliderB.type === st.Fixed
                                 ? ((t.vel = t.vel.sub(i.scale(w * o))),
-                                  st.allowRigidBodyRotation &&
+                                  rt.allowRigidBodyRotation &&
                                     (t.rx += w * a * -p.cross(i)),
                                   t.addMtv(n.negate()))
                                 : ((e.vel = e.vel.add(i.scale(w * s))),
                                   (t.vel = t.vel.sub(i.scale(w * o))),
-                                  st.allowRigidBodyRotation &&
+                                  rt.allowRigidBodyRotation &&
                                     ((e.rx -= w * c * -d.cross(i)),
                                     (t.rx += w * a * -p.cross(i))),
                                   e.addMtv(n.scale(0.5)),
@@ -5555,28 +5480,28 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             ) {
                               var x = f.sub(i.scale(f.dot(i))).normalize(),
                                 P = f.dot(x) / (o + s + v * v * a + b * b * c),
-                                A = new V(0, 0);
+                                A = new q(0, 0);
                               (A =
                                 Math.abs(P) <= w * u
                                   ? x.scale(P).negate()
                                   : x.scale(-w * u)),
-                                this.colliderA.type === ct.Fixed
+                                this.colliderA.type === st.Fixed
                                   ? ((e.vel = e.vel.add(A.scale(s))),
-                                    st.allowRigidBodyRotation &&
+                                    rt.allowRigidBodyRotation &&
                                       (e.rx += A.dot(x) * c * d.cross(x)))
-                                  : this.colliderB.type === ct.Fixed
+                                  : this.colliderB.type === st.Fixed
                                   ? ((t.vel = t.vel.sub(A.scale(o))),
-                                    st.allowRigidBodyRotation &&
+                                    rt.allowRigidBodyRotation &&
                                       (t.rx -= A.dot(x) * a * p.cross(x)))
                                   : ((e.vel = e.vel.add(A.scale(s))),
                                     (t.vel = t.vel.sub(A.scale(o))),
-                                    st.allowRigidBodyRotation &&
+                                    rt.allowRigidBodyRotation &&
                                       ((e.rx += A.dot(x) * c * d.cross(x)),
                                       (t.rx -= A.dot(x) * a * p.cross(x))));
                             }
                             this.colliderA.emit(
                               "postcollision",
-                              new Dt(
+                              new Bt(
                                 this.colliderA,
                                 this.colliderB,
                                 r,
@@ -5585,7 +5510,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             ),
                               this.colliderB.emit(
                                 "postcollision",
-                                new Dt(
+                                new Bt(
                                   this.colliderB,
                                   this.colliderA,
                                   T(r),
@@ -5599,7 +5524,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Nt = {
+                Ut = {
                   CollideCircleCircle: function (t, e) {
                     var n = t.radius + e.radius,
                       i = t.worldPos,
@@ -5608,7 +5533,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     var o = r.sub(i).normalize(),
                       s = o.scale(n - r.distance(i)),
                       a = t.getFurthestPoint(o);
-                    return new Wt(t.collider, e.collider, s, a, o);
+                    return new Ht(t.collider, e.collider, s, a, o);
                   },
                   CollideCirclePolygon: function (t, e) {
                     var n = t.testSeparatingAxisTheorem(e);
@@ -5623,7 +5548,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       e.contains(s) && r.push(s),
                       0 === r.length
                         ? null
-                        : new Wt(
+                        : new Ht(
                             t.collider,
                             e.collider,
                             n,
@@ -5642,7 +5567,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         a = s.dot(s);
                       return a > t.radius * t.radius
                         ? null
-                        : new Wt(
+                        : new Ht(
                             t.collider,
                             e.collider,
                             s.normalize().scale(t.radius - Math.sqrt(a)),
@@ -5655,7 +5580,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         h = c.dot(c);
                       return h > t.radius * t.radius
                         ? null
-                        : new Wt(
+                        : new Ht(
                             t.collider,
                             e.collider,
                             c.normalize().scale(t.radius - Math.sqrt(h)),
@@ -5676,7 +5601,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     var y = (f = f.normalize()).scale(
                       Math.abs(t.radius - Math.sqrt(d))
                     );
-                    return new Wt(
+                    return new Ht(
                       t.collider,
                       e.collider,
                       y.negate(),
@@ -5694,7 +5619,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         r = i.distance,
                         o = i.face;
                       if (r)
-                        return new Wt(
+                        return new Ht(
                           t.collider,
                           e.collider,
                           r.negate(),
@@ -5704,9 +5629,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }
                     if (t.contains(e.end)) {
                       var s = t.getClosestFace(e.end);
-                      (r = s.distance), (o = s.face);
-                      if (r)
-                        return new Wt(
+                      if (((r = s.distance), (o = s.face), r))
+                        return new Ht(
                           t.collider,
                           e.collider,
                           r.negate(),
@@ -5716,7 +5640,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }
                     var a = t.center,
                       c = e.center.sub(a).normalize(),
-                      h = new Zt({
+                      h = new Xt({
                         collider: e.collider,
                         points: [
                           e.begin,
@@ -5729,7 +5653,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     return u
                       ? ((n = n.dot(c) < 0 ? n.negate() : n),
                         (u = u.dot(c) < 0 ? u.negate() : u),
-                        new Wt(
+                        new Ht(
                           t.collider,
                           e.collider,
                           u,
@@ -5750,10 +5674,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       t.contains(s) && r.push(s),
                       0 === r.length && r.push(s);
                     var a = 2 === r.length ? r[0].add(r[1]).scale(0.5) : r[0];
-                    return new Wt(t.collider, e.collider, n, a, n.normalize());
+                    return new Ht(t.collider, e.collider, n, a, n.normalize());
                   },
                 };
-              function qt(t, e, n, i) {
+              function Wt(t, e, n, i) {
                 var r = t.sub(n),
                   o = e.dot(e),
                   s = e.dot(i),
@@ -5765,7 +5689,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   p = u;
                 if (0 === u || u <= 0.01) {
                   var d = c / s;
-                  return new X(t, n.add(i.scale(d)));
+                  return new G(t, n.add(i.scale(d)));
                 }
                 var f = s * h - a * c,
                   y = o * h - s * c;
@@ -5785,22 +5709,22 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         : ((f = -c + s), (l = o))),
                   (f = Math.abs(f) < 0.001 ? 0 : f / l),
                   (y = Math.abs(y) < 0.001 ? 0 : y / p),
-                  new X(t.add(e.scale(f)), n.add(i.scale(y)))
+                  new G(t.add(e.scale(f)), n.add(i.scale(y)))
                 );
               }
-              var Vt,
-                Gt = {
+              var Nt,
+                qt = {
                   PolygonPolygonClosestLine: function (t, e) {
                     var n = e.worldPos,
                       i = n.sub(t.worldPos),
                       r = i.negate(),
-                      o = new G(t.worldPos, i),
-                      s = new G(n, r),
+                      o = new V(t.worldPos, i),
+                      s = new V(n, r),
                       a = t.rayCast(o).add(o.dir.scale(0.1)),
                       c = e.rayCast(s).add(s.dir.scale(0.1)),
                       h = t.getClosestFace(a),
                       u = e.getClosestFace(c);
-                    return qt(
+                    return Wt(
                       h.face.begin,
                       h.face.getEdge(),
                       u.face.begin,
@@ -5809,18 +5733,18 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   },
                   PolygonEdgeClosestLine: function (t, e) {
                     var n = e.worldPos.sub(t.worldPos),
-                      i = new G(t.worldPos, n),
+                      i = new V(t.worldPos, n),
                       r = t.rayCast(i).add(i.dir.scale(0.1)),
                       o = t.getClosestFace(r),
                       s = o.face.begin,
                       a = o.face.getEdge(),
                       c = e.asLine();
-                    return qt(s, a, c.begin, c.getEdge());
+                    return Wt(s, a, c.begin, c.getEdge());
                   },
                   PolygonCircleClosestLine: function (t, e) {
                     var n = e.worldPos,
                       i = n.sub(t.worldPos),
-                      r = new G(t.worldPos, i.normalize()),
+                      r = new V(t.worldPos, i.normalize()),
                       o = t.rayCast(r).add(r.dir.scale(0.1)),
                       s = t.getClosestFace(o),
                       a = s.face.begin,
@@ -5836,16 +5760,16 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         ) - e.radius,
                       l = ((a.x + c.x * h - n.x) * e.radius) / (e.radius + u),
                       p = ((a.y + c.y * h - n.y) * e.radius) / (e.radius + u);
-                    return new X(c.scale(h).add(a), new V(n.x + l, n.y + p));
+                    return new G(c.scale(h).add(a), new q(n.x + l, n.y + p));
                   },
                   CircleCircleClosestLine: function (t, e) {
                     var n = e.worldPos.sub(t.worldPos),
                       i = t.worldPos.sub(e.worldPos),
-                      r = new G(t.worldPos, n),
-                      o = new G(e.worldPos, i),
+                      r = new V(t.worldPos, n),
+                      o = new V(e.worldPos, i),
                       s = t.rayCast(r),
                       a = e.rayCast(o);
-                    return new X(s, a);
+                    return new G(s, a);
                   },
                   CircleEdgeClosestLine: function (t, e) {
                     var n = t.worldPos,
@@ -5863,20 +5787,20 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         ) - t.radius,
                       c = ((r.x + o.x * s - n.x) * t.radius) / (t.radius + a),
                       h = ((r.y + o.y * s - n.y) * t.radius) / (t.radius + a);
-                    return new X(o.scale(s).add(r), new V(n.x + c, n.y + h));
+                    return new G(o.scale(s).add(r), new q(n.x + c, n.y + h));
                   },
                   EdgeEdgeClosestLine: function (t, e) {
                     var n = t.asLine(),
                       i = n.begin,
                       r = n.getEdge(),
                       o = e.asLine();
-                    return qt(i, r, o.begin, o.getEdge());
+                    return Wt(i, r, o.begin, o.getEdge());
                   },
                 },
-                Xt = (function () {
+                Vt = (function () {
                   function t(t) {
-                    (this.offset = V.Zero),
-                      (this.offset = t.offset || V.Zero),
+                    (this.offset = q.Zero),
+                      (this.offset = t.offset || q.Zero),
                       (this.radius = t.radius || 0),
                       (this.collider = t.collider || null);
                   }
@@ -5940,11 +5864,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (t.prototype.getClosestLineBetween = function (e) {
                       if (e instanceof t)
-                        return Gt.CircleCircleClosestLine(this, e);
-                      if (e instanceof Zt)
-                        return Gt.PolygonCircleClosestLine(e, this).flip();
-                      if (e instanceof Qt)
-                        return Gt.CircleEdgeClosestLine(this, e).flip();
+                        return qt.CircleCircleClosestLine(this, e);
+                      if (e instanceof Xt)
+                        return qt.PolygonCircleClosestLine(e, this).flip();
+                      if (e instanceof Gt)
+                        return qt.CircleEdgeClosestLine(this, e).flip();
                       throw new Error(
                         "Polygon could not collide with unknown CollisionShape " +
                           typeof e
@@ -5952,10 +5876,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (t.prototype.collide = function (e) {
                       if (e instanceof t)
-                        return Nt.CollideCircleCircle(this, e);
-                      if (e instanceof Zt)
-                        return Nt.CollideCirclePolygon(this, e);
-                      if (e instanceof Qt) return Nt.CollideCircleEdge(this, e);
+                        return Ut.CollideCircleCircle(this, e);
+                      if (e instanceof Xt)
+                        return Ut.CollideCirclePolygon(this, e);
+                      if (e instanceof Gt) return Ut.CollideCircleEdge(this, e);
                       throw new Error(
                         "Circle could not collide with unknown CollisionShape " +
                           typeof e
@@ -5966,12 +5890,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     Object.defineProperty(t.prototype, "bounds", {
                       get: function () {
-                        var t = V.Zero;
+                        var t = q.Zero;
                         return (
                           this.collider &&
                             this.collider.body &&
                             (t = this.collider.body.pos),
-                          new Kt(
+                          new Qt(
                             this.offset.x + t.x - this.radius,
                             this.offset.y + t.y - this.radius,
                             this.offset.x + t.x + this.radius,
@@ -5984,7 +5908,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     Object.defineProperty(t.prototype, "localBounds", {
                       get: function () {
-                        return new Kt(
+                        return new Qt(
                           this.offset.x - this.radius,
                           this.offset.y - this.radius,
                           this.offset.x + this.radius,
@@ -6006,7 +5930,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         return (
                           ((this.collider
                             ? this.collider.mass
-                            : st.defaultMass) *
+                            : rt.defaultMass) *
                             this.radius *
                             this.radius) /
                           2
@@ -6041,12 +5965,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         e.push(n),
                         e.push(n + this.radius),
                         e.push(n - this.radius),
-                        new Q(Math.min.apply(Math, e), Math.max.apply(Math, e))
+                        new X(Math.min.apply(Math, e), Math.max.apply(Math, e))
                       );
                     }),
                     (t.prototype.draw = function (t, e, n) {
-                      void 0 === e && (e = et.Green),
-                        void 0 === n && (n = V.Zero);
+                      void 0 === e && (e = tt.Green),
+                        void 0 === n && (n = q.Zero);
                       var i = n.add(this.offset);
                       t.beginPath(),
                         (t.fillStyle = e.toString()),
@@ -6055,7 +5979,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         t.fill();
                     }),
                     (t.prototype.debugDraw = function (t, e) {
-                      void 0 === e && (e = et.Green);
+                      void 0 === e && (e = tt.Green);
                       var n = this.collider.body,
                         i = n ? n.pos.add(this.offset) : this.offset,
                         r = n ? n.rotation : 0;
@@ -6076,10 +6000,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Qt = (function () {
+                Gt = (function () {
                   function t(t) {
-                    (this.begin = t.begin || V.Zero),
-                      (this.end = t.end || V.Zero),
+                    (this.begin = t.begin || q.Zero),
+                      (this.end = t.end || q.Zero),
                       (this.collider = t.collider || null),
                       (this.offset = this.center);
                   }
@@ -6110,7 +6034,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       configurable: !0,
                     }),
                     (t.prototype._getBodyPos = function () {
-                      var t = V.Zero;
+                      var t = q.Zero;
                       return (
                         this.collider &&
                           this.collider.body &&
@@ -6160,22 +6084,22 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       return null;
                     }),
                     (t.prototype.getClosestLineBetween = function (e) {
+                      if (e instanceof Vt)
+                        return qt.CircleEdgeClosestLine(e, this);
                       if (e instanceof Xt)
-                        return Gt.CircleEdgeClosestLine(e, this);
-                      if (e instanceof Zt)
-                        return Gt.PolygonEdgeClosestLine(e, this).flip();
+                        return qt.PolygonEdgeClosestLine(e, this).flip();
                       if (e instanceof t)
-                        return Gt.EdgeEdgeClosestLine(this, e);
+                        return qt.EdgeEdgeClosestLine(this, e);
                       throw new Error(
                         "Polygon could not collide with unknown CollisionShape " +
                           typeof e
                       );
                     }),
                     (t.prototype.collide = function (e) {
-                      if (e instanceof Xt) return Nt.CollideCircleEdge(e, this);
-                      if (e instanceof Zt)
-                        return Nt.CollidePolygonEdge(e, this);
-                      if (e instanceof t) return Nt.CollideEdgeEdge();
+                      if (e instanceof Vt) return Ut.CollideCircleEdge(e, this);
+                      if (e instanceof Xt)
+                        return Ut.CollidePolygonEdge(e, this);
+                      if (e instanceof t) return Ut.CollideEdgeEdge();
                       throw new Error(
                         "Edge could not collide with unknown CollisionShape " +
                           typeof e
@@ -6187,7 +6111,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       return t.dot(e) > 0 ? e : n;
                     }),
                     (t.prototype._boundsFromBeginEnd = function (t, e) {
-                      return new Kt(
+                      return new Qt(
                         Math.min(t.x, e.x),
                         Math.min(t.y, e.y),
                         Math.max(t.x, e.x),
@@ -6211,13 +6135,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       configurable: !0,
                     }),
                     (t.prototype.asLine = function () {
-                      return new X(
+                      return new G(
                         this._getTransformedBegin(),
                         this._getTransformedEnd()
                       );
                     }),
                     (t.prototype.asLocalLine = function () {
-                      return new X(this.begin, this.end);
+                      return new G(this.begin, this.end);
                     }),
                     Object.defineProperty(t.prototype, "axes", {
                       get: function () {
@@ -6240,7 +6164,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       get: function () {
                         var t = this.collider
                             ? this.collider.mass
-                            : st.defaultMass,
+                            : rt.defaultMass,
                           e = this.end.sub(this.begin).distance() / 2;
                         return t * e * e;
                       },
@@ -6261,14 +6185,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         r++
                       )
                         e.push(n[r].dot(t));
-                      return new Q(
+                      return new X(
                         Math.min.apply(Math, e),
                         Math.max.apply(Math, e)
                       );
                     }),
                     (t.prototype.draw = function (t, e, n) {
-                      void 0 === e && (e = et.Green),
-                        void 0 === n && (n = V.Zero);
+                      void 0 === e && (e = tt.Green),
+                        void 0 === n && (n = q.Zero);
                       var i = this.begin.add(n),
                         r = this.end.add(n);
                       (t.strokeStyle = e.toString()),
@@ -6279,7 +6203,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         t.stroke();
                     }),
                     (t.prototype.debugDraw = function (t, e) {
-                      void 0 === e && (e = et.Red);
+                      void 0 === e && (e = tt.Red);
                       var n = this._getTransformedBegin(),
                         i = this._getTransformedEnd();
                       (t.strokeStyle = e.toString()),
@@ -6292,12 +6216,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Zt = (function () {
+                Xt = (function () {
                   function t(t) {
                     (this._transformedPoints = []),
                       (this._axes = []),
                       (this._sides = []),
-                      (this.offset = t.offset || V.Zero);
+                      (this.offset = t.offset || q.Zero);
                     var e = !!t.clockwiseWinding;
                     (this.points = (e ? t.points.reverse() : t.points) || []),
                       (this.collider = this.collider = t.collider || null),
@@ -6334,7 +6258,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       var t = this.collider ? this.collider.body : null,
                         e = t ? t.pos.add(this.offset) : this.offset,
                         n = t ? t.rotation : 0,
-                        i = t ? t.scale : V.One,
+                        i = t ? t.scale : q.One,
                         r = this.points.length;
                       this._transformedPoints.length = 0;
                       for (var o = 0; o < r; o++)
@@ -6369,7 +6293,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         i < n;
                         i++
                       )
-                        t.push(new X(e[i], e[(i - 1 + n) % n]));
+                        t.push(new G(e[i], e[(i - 1 + n) % n]));
                       return (this._sides = t), this._sides;
                     }),
                     (t.prototype.recalc = function () {
@@ -6380,7 +6304,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         this.getSides();
                     }),
                     (t.prototype.contains = function (t) {
-                      var e = new G(t, new V(1, 0));
+                      var e = new V(t, new q(1, 0));
                       return (
                         this.getSides().reduce(function (t, n) {
                           return e.intersect(n) >= 0 ? t + 1 : t;
@@ -6390,24 +6314,24 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       );
                     }),
                     (t.prototype.getClosestLineBetween = function (e) {
-                      if (e instanceof Xt)
-                        return Gt.PolygonCircleClosestLine(this, e);
+                      if (e instanceof Vt)
+                        return qt.PolygonCircleClosestLine(this, e);
                       if (e instanceof t)
-                        return Gt.PolygonPolygonClosestLine(this, e);
-                      if (e instanceof Qt)
-                        return Gt.PolygonEdgeClosestLine(this, e);
+                        return qt.PolygonPolygonClosestLine(this, e);
+                      if (e instanceof Gt)
+                        return qt.PolygonEdgeClosestLine(this, e);
                       throw new Error(
                         "Polygon could not collide with unknown CollisionShape " +
                           typeof e
                       );
                     }),
                     (t.prototype.collide = function (e) {
-                      if (e instanceof Xt)
-                        return Nt.CollideCirclePolygon(e, this);
+                      if (e instanceof Vt)
+                        return Ut.CollideCirclePolygon(e, this);
                       if (e instanceof t)
-                        return Nt.CollidePolygonPolygon(this, e);
-                      if (e instanceof Qt)
-                        return Nt.CollidePolygonEdge(this, e);
+                        return Ut.CollidePolygonPolygon(this, e);
+                      if (e instanceof Gt)
+                        return Ut.CollidePolygonEdge(this, e);
                       throw new Error(
                         "Polygon could not collide with unknown CollisionShape " +
                           typeof e
@@ -6447,14 +6371,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     Object.defineProperty(t.prototype, "bounds", {
                       get: function () {
                         var t = this.getTransformedPoints();
-                        return Kt.fromPoints(t);
+                        return Qt.fromPoints(t);
                       },
                       enumerable: !1,
                       configurable: !0,
                     }),
                     Object.defineProperty(t.prototype, "localBounds", {
                       get: function () {
-                        return Kt.fromPoints(this.points);
+                        return Qt.fromPoints(this.points);
                       },
                       enumerable: !1,
                       configurable: !0,
@@ -6464,7 +6388,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         for (
                           var t = this.collider
                               ? this.collider.mass
-                              : st.defaultMass,
+                              : rt.defaultMass,
                             e = 0,
                             n = 0,
                             i = 0;
@@ -6550,11 +6474,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         var s = e[o].dot(t);
                         (i = Math.min(i, s)), (r = Math.max(r, s));
                       }
-                      return new Q(i, r);
+                      return new X(i, r);
                     }),
                     (t.prototype.draw = function (t, e, n) {
-                      void 0 === e && (e = et.Green),
-                        void 0 === n && (n = V.Zero),
+                      void 0 === e && (e = tt.Green),
+                        void 0 === n && (n = q.Zero),
                         t.beginPath(),
                         (t.fillStyle = e.toString());
                       var i = n.add(this.offset),
@@ -6572,7 +6496,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         t.fill();
                     }),
                     (t.prototype.debugDraw = function (t, e) {
-                      void 0 === e && (e = et.Red),
+                      void 0 === e && (e = tt.Red),
                         t.beginPath(),
                         (t.strokeStyle = e.toString());
                       var n = this.getTransformedPoints()[0];
@@ -6587,7 +6511,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Kt = (function () {
+                Qt = (function () {
                   function t(t, e, n, i) {
                     void 0 === t && (t = 0),
                       void 0 === e && (e = 0),
@@ -6630,8 +6554,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (t.fromDimension = function (e, n, i, r) {
                       return (
-                        void 0 === i && (i = V.Half),
-                        void 0 === r && (r = V.Zero),
+                        void 0 === i && (i = q.Half),
+                        void 0 === r && (r = q.Zero),
                         new t(
                           -e * i.x + r.x,
                           -n * i.y + r.y,
@@ -6656,7 +6580,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     Object.defineProperty(t.prototype, "center", {
                       get: function () {
-                        return new V(
+                        return new q(
                           (this.left + this.right) / 2,
                           (this.top + this.bottom) / 2
                         );
@@ -6673,14 +6597,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       );
                     }),
                     (t.prototype.rotate = function (e, n) {
-                      void 0 === n && (n = V.Zero);
+                      void 0 === n && (n = q.Zero);
                       var i = this.getPoints().map(function (t) {
                         return t.rotate(e, n);
                       });
                       return t.fromPoints(i);
                     }),
                     (t.prototype.scale = function (e, n) {
-                      void 0 === n && (n = V.Zero);
+                      void 0 === n && (n = q.Zero);
                       var i = this.translate(n);
                       return new t(
                         i.left * e.x,
@@ -6695,10 +6619,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype.getPoints = function () {
                       var t = [];
                       return (
-                        t.push(new V(this.left, this.top)),
-                        t.push(new V(this.right, this.top)),
-                        t.push(new V(this.right, this.bottom)),
-                        t.push(new V(this.left, this.bottom)),
+                        t.push(new q(this.left, this.top)),
+                        t.push(new q(this.right, this.top)),
+                        t.push(new q(this.right, this.bottom)),
+                        t.push(new q(this.left, this.bottom)),
                         t
                       );
                     }),
@@ -6706,10 +6630,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       var e = null;
                       return (
                         t && t.body && t.body.collider && (e = t.body.collider),
-                        new Zt({
+                        new Xt({
                           collider: e,
                           points: this.getPoints(),
-                          offset: V.Zero,
+                          offset: q.Zero,
                         })
                       );
                     }),
@@ -6750,7 +6674,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       );
                     }),
                     (t.prototype.contains = function (e) {
-                      return e instanceof V
+                      return e instanceof q
                         ? this.left <= e.x &&
                             this.top <= e.y &&
                             this.bottom >= e.y &&
@@ -6771,7 +6695,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     Object.defineProperty(t.prototype, "dimensions", {
                       get: function () {
-                        return new V(this.width, this.height);
+                        return new q(this.width, this.height);
                       },
                       enumerable: !1,
                       configurable: !0,
@@ -6795,24 +6719,21 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             this.top <= t.bottom && this.top >= t.top
                               ? t.bottom - this.top
                               : t.top - this.bottom),
-                          Math.abs(n) < Math.abs(i) ? new V(n, 0) : new V(0, i)
+                          Math.abs(n) < Math.abs(i) ? new q(n, 0) : new q(0, i)
                         );
                       }
-                      if (
-                        e.dimensions.equals(t.dimensions) ||
+                      return e.dimensions.equals(t.dimensions) ||
                         e.dimensions.equals(this.dimensions)
-                      ) {
-                        n = 0;
-                        n =
-                          this.width - t.width >= 0
-                            ? this.right - t.right <= t.left - this.left
-                              ? t.left - this.right
-                              : t.right - this.left
-                            : t.right - this.right <= this.left - t.left
-                            ? this.left - t.right
-                            : this.right - t.left;
-                        i = 0;
-                        return (
+                        ? ((n = 0),
+                          (n =
+                            this.width - t.width >= 0
+                              ? this.right - t.right <= t.left - this.left
+                                ? t.left - this.right
+                                : t.right - this.left
+                              : t.right - this.right <= this.left - t.left
+                              ? this.left - t.right
+                              : this.right - t.left),
+                          (i = 0),
                           (i =
                             this.height - t.height >= 0
                               ? this.bottom - t.bottom <= t.top - this.top
@@ -6821,17 +6742,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                               : t.bottom - this.bottom <= this.top - t.top
                               ? this.top - t.bottom
                               : this.bottom - t.top),
-                          Math.abs(n) < Math.abs(i) ? new V(n, 0) : new V(0, i)
-                        );
-                      }
-                      return null;
+                          Math.abs(n) < Math.abs(i) ? new q(n, 0) : new q(0, i))
+                        : null;
                     }),
                     (t.prototype.intersectWithSide = function (e) {
                       var n = this.intersect(e);
                       return t.getSideFromIntersection(n);
                     }),
                     (t.prototype.debugDraw = function (t, e) {
-                      void 0 === e && (e = et.Yellow),
+                      void 0 === e && (e = tt.Yellow),
                         (t.strokeStyle = e.toString()),
                         t.strokeRect(
                           this.left,
@@ -6843,8 +6762,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Yt = function () {
-                  return (Yt =
+                Zt = function () {
+                  return (Zt =
                     Object.assign ||
                     function (t) {
                       for (var e, n = 1, i = arguments.length; n < i; n++)
@@ -6859,8 +6778,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   (t.Container = "Container"),
                   (t.Fixed = "Fixed"),
                   (t.Position = "Position");
-              })(Vt || (Vt = {}));
-              var Jt = (function () {
+              })(Nt || (Nt = {}));
+              var Kt = (function () {
                   function t() {}
                   return (
                     Object.defineProperty(t, "SVGA", {
@@ -6922,7 +6841,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                $t = (function () {
+                Yt = (function () {
                   function t(t) {
                     var e,
                       n,
@@ -6944,7 +6863,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       }),
                       (this._windowResizeHandler = function () {
                         var t =
-                          r.displayMode === Vt.Container
+                          r.displayMode === Nt.Container
                             ? r.canvas.parentElement || document.body
                             : window;
                         r._logger.debug("View port resized"),
@@ -6958,11 +6877,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       (this.resolution =
                         null !== (e = t.resolution) && void 0 !== e
                           ? e
-                          : Yt({}, this.viewport)),
+                          : Zt({}, this.viewport)),
                       (this._displayMode =
                         null !== (n = t.displayMode) && void 0 !== n
                           ? n
-                          : Vt.Fixed),
+                          : Nt.Fixed),
                       (this._canvas = t.canvas),
                       (this._ctx = t.context),
                       (this._antialiasing =
@@ -7068,8 +6987,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype.pushResolutionAndViewport = function () {
                       this._resolutionStack.push(this.resolution),
                         this._viewportStack.push(this.viewport),
-                        (this.resolution = Yt({}, this.resolution)),
-                        (this.viewport = Yt({}, this.viewport));
+                        (this.resolution = Zt({}, this.resolution)),
+                        (this.viewport = Zt({}, this.viewport));
                     }),
                     (t.prototype.popResolutionAndViewport = function () {
                       (this.resolution = this._resolutionStack.pop()),
@@ -7146,7 +7065,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                                 : i.y) && void 0 !== r
                             ? r
                             : 0),
-                        new V(Math.floor(o), Math.floor(s))
+                        new q(Math.floor(o), Math.floor(s))
                       );
                     }),
                     (t.prototype.worldToScreenCoordinates = function (t) {
@@ -7177,15 +7096,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         (s += this.halfDrawHeight),
                         (o = (o * this.viewport.width) / this.drawWidth),
                         (s = (s * this.viewport.height) / this.drawHeight),
-                        new V(Math.floor(o), Math.floor(s))
+                        new q(Math.floor(o), Math.floor(s))
                       );
                     }),
                     (t.prototype.getWorldBounds = function () {
-                      var t = this.screenToWorldCoordinates(V.Zero).x,
-                        e = this.screenToWorldCoordinates(V.Zero).y,
+                      var t = this.screenToWorldCoordinates(q.Zero).x,
+                        e = this.screenToWorldCoordinates(q.Zero).y,
                         n = t + this.drawWidth,
                         i = e + this.drawHeight;
-                      return new Kt(t, e, n, i);
+                      return new Qt(t, e, n, i);
                     }),
                     Object.defineProperty(t.prototype, "canvasWidth", {
                       get: function () {
@@ -7249,11 +7168,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (t.prototype._applyDisplayMode = function () {
                       if (
-                        this.displayMode === Vt.FullScreen ||
-                        this.displayMode === Vt.Container
+                        this.displayMode === Nt.FullScreen ||
+                        this.displayMode === Nt.Container
                       ) {
                         var t =
-                          this.displayMode === Vt.Container
+                          this.displayMode === Nt.Container
                             ? this.canvas.parentElement || document.body
                             : window;
                         this._setHeightByDisplayMode(t),
@@ -7262,17 +7181,17 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             this._windowResizeHandler
                           );
                       } else
-                        this.displayMode === Vt.Position &&
+                        this.displayMode === Nt.Position &&
                           this._initializeDisplayModePosition(this._position);
                     }),
                     (t.prototype._setHeightByDisplayMode = function (t) {
-                      this.displayMode === Vt.Container &&
+                      this.displayMode === Nt.Container &&
                         ((this.resolution = {
                           width: t.clientWidth,
                           height: t.clientHeight,
                         }),
                         (this.viewport = this.resolution)),
-                        this.displayMode === Vt.FullScreen &&
+                        this.displayMode === Nt.FullScreen &&
                           ((document.body.style.margin = "0px"),
                           (document.body.style.overflow = "hidden"),
                           (this.resolution = {
@@ -7347,7 +7266,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                te = (function () {
+                Jt = (function () {
                   function t(t) {
                     (this._handlers = {}),
                       (this._wiredEventDispatchers = []),
@@ -7364,7 +7283,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           i,
                           r = this._target;
                         if (
-                          (e || (e = new ht()),
+                          (e || (e = new at()),
                           (e.target = r),
                           this._handlers[t])
                         )
@@ -7384,7 +7303,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         this._handlers[t].push(e),
                         "unsubscribe" !== t &&
                           "subscribe" !== t &&
-                          this.emit("subscribe", new Ct(t, e));
+                          this.emit("subscribe", new Et(t, e));
                     }),
                     (t.prototype.off = function (t, e) {
                       t = t.toLowerCase();
@@ -7396,12 +7315,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         } else this._handlers[t].length = 0;
                       "unsubscribe" !== t &&
                         "subscribe" !== t &&
-                        this.emit("unsubscribe", new Ot(t, e));
+                        this.emit("unsubscribe", new St(t, e));
                     }),
                     (t.prototype.once = function (t, e) {
                       var n = this;
                       this.on(t, function (i) {
-                        var r = i || new ht();
+                        var r = i || new at();
                         (r.target = r.target || n._target),
                           n.off(t, e),
                           e.call(r.target, r);
@@ -7417,9 +7336,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                ee = (function () {
+                $t = (function () {
                   function t() {
-                    this.eventDispatcher = new te(this);
+                    this.eventDispatcher = new Jt(this);
                   }
                   return (
                     (t.prototype.on = function (t, e) {
@@ -7437,7 +7356,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                ne = (function () {
+                te = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -7462,7 +7381,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                ie = (function (t) {
+                ee = (function (t) {
                   function e(e, n, i) {
                     void 0 === i && (i = !0);
                     var r = t.call(this) || this;
@@ -7480,7 +7399,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     );
                   }
                   return (
-                    ne(e, t),
+                    te(e, t),
                     (e.prototype.isLoaded = function () {
                       return null !== this.data;
                     }),
@@ -7566,8 +7485,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     e
                   );
-                })(ee),
-                re = (function () {
+                })($t),
+                ne = (function () {
                   function t() {}
                   return (
                     (t.prototype.updatePixel = function (t, e, n) {
@@ -7579,7 +7498,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                oe = (function () {
+                ie = (function () {
                   function t() {}
                   return (
                     (t.prototype.updatePixel = function (t, e, n) {
@@ -7592,7 +7511,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                se = (function () {
+                re = (function () {
                   function t(t) {
                     this.opacity = t;
                   }
@@ -7606,7 +7525,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                ae = (function () {
+                oe = (function () {
                   function t(t) {
                     this.color = t;
                   }
@@ -7622,6 +7541,44 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
+                se = (function () {
+                  function t(t) {
+                    void 0 === t && (t = 0.1), (this.factor = t);
+                  }
+                  return (
+                    (t.prototype.updatePixel = function (t, e, n) {
+                      var i = 4 * (t + e * n.width),
+                        r = n.data,
+                        o = tt
+                          .fromRGB(r[i + 0], r[i + 1], r[i + 2], r[i + 3])
+                          .lighten(this.factor);
+                      (r[i + 0] = o.r),
+                        (r[i + 1] = o.g),
+                        (r[i + 2] = o.b),
+                        (r[i + 3] = o.a);
+                    }),
+                    t
+                  );
+                })(),
+                ae = (function () {
+                  function t(t) {
+                    void 0 === t && (t = 0.1), (this.factor = t);
+                  }
+                  return (
+                    (t.prototype.updatePixel = function (t, e, n) {
+                      var i = 4 * (t + e * n.width),
+                        r = n.data,
+                        o = tt
+                          .fromRGB(r[i + 0], r[i + 1], r[i + 2], r[i + 3])
+                          .darken(this.factor);
+                      (r[i + 0] = o.r),
+                        (r[i + 1] = o.g),
+                        (r[i + 2] = o.b),
+                        (r[i + 3] = o.a);
+                    }),
+                    t
+                  );
+                })(),
                 ce = (function () {
                   function t(t) {
                     void 0 === t && (t = 0.1), (this.factor = t);
@@ -7630,9 +7587,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype.updatePixel = function (t, e, n) {
                       var i = 4 * (t + e * n.width),
                         r = n.data,
-                        o = et
+                        o = tt
                           .fromRGB(r[i + 0], r[i + 1], r[i + 2], r[i + 3])
-                          .lighten(this.factor);
+                          .saturate(this.factor);
                       (r[i + 0] = o.r),
                         (r[i + 1] = o.g),
                         (r[i + 2] = o.b),
@@ -7649,45 +7606,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype.updatePixel = function (t, e, n) {
                       var i = 4 * (t + e * n.width),
                         r = n.data,
-                        o = et
-                          .fromRGB(r[i + 0], r[i + 1], r[i + 2], r[i + 3])
-                          .darken(this.factor);
-                      (r[i + 0] = o.r),
-                        (r[i + 1] = o.g),
-                        (r[i + 2] = o.b),
-                        (r[i + 3] = o.a);
-                    }),
-                    t
-                  );
-                })(),
-                ue = (function () {
-                  function t(t) {
-                    void 0 === t && (t = 0.1), (this.factor = t);
-                  }
-                  return (
-                    (t.prototype.updatePixel = function (t, e, n) {
-                      var i = 4 * (t + e * n.width),
-                        r = n.data,
-                        o = et
-                          .fromRGB(r[i + 0], r[i + 1], r[i + 2], r[i + 3])
-                          .saturate(this.factor);
-                      (r[i + 0] = o.r),
-                        (r[i + 1] = o.g),
-                        (r[i + 2] = o.b),
-                        (r[i + 3] = o.a);
-                    }),
-                    t
-                  );
-                })(),
-                le = (function () {
-                  function t(t) {
-                    void 0 === t && (t = 0.1), (this.factor = t);
-                  }
-                  return (
-                    (t.prototype.updatePixel = function (t, e, n) {
-                      var i = 4 * (t + e * n.width),
-                        r = n.data,
-                        o = et
+                        o = tt
                           .fromRGB(r[i + 0], r[i + 1], r[i + 2], r[i + 3])
                           .desaturate(this.factor);
                       (r[i + 0] = o.r),
@@ -7698,7 +7617,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                pe = (function () {
+                ue = (function () {
                   function t(t) {
                     this.color = t;
                   }
@@ -7714,7 +7633,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                de = (function () {
+                le = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -7739,17 +7658,17 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })();
-              function fe(t) {
+              function pe(t) {
                 return (function (t) {
                   function e() {
                     for (var e = [], n = 0; n < arguments.length; n++)
                       e[n] = arguments[n];
-                    var i = t.apply(this, e) || this,
-                      r = e.filter(function (t) {
-                        return void 0 !== t;
-                      }).length;
+                    var i = t.apply(this, e) || this;
                     return (
-                      1 !== r ||
+                      1 !==
+                        e.filter(function (t) {
+                          return void 0 !== t;
+                        }).length ||
                         !e[0] ||
                         "object" != typeof e[0] ||
                         e[0] instanceof Array ||
@@ -7758,7 +7677,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     );
                   }
                   return (
-                    de(e, t),
+                    le(e, t),
                     (e.prototype.assign = function (t) {
                       for (var e in t)
                         "function" != typeof this[e] && (this[e] = t[e]);
@@ -7767,8 +7686,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   );
                 })(t);
               }
-              var ye,
-                ge = (function () {
+              var de,
+                fe = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -7793,8 +7712,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                _e = function () {
-                  return (_e =
+                ye = function () {
+                  return (ye =
                     Object.assign ||
                     function (t) {
                       for (var e, n = 1, i = arguments.length; n < i; n++)
@@ -7804,22 +7723,22 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       return t;
                     }).apply(this, arguments);
                 },
-                ve = (function (t) {
+                ge = (function (t) {
                   function e(e, n, i, r, o) {
                     return t.call(this, e, n, i, r, o) || this;
                   }
-                  return ge(e, t), e;
+                  return fe(e, t), e;
                 })(
-                  fe(
+                  pe(
                     (function () {
                       function t(t, e, n, i, r) {
                         var o = this;
                         (this.x = 0),
                           (this.y = 0),
                           (this.rotation = 0),
-                          (this.anchor = new V(0, 0)),
-                          (this.offset = V.Zero),
-                          (this.scale = V.One),
+                          (this.anchor = new q(0, 0)),
+                          (this.offset = q.Zero),
+                          (this.scale = q.One),
                           (this.logger = R.getInstance()),
                           (this.flipVertical = !1),
                           (this.flipHorizontal = !1),
@@ -7835,17 +7754,16 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         var s = t;
                         if (
                           t &&
-                          !(t instanceof be) &&
+                          !(t instanceof ve) &&
                           ((e = 0 | t.x),
                           (n = 0 | t.y),
                           (i = 0 | t.width),
                           (r = 0 | t.height),
                           !(s = t.image))
-                        ) {
+                        )
                           throw new Error(
                             "An image texture is required to contsruct a sprite"
                           );
-                        }
                         (this.x = e || 0),
                           (this.y = n || 0),
                           (this._texture = s),
@@ -7955,28 +7873,28 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           this._opacity = t;
                         }),
                         (t.prototype.grayscale = function () {
-                          this.addEffect(new re());
+                          this.addEffect(new ne());
                         }),
                         (t.prototype.invert = function () {
-                          this.addEffect(new oe());
+                          this.addEffect(new ie());
                         }),
                         (t.prototype.fill = function (t) {
-                          this.addEffect(new pe(t));
+                          this.addEffect(new ue(t));
                         }),
                         (t.prototype.colorize = function (t) {
-                          this.addEffect(new ae(t));
+                          this.addEffect(new oe(t));
                         }),
                         (t.prototype.lighten = function (t) {
-                          void 0 === t && (t = 0.1), this.addEffect(new ce(t));
+                          void 0 === t && (t = 0.1), this.addEffect(new se(t));
                         }),
                         (t.prototype.darken = function (t) {
-                          void 0 === t && (t = 0.1), this.addEffect(new he(t));
+                          void 0 === t && (t = 0.1), this.addEffect(new ae(t));
                         }),
                         (t.prototype.saturate = function (t) {
-                          void 0 === t && (t = 0.1), this.addEffect(new ue(t));
+                          void 0 === t && (t = 0.1), this.addEffect(new ce(t));
                         }),
                         (t.prototype.desaturate = function (t) {
-                          void 0 === t && (t = 0.1), this.addEffect(new le(t));
+                          void 0 === t && (t = 0.1), this.addEffect(new he(t));
                         }),
                         (t.prototype.addEffect = function (t) {
                           this.effects.push(t),
@@ -7985,7 +7903,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                               : (this._dirtyEffect = !0);
                         }),
                         (t.prototype.removeEffect = function (t) {
-                          var e = -1;
+                          var e;
                           (e =
                             "number" == typeof t
                               ? t
@@ -8055,7 +7973,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           t.save(), t.translate(e, n), t.rotate(this.rotation);
                           var i = this.drawWidth * this.anchor.x,
                             r = this.drawHeight * this.anchor.y;
-                          (t.strokeStyle = et.Black.toString()),
+                          (t.strokeStyle = tt.Black.toString()),
                             t.strokeRect(
                               -i,
                               -r,
@@ -8078,7 +7996,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             s,
                             a,
                             c,
-                            h = _e(_e({}, t), {
+                            h = ye(ye({}, t), {
                               rotation:
                                 null !== (e = t.rotation) && void 0 !== e
                                   ? e
@@ -8148,7 +8066,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             u.restore();
                         }),
                         (t.prototype.clone = function () {
-                          var t = new ve(
+                          var t = new ge(
                             this._texture,
                             this.x,
                             this.y,
@@ -8168,6 +8086,101 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     })()
                   )
                 ),
+                _e = (function () {
+                  var t = function (e, n) {
+                    return (t =
+                      Object.setPrototypeOf ||
+                      ({ __proto__: [] } instanceof Array &&
+                        function (t, e) {
+                          t.__proto__ = e;
+                        }) ||
+                      function (t, e) {
+                        for (var n in e)
+                          Object.prototype.hasOwnProperty.call(e, n) &&
+                            (t[n] = e[n]);
+                      })(e, n);
+                  };
+                  return function (e, n) {
+                    function i() {
+                      this.constructor = e;
+                    }
+                    t(e, n),
+                      (e.prototype =
+                        null === n
+                          ? Object.create(n)
+                          : ((i.prototype = n.prototype), new i()));
+                  };
+                })(),
+                ve = (function (t) {
+                  function e(e, n) {
+                    void 0 === n && (n = !0);
+                    var i = t.call(this, e, "blob", n) || this;
+                    return (
+                      (i.path = e),
+                      (i.bustCache = n),
+                      (i.loaded = new d()),
+                      (i._isLoaded = !1),
+                      (i._sprite = null),
+                      (i._sprite = new ge(i, 0, 0, 0, 0)),
+                      i
+                    );
+                  }
+                  return (
+                    _e(e, t),
+                    (e.prototype.isLoaded = function () {
+                      return this._isLoaded;
+                    }),
+                    (e.prototype.load = function () {
+                      var e = this,
+                        n = new d();
+                      return (
+                        this.path.indexOf("data:image/") > -1
+                          ? ((this.image = new Image()),
+                            this.image.addEventListener("load", function () {
+                              e.oncomplete(),
+                                (e._isLoaded = !0),
+                                (e.width = e._sprite.width =
+                                  e.image.naturalWidth),
+                                (e.height = e._sprite.height =
+                                  e.image.naturalHeight),
+                                (e._sprite = new ge(
+                                  e,
+                                  0,
+                                  0,
+                                  e.width,
+                                  e.height
+                                )),
+                                e.loaded.resolve(e.image),
+                                n.resolve(e.image);
+                            }),
+                            (this.image.src = this.path))
+                          : t.prototype.load.call(this).then(
+                              function () {
+                                (e.image = new Image()),
+                                  e.image.addEventListener("load", function () {
+                                    (e._isLoaded = !0),
+                                      (e.width = e._sprite.width =
+                                        e.image.naturalWidth),
+                                      (e.height = e._sprite.height =
+                                        e.image.naturalHeight),
+                                      e.loaded.resolve(e.image),
+                                      n.resolve(e.image);
+                                  }),
+                                  (e.image.src = t.prototype.getData.call(e));
+                              },
+                              function () {
+                                n.reject("Error loading texture.");
+                              }
+                            ),
+                        n
+                      );
+                    }),
+                    (e.prototype.asSprite = function () {
+                      return this._sprite;
+                    }),
+                    e
+                  );
+                })(ee),
                 me = (function () {
                   var t = function (e, n) {
                     return (t =
@@ -8193,95 +8206,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                be = (function (t) {
-                  function e(e, n) {
-                    void 0 === n && (n = !0);
-                    var i = t.call(this, e, "blob", n) || this;
-                    return (
-                      (i.path = e),
-                      (i.bustCache = n),
-                      (i.loaded = new d()),
-                      (i._isLoaded = !1),
-                      (i._sprite = null),
-                      (i._sprite = new ve(i, 0, 0, 0, 0)),
-                      i
-                    );
-                  }
-                  return (
-                    me(e, t),
-                    (e.prototype.isLoaded = function () {
-                      return this._isLoaded;
-                    }),
-                    (e.prototype.load = function () {
-                      var e = this,
-                        n = new d();
-                      this.path.indexOf("data:image/") > -1
-                        ? ((this.image = new Image()),
-                          this.image.addEventListener("load", function () {
-                            e.oncomplete(),
-                              (e._isLoaded = !0),
-                              (e.width = e._sprite.width =
-                                e.image.naturalWidth),
-                              (e.height = e._sprite.height =
-                                e.image.naturalHeight),
-                              (e._sprite = new ve(e, 0, 0, e.width, e.height)),
-                              e.loaded.resolve(e.image),
-                              n.resolve(e.image);
-                          }),
-                          (this.image.src = this.path))
-                        : t.prototype.load.call(this).then(
-                            function () {
-                              (e.image = new Image()),
-                                e.image.addEventListener("load", function () {
-                                  (e._isLoaded = !0),
-                                    (e.width = e._sprite.width =
-                                      e.image.naturalWidth),
-                                    (e.height = e._sprite.height =
-                                      e.image.naturalHeight),
-                                    e.loaded.resolve(e.image),
-                                    n.resolve(e.image);
-                                }),
-                                (e.image.src = t.prototype.getData.call(e));
-                            },
-                            function () {
-                              n.reject("Error loading texture.");
-                            }
-                          );
-                      return n;
-                    }),
-                    (e.prototype.asSprite = function () {
-                      return this._sprite;
-                    }),
-                    e
-                  );
-                })(ie),
-                we = (function () {
-                  var t = function (e, n) {
-                    return (t =
-                      Object.setPrototypeOf ||
-                      ({ __proto__: [] } instanceof Array &&
-                        function (t, e) {
-                          t.__proto__ = e;
-                        }) ||
-                      function (t, e) {
-                        for (var n in e)
-                          Object.prototype.hasOwnProperty.call(e, n) &&
-                            (t[n] = e[n]);
-                      })(e, n);
-                  };
-                  return function (e, n) {
-                    function i() {
-                      this.constructor = e;
-                    }
-                    t(e, n),
-                      (e.prototype =
-                        null === n
-                          ? Object.create(n)
-                          : ((i.prototype = n.prototype), new i()));
-                  };
-                })(),
-                xe = function () {
-                  return (xe =
+                be = function () {
+                  return (be =
                     Object.assign ||
                     function (t) {
                       for (var e, n = 1, i = arguments.length; n < i; n++)
@@ -8291,22 +8217,22 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       return t;
                     }).apply(this, arguments);
                 },
-                Pe = (function (t) {
+                we = (function (t) {
                   function e(e, n, i, r) {
                     return t.call(this, e, n, i, r) || this;
                   }
-                  return we(e, t), e;
+                  return me(e, t), e;
                 })(
-                  fe(
+                  pe(
                     (function () {
                       function t(t, e, n, i) {
                         (this.sprites = []),
                           (this.currentFrame = 0),
                           (this._timeLeftInFrame = 0),
                           (this._idempotencyToken = -1),
-                          (this.anchor = V.Zero),
+                          (this.anchor = q.Zero),
                           (this.rotation = 0),
-                          (this.scale = V.One),
+                          (this.scale = q.One),
                           (this.loop = !0),
                           (this.freezeFrame = -1),
                           (this.flipVertical = !1),
@@ -8317,7 +8243,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           (this.height = 0),
                           (this._opacity = 1);
                         var r = t;
-                        if (t && !(t instanceof lr)) {
+                        if (t && !(t instanceof sr)) {
                           var o = t;
                           (r = o.engine),
                             (e = o.sprites),
@@ -8342,28 +8268,28 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           this._opacity = t;
                         }),
                         (t.prototype.grayscale = function () {
-                          this.addEffect(new re());
+                          this.addEffect(new ne());
                         }),
                         (t.prototype.invert = function () {
-                          this.addEffect(new oe());
+                          this.addEffect(new ie());
                         }),
                         (t.prototype.fill = function (t) {
-                          this.addEffect(new pe(t));
+                          this.addEffect(new ue(t));
                         }),
                         (t.prototype.colorize = function (t) {
-                          this.addEffect(new ae(t));
+                          this.addEffect(new oe(t));
                         }),
                         (t.prototype.lighten = function (t) {
-                          void 0 === t && (t = 0.1), this.addEffect(new ce(t));
+                          void 0 === t && (t = 0.1), this.addEffect(new se(t));
                         }),
                         (t.prototype.darken = function (t) {
-                          void 0 === t && (t = 0.1), this.addEffect(new he(t));
+                          void 0 === t && (t = 0.1), this.addEffect(new ae(t));
                         }),
                         (t.prototype.saturate = function (t) {
-                          void 0 === t && (t = 0.1), this.addEffect(new ue(t));
+                          void 0 === t && (t = 0.1), this.addEffect(new ce(t));
                         }),
                         (t.prototype.desaturate = function (t) {
-                          void 0 === t && (t = 0.1), this.addEffect(new le(t));
+                          void 0 === t && (t = 0.1), this.addEffect(new he(t));
                         }),
                         (t.prototype.addEffect = function (t) {
                           for (var e in this.sprites)
@@ -8439,7 +8365,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             s,
                             a,
                             c,
-                            h = xe(xe({}, t), {
+                            h = be(be({}, t), {
                               rotation:
                                 null !== (e = t.rotation) && void 0 !== e
                                   ? e
@@ -8494,8 +8420,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   (t[(t.LongestPath = 1)] = "LongestPath"),
                   (t[(t.Clockwise = 2)] = "Clockwise"),
                   (t[(t.CounterClockwise = 3)] = "CounterClockwise");
-              })(ye || (ye = {}));
-              var Ae = function (t, e, n, i) {
+              })(de || (de = {}));
+              var xe = function (t, e, n, i) {
                   var r,
                     o = arguments.length,
                     s =
@@ -8516,23 +8442,23 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           (o < 3 ? r(s) : o > 3 ? r(e, n, s) : r(e, n)) || s);
                   return o > 3 && s && Object.defineProperty(e, n, s), s;
                 },
-                Ee = (function () {
+                Pe = (function () {
                   function t(t, e, n, i, r) {
                     (this.actor = t),
                       (this.easingFcn = r),
                       (this._currentLerpTime = 0),
                       (this._lerpDuration = 1e3),
-                      (this._lerpStart = new V(0, 0)),
-                      (this._lerpEnd = new V(0, 0)),
+                      (this._lerpStart = new q(0, 0)),
+                      (this._lerpEnd = new q(0, 0)),
                       (this._initialized = !1),
                       (this._stopped = !1),
                       (this._distance = 0),
                       (this._lerpDuration = i),
-                      (this._lerpEnd = new V(e, n));
+                      (this._lerpEnd = new q(e, n));
                   }
                   return (
                     (t.prototype._initialize = function () {
-                      (this._lerpStart = new V(
+                      (this._lerpStart = new q(
                         this.actor.pos.x,
                         this.actor.pos.y
                       )),
@@ -8588,7 +8514,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype.isComplete = function (t) {
                       return (
                         this._stopped ||
-                        new V(t.pos.x, t.pos.y).distance(this._lerpStart) >=
+                        new q(t.pos.x, t.pos.y).distance(this._lerpStart) >=
                           this._distance
                       );
                     }),
@@ -8601,19 +8527,19 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Se = (function () {
+                Ae = (function () {
                   function t(t, e, n, i) {
                     (this._started = !1),
                       (this._stopped = !1),
                       (this._actor = t),
-                      (this._end = new V(e, n)),
+                      (this._end = new q(e, n)),
                       (this._speed = i);
                   }
                   return (
                     (t.prototype.update = function (t) {
                       this._started ||
                         ((this._started = !0),
-                        (this._start = new V(
+                        (this._start = new q(
                           this._actor.pos.x,
                           this._actor.pos.y
                         )),
@@ -8631,7 +8557,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype.isComplete = function (t) {
                       return (
                         this._stopped ||
-                        new V(t.pos.x, t.pos.y).distance(this._start) >=
+                        new q(t.pos.x, t.pos.y).distance(this._start) >=
                           this._distance
                       );
                     }),
@@ -8646,14 +8572,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Ce = (function () {
+                Ee = (function () {
                   function t(t, e, n, i) {
                     if (
                       ((this._started = !1),
                       (this._stopped = !1),
                       (this._actor = t),
                       (this._speed = i),
-                      (this._offset = new V(e, n)),
+                      (this._offset = new q(e, n)),
                       i <= 0)
                     )
                       throw (
@@ -8670,7 +8596,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype.update = function (t) {
                       this._started ||
                         ((this._started = !0),
-                        (this._start = new V(
+                        (this._start = new q(
                           this._actor.pos.x,
                           this._actor.pos.y
                         )),
@@ -8701,17 +8627,17 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Oe = (function () {
+                Se = (function () {
                   function t(t, e, n) {
                     (this._started = !1),
                       (this._stopped = !1),
                       (this._actor = t),
                       (this._actorToFollow = e),
-                      (this._current = new V(
+                      (this._current = new q(
                         this._actor.pos.x,
                         this._actor.pos.y
                       )),
-                      (this._end = new V(e.pos.x, e.pos.y)),
+                      (this._end = new q(e.pos.x, e.pos.y)),
                       (this._maximumDistance =
                         void 0 !== n ? n : this._current.distance(this._end)),
                       (this._speed = 0);
@@ -8763,18 +8689,18 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Te = (function () {
+                Ce = (function () {
                   function t(t, e, n) {
                     (this._started = !1),
                       (this._stopped = !1),
                       (this._speedWasSpecified = !1),
                       (this._actor = t),
                       (this._actorToMeet = e),
-                      (this._current = new V(
+                      (this._current = new q(
                         this._actor.pos.x,
                         this._actor.pos.y
                       )),
-                      (this._end = new V(e.pos.x, e.pos.y)),
+                      (this._end = new q(e.pos.x, e.pos.y)),
                       (this._speed = n || 0),
                       void 0 !== n && (this._speedWasSpecified = !0);
                   }
@@ -8822,14 +8748,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Be = (function () {
+                Oe = (function () {
                   function t(t, e, n, i) {
                     (this._started = !1),
                       (this._stopped = !1),
                       (this._actor = t),
                       (this._end = e),
                       (this._speed = n),
-                      (this._rotationType = i || ye.ShortestPath);
+                      (this._rotationType = i || de.ShortestPath);
                   }
                   return (
                     (t.prototype.update = function (t) {
@@ -8848,25 +8774,25 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             (this._start - this._end + y) % y >= Math.PI),
                           this._rotationType)
                         ) {
-                          case ye.ShortestPath:
+                          case de.ShortestPath:
                             (this._distance = this._shortDistance),
                               this._shortestPathIsPositive
                                 ? (this._direction = 1)
                                 : (this._direction = -1);
                             break;
-                          case ye.LongestPath:
+                          case de.LongestPath:
                             (this._distance = this._longDistance),
                               this._shortestPathIsPositive
                                 ? (this._direction = -1)
                                 : (this._direction = 1);
                             break;
-                          case ye.Clockwise:
+                          case de.Clockwise:
                             (this._direction = 1),
                               this._shortestPathIsPositive
                                 ? (this._distance = this._shortDistance)
                                 : (this._distance = this._longDistance);
                             break;
-                          case ye.CounterClockwise:
+                          case de.CounterClockwise:
                             (this._direction = -1),
                               this._shortestPathIsPositive
                                 ? (this._distance = this._longDistance)
@@ -8892,14 +8818,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Me = (function () {
+                Te = (function () {
                   function t(t, e, n, i) {
                     (this._started = !1),
                       (this._stopped = !1),
                       (this._actor = t),
                       (this._speed = n),
                       (this._offset = e),
-                      (this._rotationType = i || ye.ShortestPath);
+                      (this._rotationType = i || de.ShortestPath);
                   }
                   return (
                     (t.prototype.update = function (t) {
@@ -8919,25 +8845,25 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             (this._start - this._end + y) % y >= Math.PI),
                           this._rotationType)
                         ) {
-                          case ye.ShortestPath:
+                          case de.ShortestPath:
                             (this._distance = this._shortDistance),
                               this._shortestPathIsPositive
                                 ? (this._direction = 1)
                                 : (this._direction = -1);
                             break;
-                          case ye.LongestPath:
+                          case de.LongestPath:
                             (this._distance = this._longDistance),
                               this._shortestPathIsPositive
                                 ? (this._direction = -1)
                                 : (this._direction = 1);
                             break;
-                          case ye.Clockwise:
+                          case de.Clockwise:
                             (this._direction = 1),
                               this._shortDistance >= 0
                                 ? (this._distance = this._shortDistance)
                                 : (this._distance = this._longDistance);
                             break;
-                          case ye.CounterClockwise:
+                          case de.CounterClockwise:
                             (this._direction = -1),
                               this._shortDistance <= 0
                                 ? (this._distance = this._shortDistance)
@@ -8963,7 +8889,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                De = (function () {
+                Be = (function () {
                   function t(t, e, n, i, r) {
                     (this._started = !1),
                       (this._stopped = !1),
@@ -9026,7 +8952,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype.reset = function () {
                       this._started = !1;
                     }),
-                    (t = Ae(
+                    xe(
                       [
                         N({
                           message:
@@ -9035,15 +8961,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         }),
                       ],
                       t
-                    ))
+                    )
                   );
                 })(),
-                ke = (function () {
+                Me = (function () {
                   function t(t, e, n, i) {
                     (this._started = !1),
                       (this._stopped = !1),
                       (this._actor = t),
-                      (this._offset = new V(e, n)),
+                      (this._offset = new q(e, n)),
                       (this._speedX = this._speedY = i);
                   }
                   return (
@@ -9086,7 +9012,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype.reset = function () {
                       this._started = !1;
                     }),
-                    (t = Ae(
+                    xe(
                       [
                         N({
                           message:
@@ -9095,10 +9021,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         }),
                       ],
                       t
-                    ))
+                    )
                   );
                 })(),
-                Re = (function () {
+                De = (function () {
                   function t(t, e) {
                     (this._elapsedTime = 0),
                       (this._started = !1),
@@ -9125,7 +9051,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                je = (function () {
+                ke = (function () {
                   function t(t, e, n, i) {
                     void 0 === i && (i = 1),
                       (this._timeVisible = 0),
@@ -9166,7 +9092,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Fe = (function () {
+                Re = (function () {
                   function t(t, e, n) {
                     (this._multiplier = 1),
                       (this._started = !1),
@@ -9213,7 +9139,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Ie = (function () {
+                je = (function () {
                   function t(t) {
                     (this._stopped = !1), (this._actor = t);
                   }
@@ -9231,7 +9157,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Le = (function () {
+                Fe = (function () {
                   function t(t, e) {
                     (this._method = null),
                       (this._actor = null),
@@ -9256,11 +9182,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                ze = (function () {
+                Ie = (function () {
                   function t(t, e, n) {
                     (this._stopped = !1),
                       (this._actor = t),
-                      (this._actionQueue = new Ue(t)),
+                      (this._actionQueue = new ze(t)),
                       (this._repeat = e),
                       (this._originalRepeat = e);
                     for (var i = n.length, r = 0; r < i; r++)
@@ -9286,11 +9212,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                He = (function () {
+                Le = (function () {
                   function t(t, e) {
                     (this._stopped = !1),
                       (this._actor = t),
-                      (this._actionQueue = new Ue(t));
+                      (this._actionQueue = new ze(t));
                     for (var n = e.length, i = 0; i < n; i++)
                       e[i].reset(), this._actionQueue.add(e[i]);
                   }
@@ -9313,7 +9239,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Ue = (function () {
+                ze = (function () {
                   function t(t) {
                     (this._actions = []),
                       (this._completedActions = []),
@@ -9354,28 +9280,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                We = function (t, e, n, i) {
-                  var r,
-                    o = arguments.length,
-                    s =
-                      o < 3
-                        ? e
-                        : null === i
-                        ? (i = Object.getOwnPropertyDescriptor(e, n))
-                        : i;
-                  if (
-                    "object" == typeof Reflect &&
-                    "function" == typeof Reflect.decorate
-                  )
-                    s = Reflect.decorate(t, e, n, i);
-                  else
-                    for (var a = t.length - 1; a >= 0; a--)
-                      (r = t[a]) &&
-                        (s =
-                          (o < 3 ? r(s) : o > 3 ? r(e, n, s) : r(e, n)) || s);
-                  return o > 3 && s && Object.defineProperty(e, n, s), s;
-                },
-                Ne = (function () {
+                He = (function () {
                   function t() {}
                   return (
                     (t.CreateReversibleEasingFunction = function (t) {
@@ -9388,7 +9293,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (t.CreateVectorEasingFunction = function (t) {
                       return function (e, n, i, r) {
-                        return new V(t(e, n.x, i.x, r), t(e, n.y, i.y, r));
+                        return new q(t(e, n.x, i.x, r), t(e, n.y, i.y, r));
                       };
                     }),
                     (t.Linear = t.CreateReversibleEasingFunction(function (
@@ -9448,7 +9353,28 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         );
                       }
                     )),
-                    We(
+                    (function (t, e, n, i) {
+                      var r,
+                        o = arguments.length,
+                        s =
+                          o < 3
+                            ? e
+                            : null === i
+                            ? (i = Object.getOwnPropertyDescriptor(e, n))
+                            : i;
+                      if (
+                        "object" == typeof Reflect &&
+                        "function" == typeof Reflect.decorate
+                      )
+                        s = Reflect.decorate(t, e, n, i);
+                      else
+                        for (var a = t.length - 1; a >= 0; a--)
+                          (r = t[a]) &&
+                            (s =
+                              (o < 3 ? r(s) : o > 3 ? r(e, n, s) : r(e, n)) ||
+                              s);
+                      o > 3 && s && Object.defineProperty(e, n, s);
+                    })(
                       [
                         N({
                           message:
@@ -9463,7 +9389,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                qe = (function () {
+                Ue = (function () {
                   function t() {
                     (this._actors = []),
                       (this._queues = []),
@@ -9490,76 +9416,76 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         (this._actors.splice(e, 1), this._queues.splice(e, 1));
                     }),
                     (t.prototype.easeTo = function (t, e, n, i) {
-                      void 0 === i && (i = Ne.Linear);
+                      void 0 === i && (i = He.Linear);
                       for (var r = this._queues.length, o = 0; o < r; o++)
                         this._queues[o].add(
-                          new Ee(this._actors[o], t, e, n, i)
+                          new Pe(this._actors[o], t, e, n, i)
                         );
                       return this;
                     }),
                     (t.prototype.moveTo = function (t, e, n) {
                       for (var i = this._queues.length, r = 0; r < i; r++)
-                        this._queues[r].add(new Se(this._actors[r], t, e, n));
+                        this._queues[r].add(new Ae(this._actors[r], t, e, n));
                       return this;
                     }),
                     (t.prototype.moveBy = function (t, e, n) {
                       for (var i = this._queues.length, r = 0; r < i; r++)
-                        this._queues[r].add(new Ce(this._actors[r], t, e, n));
+                        this._queues[r].add(new Ee(this._actors[r], t, e, n));
                       return this;
                     }),
                     (t.prototype.rotateTo = function (t, e, n) {
                       for (var i = this._queues.length, r = 0; r < i; r++)
-                        this._queues[r].add(new Be(this._actors[r], t, e, n));
+                        this._queues[r].add(new Oe(this._actors[r], t, e, n));
                       return this;
                     }),
                     (t.prototype.rotateBy = function (t, e, n) {
                       for (var i = this._queues.length, r = 0; r < i; r++)
-                        this._queues[r].add(new Me(this._actors[r], t, e, n));
+                        this._queues[r].add(new Te(this._actors[r], t, e, n));
                       return this;
                     }),
                     (t.prototype.scaleTo = function (t, e, n, i) {
                       for (var r = this._queues.length, o = 0; o < r; o++)
                         this._queues[o].add(
-                          new De(this._actors[o], t, e, n, i)
+                          new Be(this._actors[o], t, e, n, i)
                         );
                       return this;
                     }),
                     (t.prototype.scaleBy = function (t, e, n) {
                       for (var i = this._queues.length, r = 0; r < i; r++)
-                        this._queues[r].add(new ke(this._actors[r], t, e, n));
+                        this._queues[r].add(new Me(this._actors[r], t, e, n));
                       return this;
                     }),
                     (t.prototype.blink = function (t, e, n) {
                       void 0 === n && (n = 1);
                       for (var i = this._queues.length, r = 0; r < i; r++)
-                        this._queues[r].add(new je(this._actors[r], t, e, n));
+                        this._queues[r].add(new ke(this._actors[r], t, e, n));
                       return this;
                     }),
                     (t.prototype.fade = function (t, e) {
                       for (var n = this._queues.length, i = 0; i < n; i++)
-                        this._queues[i].add(new Fe(this._actors[i], t, e));
+                        this._queues[i].add(new Re(this._actors[i], t, e));
                       return this;
                     }),
                     (t.prototype.delay = function (t) {
                       for (var e = this._queues.length, n = 0; n < e; n++)
-                        this._queues[n].add(new Re(this._actors[n], t));
+                        this._queues[n].add(new De(this._actors[n], t));
                       return this;
                     }),
                     (t.prototype.die = function () {
                       for (var t = this._queues.length, e = 0; e < t; e++)
-                        this._queues[e].add(new Ie(this._actors[e]));
+                        this._queues[e].add(new je(this._actors[e]));
                       return this;
                     }),
                     (t.prototype.callMethod = function (t) {
                       for (var e = this._queues.length, n = 0; n < e; n++)
-                        this._queues[n].add(new Le(this._actors[n], t));
+                        this._queues[n].add(new Fe(this._actors[n], t));
                       return this;
                     }),
                     (t.prototype.repeat = function (t) {
                       if (!t) return this.repeatForever(), this;
                       for (var e = this._queues.length, n = 0; n < e; n++)
                         this._queues[n].add(
-                          new ze(
+                          new Ie(
                             this._actors[n],
                             t,
                             this._actors[n].actionQueue.getActions()
@@ -9570,7 +9496,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype.repeatForever = function () {
                       for (var t = this._queues.length, e = 0; e < t; e++)
                         this._queues[e].add(
-                          new He(
+                          new Le(
                             this._actors[e],
                             this._actors[e].actionQueue.getActions()
                           )
@@ -9580,15 +9506,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype.follow = function (t, e) {
                       for (var n = this._queues.length, i = 0; i < n; i++)
                         void 0 === e
-                          ? this._queues[i].add(new Oe(this._actors[i], t))
-                          : this._queues[i].add(new Oe(this._actors[i], t, e));
+                          ? this._queues[i].add(new Se(this._actors[i], t))
+                          : this._queues[i].add(new Se(this._actors[i], t, e));
                       return this;
                     }),
                     (t.prototype.meet = function (t, e) {
                       for (var n = this._queues.length, i = 0; i < n; i++)
                         void 0 === e
-                          ? this._queues[i].add(new Te(this._actors[i], t))
-                          : this._queues[i].add(new Te(this._actors[i], t, e));
+                          ? this._queues[i].add(new Ce(this._actors[i], t))
+                          : this._queues[i].add(new Ce(this._actors[i], t, e));
                       return this;
                     }),
                     (t.prototype.asPromise = function () {
@@ -9597,7 +9523,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           var i = new d();
                           return (
                             e.add(
-                              new Le(t._actors[n], function () {
+                              new Fe(t._actors[n], function () {
                                 i.resolve();
                               })
                             ),
@@ -9609,15 +9535,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Ve = (function () {
+                We = (function () {
                   function t() {}
                   return (
                     (t.Box = function (t, e, n, i) {
                       return (
-                        void 0 === n && (n = V.Half),
-                        void 0 === i && (i = V.Zero),
-                        new Zt({
-                          points: new Kt(
+                        void 0 === n && (n = q.Half),
+                        void 0 === i && (i = q.Zero),
+                        new Xt({
+                          points: new Qt(
                             -t * n.x,
                             -e * n.y,
                             t - t * n.x,
@@ -9630,44 +9556,44 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.Polygon = function (t, e, n) {
                       return (
                         void 0 === e && (e = !1),
-                        void 0 === n && (n = V.Zero),
-                        new Zt({ points: t, offset: n, clockwiseWinding: e })
+                        void 0 === n && (n = q.Zero),
+                        new Xt({ points: t, offset: n, clockwiseWinding: e })
                       );
                     }),
                     (t.Circle = function (t, e) {
                       return (
-                        void 0 === e && (e = V.Zero),
-                        new Xt({ radius: t, offset: e })
+                        void 0 === e && (e = q.Zero),
+                        new Vt({ radius: t, offset: e })
                       );
                     }),
                     (t.Edge = function (t, e) {
-                      return new Qt({ begin: t, end: e });
+                      return new Gt({ begin: t, end: e });
                     }),
                     t
                   );
                 })(),
-                Ge = (function () {
+                Ne = (function () {
                   function t(t) {
                     var e = t.actor,
                       n = t.collider;
                     if (
-                      ((this.pos = new V(0, 0)),
-                      (this.oldPos = new V(0, 0)),
-                      (this.vel = new V(0, 0)),
-                      (this.oldVel = new V(0, 0)),
-                      (this.acc = new V(0, 0)),
-                      (this.oldAcc = V.Zero),
+                      ((this.pos = new q(0, 0)),
+                      (this.oldPos = new q(0, 0)),
+                      (this.vel = new q(0, 0)),
+                      (this.oldVel = new q(0, 0)),
+                      (this.acc = new q(0, 0)),
+                      (this.oldAcc = q.Zero),
                       (this.torque = 0),
                       (this.motion = 10),
                       (this.oldRotation = 0),
                       (this.rotation = 0),
-                      (this.scale = V.One),
-                      (this.oldScale = V.One),
+                      (this.scale = q.One),
+                      (this.oldScale = q.One),
                       (this.sx = 0),
                       (this.sy = 0),
                       (this.rx = 0),
                       (this._geometryDirty = !1),
-                      (this._totalMtv = V.Zero),
+                      (this._totalMtv = q.Zero),
                       !e && !n)
                     )
                       throw new Error(
@@ -9747,7 +9673,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype.integrate = function (t) {
                       var e = t / 1e3,
                         n = this.acc.clone();
-                      this.collider.type === ct.Active && n.addEqual(st.acc),
+                      this.collider.type === st.Active && n.addEqual(rt.acc),
                         this.vel.addEqual(n.scale(e)),
                         this.pos
                           .addEqual(this.vel.scale(e))
@@ -9764,31 +9690,31 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (t.prototype.useBoxCollider = function (t, e, n, i) {
                       return (
-                        void 0 === n && (n = V.Half),
-                        void 0 === i && (i = V.Zero),
+                        void 0 === n && (n = q.Half),
+                        void 0 === i && (i = q.Zero),
                         null == t && (t = this.actor ? this.actor.width : 0),
                         null == e && (e = this.actor ? this.actor.height : 0),
-                        (this.collider.shape = Ve.Box(t, e, n, i)),
+                        (this.collider.shape = We.Box(t, e, n, i)),
                         this.collider
                       );
                     }),
                     (t.prototype.usePolygonCollider = function (t, e) {
                       return (
-                        void 0 === e && (e = V.Zero),
-                        (this.collider.shape = Ve.Polygon(t, !1, e)),
+                        void 0 === e && (e = q.Zero),
+                        (this.collider.shape = We.Polygon(t, !1, e)),
                         this.collider
                       );
                     }),
                     (t.prototype.useCircleCollider = function (t, e) {
                       return (
-                        void 0 === e && (e = V.Zero),
-                        (this.collider.shape = Ve.Circle(t, e)),
+                        void 0 === e && (e = q.Zero),
+                        (this.collider.shape = We.Circle(t, e)),
                         this.collider
                       );
                     }),
                     (t.prototype.useEdgeCollider = function (t, e) {
                       return (
-                        (this.collider.shape = Ve.Edge(t, e)), this.collider
+                        (this.collider.shape = We.Edge(t, e)), this.collider
                       );
                     }),
                     (t.prototype._wireColliderEventsToActor = function () {
@@ -9798,7 +9724,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           t.actor &&
                             t.actor.emit(
                               "precollision",
-                              new Mt(
+                              new Tt(
                                 e.target.body.actor,
                                 e.other.body.actor,
                                 e.side,
@@ -9810,7 +9736,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           t.actor &&
                             t.actor.emit(
                               "postcollision",
-                              new Dt(
+                              new Bt(
                                 e.target.body.actor,
                                 e.other.body.actor,
                                 e.side,
@@ -9822,7 +9748,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           t.actor &&
                             t.actor.emit(
                               "collisionstart",
-                              new kt(
+                              new Mt(
                                 e.target.body.actor,
                                 e.other.body.actor,
                                 e.pair
@@ -9833,20 +9759,20 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           t.actor &&
                             t.actor.emit(
                               "collisionend",
-                              new Rt(e.target.body.actor, e.other.body.actor)
+                              new Dt(e.target.body.actor, e.other.body.actor)
                             );
                         });
                     }),
                     t
                   );
                 })(),
-                Xe = (function () {
+                qe = (function () {
                   function t() {}
                   return (
                     (t.prototype.update = function (t, e) {
                       var n = t.eventDispatcher;
                       if (
-                        t.body.collider.type !== ct.PreventCollision &&
+                        t.body.collider.type !== st.PreventCollision &&
                         e.currentScene &&
                         e.currentScene.tileMaps
                       )
@@ -9859,22 +9785,22 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             (o = r.collides(t)) && !(a-- < 0);
 
                           )
-                            (s = Kt.getSideFromIntersection(o)),
-                              n.emit("precollision", new Mt(t, null, s, o)),
-                              t.body.collider.type === ct.Active &&
+                            (s = Qt.getSideFromIntersection(o)),
+                              n.emit("precollision", new Tt(t, null, s, o)),
+                              t.body.collider.type === st.Active &&
                                 ((t.pos.y += o.y),
                                 (t.pos.x += o.x),
-                                n.emit("postcollision", new Dt(t, null, s, o)));
+                                n.emit("postcollision", new Bt(t, null, s, o)));
                     }),
                     t
                   );
                 })(),
-                Qe = (function () {
+                Ve = (function () {
                   function t() {
-                    (this._topLeft = new V(0, 0)),
-                      (this._topRight = new V(0, 0)),
-                      (this._bottomLeft = new V(0, 0)),
-                      (this._bottomRight = new V(0, 0));
+                    (this._topLeft = new q(0, 0)),
+                      (this._topRight = new q(0, 0)),
+                      (this._bottomLeft = new q(0, 0)),
+                      (this._bottomRight = new q(0, 0));
                   }
                   return (
                     (t.prototype.isSpriteOffScreen = function (t, e) {
@@ -9908,20 +9834,20 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         (this._xMax = Math.max.apply(null, this._xCoords)),
                         (this._yMax = Math.max.apply(null, this._yCoords));
                       var l = e.screenToWorldCoordinates(
-                          new V(this._xMin, this._yMin)
+                          new q(this._xMin, this._yMin)
                         ),
                         p = e.screenToWorldCoordinates(
-                          new V(this._xMax, this._yMax)
+                          new q(this._xMax, this._yMax)
                         );
                       (this._xMinWorld = l.x),
                         (this._yMinWorld = l.y),
                         (this._xMaxWorld = p.x),
                         (this._yMaxWorld = p.y);
                       var d = [
-                        new V(this._xMin, this._yMin),
-                        new V(this._xMax, this._yMin),
-                        new V(this._xMin, this._yMax),
-                        new V(this._xMax, this._yMax),
+                        new q(this._xMin, this._yMin),
+                        new q(this._xMax, this._yMin),
+                        new q(this._xMin, this._yMax),
+                        new q(this._xMax, this._yMax),
                       ];
                       if (
                         d[0].x < 0 &&
@@ -9947,7 +9873,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (t.prototype.debugDraw = function (t) {
                       t.beginPath(),
-                        (t.strokeStyle = et.White.toString()),
+                        (t.strokeStyle = tt.White.toString()),
                         t.rect(
                           this._xMinWorld,
                           this._yMinWorld,
@@ -9955,7 +9881,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           this._yMaxWorld - this._yMinWorld
                         ),
                         t.stroke(),
-                        (t.fillStyle = et.Red.toString()),
+                        (t.fillStyle = tt.Red.toString()),
                         t.beginPath(),
                         t.arc(
                           this._topLeft.x,
@@ -9966,7 +9892,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         ),
                         t.closePath(),
                         t.fill(),
-                        (t.fillStyle = et.Green.toString()),
+                        (t.fillStyle = tt.Green.toString()),
                         t.beginPath(),
                         t.arc(
                           this._topRight.x,
@@ -9977,7 +9903,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         ),
                         t.closePath(),
                         t.fill(),
-                        (t.fillStyle = et.Blue.toString()),
+                        (t.fillStyle = tt.Blue.toString()),
                         t.beginPath(),
                         t.arc(
                           this._bottomLeft.x,
@@ -9988,7 +9914,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         ),
                         t.closePath(),
                         t.fill(),
-                        (t.fillStyle = et.Magenta.toString()),
+                        (t.fillStyle = tt.Magenta.toString()),
                         t.beginPath(),
                         t.arc(
                           this._bottomRight.x,
@@ -10003,9 +9929,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Ze = (function () {
+                Ge = (function () {
                   function t() {
-                    this.cullingBox = new Qe();
+                    this.cullingBox = new Ve();
                   }
                   return (
                     (t.prototype.update = function (t, e) {
@@ -10023,17 +9949,17 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         )),
                         t.isOffScreen
                           ? (r && i) ||
-                            (n.emit("enterviewport", new zt(t)),
+                            (n.emit("enterviewport", new It(t)),
                             (t.isOffScreen = !1))
                           : r &&
                             i &&
-                            (n.emit("exitviewport", new Lt(t)),
+                            (n.emit("exitviewport", new Ft(t)),
                             (t.isOffScreen = !0));
                     }),
                     t
                   );
                 })(),
-                Ke = (function () {
+                Xe = (function () {
                   function t() {}
                   return (
                     (t.prototype.update = function (t, e) {
@@ -10044,8 +9970,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })();
-              function Ye(t, e, n, i, r, o, s, a) {
-                void 0 === e && (e = et.Red),
+              function Qe(t, e, n, i, r, o, s, a) {
+                void 0 === e && (e = tt.Red),
                   void 0 === s && (s = 1),
                   void 0 === a && (a = "butt"),
                   t.beginPath(),
@@ -10057,15 +9983,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   t.closePath(),
                   t.stroke();
               }
-              function Je(t, e, n) {
-                void 0 === e && (e = et.Red),
+              function Ze(t, e, n) {
+                void 0 === e && (e = tt.Red),
                   t.beginPath(),
                   (t.strokeStyle = e.toString()),
                   t.arc(n.x, n.y, 5, 0, 2 * Math.PI),
                   t.closePath(),
                   t.stroke();
               }
-              function $e(t, e, n, i, r) {
+              function Ke(t, e, n, i, r) {
                 void 0 === r && (r = 1);
                 var o = e ? e.toString() : "blue",
                   s = i.scale(r);
@@ -10076,11 +10002,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   t.closePath(),
                   t.stroke();
               }
-              function tn(t, e, n, i, r, o, s, a) {
+              function Ye(t, e, n, i, r, o, s, a) {
                 var c;
                 if (
                   (void 0 === o && (o = 5),
-                  void 0 === s && (s = et.White),
+                  void 0 === s && (s = tt.White),
                   void 0 === a && (a = null),
                   "number" == typeof o)
                 )
@@ -10107,8 +10033,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   a && ((t.fillStyle = a.toString()), t.fill()),
                   s && ((t.strokeStyle = s.toString()), t.stroke());
               }
-              function en(t, e, n, i, r, o) {
-                void 0 === r && (r = et.White),
+              function Je(t, e, n, i, r, o) {
+                void 0 === r && (r = tt.White),
                   void 0 === o && (o = null),
                   t.beginPath(),
                   t.arc(e, n, i, 0, 2 * Math.PI),
@@ -10116,7 +10042,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   o && ((t.fillStyle = o.toString()), t.fill()),
                   r && ((t.strokeStyle = r.toString()), t.stroke());
               }
-              var nn = (function () {
+              var $e = (function () {
                   function t(t, e, n) {
                     (this._name = t), (this._category = e), (this._mask = n);
                   }
@@ -10152,7 +10078,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                rn = (function () {
+                tn = (function () {
                   function t(e, n) {
                     (this.colliderA = e),
                       (this.colliderB = n),
@@ -10162,12 +10088,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   }
                   return (
                     (t.canCollide = function (t, e) {
-                      return (
-                        !!t.group.canCollide(e.group) &&
-                        (t.type !== ct.Fixed || e.type !== ct.Fixed) &&
-                        e.type !== ct.PreventCollision &&
-                        t.type !== ct.PreventCollision &&
-                        !(!t.active || !e.active)
+                      return !(
+                        !t.group.canCollide(e.group) ||
+                        (t.type === st.Fixed && e.type === st.Fixed) ||
+                        e.type === st.PreventCollision ||
+                        t.type === st.PreventCollision ||
+                        !t.active ||
+                        !e.active
                       );
                     }),
                     Object.defineProperty(t.prototype, "canCollide", {
@@ -10192,11 +10119,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (t.prototype.debugDraw = function (t) {
                       this.collision &&
-                        (st.showContacts && Je(t, et.Red, this.collision.point),
-                        st.showCollisionNormals &&
-                          $e(
+                        (rt.showContacts && Ze(t, tt.Red, this.collision.point),
+                        rt.showCollisionNormals &&
+                          Ke(
                             t,
-                            et.Cyan,
+                            tt.Cyan,
                             this.collision.point,
                             this.collision.normal,
                             30
@@ -10205,10 +10132,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })();
-              function on(t) {
-                return t instanceof sn;
+              function en(t) {
+                return t instanceof nn;
               }
-              var sn = (function () {
+              var nn = (function () {
                   function t(t) {
                     var e = t.body,
                       n = t.type,
@@ -10217,9 +10144,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       o = t.offset,
                       s = t.useShapeInertia,
                       a = void 0 === s || s;
-                    (this._events = new te(this)),
-                      (this.type = ct.PreventCollision),
-                      (this.group = nn.All),
+                    (this._events = new Jt(this)),
+                      (this.type = st.PreventCollision),
+                      (this.group = $e.All),
                       (this.mass = 1),
                       (this.inertia = 1e3),
                       (this.friction = 0.99),
@@ -10231,7 +10158,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       (this._shape.collider = this),
                       (this.type = n || this.type),
                       (this.group = i || this.group),
-                      (this.offset = o || V.Zero);
+                      (this.offset = o || q.Zero);
                   }
                   return (
                     (t.prototype.clone = function () {
@@ -10296,7 +10223,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       configurable: !0,
                     }),
                     (t.prototype.touching = function (t) {
-                      var e = new rn(this, t);
+                      var e = new tn(this, t);
                       return e.collide(), !!e.collision;
                     }),
                     Object.defineProperty(t.prototype, "bounds", {
@@ -10304,15 +10231,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         return this.shape
                           ? this.shape.bounds
                           : this.body
-                          ? new Kt().translate(this.body.pos)
-                          : new Kt();
+                          ? new Qt().translate(this.body.pos)
+                          : new Qt();
                       },
                       enumerable: !1,
                       configurable: !0,
                     }),
                     Object.defineProperty(t.prototype, "localBounds", {
                       get: function () {
-                        return this.shape ? this.shape.localBounds : new Kt();
+                        return this.shape ? this.shape.localBounds : new Qt();
                       },
                       enumerable: !1,
                       configurable: !0,
@@ -10336,22 +10263,22 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       this._events.clear();
                     }),
                     (t.prototype.debugDraw = function (t) {
-                      st.showMotionVectors &&
-                        ($e(
+                      rt.showMotionVectors &&
+                        (Ke(
                           t,
-                          et.Yellow,
+                          tt.Yellow,
                           this.body.pos,
-                          this.body.acc.add(st.acc)
+                          this.body.acc.add(rt.acc)
                         ),
-                        $e(t, et.Red, this.body.pos, this.body.vel),
-                        Je(t, et.Red, this.body.pos)),
-                        st.showBounds && this.bounds.debugDraw(t, et.Yellow),
-                        st.showArea && this.shape.debugDraw(t, et.Green);
+                        Ke(t, tt.Red, this.body.pos, this.body.vel),
+                        Ze(t, tt.Red, this.body.pos)),
+                        rt.showBounds && this.bounds.debugDraw(t, tt.Yellow),
+                        rt.showArea && this.shape.debugDraw(t, tt.Green);
                     }),
                     t
                   );
                 })(),
-                an = (function () {
+                rn = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -10375,8 +10302,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           ? Object.create(n)
                           : ((i.prototype = n.prototype), new i()));
                   };
-                })();
-              var cn = (function () {
+                })(),
+                on = (function () {
                   function t() {}
                   return (
                     (t.prototype.clone = function () {
@@ -10396,14 +10323,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                hn = (function (t) {
+                sn = (function (t) {
                   function e(e, n) {
                     var i = t.call(this) || this;
                     return (i.type = e), (i.value = n), i;
                   }
-                  return an(e, t), e;
-                })(cn),
-                un = (function () {
+                  return rn(e, t), e;
+                })(on),
+                an = (function () {
                   function t() {
                     this.observers = [];
                   }
@@ -10423,7 +10350,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                ln = (function () {
+                cn = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -10448,19 +10375,19 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                pn = function (t) {
+                hn = function (t) {
                   (this.data = t), (this.type = "Component Added");
                 };
-              function dn(t) {
+              function un(t) {
                 return !!t && "Component Added" === t.type;
               }
-              var fn = function (t) {
+              var ln = function (t) {
                 (this.data = t), (this.type = "Component Removed");
               };
-              function yn(t) {
+              function pn(t) {
                 return !!t && "Component Removed" === t.type;
               }
-              var gn = (function (t) {
+              var dn = (function (t) {
                   function e() {
                     var n = (null !== t && t.apply(this, arguments)) || this;
                     return (
@@ -10474,7 +10401,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           return (
                             (t[e] = i.value),
                             n.changes.notifyAll(
-                              new pn({ component: i.value, entity: n })
+                              new hn({ component: i.value, entity: n })
                             ),
                             !0
                           );
@@ -10483,7 +10410,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           return (
                             e in t &&
                             (n.changes.notifyAll(
-                              new fn({ component: t[e], entity: n })
+                              new ln({ component: t[e], entity: n })
                             ),
                             delete t[e],
                             !0)
@@ -10491,13 +10418,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         },
                       }),
                       (n.components = new Proxy({}, n._handleChanges)),
-                      (n.changes = new un()),
+                      (n.changes = new an()),
                       (n._isInitialized = !1),
                       n
                     );
                   }
                   return (
-                    ln(e, t),
+                    cn(e, t),
                     (e.prototype.kill = function () {
                       this.active = !1;
                     }),
@@ -10556,7 +10483,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         e
                           ? "string" == typeof t
                             ? this._removeComponentByType(t)
-                            : t instanceof cn &&
+                            : t instanceof on &&
                               this._removeComponentByType(t.type)
                           : this._componentsToRemove.push(t),
                         this
@@ -10598,16 +10525,16 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         t.prototype.emit.call(
                           this,
                           "initialize",
-                          new jt(e, this)
+                          new kt(e, this)
                         ),
                         (this._isInitialized = !0));
                     }),
                     (e.prototype._preupdate = function (t, e) {
-                      this.emit("preupdate", new mt(t, e, this)),
+                      this.emit("preupdate", new _t(t, e, this)),
                         this.onPreUpdate(t, e);
                     }),
                     (e.prototype._postupdate = function (t, e) {
-                      this.emit("postupdate", new bt(t, e, this)),
+                      this.emit("postupdate", new vt(t, e, this)),
                         this.onPostUpdate(t, e);
                     }),
                     (e.prototype.onInitialize = function (t) {}),
@@ -10616,8 +10543,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e._ID = 0),
                     e
                   );
-                })(ee),
-                _n = (function () {
+                })($t),
+                fn = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -10642,7 +10569,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                vn = function (t, e, n, i) {
+                yn = function (t, e, n, i) {
                   var r,
                     o = arguments.length,
                     s =
@@ -10663,16 +10590,17 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           (o < 3 ? r(s) : o > 3 ? r(e, n, s) : r(e, n)) || s);
                   return o > 3 && s && Object.defineProperty(e, n, s), s;
                 };
-              function mn(t) {
-                return t instanceof bn;
+              function gn(t) {
+                return t instanceof vn;
               }
-              var bn = (function (t) {
+              var _n,
+                vn = (function (t) {
                   function e(e, n, i, r, o) {
                     return t.call(this, e, n, i, r, o) || this;
                   }
-                  return _n(e, t), e;
+                  return fn(e, t), e;
                 })(
-                  fe(
+                  pe(
                     (function (t) {
                       function e(n, i, r, o, s) {
                         var a = t.call(this) || this;
@@ -10740,7 +10668,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           ]),
                           a._initDefaults();
                         var c = !0,
-                          h = ct.Passive;
+                          h = st.Passive;
                         if (n && "object" == typeof n) {
                           var u = n;
                           u.pos
@@ -10757,25 +10685,25 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           (a._width = r || 0),
                           (a._height = o || 0),
                           c &&
-                            (a.body = new Ge({
-                              collider: new sn({
+                            (a.body = new Ne({
+                              collider: new nn({
                                 type: h,
-                                shape: Ve.Box(a._width, a._height, a.anchor),
+                                shape: We.Box(a._width, a._height, a.anchor),
                               }),
                             })),
                           (a.pos.x = n || 0),
                           (a.pos.y = i || 0),
                           s && ((a.color = s), (a.opacity = s.a)),
+                          a.traits.push(new qe()),
+                          a.traits.push(new Ge()),
                           a.traits.push(new Xe()),
-                          a.traits.push(new Ze()),
-                          a.traits.push(new Ke()),
-                          (a.actionQueue = new Ue(a)),
-                          (a.actions = new qe(a)),
+                          (a.actionQueue = new ze(a)),
+                          (a.actions = new Ue(a)),
                           a
                         );
                       }
                       return (
-                        _n(e, t),
+                        fn(e, t),
                         Object.defineProperty(e.prototype, "body", {
                           get: function () {
                             return this._body;
@@ -10965,16 +10893,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         (e.prototype.onInitialize = function (t) {}),
                         (e.prototype._initialize = function (e) {
                           t.prototype._initialize.call(this, e);
-                          for (
-                            var n = 0, i = this.children;
-                            n < i.length;
-                            n++
-                          ) {
+                          for (var n = 0, i = this.children; n < i.length; n++)
                             i[n]._initialize(e);
-                          }
                         }),
                         (e.prototype._initDefaults = function () {
-                          this.anchor = bn.defaults.anchor.clone();
+                          this.anchor = vn.defaults.anchor.clone();
                         }),
                         (e.prototype._checkForPointerOptIn = function (t) {
                           if (t) {
@@ -10999,19 +10922,19 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           t.prototype.off.call(this, e, n);
                         }),
                         (e.prototype._prekill = function (e) {
-                          t.prototype.emit.call(this, "prekill", new lt(this)),
+                          t.prototype.emit.call(this, "prekill", new ht(this)),
                             this.onPreKill(e);
                         }),
                         (e.prototype.onPreKill = function (t) {}),
                         (e.prototype._postkill = function (e) {
-                          t.prototype.emit.call(this, "postkill", new pt(this)),
+                          t.prototype.emit.call(this, "postkill", new ut(this)),
                             this.onPostKill(e);
                         }),
                         (e.prototype.onPostKill = function (t) {}),
                         (e.prototype.kill = function () {
                           this.scene
                             ? (this._prekill(this.scene),
-                              this.emit("kill", new ut(this)),
+                              this.emit("kill", new ct(this)),
                               (this._isKilled = !0),
                               this.scene.remove(this),
                               this._postkill(this.scene))
@@ -11026,7 +10949,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           return this._isKilled;
                         }),
                         (e.prototype.add = function (t) {
-                          (t.body.collider.type = ct.PreventCollision),
+                          (t.body.collider.type = st.PreventCollision),
                             S(t, this.children) && (t.parent = this);
                         }),
                         (e.prototype.remove = function (t) {
@@ -11049,9 +10972,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             ? ((this.frames[arguments[0]] = arguments[1]),
                               this.currentDrawing ||
                                 (this.currentDrawing = arguments[1]))
-                            : (arguments[0] instanceof ve &&
+                            : (arguments[0] instanceof ge &&
                                 this.addDrawing("default", arguments[0]),
-                              arguments[0] instanceof be &&
+                              arguments[0] instanceof ve &&
                                 this.addDrawing(
                                   "default",
                                   arguments[0].asSprite()
@@ -11077,7 +11000,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         }),
                         Object.defineProperty(e.prototype, "center", {
                           get: function () {
-                            return new V(
+                            return new q(
                               this.pos.x +
                                 this.width / 2 -
                                 this.anchor.x * this.width,
@@ -11095,7 +11018,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           },
                           set: function (t) {
                             (this._width = t / this.scale.x),
-                              (this.body.collider.shape = Ve.Box(
+                              (this.body.collider.shape = We.Box(
                                 this._width,
                                 this._height,
                                 this.anchor
@@ -11111,7 +11034,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           },
                           set: function (t) {
                             (this._height = t / this.scale.y),
-                              (this.body.collider.shape = Ve.Box(
+                              (this.body.collider.shape = We.Box(
                                 this._width,
                                 this._height,
                                 this.anchor
@@ -11144,20 +11067,20 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             }, 0),
                             r = e.getWorldPos(),
                             o = this.getWorldRotation();
-                          return new V(n, i).rotate(o, r);
+                          return new q(n, i).rotate(o, r);
                         }),
                         (e.prototype.getGlobalScale = function () {
                           if (!this.parent)
-                            return new V(this.scale.x, this.scale.y);
+                            return new q(this.scale.x, this.scale.y);
                           var t = this.parent.getGlobalScale();
-                          return new V(this.scale.x * t.x, this.scale.y * t.y);
+                          return new q(this.scale.x * t.x, this.scale.y * t.y);
                         }),
                         (e.prototype.contains = function (t, e, n) {
                           void 0 === n && (n = !1);
                           var i = this.getWorldPos().sub(this.pos),
                             r = this.body.collider.bounds
                               .translate(i)
-                              .contains(new V(t, e));
+                              .contains(new q(t, e));
                           return n
                             ? r ||
                                 this.children.some(function (n) {
@@ -11176,16 +11099,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           this._initialize(t), this._preupdate(t, e);
                           var n = this.currentDrawing;
                           n &&
-                            n instanceof Pe &&
+                            n instanceof we &&
                             n.tick(e, t.stats.currFrame.id),
                             this.actionQueue.update(e),
                             this.color && (this.color.a = this.opacity),
                             0 === this.opacity && (this.visible = !1),
                             this.body.captureOldTransform(),
                             this.body.integrate(e);
-                          for (var i = 0, r = this.traits; i < r.length; i++) {
+                          for (var i = 0, r = this.traits; i < r.length; i++)
                             r[i].update(this, t, e);
-                          }
                           for (var o = 0; o < this.children.length; o++)
                             this.children[o].update(t, e);
                           this._postupdate(t, e);
@@ -11193,11 +11115,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         (e.prototype.onPreUpdate = function (t, e) {}),
                         (e.prototype.onPostUpdate = function (t, e) {}),
                         (e.prototype._preupdate = function (t, e) {
-                          this.emit("preupdate", new mt(t, e, this)),
+                          this.emit("preupdate", new _t(t, e, this)),
                             this.onPreUpdate(t, e);
                         }),
                         (e.prototype._postupdate = function (t, e) {
-                          this.emit("postupdate", new mt(t, e, this)),
+                          this.emit("postupdate", new _t(t, e, this)),
                             this.onPostUpdate(t, e);
                         }),
                         (e.prototype.draw = function (t, e) {
@@ -11235,7 +11157,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                               this.body.collider.shape.draw(
                                 t,
                                 this.color,
-                                new V(
+                                new q(
                                   this.width * this.anchor.x,
                                   this.height * this.anchor.y
                                 )
@@ -11249,15 +11171,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         (e.prototype.onPreDraw = function (t, e) {}),
                         (e.prototype.onPostDraw = function (t, e) {}),
                         (e.prototype._predraw = function (t, e) {
-                          this.emit("predraw", new yt(t, e, this)),
+                          this.emit("predraw", new dt(t, e, this)),
                             this.onPreDraw(t, e);
                         }),
                         (e.prototype._postdraw = function (t, e) {
-                          this.emit("postdraw", new yt(t, e, this)),
+                          this.emit("postdraw", new dt(t, e, this)),
                             this.onPostDraw(t, e);
                         }),
                         (e.prototype.debugDraw = function (t) {
-                          this.emit("predebugdraw", new _t(t, this)),
+                          this.emit("predebugdraw", new yt(t, this)),
                             this.body.collider.debugDraw(t);
                           var e = this.body.collider.localBounds.translate(
                             this.getWorldPos()
@@ -11268,7 +11190,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                               e.left + 3,
                               e.top + 10
                             ),
-                            (t.fillStyle = et.Yellow.toString()),
+                            (t.fillStyle = tt.Yellow.toString()),
                             t.beginPath(),
                             t.arc(
                               this.getWorldPos().x,
@@ -11280,9 +11202,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             t.closePath(),
                             t.fill();
                           for (var n = 0; n < this.traits.length; n++)
-                            this.traits[n] instanceof Ze &&
+                            this.traits[n] instanceof Ge &&
                               this.traits[n].cullingBox.debugDraw(t);
-                          (t.strokeStyle = et.Yellow.toString()), t.beginPath();
+                          (t.strokeStyle = tt.Yellow.toString()), t.beginPath();
                           var i = Math.min(this.width, this.height);
                           t.arc(
                             this.getWorldPos().x,
@@ -11301,7 +11223,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             },
                             o = t.font;
                           for (var s in r)
-                            (t.fillStyle = et.Yellow.toString()),
+                            (t.fillStyle = tt.Yellow.toString()),
                               (t.font = "14px"),
                               (t.textAlign = "center"),
                               t.fillText(
@@ -11313,16 +11235,16 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           t.font = o;
                           for (var a = 0; a < this.children.length; a++)
                             this.children[a].debugDraw(t);
-                          this.emit("postdebugdraw", new vt(t, this));
+                          this.emit("postdebugdraw", new gt(t, this));
                         }),
                         (e.prototype.getAncestors = function () {
                           for (var t, e = [this], n = this; (t = n.parent); )
                             (n = t), e.push(n);
                           return e.reverse();
                         }),
-                        (e.defaults = { anchor: V.Half }),
+                        (e.defaults = { anchor: q.Half }),
                         (e.maxId = 0),
-                        vn(
+                        yn(
                           [
                             N({
                               message: "ex.Actor.sx will be removed in v0.25.0",
@@ -11334,7 +11256,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           "sx",
                           null
                         ),
-                        vn(
+                        yn(
                           [
                             N({
                               message: "ex.Actor.sy will be removed in v0.25.0",
@@ -11348,10 +11270,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         ),
                         e
                       );
-                    })(gn)
+                    })(dn)
                   )
                 ),
-                wn = (function () {
+                mn = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -11376,28 +11298,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                xn = function (t, e, n, i) {
-                  var r,
-                    o = arguments.length,
-                    s =
-                      o < 3
-                        ? e
-                        : null === i
-                        ? (i = Object.getOwnPropertyDescriptor(e, n))
-                        : i;
-                  if (
-                    "object" == typeof Reflect &&
-                    "function" == typeof Reflect.decorate
-                  )
-                    s = Reflect.decorate(t, e, n, i);
-                  else
-                    for (var a = t.length - 1; a >= 0; a--)
-                      (r = t[a]) &&
-                        (s =
-                          (o < 3 ? r(s) : o > 3 ? r(e, n, s) : r(e, n)) || s);
-                  return o > 3 && s && Object.defineProperty(e, n, s), s;
-                },
-                Pn = (function (t) {
+                bn = (function (t) {
                   function e(e, n, i, r) {
                     var o = this;
                     return (
@@ -11405,10 +11306,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         "object" != typeof e
                           ? t.call(this, e, n, i, r) || this
                           : t.call(this, e) || this).traits = []),
-                      o.traits.push(new Ke()),
+                      o.traits.push(new Xe()),
                       o.anchor.setTo(0, 0),
-                      (o.body.collider.type = ct.PreventCollision),
-                      (o.body.collider.shape = Ve.Box(
+                      (o.body.collider.type = st.PreventCollision),
+                      (o.body.collider.shape = We.Box(
                         o.width,
                         o.height,
                         o.anchor
@@ -11418,7 +11319,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     );
                   }
                   return (
-                    wn(e, t),
+                    mn(e, t),
                     (e.prototype._initialize = function (e) {
                       (this._engine = e), t.prototype._initialize.call(this, e);
                     }),
@@ -11426,20 +11327,41 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       if ((void 0 === i && (i = !0), i))
                         return t.prototype.contains.call(this, e, n);
                       var r = this._engine.worldToScreenCoordinates(
-                        new V(e, n)
+                        new q(e, n)
                       );
                       return t.prototype.contains.call(this, r.x, r.y);
                     }),
                     e
                   );
-                })(bn),
-                An = (function (t) {
+                })(vn),
+                wn = (function (t) {
                   function e() {
                     return (null !== t && t.apply(this, arguments)) || this;
                   }
                   return (
-                    wn(e, t),
-                    (e = xn(
+                    mn(e, t),
+                    (function (t, e, n, i) {
+                      var r,
+                        o = arguments.length,
+                        s =
+                          o < 3
+                            ? e
+                            : null === i
+                            ? (i = Object.getOwnPropertyDescriptor(e, n))
+                            : i;
+                      if (
+                        "object" == typeof Reflect &&
+                        "function" == typeof Reflect.decorate
+                      )
+                        s = Reflect.decorate(t, e, n, i);
+                      else
+                        for (var a = t.length - 1; a >= 0; a--)
+                          (r = t[a]) &&
+                            (s =
+                              (o < 3 ? r(s) : o > 3 ? r(e, n, s) : r(e, n)) ||
+                              s);
+                      return o > 3 && s && Object.defineProperty(e, n, s), s;
+                    })(
                       [
                         N({
                           message: "Will be removed in v0.25.0",
@@ -11447,10 +11369,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         }),
                       ],
                       e
-                    ))
+                    )
                   );
-                })(Pn),
-                En = (function () {
+                })(bn),
+                xn = (function () {
                   function t(e, n, i, r) {
                     if (
                       ((this.id = 0),
@@ -11544,7 +11466,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Sn = (function () {
+                Pn = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -11569,13 +11491,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                Cn = (function (t) {
+                An = (function (t) {
                   function e(e, n, i, r, o, s) {
                     return t.call(this, e, n, i, r, o, s) || this;
                   }
-                  return Sn(e, t), e;
+                  return Pn(e, t), e;
                 })(
-                  fe(
+                  pe(
                     (function (t) {
                       function e(e, n, i, r, o, s) {
                         var a = t.call(this) || this;
@@ -11611,7 +11533,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                               for (
                                 var c = function (o) {
                                     var c;
-                                    (c = new Tn(
+                                    (c = new Sn(
                                       t * i + e,
                                       o * r + n,
                                       i,
@@ -11634,7 +11556,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         return a;
                       }
                       return (
-                        Sn(e, t),
+                        Pn(e, t),
                         (e.prototype.on = function (e, n) {
                           t.prototype.on.call(this, e, n);
                         }),
@@ -11672,7 +11594,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                                 return (
                                   Math.abs(t.x) < Math.abs(e.x) && (n = e.x),
                                   Math.abs(t.y) < Math.abs(e.y) && (i = e.y),
-                                  new V(n, i)
+                                  new q(n, i)
                                 );
                               });
                         }),
@@ -11703,10 +11625,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         (e.prototype.onPostUpdate = function (t, e) {}),
                         (e.prototype.update = function (t, e) {
                           this.onPreUpdate(t, e),
-                            this.emit("preupdate", new mt(t, e, this));
-                          var n = t.screenToWorldCoordinates(new V(0, 0)),
+                            this.emit("preupdate", new _t(t, e, this));
+                          var n = t.screenToWorldCoordinates(new q(0, 0)),
                             i = t.screenToWorldCoordinates(
-                              new V(t.canvas.clientWidth, t.canvas.clientHeight)
+                              new q(t.canvas.clientWidth, t.canvas.clientHeight)
                             );
                           (this._onScreenXStart = Math.max(
                             Math.floor((n.x - this.x) / this.cellWidth) - 2,
@@ -11725,10 +11647,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                               0
                             )),
                             this.onPostUpdate(t, e),
-                            this.emit("postupdate", new bt(t, e, this));
+                            this.emit("postupdate", new vt(t, e, this));
                         }),
                         (e.prototype.draw = function (t, e) {
-                          this.emit("predraw", new yt(t, e, this)),
+                          this.emit("predraw", new dt(t, e, this)),
                             t.save(),
                             t.translate(this.x, this.y);
                           for (
@@ -11781,12 +11703,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             a = this._onScreenYStart;
                           }
                           t.restore(),
-                            this.emit("postdraw", new gt(t, e, this));
+                            this.emit("postdraw", new ft(t, e, this));
                         }),
                         (e.prototype.debugDraw = function (t) {
                           var e = this.cols * this.cellWidth,
                             n = this.rows * this.cellHeight;
-                          t.save(), (t.strokeStyle = et.Red.toString());
+                          t.save(), (t.strokeStyle = tt.Red.toString());
                           for (var i = 0; i < this.cols + 1; i++)
                             t.beginPath(),
                               t.moveTo(this.x + i * this.cellWidth, this.y),
@@ -11800,7 +11722,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                                 this.y + r * this.cellHeight
                               ),
                               t.stroke();
-                          var o = et.Red;
+                          var o = tt.Red;
                           (o.a = 0.3),
                             this.data
                               .filter(function (t) {
@@ -11812,7 +11734,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                               }),
                             this._collidingY > -1 &&
                               this._collidingX > -1 &&
-                              ((t.fillStyle = et.Cyan.toString()),
+                              ((t.fillStyle = tt.Cyan.toString()),
                               t.fillRect(
                                 this.x + this._collidingX * this.cellWidth,
                                 this.y + this._collidingY * this.cellHeight,
@@ -11823,19 +11745,19 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         }),
                         e
                       );
-                    })(ee)
+                    })($t)
                   )
                 ),
-                On = function (t, e) {
+                En = function (t, e) {
                   (this.spriteSheetKey = t), (this.spriteId = e);
                 },
-                Tn = (function (t) {
+                Sn = (function (t) {
                   function e(e, n, i, r, o, s, a) {
                     return t.call(this, e, n, i, r, o, s, a) || this;
                   }
-                  return Sn(e, t), e;
+                  return Pn(e, t), e;
                 })(
-                  fe(
+                  pe(
                     (function () {
                       function t(t, e, n, i, r, o, s) {
                         if (
@@ -11861,7 +11783,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           (this.index = r),
                           (this.solid = o),
                           (this.sprites = s),
-                          (this._bounds = new Kt(
+                          (this._bounds = new Qt(
                             this.x,
                             this.y,
                             this.x + this.width,
@@ -11878,7 +11800,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         }),
                         Object.defineProperty(t.prototype, "center", {
                           get: function () {
-                            return new V(
+                            return new q(
                               this.x + this.width / 2,
                               this.y + this.height / 2
                             );
@@ -11902,7 +11824,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     })()
                   )
                 ),
-                Bn = (function () {
+                Cn = (function () {
                   function t() {}
                   return (
                     (t.create = function () {
@@ -11916,21 +11838,20 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t._INSTANCE = null),
                     t
                   );
-                })();
-              var Mn,
-                Dn = (function () {
+                })(),
+                On = (function () {
                   function t() {}
                   return (
                     (t.unlock = function () {
                       var e = new d();
-                      if (t._unlocked || !Bn.create()) return e.resolve(!0);
+                      if (t._unlocked || !Cn.create()) return e.resolve(!0);
                       var n = setTimeout(function () {
                           R.getInstance().warn(
                             "Excalibur was unable to unlock the audio context, audio probably will not play in this browser."
                           ),
                             e.resolve();
                         }, 200),
-                        i = Bn.create();
+                        i = Cn.create();
                       return (
                         i.resume().then(
                           function () {
@@ -11944,20 +11865,18 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                               }),
                               o.noteOn ? o.noteOn(0) : o.start(0),
                               setTimeout(function () {
-                                !(function (t) {
-                                  return !!t.playbackState;
-                                })(o)
-                                  ? (i.currentTime > 0 || s) &&
-                                    (t._unlocked = !0)
-                                  : (o.playbackState !== o.PLAYING_STATE &&
+                                o.playbackState
+                                  ? (o.playbackState !== o.PLAYING_STATE &&
                                       o.playbackState !== o.FINISHED_STATE) ||
+                                    (t._unlocked = !0)
+                                  : (i.currentTime > 0 || s) &&
                                     (t._unlocked = !0);
                               }, 0),
                               clearTimeout(n),
-                              e.state() === u.Pending && e.resolve();
+                              e.state() === h.Pending && e.resolve();
                           },
                           function () {
-                            e.state() === u.Pending && e.reject(!1);
+                            e.state() === h.Pending && e.reject(!1);
                           }
                         ),
                         e
@@ -11970,8 +11889,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                kn = n(58),
-                Rn = (function () {
+                Tn = n(58),
+                Bn = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -11996,7 +11915,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                jn = (function (t) {
+                Mn = (function (t) {
                   function e(e) {
                     var n = t.call(this) || this;
                     return (
@@ -12011,10 +11930,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdQAAAB2CAYAAABxhGI9AAAACXBIWXMAAAsSAAALEgHS3X78AAAKnUlEQVR42u3dP2wjSx0H8N8hJIonIRmJjsq0SBR+BQ1dcqKhe0lD77SvSwpKkJKGPulpktfRIMUdEqKIqV57rpAokM4dbSiyq7ONPTP7x39ifz7SFbnEnp3xer47O7uzH15fXwMA6OYHmgAABCoACFQAEKgAgEAFAIEKAAIVAAQqACBQAUCgAoBABQCBCgAIVAAQqAAgUAFAoAIAAhUABCoACFQAEKgAgECFLbmOiNeFf2PbAyz68Pr6qhUgbRwR92v+/zwiJrYHMEKFMmcN///UtgcQqFBk1PD/97U9Qx8VCFSgu4EmAIEKAAIVAAQqACBQ4Z25jojP8eX+0WtNAgIVaOY+Im5j+eKh24h41jQgUIEyZ7F5NaPU7wCBCiwYd/w9cOB+qAlgJ3KLLow0EV198803RWvJfvfddx+0lhEqHKu5JgAjVCBvlhmFzjQRXUekHz9+TP79y8uLRjNChXfvoePvAYEKxNtj1e42/O5JoIJABcrdRMRVLM+X3kTEpaaB988cKuzWg9EobTWdMx0Oly8uN4dqhAoARqgnaN3arHfqu7OyH8ItKLVB/P+CEfMTHyGPY3npx1m8zWGDEeoBfUk/xdti57dr/r1Wv2+6EPow3tZ5rRdS72s1neuF97xvWd+XTH0/V+UMttDWqbI/r2nrxfp+jv2uSjSO7S+OXy/A/3lN+9xX5T5HxEUPZZ0tfB71+w57eJ/HFu+z+jkv1u92YX9fbI/HhX3JA9rp5MPr66tWaG9UfUGbrHIzi7cLUyYFf/tpTady03EEeL8mUJ6i7MKYNvWNqr4Pe2jradXO60LrvPAz2PQ5RPX684ah8dxD+2zantnCgVipSVV+m/tgB9W2DDq2Sx/vM95wcHhZhWVJm8yrv58cSgfTdc70+++/X/r522+/tUKSEepBqo+om4ZLPerMjUwuNnQCtx1GWJtee1FwdD5uWd86xLs8UaVt2aNEO1/saZ/Z5rYMW4zq6v34rGV9Bg3q2eZ9SkeNm9qwyUh30OPIHYFKx5FG03C7znSOqYBq+qW/zpQ3anH037TNHluG6f0WPsPhHvab4QFty7ogOeuxDYcNy2/zu2214WNYWxmBurNO8bGn97pNBOO8xy/9uCorZZ4I2r4C7aJgO7ZV9iE49Dm6NvOWx+pWE9CUq3zbdTp9doz38TbXtzqH9RT5CyWe422OaZoZGeZCabrhPQY9HjwsjpTvCg4YtlE2+Ta/j2bzn8fqrDqgm+6yUHOmAvWUjAtGhbNYvsBknDnqH1Qhc7VmxHgeb/NbudA5j/UXlYwif2p6luhAc9teu1npiHKnDs8if6tCm7JLX3NKpgttXe9ruc9mHMd7a83iwdxF5vt8tutARaCeklRnNK9C8WnNF7geJQ4T4XG3JhSnVdilQrG+yOnrlVHfsEGYzhNBn7Lu6tS7+HJafJQ4EMiNlNqWXZ9WPvVgnVYHG5M1ByDXkT6leX2EgTqJtyt45yv7S2qO3sEZjZhDLXeR+YKdJ0Zdk8QocvH9N732KrNtq+FZ/zzIHABcJrYpd+Xv14lOd5ap76SgrduW/VTQ1qcQpqnbgu4ifZvUMNpd9XuoZmvCtPaQ2Y/BCHVLgbrJTeRPDdVf6pfMKDU2fOkHmVFFfXr3MsouLsnNvV5kRoe5+s431PeuoKPqWnaurY/ZPBEeqwceN4l96iwO6H7Mjq4y7VGPVNe10VaZMzVCPVWpI/Z6FZbcv5fMqGCU+dLfFGzj58jP8+bCdJCo7yzKTwdOF0bu9Ug7V4c+yz7FJfYeGoysUss0HssIdVZwYLDujMqlESoCdTtGsZtbHnJBeNdDSJSs0jTKdMJN1HNX54Wv7bvsU9NkVJVa13dX+/wuArV0X/l5RHyo/lnfF4G6p6DrS0kHdtXhy35TGErDPYZUn2WfWqDOo/lVqdMD2O/hKJhD7S/odukymq9s02QN4EEPR/zbaOumZc+r15zK1Zqznl9jsfiemTM1QmV3HUuTkedlg9HIQzRbUD93dfC+2tpj2fIHEH2+RqCCQH13gZq7hWXTNpVu19OB1fc9nQ0AKOKUb5lU0P1kDyOneoWk0lOZ9cIP0x7qu8+2BhCoR2wYu1+e7DmaXzBSsu5vaX1ne2zrpmUPTmxf7PM1Dm4y/vC7ny7Nif7+z/9ZmtM0Z3panPLtPmra9f16bcK0Dpbnwk43Vd/RHtu6zfNQTy1QBy3aqG2g9nVmxml+BOoJyT3NpWmn9xhfFnu4bvDa+44BXhqqfdf3uUF9+yz77AT31Yue2mjecYQ62NLfgkA9ghHqLNEhNem4H1c6vdyDxhf/bpz5m4coW/c39wi6VH2bPtHlcaV9cvXts+zxCe6rTeqc2ndL7uGd93QwM9bFcAzMoZZ7SgTBbWx+asui61h/iq1+RmjqdbnQXQ3T1DNQ63V/U9ucqm/pMzPb1rePsk/1iTOjgvatR4W3Lc8ULB78pELyrnAfeTcj1NU509/86mfJ33/8+Mf00a05UyPUEw7UVCeWG/WNEiExyHRMt5ltW30izUPk18ytt7lNfc8i//DvtvXto+ySA5BjljsLUF8lPkqMPEtW1JomDsiGBZ9Byb4NAvUITSN9GuwsIj6t6UTOqk7jJREkmzqli8xIs96udSO20sX0H1vW92IL9e1a9rgqVyf91gbPsTy9UD9n9lOkT8k+RfkFR5PMNqxOcdSf32PBvg3vilO+zdxE+okx9Wm0ph36XYsRZCpMF993GOk5qvqB3Dct6jvssb67KvuUNJ3frw92bhr8/STSF0JdRPMLpUCgnsgo9S76PZ246ZFk1wWvK5m3vVoYvW1Sz7nN91jfXbQ1ZQc7TW6HeaoOalypG/8/p/rP1aNAc6ZHzSnfdqPUPhdy2PQw6Nz9gSVhuhiqueUHR3uu7y7K3rdDX4u46ZrPbUa0IFBZ0seKQ3XQTRt2vm3W/a2DbNKys++rvm3ep6+y1x2UdP3bWU9lzra47U1GmlctX/sQ23t+aOlByLTh/4NAPaCRxtcdO5HLSJ/6vNtCwGx67VPmPbvWd1q9frKHtp4kAqRJ2HR9j762JfX3bZ//elPtj13PPDx1+D5tqk/Xi6NO8SHz7MmH19dXrdBNfVFP6T2PT1UHNit87/t4m5+aRH+nQBdvqyhZDKJLfZs8h7XPsqdV2ZOV+tanKB8aln0dyxdAXbV4j4gvt4oMOrbP6vbU73NW7TMlbdTnPrWpfqXfh9HKZ9vke7KuTeZRNtXRSe6+1FV//ce/ln5eXfsXgcqXzr6+9261M3moOoa7E6nvTZTfy7iNsmfb7kjfgXGsvxe0vihsEts9HTquPpt1q1vtahu2TqAiUAEEKj0zhwoARqgAu/OnX/442WH+9xc/Wvr58re/Tr7f41/+ZsRqhAoACFQAEKgAcHjMoQJskJsz/eqrr5Z+vvr7v5fmQFevAl5lztQIFQAQqAAgUAHgIJlDBdhgdQ41N2eKESoAIFABQKACwFEwhwoARqgAIFABQKACAAIVAAQqAAhUABCoAIBABQCBCgACFQAEKgAgUAFAoAKAQAUAgQoACFQAEKgAIFABQKACAAIVAAQqAAhUABCoAIBABQCBCgACFQAQqAAgUAFAoAKAQAUAlvwPcFDns1DsH4sAAAAASUVORK5CYII="),
                       (n.logoWidth = 468),
                       (n.logoHeight = 118),
-                      (n.loadingBarColor = et.White),
+                      (n.loadingBarColor = tt.White),
                       (n.backgroundColor = "#176BAA"),
                       (n.suppressPlayButton = !1),
-                      (n._playButtonStyles = kn.a.toString()),
+                      (n._playButtonStyles = Tn.a.toString()),
                       (n.playButtonText = "Play game"),
                       (n.startButtonFactory = function () {
                         var t = document.createElement("button");
@@ -12041,7 +11960,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     );
                   }
                   return (
-                    Rn(e, t),
+                    Bn(e, t),
                     Object.defineProperty(e.prototype, "_image", {
                       get: function () {
                         return (
@@ -12127,18 +12046,18 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       var t = new d();
                       return (
                         this._playButton.addEventListener("click", function () {
-                          return t.state() === u.Pending ? t.resolve() : t;
+                          return t.state() === h.Pending ? t.resolve() : t;
                         }),
                         this._playButton.addEventListener(
                           "touchend",
                           function () {
-                            return t.state() === u.Pending ? t.resolve() : t;
+                            return t.state() === h.Pending ? t.resolve() : t;
                           }
                         ),
                         this._playButton.addEventListener(
                           "pointerup",
                           function () {
-                            return t.state() === u.Pending ? t.resolve() : t;
+                            return t.state() === h.Pending ? t.resolve() : t;
                           }
                         ),
                         t
@@ -12162,47 +12081,43 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e.prototype.load = function () {
                       var t = this,
                         e = new d();
-                      if (0 === this._resourceList.length)
-                        return (
-                          this.showPlayButton().then(function () {
-                            Dn.unlock().then(function () {
+                      return 0 === this._resourceList.length
+                        ? (this.showPlayButton().then(function () {
+                            On.unlock().then(function () {
                               t.hidePlayButton(),
                                 t.oncomplete.call(t),
                                 e.resolve(),
                                 t.dispose();
                             });
                           }),
-                          e
-                        );
-                      return (
-                        this._resourceList.forEach(function (n) {
-                          t._engine && n.wireEngine(t._engine),
-                            (n.onprogress = function (e) {
-                              t.updateResourceProgress(e.loaded, e.total);
-                            }),
-                            (n.oncomplete = n.onerror = function () {
-                              t.markResourceComplete(),
-                                t.isLoaded() &&
-                                  setTimeout(function () {
-                                    t.showPlayButton().then(function () {
-                                      Dn.unlock().then(function () {
-                                        t.hidePlayButton(),
-                                          t.oncomplete.call(t),
-                                          e.resolve(),
-                                          t.dispose();
+                          e)
+                        : (this._resourceList.forEach(function (n) {
+                            t._engine && n.wireEngine(t._engine),
+                              (n.onprogress = function (e) {
+                                t.updateResourceProgress(e.loaded, e.total);
+                              }),
+                              (n.oncomplete = n.onerror = function () {
+                                t.markResourceComplete(),
+                                  t.isLoaded() &&
+                                    setTimeout(function () {
+                                      t.showPlayButton().then(function () {
+                                        On.unlock().then(function () {
+                                          t.hidePlayButton(),
+                                            t.oncomplete.call(t),
+                                            e.resolve(),
+                                            t.dispose();
+                                        });
                                       });
-                                    });
-                                  }, 200);
-                            });
-                        }),
-                        (function t(e, n) {
-                          e[n] &&
-                            e[n].load().then(function () {
-                              t(e, n + 1);
-                            });
-                        })(this._resourceList, 0),
-                        e
-                      );
+                                    }, 200);
+                              });
+                          }),
+                          (function t(e, n) {
+                            e[n] &&
+                              e[n].load().then(function () {
+                                t(e, n + 1);
+                              });
+                          })(this._resourceList, 0),
+                          e);
                     }),
                     (e.prototype.updateResourceProgress = function (t, e) {
                       var n =
@@ -12285,9 +12200,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           ((p = this.loadingBarPosition.x),
                           (d = this.loadingBarPosition.y)),
                           (t.lineWidth = 2),
-                          tn(t, p, d, c, 20, 10, this.loadingBarColor);
+                          Ye(t, p, d, c, 20, 10, this.loadingBarColor);
                         var f = c * this.progress - 10;
-                        tn(
+                        Ye(
                           t,
                           p + 5,
                           d + 5,
@@ -12303,13 +12218,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e.prototype.update = function (t, e) {}),
                     e
                   );
-                })(ee),
-                Fn = {
+                })($t),
+                Dn = {
                   webgl: "WebGL",
                   webaudio: "WebAudio",
                   gamepadapi: "Gamepad API",
                 },
-                In = (function () {
+                kn = (function () {
                   function t() {
                     (this._features = null),
                       (this.failedTests = []),
@@ -12388,7 +12303,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           ],
                           n = this.getBrowserFeatures(),
                           i = 0,
-                          r = Object.keys(Fn);
+                          r = Object.keys(Dn);
                         i < r.length;
                         i++
                       ) {
@@ -12400,7 +12315,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((t += "(%c✗%c)"),
                             e.push("font-weight: bold; color: red"),
                             e.push("font-weight: normal; color: inherit")),
-                          (t += " " + Fn[o] + "\n");
+                          (t += " " + Dn[o] + "\n");
                       }
                       e.unshift(t), console.log.apply(console, e);
                     }),
@@ -12439,12 +12354,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Ln = (function () {
+                Rn = (function () {
                   function t(t) {
                     (this.parent = t),
                       (this.parent = t || null),
                       (this.body = null),
-                      (this.bounds = new Kt()),
+                      (this.bounds = new Qt()),
                       (this.left = null),
                       (this.right = null),
                       (this.height = 0);
@@ -12456,10 +12371,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                zn = (function () {
+                jn = (function () {
                   function t(t) {
                     void 0 === t &&
-                      (t = new Kt(
+                      (t = new Qt(
                         -Number.MAX_VALUE,
                         -Number.MAX_VALUE,
                         Number.MAX_VALUE,
@@ -12500,7 +12415,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         n = h < p ? i : r;
                       }
                       var f = n.parent,
-                        y = new Ln(f);
+                        y = new Rn(f);
                       (y.bounds = e.combine(n.bounds)),
                         (y.height = n.height + 1),
                         null !== f
@@ -12550,7 +12465,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       } else this.root = null;
                     }),
                     (t.prototype.trackBody = function (t) {
-                      var e = new Ln();
+                      var e = new Rn();
                       (e.body = t),
                         (e.bounds = t.collider.bounds),
                         (e.bounds.left -= 2),
@@ -12576,12 +12491,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         );
                       if (e.bounds.contains(n)) return !1;
                       this._remove(e),
-                        (n.left -= st.boundsPadding),
-                        (n.top -= st.boundsPadding),
-                        (n.right += st.boundsPadding),
-                        (n.bottom += st.boundsPadding);
-                      var i = t.vel.x * st.dynamicTreeVelocityMultiplier,
-                        r = t.vel.y * st.dynamicTreeVelocityMultiplier;
+                        (n.left -= rt.boundsPadding),
+                        (n.top -= rt.boundsPadding),
+                        (n.right += rt.boundsPadding),
+                        (n.bottom += rt.boundsPadding);
+                      var i = t.vel.x * rt.dynamicTreeVelocityMultiplier,
+                        r = t.vel.y * rt.dynamicTreeVelocityMultiplier;
                       return (
                         i < 0 ? (n.left += i) : (n.right += i),
                         r < 0 ? (n.top += r) : (n.bottom += r),
@@ -12720,9 +12635,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Hn = (function () {
+                Fn = (function () {
                   function t() {
-                    (this._dynamicCollisionTree = new zn()),
+                    (this._dynamicCollisionTree = new jn()),
                       (this._collisionHash = {}),
                       (this._collisionPairCache = []),
                       (this._lastFramePairs = []),
@@ -12747,8 +12662,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       t,
                       e
                     ) {
-                      var n = rn.calculatePairHash(t, e);
-                      return !this._collisionHash[n] && rn.canCollide(t, e);
+                      var n = tn.calculatePairHash(t, e);
+                      return !this._collisionHash[n] && tn.canCollide(t, e);
                     }),
                     (t.prototype.broadphase = function (t, e, n) {
                       var i,
@@ -12759,7 +12674,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             return t.collider;
                           })
                           .filter(function (t) {
-                            return t.active && t.type !== ct.PreventCollision;
+                            return t.active && t.type !== st.PreventCollision;
                           });
                       (this._collisionPairCache = []),
                         (this._collisionHash = {});
@@ -12769,7 +12684,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             t
                           ) {
                             if (r._shouldGenerateCollisionPair(i, t.collider)) {
-                              var e = new rn(i, t.collider);
+                              var e = new tn(i, t.collider);
                               (r._collisionHash[e.id] = !0),
                                 r._collisionPairCache.push(e);
                             }
@@ -12778,17 +12693,17 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       if (
                         (n &&
                           (n.physics.pairs = this._collisionPairCache.length),
-                        st.checkForFastBodies)
+                        rt.checkForFastBodies)
                       )
                         for (
                           var h = function (t) {
-                              if (t.type !== ct.Active) return "continue";
+                              if (t.type !== st.Active) return "continue";
                               var e =
                                   t.body.vel.size * o +
                                   0.5 * t.body.acc.size * o * o,
                                 i = Math.min(t.bounds.height, t.bounds.width);
                               if (
-                                st.disableMinimumSpeedForFastBody ||
+                                rt.disableMinimumSpeedForFastBody ||
                                 e > i / 2
                               ) {
                                 n && n.physics.fastBodies++;
@@ -12797,24 +12712,24 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                                   a = t.shape.center,
                                   c = t.shape.getFurthestPoint(t.body.vel),
                                   h = c.sub(s),
-                                  l = new G(h, t.body.vel);
+                                  l = new V(h, t.body.vel);
                                 l.pos = l.pos.add(
-                                  l.dir.scale(-2 * st.surfaceEpsilon)
+                                  l.dir.scale(-2 * rt.surfaceEpsilon)
                                 );
-                                var p = new V(1 / 0, 1 / 0);
+                                var p = new q(1 / 0, 1 / 0);
                                 if (
                                   (u._dynamicCollisionTree.rayCastQuery(
                                     l,
-                                    e + 2 * st.surfaceEpsilon,
+                                    e + 2 * rt.surfaceEpsilon,
                                     function (n) {
                                       if (
                                         t.body !== n &&
                                         n.collider.shape &&
-                                        rn.canCollide(t, n.collider)
+                                        tn.canCollide(t, n.collider)
                                       ) {
                                         var i = n.collider.shape.rayCast(
                                           l,
-                                          e + 10 * st.surfaceEpsilon
+                                          e + 10 * rt.surfaceEpsilon
                                         );
                                         if (i) {
                                           var o = i.sub(h);
@@ -12824,9 +12739,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                                       return !1;
                                     }
                                   ),
-                                  r && V.isValid(p))
+                                  r && q.isValid(p))
                                 ) {
-                                  var d = new rn(t, r.collider);
+                                  var d = new tn(t, r.collider);
                                   u._collisionHash[d.id] ||
                                     ((u._collisionHash[d.id] = !0),
                                     u._collisionPairCache.push(d));
@@ -12834,7 +12749,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                                   (t.body.pos = h
                                     .add(f)
                                     .add(p)
-                                    .add(l.dir.scale(2 * st.surfaceEpsilon))),
+                                    .add(l.dir.scale(2 * rt.surfaceEpsilon))),
                                     t.shape.recalc(),
                                     n && n.physics.fastBodyCollisions++;
                                 }
@@ -12845,9 +12760,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             p = s;
                           l < p.length;
                           l++
-                        ) {
+                        )
                           h(p[l]);
-                        }
                       return this._collisionPairCache;
                     }),
                     (t.prototype.narrowphase = function (t, e) {
@@ -12868,36 +12782,35 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           o.collision &&
                             (o.colliderA.body.applyMtv(),
                             o.colliderB.body.applyMtv(),
-                            o.colliderA.body.integrate(e * st.collisionShift),
-                            o.colliderB.body.integrate(e * st.collisionShift));
+                            o.colliderA.body.integrate(e * rt.collisionShift),
+                            o.colliderB.body.integrate(e * rt.collisionShift));
                       }
                       return t.filter(function (t) {
                         return t.canCollide;
                       });
                     }),
                     (t.prototype.runCollisionStartEnd = function (t) {
-                      for (var e = {}, n = 0, i = t; n < i.length; n++) {
+                      for (var e = {}, n = 0, i = t; n < i.length; n++)
                         if (
                           ((e[(c = i[n]).id] = c),
                           !this._lastFramePairsHash[c.id])
                         ) {
                           var r = c.colliderA,
                             o = c.colliderB;
-                          r.emit("collisionstart", new kt(r, o, c)),
-                            o.emit("collisionstart", new kt(o, r, c));
+                          r.emit("collisionstart", new Mt(r, o, c)),
+                            o.emit("collisionstart", new Mt(o, r, c));
                         }
-                      }
                       for (
                         var s = 0, a = this._lastFramePairs;
                         s < a.length;
                         s++
                       ) {
                         var c;
-                        if (!e[(c = a[s]).id]) {
-                          (r = c.colliderA), (o = c.colliderB);
-                          r.emit("collisionend", new Rt(r, o)),
-                            o.emit("collisionend", new Rt(o, r));
-                        }
+                        e[(c = a[s]).id] ||
+                          ((r = c.colliderA),
+                          (o = c.colliderB),
+                          r.emit("collisionend", new Dt(r, o)),
+                          o.emit("collisionend", new Dt(o, r)));
                       }
                       (this._lastFramePairs = t),
                         (this._lastFramePairsHash = e);
@@ -12909,22 +12822,21 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (t.prototype.debugDraw = function (t) {
                       if (
-                        (st.broadphaseDebug &&
+                        (rt.broadphaseDebug &&
                           this._dynamicCollisionTree.debugDraw(t),
-                        st.showContacts || st.showCollisionNormals)
+                        rt.showContacts || rt.showCollisionNormals)
                       )
                         for (
                           var e = 0, n = this._collisionPairCache;
                           e < n.length;
                           e++
-                        ) {
+                        )
                           n[e].debugDraw(t);
-                        }
                     }),
                     t
                   );
                 })(),
-                Un = (function () {
+                In = (function () {
                   function t(t) {
                     this._getComparable = t;
                   }
@@ -12956,7 +12868,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (t.prototype.add = function (t) {
                       return null == this._root
-                        ? ((this._root = new Wn(
+                        ? ((this._root = new Ln(
                             this._getComparable(t),
                             [t],
                             null,
@@ -12969,12 +12881,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       return (
                         null != t &&
                         (this._getComparable(e) === t.getKey()
-                          ? !(t.getData().indexOf(e) > -1) &&
-                            (t.getData().push(e), !0)
+                          ? !(
+                              t.getData().indexOf(e) > -1 ||
+                              (t.getData().push(e), 0)
+                            )
                           : this._getComparable(e) < t.getKey()
                           ? null == t.getLeft()
                             ? (t.setLeft(
-                                new Wn(
+                                new Ln(
                                   this._getComparable.call(e, e),
                                   [e],
                                   null,
@@ -12985,7 +12899,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             : this._insert(t.getLeft(), e)
                           : null == t.getRight()
                           ? (t.setRight(
-                              new Wn(
+                              new Ln(
                                 this._getComparable.call(e, e),
                                 [e],
                                 null,
@@ -13065,7 +12979,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Wn = (function () {
+                Ln = (function () {
                   function t(t, e, n, i) {
                     (this._key = t),
                       (this._data = e),
@@ -13100,7 +13014,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Nn = (function () {
+                zn = (function () {
                   function t(t) {
                     (this._key = 0), (this._key = t);
                   }
@@ -13114,7 +13028,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                qn = (function () {
+                Hn = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -13139,55 +13053,55 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                Vn = (function () {
+                Un = (function () {
                   function t(t) {
                     this.camera = t;
                   }
                   return (
                     (t.prototype.lockToActor = function (t) {
-                      this.camera.addStrategy(new Kn(t));
+                      this.camera.addStrategy(new Gn(t));
                     }),
                     (t.prototype.lockToActorAxis = function (t, e) {
-                      this.camera.addStrategy(new Yn(t, e));
+                      this.camera.addStrategy(new Xn(t, e));
                     }),
                     (t.prototype.elasticToActor = function (t, e, n) {
-                      this.camera.addStrategy(new Jn(t, e, n));
+                      this.camera.addStrategy(new Qn(t, e, n));
                     }),
                     (t.prototype.radiusAroundActor = function (t, e) {
-                      this.camera.addStrategy(new $n(t, e));
+                      this.camera.addStrategy(new Zn(t, e));
                     }),
                     (t.prototype.limitCameraBounds = function (t) {
-                      this.camera.addStrategy(new ti(t));
+                      this.camera.addStrategy(new Kn(t));
                     }),
                     t
                   );
                 })();
               !(function (t) {
                 (t[(t.X = 0)] = "X"), (t[(t.Y = 1)] = "Y");
-              })(Mn || (Mn = {}));
-              var Gn,
-                Xn,
-                Qn,
-                Zn,
-                Kn = function (t) {
+              })(_n || (_n = {}));
+              var Wn,
+                Nn,
+                qn,
+                Vn,
+                Gn = function (t) {
                   (this.target = t),
                     (this.action = function (t, e, n, i) {
                       return t.center;
                     });
                 },
-                Yn = function (t, e) {
+                Xn = function (t, e) {
                   var n = this;
                   (this.target = t),
                     (this.axis = e),
                     (this.action = function (t, e, i, r) {
                       var o = t.center,
                         s = e.getFocus();
-                      return n.axis === Mn.X
-                        ? new V(o.x, s.y)
-                        : new V(s.x, o.y);
+                      return n.axis === _n.X
+                        ? new q(o.x, s.y)
+                        : new q(s.x, o.y);
                     });
                 },
-                Jn = function (t, e, n) {
+                Qn = function (t, e, n) {
                   var i = this;
                   (this.target = t),
                     (this.cameraElasticity = e),
@@ -13198,10 +13112,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         a = e.vel.clone(),
                         c = o.sub(s).scale(i.cameraElasticity),
                         h = (a = a.add(c)).scale(-1).scale(i.cameraFriction);
-                      return (a = a.add(h)), (s = s.add(a));
+                      return (a = a.add(h)), s.add(a);
                     });
                 },
-                $n = function (t, e) {
+                Zn = function (t, e) {
                   var n = this;
                   (this.target = t),
                     (this.radius = e),
@@ -13217,7 +13131,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       return s;
                     });
                 },
-                ti = function (t) {
+                Kn = function (t) {
                   var e = this;
                   (this.target = t),
                     (this.boundSizeChecked = !1),
@@ -13243,20 +13157,20 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       );
                     });
                 },
-                ei = (function (t) {
+                Yn = (function (t) {
                   function e() {
                     var e = (null !== t && t.apply(this, arguments)) || this;
                     return (
                       (e._cameraStrategies = []),
-                      (e.strategy = new Vn(e)),
+                      (e.strategy = new Un(e)),
                       (e.z = 1),
                       (e.dz = 0),
                       (e.az = 0),
                       (e.rotation = 0),
                       (e.rx = 0),
-                      (e.pos = V.Zero),
-                      (e.vel = V.Zero),
-                      (e.acc = V.Zero),
+                      (e.pos = q.Zero),
+                      (e.vel = q.Zero),
+                      (e.acc = q.Zero),
                       (e._cameraMoving = !1),
                       (e._currentLerpTime = 0),
                       (e._lerpDuration = 1e3),
@@ -13274,14 +13188,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       (e._zoomEnd = 1),
                       (e._currentZoomTime = 0),
                       (e._zoomDuration = 0),
-                      (e._zoomEasing = Ne.EaseInOutCubic),
-                      (e._easing = Ne.EaseInOutCubic),
+                      (e._zoomEasing = He.EaseInOutCubic),
+                      (e._easing = He.EaseInOutCubic),
                       (e._isInitialized = !1),
                       e
                     );
                   }
                   return (
-                    qn(e, t),
+                    Hn(e, t),
                     Object.defineProperty(e.prototype, "angularVelocity", {
                       get: function () {
                         return this.rx;
@@ -13357,14 +13271,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (e.prototype.move = function (t, e, n) {
                       if (
-                        (void 0 === n && (n = Ne.EaseInOutCubic),
+                        (void 0 === n && (n = He.EaseInOutCubic),
                         "function" != typeof n)
                       )
                         throw "Please specify an EasingFunction";
                       return this._follow
                         ? new d().reject(t)
                         : (this._lerpPromise &&
-                            this._lerpPromise.state() === u.Pending &&
+                            this._lerpPromise.state() === h.Pending &&
                             this._lerpPromise.resolve(t),
                           (this._lerpPromise = new d()),
                           (this._lerpStart = this.getFocus().clone()),
@@ -13384,7 +13298,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e.prototype.zoom = function (t, e, n) {
                       return (
                         void 0 === e && (e = 0),
-                        void 0 === n && (n = Ne.EaseInOutCubic),
+                        void 0 === n && (n = He.EaseInOutCubic),
                         (this._zoomPromise = new d()),
                         e
                           ? ((this._isZooming = !0),
@@ -13407,14 +13321,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         if (this._engine) {
                           var t = this._engine.halfDrawWidth,
                             e = this._engine.halfDrawHeight;
-                          return new Kt(
+                          return new Qt(
                             this.x - t,
                             this.y - e,
                             this.x + t,
                             this.y + e
                           );
                         }
-                        return new Kt(0, 0, 0, 0);
+                        return new Qt(0, 0, 0, 0);
                       },
                       enumerable: !1,
                       configurable: !0,
@@ -13429,12 +13343,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       this._cameraStrategies.length = 0;
                     }),
                     (e.prototype._preupdate = function (t, e) {
-                      this.emit("preupdate", new mt(t, e, this)),
+                      this.emit("preupdate", new _t(t, e, this)),
                         this.onPreUpdate(t, e);
                     }),
                     (e.prototype.onPreUpdate = function (t, e) {}),
                     (e.prototype._postupdate = function (t, e) {
-                      this.emit("postupdate", new bt(t, e, this)),
+                      this.emit("postupdate", new vt(t, e, this)),
                         this.onPostUpdate(t, e);
                     }),
                     (e.prototype.onPostUpdate = function (t, e) {}),
@@ -13451,7 +13365,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         t.prototype.emit.call(
                           this,
                           "initialize",
-                          new jt(e, this)
+                          new kt(e, this)
                         ),
                         (this._isInitialized = !0),
                         (this._engine = e));
@@ -13492,7 +13406,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             this._zoomPromise.resolve(!0);
                       if (this._cameraMoving)
                         if (this._currentLerpTime < this._lerpDuration) {
-                          var i = Ne.CreateVectorEasingFunction(this._easing)(
+                          var i = He.CreateVectorEasingFunction(this._easing)(
                             this._currentLerpTime,
                             this._lerpStart,
                             this._lerpEnd,
@@ -13580,8 +13494,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     e
                   );
-                })(ee),
-                ni = (function () {
+                })($t),
+                Jn = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -13612,14 +13526,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   (t[(t.Px = 2)] = "Px"),
                   (t[(t.Pt = 3)] = "Pt"),
                   (t[(t.Percent = 4)] = "Percent");
-              })(Gn || (Gn = {})),
+              })(Wn || (Wn = {})),
                 (function (t) {
                   (t[(t.Left = 0)] = "Left"),
                     (t[(t.Right = 1)] = "Right"),
                     (t[(t.Center = 2)] = "Center"),
                     (t[(t.Start = 3)] = "Start"),
                     (t[(t.End = 4)] = "End");
-                })(Xn || (Xn = {})),
+                })(Nn || (Nn = {})),
                 (function (t) {
                   (t[(t.Top = 0)] = "Top"),
                     (t[(t.Hanging = 1)] = "Hanging"),
@@ -13627,32 +13541,32 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t[(t.Alphabetic = 3)] = "Alphabetic"),
                     (t[(t.Ideographic = 4)] = "Ideographic"),
                     (t[(t.Bottom = 5)] = "Bottom");
-                })(Qn || (Qn = {})),
+                })(qn || (qn = {})),
                 (function (t) {
                   (t[(t.Normal = 0)] = "Normal"),
                     (t[(t.Italic = 1)] = "Italic"),
                     (t[(t.Oblique = 2)] = "Oblique");
-                })(Zn || (Zn = {}));
-              var ii = (function (t) {
+                })(Vn || (Vn = {}));
+              var $n = (function (t) {
                   function e(e, n, i, r, o) {
                     return t.call(this, e, n, i, r, o) || this;
                   }
-                  return ni(e, t), e;
+                  return Jn(e, t), e;
                 })(
-                  fe(
+                  pe(
                     (function (t) {
                       function e(e, n, i, r, o) {
                         var s =
                           t.call(
                             this,
-                            e && "object" == typeof e ? e : { pos: new V(n, i) }
+                            e && "object" == typeof e ? e : { pos: new q(n, i) }
                           ) || this;
                         (s.bold = !1),
                           (s.fontSize = 10),
-                          (s.fontStyle = Zn.Normal),
-                          (s.fontUnit = Gn.Px),
-                          (s.textAlign = Xn.Left),
-                          (s.baseAlign = Qn.Bottom),
+                          (s.fontStyle = Vn.Normal),
+                          (s.fontUnit = Wn.Px),
+                          (s.textAlign = Nn.Left),
+                          (s.baseAlign = qn.Bottom),
                           (s.letterSpacing = 0),
                           (s.caseInsensitive = !0);
                         var a = "";
@@ -13663,9 +13577,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                               (a = e.text))
                             : (a = e),
                           (s.text = a || ""),
-                          (s.color = et.Black),
+                          (s.color = tt.Black),
                           (s.spriteFont = o),
-                          (s.body.collider.type = ct.PreventCollision),
+                          (s.body.collider.type = st.PreventCollision),
                           (s.fontFamily = r || "sans-serif"),
                           (s._textShadowOn = !1),
                           (s._shadowOffsetX = 0),
@@ -13674,7 +13588,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         );
                       }
                       return (
-                        ni(e, t),
+                        Jn(e, t),
                         (e.prototype.getTextWidth = function (t) {
                           var e = t.font;
                           t.font = this._fontString;
@@ -13683,15 +13597,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         }),
                         (e.prototype._lookupFontUnit = function (t) {
                           switch (t) {
-                            case Gn.Em:
+                            case Wn.Em:
                               return "em";
-                            case Gn.Rem:
+                            case Wn.Rem:
                               return "rem";
-                            case Gn.Pt:
+                            case Wn.Pt:
                               return "pt";
-                            case Gn.Px:
+                            case Wn.Px:
                               return "px";
-                            case Gn.Percent:
+                            case Wn.Percent:
                               return "%";
                             default:
                               return "px";
@@ -13699,32 +13613,32 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         }),
                         (e.prototype._lookupTextAlign = function (t) {
                           switch (t) {
-                            case Xn.Left:
+                            case Nn.Left:
                               return "left";
-                            case Xn.Right:
+                            case Nn.Right:
                               return "right";
-                            case Xn.Center:
+                            case Nn.Center:
                               return "center";
-                            case Xn.End:
+                            case Nn.End:
                               return "end";
-                            case Xn.Start:
+                            case Nn.Start:
                             default:
                               return "start";
                           }
                         }),
                         (e.prototype._lookupBaseAlign = function (t) {
                           switch (t) {
-                            case Qn.Alphabetic:
+                            case qn.Alphabetic:
                               return "alphabetic";
-                            case Qn.Bottom:
+                            case qn.Bottom:
                               return "bottom";
-                            case Qn.Hanging:
+                            case qn.Hanging:
                               return "hanging";
-                            case Qn.Ideographic:
+                            case qn.Ideographic:
                               return "ideographic";
-                            case Qn.Middle:
+                            case qn.Middle:
                               return "middle";
-                            case Qn.Top:
+                            case qn.Top:
                               return "top";
                             default:
                               return "alphabetic";
@@ -13733,11 +13647,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         (e.prototype._lookupFontStyle = function (t) {
                           var e = this.bold ? " bold" : "";
                           switch (t) {
-                            case Zn.Italic:
+                            case Vn.Italic:
                               return "italic" + e;
-                            case Zn.Normal:
+                            case Vn.Normal:
                               return "normal" + e;
-                            case Zn.Oblique:
+                            case Vn.Oblique:
                               return "oblique" + e;
                             default:
                               return "normal" + e;
@@ -13822,10 +13736,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         }),
                         e
                       );
-                    })(bn)
+                    })(vn)
                   )
                 ),
-                ri = (function () {
+                ti = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -13850,8 +13764,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                oi = {
-                  pos: V.Zero,
+                ei = {
+                  pos: q.Zero,
                   width: 10,
                   height: 10,
                   visible: !1,
@@ -13861,7 +13775,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   },
                   repeat: -1,
                 },
-                si = (function (t) {
+                ni = (function (t) {
                   function e(e) {
                     var n =
                       t.call(this, e.pos.x, e.pos.y, e.width, e.height) || this;
@@ -13871,32 +13785,32 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         return !0;
                       }),
                       (n.repeat = -1),
-                      (e = g({}, oi, e)),
+                      (e = g({}, ei, e)),
                       (n.filter = e.filter || n.filter),
                       (n.repeat = e.repeat || n.repeat),
                       (n.action = e.action || n.action),
                       e.target && (n.target = e.target),
                       (n.visible = e.visible),
-                      (n.body.collider.type = ct.Passive),
-                      (n.eventDispatcher = new te(n)),
-                      (n.actionQueue = new Ue(n)),
+                      (n.body.collider.type = st.Passive),
+                      (n.eventDispatcher = new Jt(n)),
+                      (n.actionQueue = new ze(n)),
                       n.on("collisionstart", function (t) {
-                        mn(t.other) &&
+                        gn(t.other) &&
                           n.filter(t.other) &&
-                          (n.emit("enter", new Ht(n, t.other)),
+                          (n.emit("enter", new Lt(n, t.other)),
                           n._dispatchAction(),
                           0 === n.repeat && n.kill());
                       }),
                       n.on("collisionend", function (t) {
-                        mn(t.other) &&
+                        gn(t.other) &&
                           n.filter(t.other) &&
-                          n.emit("exit", new Ut(n, t.other));
+                          n.emit("exit", new zt(n, t.other));
                       }),
                       n
                     );
                   }
                   return (
-                    ri(e, t),
+                    ti(e, t),
                     Object.defineProperty(e.prototype, "target", {
                       get: function () {
                         return this._target;
@@ -13926,20 +13840,20 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         (n.right = n.right - i.x),
                         (n.top = n.top - i.y),
                         (n.bottom = n.bottom - i.y),
-                        (e.fillStyle = et.Violet.toString()),
-                        (e.strokeStyle = et.Violet.toString()),
+                        (e.fillStyle = tt.Violet.toString()),
+                        (e.strokeStyle = tt.Violet.toString()),
                         e.fillText("Trigger", 10, 10),
                         n.debugDraw(e),
                         e.restore();
                     }),
                     e
                   );
-                })(bn);
-              function ai(t) {
-                return t instanceof Pn;
+                })(vn);
+              function ii(t) {
+                return t instanceof bn;
               }
-              var ci,
-                hi = function (t) {
+              var ri,
+                oi = function (t) {
                   return t
                     .sort(function (t, e) {
                       return t.localeCompare(e);
@@ -13948,27 +13862,27 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                 };
               !(function (t) {
                 (t.Update = "update"), (t.Draw = "draw");
-              })(ci || (ci = {}));
-              var ui = (function () {
+              })(ri || (ri = {}));
+              var si = (function () {
                   function t() {
                     this.priority = 0;
                   }
                   return (t.prototype.notify = function (t) {}), t;
                 })(),
-                li = function (t) {
+                ai = function (t) {
                   (this.data = t), (this.type = "Entity Added");
                 };
-              function pi(t) {
+              function ci(t) {
                 return !!t && "Entity Added" === t.type;
               }
-              var di = function (t) {
+              var hi = function (t) {
                 (this.data = t), (this.type = "Entity Removed");
               };
-              function fi(t) {
+              function ui(t) {
                 return !!t && "Entity Removed" === t.type;
               }
-              var yi,
-                gi = (function () {
+              var li,
+                pi = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -13993,28 +13907,28 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                _i = (function (t) {
+                di = (function (t) {
                   function e(e) {
                     var n = t.call(this) || this;
                     return (n.types = e), (n.entities = []), n;
                   }
                   return (
-                    gi(e, t),
+                    pi(e, t),
                     Object.defineProperty(e.prototype, "key", {
                       get: function () {
-                        return hi(this.types);
+                        return oi(this.types);
                       },
                       enumerable: !1,
                       configurable: !0,
                     }),
                     (e.prototype.addEntity = function (t) {
-                      !h.contains(this.entities, t) &&
+                      !u.contains(this.entities, t) &&
                         this.matches(t) &&
-                        (this.entities.push(t), this.notifyAll(new li(t)));
+                        (this.entities.push(t), this.notifyAll(new ai(t)));
                     }),
                     (e.prototype.removeEntity = function (t) {
-                      h.removeItemFromArray(t, this.entities) &&
-                        this.notifyAll(new di(t));
+                      u.removeItemFromArray(t, this.entities) &&
+                        this.notifyAll(new hi(t));
                     }),
                     (e.prototype.clear = function () {
                       this.entities.length = 0;
@@ -14025,7 +13939,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (e.prototype.matches = function (t) {
                       var e = [];
-                      e = t instanceof gn ? t.types : t;
+                      e = t instanceof dn ? t.types : t;
                       for (
                         var n = !0, i = 0, r = this.types;
                         i < r.length;
@@ -14038,14 +13952,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     e
                   );
-                })(un),
-                vi = (function () {
+                })(an),
+                fi = (function () {
                   function t(t) {
                     (this.scene = t), (this._queries = {});
                   }
                   return (
                     (t.prototype._addQuery = function (t) {
-                      this._queries[hi(t.types)] = t;
+                      this._queries[oi(t.types)] = t;
                       for (
                         var e = 0, n = this.scene.entityManager.entities;
                         e < n.length;
@@ -14057,7 +13971,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (t.prototype.maybeRemoveQuery = function (t) {
                       0 === t.observers.length &&
-                        (t.clear(), delete this._queries[hi(t.types)]);
+                        (t.clear(), delete this._queries[oi(t.types)]);
                     }),
                     (t.prototype.addEntity = function (t) {
                       for (var e in this._queries)
@@ -14076,17 +13990,17 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype.createQuery = function (t) {
                       var e = this.getQuery(t);
                       if (e) return e;
-                      var n = new _i(t);
+                      var n = new di(t);
                       return this._addQuery(n), n;
                     }),
                     (t.prototype.getQuery = function (t) {
-                      var e = hi(t);
+                      var e = oi(t);
                       return this._queries[e] ? this._queries[e] : null;
                     }),
                     t
                   );
                 })(),
-                mi = (function () {
+                yi = (function () {
                   function t(t) {
                     (this._scene = t),
                       (this.entities = []),
@@ -14094,9 +14008,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   }
                   return (
                     (t.prototype.notify = function (t) {
-                      dn(t) &&
+                      un(t) &&
                         this._scene.queryManager.addEntity(t.data.entity),
-                        yn(t) &&
+                        pn(t) &&
                           this._scene.queryManager.removeComponent(
                             t.data.entity,
                             t.data.component
@@ -14110,19 +14024,18 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         t.changes.register(this));
                     }),
                     (t.prototype.removeEntity = function (t) {
-                      var e = 0;
-                      e = t instanceof gn ? t.id : t;
+                      var e;
+                      e = t instanceof dn ? t.id : t;
                       var n = this._entityIndex[e];
                       delete this._entityIndex[e],
                         n &&
-                          (h.removeItemFromArray(n, this.entities),
+                          (u.removeItemFromArray(n, this.entities),
                           this._scene.queryManager.removeEntity(n),
                           n.changes.unregister(this));
                     }),
                     (t.prototype.processRemovals = function () {
-                      for (var t = 0, e = this.entities; t < e.length; t++) {
+                      for (var t = 0, e = this.entities; t < e.length; t++)
                         e[t].processRemoval();
-                      }
                     }),
                     (t.prototype.getById = function (t) {
                       return this._entityIndex[t];
@@ -14130,7 +14043,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                bi = (function () {
+                gi = (function () {
                   function t(t) {
                     (this._scene = t), (this.systems = []);
                   }
@@ -14148,7 +14061,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         e.register(t);
                     }),
                     (t.prototype.removeSystem = function (t) {
-                      h.removeItemFromArray(t, this.systems);
+                      u.removeItemFromArray(t, this.systems);
                       var e = this._scene.queryManager.getQuery(t.types);
                       e &&
                         (e.unregister(t),
@@ -14163,23 +14076,21 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           o = i;
                         r < o.length;
                         r++
-                      ) {
+                      )
                         (c = o[r]).preupdate && c.preupdate(e, n);
-                      }
                       for (var s = 0, a = i; s < a.length; s++) {
                         var c = a[s],
                           h = this._scene.queryManager.getQuery(c.types)
                             .entities;
                         c.update(h, n);
                       }
-                      for (var u = 0, l = i; u < l.length; u++) {
+                      for (var u = 0, l = i; u < l.length; u++)
                         (c = l[u]).postupdate && c.postupdate(e, n);
-                      }
                     }),
                     t
                   );
                 })(),
-                wi = (function () {
+                _i = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -14204,27 +14115,27 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                xi = (function (t) {
+                vi = (function (t) {
                   function e(e) {
                     var n = t.call(this) || this;
                     return (
                       (n.actors = []),
-                      (n.queryManager = new vi(n)),
-                      (n.entityManager = new mi(n)),
-                      (n.systemManager = new bi(n)),
+                      (n.queryManager = new fi(n)),
+                      (n.entityManager = new yi(n)),
+                      (n.systemManager = new gi(n)),
                       (n._bodies = []),
                       (n.triggers = []),
                       (n.tileMaps = []),
                       (n.screenElements = []),
                       (n._isInitialized = !1),
-                      (n._sortedDrawingTree = new Un(bn.prototype.getZIndex)),
-                      (n._broadphase = new Hn()),
+                      (n._sortedDrawingTree = new In(vn.prototype.getZIndex)),
+                      (n._broadphase = new Fn()),
                       (n._killQueue = []),
                       (n._triggerKillQueue = []),
                       (n._timers = []),
                       (n._cancelQueue = []),
                       (n._logger = R.getInstance()),
-                      (n.camera = new ei()),
+                      (n.camera = new Yn()),
                       (n._engine = e),
                       e &&
                         ((n.camera.x = e.halfDrawWidth),
@@ -14233,7 +14144,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     );
                   }
                   return (
-                    wi(e, t),
+                    _i(e, t),
                     (e.prototype.on = function (e, n) {
                       t.prototype.on.call(this, e, n);
                     }),
@@ -14251,9 +14162,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e.prototype.onPreDraw = function (t, e) {}),
                     (e.prototype.onPostDraw = function (t, e) {}),
                     (e.prototype._initializeChildren = function () {
-                      for (var t = 0, e = this.actors; t < e.length; t++) {
+                      for (var t = 0, e = this.actors; t < e.length; t++)
                         e[t]._initialize(this._engine);
-                      }
                     }),
                     Object.defineProperty(e.prototype, "isInitialized", {
                       get: function () {
@@ -14273,7 +14183,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         this._logger.debug("Scene.onInitialize", this, t),
                         this.eventDispatcher.emit(
                           "initialize",
-                          new jt(t, this)
+                          new kt(t, this)
                         ),
                         (this._isInitialized = !0));
                     }),
@@ -14286,26 +14196,26 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         this.onDeactivate(t, e);
                     }),
                     (e.prototype._preupdate = function (t, e) {
-                      this.emit("preupdate", new mt(t, e, this)),
+                      this.emit("preupdate", new _t(t, e, this)),
                         this.onPreUpdate(t, e);
                     }),
                     (e.prototype._postupdate = function (t, e) {
-                      this.emit("postupdate", new bt(t, e, this)),
+                      this.emit("postupdate", new vt(t, e, this)),
                         this.onPostUpdate(t, e);
                     }),
                     (e.prototype._predraw = function (t, e) {
-                      this.emit("predraw", new yt(t, e, this)),
+                      this.emit("predraw", new dt(t, e, this)),
                         this.onPreDraw(t, e);
                     }),
                     (e.prototype._postdraw = function (t, e) {
-                      this.emit("postdraw", new gt(t, e, this)),
+                      this.emit("postdraw", new ft(t, e, this)),
                         this.onPostDraw(t, e);
                     }),
                     (e.prototype.update = function (t, e) {
                       var n, i;
                       for (
                         this._preupdate(t, e),
-                          this.systemManager.updateSystems(ci.Update, t, e),
+                          this.systemManager.updateSystems(ri.Update, t, e),
                           this.entityManager.processRemovals(),
                           this.camera && this.camera.update(t, e),
                           n = 0,
@@ -14315,9 +14225,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       )
                         this.removeTimer(this._cancelQueue[n]);
                       this._cancelQueue.length = 0;
-                      for (var r = 0, o = this._timers; r < o.length; r++) {
+                      for (var r = 0, o = this._timers; r < o.length; r++)
                         o[r].update(e);
-                      }
                       for (n = 0, i = this.screenElements.length; n < i; n++)
                         this.screenElements[n].update(t, e);
                       for (n = 0, i = this.tileMaps.length; n < i; n++)
@@ -14330,7 +14239,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       if (
                         (this._collectActorStats(t),
                         t.input.pointers.dispatchPointerEvents(),
-                        this._broadphase && st.enabled)
+                        this._broadphase && rt.enabled)
                       ) {
                         var s = Date.now();
                         this._broadphase.update(this._bodies, e);
@@ -14342,7 +14251,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             ),
                             c = Date.now(),
                             h = Date.now(),
-                            u = st.collisionPasses,
+                            u = rt.collisionPasses,
                             l = e / u;
                           u > 0;
 
@@ -14354,7 +14263,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             (a = this._broadphase.resolve(
                               a,
                               l,
-                              st.collisionResolutionStrategy
+                              rt.collisionResolutionStrategy
                             )),
                             this._broadphase.runCollisionStartEnd(a),
                             u--;
@@ -14388,7 +14297,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           t.save(),
                           this.camera && this.camera.draw(t),
                           this.systemManager.updateSystems(
-                            ci.Draw,
+                            ri.Draw,
                             this._engine,
                             e
                           ),
@@ -14422,7 +14331,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e.prototype.debugDraw = function (t) {
                       var e, n;
                       for (
-                        this.emit("predebugdraw", new _t(t, this)),
+                        this.emit("predebugdraw", new yt(t, this)),
                           e = 0,
                           n = this.tileMaps.length;
                         e < n;
@@ -14435,29 +14344,29 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         this.triggers[e].debugDraw(t);
                       this._broadphase.debugDraw(t, 20),
                         this.camera.debugDraw(t),
-                        this.emit("postdebugdraw", new vt(t, this));
+                        this.emit("postdebugdraw", new gt(t, this));
                     }),
                     (e.prototype.contains = function (t) {
                       return this.actors.indexOf(t) > -1;
                     }),
                     (e.prototype.add = function (t) {
-                      t instanceof bn && t.unkill(),
-                        t instanceof Pn
+                      t instanceof vn && t.unkill(),
+                        t instanceof bn
                           ? O(this.screenElements, t) ||
                             this.addScreenElement(t)
-                          : t instanceof bn
+                          : t instanceof vn
                           ? O(this.actors, t) || this._addChild(t)
-                          : t instanceof En
+                          : t instanceof xn
                           ? O(this._timers, t) || this.addTimer(t)
-                          : t instanceof Cn &&
+                          : t instanceof An &&
                             (O(this.tileMaps, t) || this.addTileMap(t));
                     }),
                     (e.prototype.remove = function (t) {
-                      t instanceof Pn
+                      t instanceof bn
                         ? this.removeScreenElement(t)
-                        : (t instanceof bn && this._removeChild(t),
-                          t instanceof En && this.removeTimer(t),
-                          t instanceof Cn && this.removeTileMap(t));
+                        : (t instanceof vn && this._removeChild(t),
+                          t instanceof xn && this.removeTimer(t),
+                          t instanceof An && this.removeTileMap(t));
                     }),
                     (e.prototype.addScreenElement = function (t) {
                       this.screenElements.push(t), (t.scene = this);
@@ -14469,7 +14378,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e.prototype._addChild = function (t) {
                       this._broadphase.track(t.body),
                         (t.scene = this),
-                        t instanceof si
+                        t instanceof ni
                           ? this.triggers.push(t)
                           : this.actors.push(t),
                         this._sortedDrawingTree.add(t);
@@ -14484,7 +14393,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e.prototype._removeChild = function (t) {
                       O(this.actors, t) &&
                         (this._broadphase.untrack(t.body),
-                        t instanceof si
+                        t instanceof ni
                           ? this._triggerKillQueue.push(t)
                           : (t.isKilled() || t.kill(), this._killQueue.push(t)),
                         (t.parent = null));
@@ -14521,33 +14430,30 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         var e = 0, n = this.screenElements;
                         e < n.length;
                         e++
-                      ) {
-                        n[e];
-                        t.stats.currFrame.actors.ui++;
-                      }
+                      )
+                        n[e], t.stats.currFrame.actors.ui++;
                       for (var i = 0, r = this.actors; i < r.length; i++) {
                         var o = r[i];
                         t.stats.currFrame.actors.alive++;
-                        for (var s = 0, a = o.children; s < a.length; s++) {
-                          ai(a[s])
+                        for (var s = 0, a = o.children; s < a.length; s++)
+                          ii(a[s])
                             ? t.stats.currFrame.actors.ui++
                             : t.stats.currFrame.actors.alive++;
-                        }
                       }
                     }),
                     e
                   );
-                })(ee);
+                })($t);
               !(function (t) {
                 (t[(t.Protanope = 0)] = "Protanope"),
                   (t[(t.Deuteranope = 1)] = "Deuteranope"),
                   (t[(t.Tritanope = 2)] = "Tritanope");
-              })(yi || (yi = {}));
-              var Pi,
-                Ai = (function () {
+              })(li || (li = {}));
+              var mi,
+                bi = (function () {
                   function t(t, e, n) {
                     void 0 === e && (e = !1),
-                      void 0 === n && (n = yi.Protanope),
+                      void 0 === n && (n = li.Protanope),
                       (this.engine = t),
                       (this.simulate = e),
                       (this.colorMode = n),
@@ -14581,13 +14487,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype._getFragmentShaderByMode = function (t) {
                       var e = "";
                       return (
-                        t === yi.Protanope
+                        t === li.Protanope
                           ? (e =
                               "float l = 0.0 * L + 2.02344 * M + -2.52581 * S;float m = 0.0 * L + 1.0 * M + 0.0 * S;float s = 0.0 * L + 0.0 * M + 1.0 * S;")
-                          : t === yi.Deuteranope
+                          : t === li.Deuteranope
                           ? (e =
                               "float l = 1.0 * L + 0.0 * M + 0.0 * S;float m = 0.494207 * L + 0.0 * M + 1.24827 * S;float s = 0.0 * L + 0.0 * M + 1.0 * S;")
-                          : t === yi.Tritanope &&
+                          : t === li.Tritanope &&
                             (e =
                               "float l = 1.0 * L + 0.0 * M + 0.0 * S;float m = 0.0 * L + 1.0 * M + 0.0 * S;float s = -0.395913 * L + 0.801109 * M + 0.0 * S;"),
                         this.simulate
@@ -14744,30 +14650,30 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Ei = (function () {
+                wi = (function () {
                   function t(t) {
                     this._engine = t;
                   }
                   return (
                     (t.prototype.correct = function (t) {
                       this._engine.postProcessors.push(
-                        new Ai(this._engine, !1, t)
+                        new bi(this._engine, !1, t)
                       );
                     }),
                     (t.prototype.simulate = function (t) {
                       this._engine.postProcessors.push(
-                        new Ai(this._engine, !0, t)
+                        new bi(this._engine, !0, t)
                       );
                     }),
                     t
                   );
                 })(),
-                Si = function (t) {
-                  (this.stats = { currFrame: new Ci(), prevFrame: new Ci() }),
+                xi = function (t) {
+                  (this.stats = { currFrame: new Pi(), prevFrame: new Pi() }),
                     (this._engine = t),
-                    (this.colorBlindMode = new Ei(this._engine));
+                    (this.colorBlindMode = new wi(this._engine));
                 },
-                Ci = (function () {
+                Pi = (function () {
                   function t() {
                     (this._id = 0),
                       (this._delta = 0),
@@ -14790,7 +14696,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           return this.update + this.draw;
                         },
                       }),
-                      (this._physicsStats = new Oi());
+                      (this._physicsStats = new Ai());
                   }
                   return (
                     (t.prototype.reset = function (t) {
@@ -14867,7 +14773,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Oi = (function () {
+                Ai = (function () {
                   function t() {
                     (this._pairs = 0),
                       (this._collisions = 0),
@@ -14968,7 +14874,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Ti = (function () {
+                Ei = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -15040,17 +14946,17 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   (t[(t.Right = 39)] = "Right"),
                   (t[(t.Space = 32)] = "Space"),
                   (t[(t.Esc = 27)] = "Esc");
-              })(Pi || (Pi = {}));
-              var Bi,
-                Mi,
-                Di = (function (t) {
+              })(mi || (mi = {}));
+              var Si,
+                Ci,
+                Oi = (function (t) {
                   function e(e) {
                     var n = t.call(this) || this;
                     return (n.key = e), n;
                   }
-                  return Ti(e, t), e;
-                })(ht),
-                ki = (function (t) {
+                  return Ei(e, t), e;
+                })(at),
+                Ti = (function (t) {
                   function e() {
                     var e = t.call(this) || this;
                     return (
@@ -15058,7 +14964,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     );
                   }
                   return (
-                    Ti(e, t),
+                    Ei(e, t),
                     (e.prototype.on = function (e, n) {
                       t.prototype.on.call(this, e, n);
                     }),
@@ -15083,7 +14989,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           var n = e._normalizeKeyCode(t.keyCode),
                             i = e._keys.indexOf(n);
                           e._keys.splice(i, 1), e._keysUp.push(n);
-                          var r = new Di(n);
+                          var r = new Oi(n);
                           e.eventDispatcher.emit("up", r),
                             e.eventDispatcher.emit("release", r);
                         }),
@@ -15091,7 +14997,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           var n = e._normalizeKeyCode(t.keyCode);
                           if (-1 === e._keys.indexOf(n)) {
                             e._keys.push(n), e._keysDown.push(n);
-                            var i = new Di(n);
+                            var i = new Oi(n);
                             e.eventDispatcher.emit("down", i),
                               e.eventDispatcher.emit("press", i);
                           }
@@ -15102,7 +15008,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       for (var t = 0; t < this._keys.length; t++)
                         this.eventDispatcher.emit(
                           "hold",
-                          new Di(this._keys[t])
+                          new Oi(this._keys[t])
                         );
                     }),
                     (e.prototype.getKeys = function () {
@@ -15120,15 +15026,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e.prototype._normalizeKeyCode = function (t) {
                       switch (t) {
                         case 59:
-                          return Pi.Semicolon;
+                          return mi.Semicolon;
                         default:
                           return t;
                       }
                     }),
                     e
                   );
-                })(ee),
-                Ri = (function () {
+                })($t),
+                Bi = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -15152,34 +15058,20 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           ? Object.create(n)
                           : ((i.prototype = n.prototype), new i()));
                   };
-                })(),
-                ji = function () {
-                  for (var t = 0, e = 0, n = arguments.length; e < n; e++)
-                    t += arguments[e].length;
-                  var i = Array(t),
-                    r = 0;
-                  for (e = 0; e < n; e++)
-                    for (
-                      var o = arguments[e], s = 0, a = o.length;
-                      s < a;
-                      s++, r++
-                    )
-                      i[r] = o[s];
-                  return i;
-                };
+                })();
               !(function (t) {
                 (t.Touch = "Touch"),
                   (t.Mouse = "Mouse"),
                   (t.Pen = "Pen"),
                   (t.Unknown = "Unknown");
-              })(Bi || (Bi = {})),
+              })(Si || (Si = {})),
                 (function (t) {
                   (t.Canvas = "Canvas"), (t.Document = "Document");
-                })(Mi || (Mi = {}));
-              var Fi,
-                Ii,
-                Li,
-                zi = (function (t) {
+                })(Ci || (Ci = {}));
+              var Mi,
+                Di,
+                ki,
+                Ri = (function (t) {
                   function e() {
                     var n = t.call(this) || this;
                     return (
@@ -15201,7 +15093,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     );
                   }
                   return (
-                    Ri(e, t),
+                    Bi(e, t),
                     Object.defineProperty(e.prototype, "isDragging", {
                       get: function () {
                         return this._isDown;
@@ -15249,7 +15141,24 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         : !this._wasDown &&
                           this._isDown &&
                           (this._wasDown = !0),
-                        (this._actorsLastFrame = ji(this._actors)),
+                        (this._actorsLastFrame = (function () {
+                          for (
+                            var t = 0, e = 0, n = arguments.length;
+                            e < n;
+                            e++
+                          )
+                            t += arguments[e].length;
+                          var i = Array(t),
+                            r = 0;
+                          for (e = 0; e < n; e++)
+                            for (
+                              var o = arguments[e], s = 0, a = o.length;
+                              s < a;
+                              s++, r++
+                            )
+                              i[r] = o[s];
+                          return i;
+                        })(this._actors)),
                         (this._actorsNoLongerUnderPointer = []);
                     }),
                     (e.prototype.addActorUnderPointer = function (t) {
@@ -15287,7 +15196,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         t.contains(
                           this.lastWorldPos.x,
                           this.lastWorldPos.y,
-                          !ai(t)
+                          !ii(t)
                         )
                       );
                     }),
@@ -15304,20 +15213,20 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       );
                     }),
                     (e.prototype._onPointerMove = function (t) {
-                      (this.lastPagePos = new V(t.pagePos.x, t.pagePos.y)),
-                        (this.lastScreenPos = new V(
+                      (this.lastPagePos = new q(t.pagePos.x, t.pagePos.y)),
+                        (this.lastScreenPos = new q(
                           t.screenPos.x,
                           t.screenPos.y
                         )),
-                        (this.lastWorldPos = new V(t.worldPos.x, t.worldPos.y));
+                        (this.lastWorldPos = new q(t.worldPos.x, t.worldPos.y));
                     }),
                     (e.prototype._onPointerDown = function (t) {
-                      (this.lastPagePos = new V(t.pagePos.x, t.pagePos.y)),
-                        (this.lastScreenPos = new V(
+                      (this.lastPagePos = new q(t.pagePos.x, t.pagePos.y)),
+                        (this.lastScreenPos = new q(
                           t.screenPos.x,
                           t.screenPos.y
                         )),
-                        (this.lastWorldPos = new V(t.worldPos.x, t.worldPos.y)),
+                        (this.lastWorldPos = new q(t.worldPos.x, t.worldPos.y)),
                         (this._isDown = !0);
                     }),
                     (e.prototype._onPointerUp = function (t) {
@@ -15326,8 +15235,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e._MAX_ID = 0),
                     e
                   );
-                })(ee),
-                Hi = (function () {
+                })($t),
+                ji = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -15358,18 +15267,18 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   (t[(t.Middle = 1)] = "Middle"),
                   (t[(t.Right = 2)] = "Right"),
                   (t[(t.Unknown = 3)] = "Unknown");
-              })(Fi || (Fi = {})),
+              })(Mi || (Mi = {})),
                 (function (t) {
                   (t.Left = "Left"),
                     (t.Middle = "Middle"),
                     (t.Right = "Right"),
                     (t.Unknown = "Unknown"),
                     (t.NoButton = "NoButton");
-                })(Ii || (Ii = {})),
+                })(Di || (Di = {})),
                 (function (t) {
                   (t.Pixel = "Pixel"), (t.Line = "Line"), (t.Page = "Page");
-                })(Li || (Li = {}));
-              var Ui = (function (t) {
+                })(ki || (ki = {}));
+              var Fi = (function (t) {
                   function e(e, n, i, r, o, s) {
                     var a = t.call(this) || this;
                     return (
@@ -15383,7 +15292,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     );
                   }
                   return (
-                    Hi(e, t),
+                    ji(e, t),
                     Object.defineProperty(e.prototype, "name", {
                       get: function () {
                         return this._name;
@@ -15433,8 +15342,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e.prototype._onActionEnd = function (t) {}),
                     e
                   );
-                })(ht),
-                Wi = (function () {
+                })(at),
+                Ii = (function () {
                   function t(t) {
                     this._pointerEventType = t;
                   }
@@ -15445,19 +15354,19 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Ni = (function (t) {
+                Li = (function (t) {
                   function e() {
                     return (null !== t && t.apply(this, arguments)) || this;
                   }
-                  return Hi(e, t), e;
-                })(Ui),
-                qi = (function (t) {
+                  return ji(e, t), e;
+                })(Fi),
+                zi = (function (t) {
                   function e() {
                     var e = (null !== t && t.apply(this, arguments)) || this;
                     return (e._name = "pointerup"), e;
                   }
                   return (
-                    Hi(e, t),
+                    ji(e, t),
                     (e.prototype._onActionEnd = function (t) {
                       this.pointer.isDragEnd &&
                         t.capturePointer.captureDragEvents &&
@@ -15465,14 +15374,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     e
                   );
-                })(Ui),
-                Vi = (function (t) {
+                })(Fi),
+                Hi = (function (t) {
                   function e() {
                     var e = (null !== t && t.apply(this, arguments)) || this;
                     return (e._name = "pointerdown"), e;
                   }
                   return (
-                    Hi(e, t),
+                    ji(e, t),
                     (e.prototype._onActionEnd = function (t) {
                       this.pointer.isDragStart &&
                         t.capturePointer.captureDragEvents &&
@@ -15480,14 +15389,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     e
                   );
-                })(Ui),
-                Gi = (function (t) {
+                })(Fi),
+                Ui = (function (t) {
                   function e() {
                     var e = (null !== t && t.apply(this, arguments)) || this;
                     return (e._name = "pointermove"), e;
                   }
                   return (
-                    Hi(e, t),
+                    ji(e, t),
                     (e.prototype.propagate = function (t) {
                       this.pointer.isActorAliveUnderPointer(t) &&
                         (this.doAction(t),
@@ -15501,14 +15410,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     e
                   );
-                })(Ui),
-                Xi = (function (t) {
+                })(Fi),
+                Wi = (function (t) {
                   function e() {
                     var e = (null !== t && t.apply(this, arguments)) || this;
                     return (e._name = "pointerenter"), e;
                   }
                   return (
-                    Hi(e, t),
+                    ji(e, t),
                     (e.prototype._onActionStart = function (t) {
                       t.capturePointer.captureMoveEvents;
                     }),
@@ -15519,14 +15428,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     e
                   );
-                })(Ui),
-                Qi = (function (t) {
+                })(Fi),
+                Ni = (function (t) {
                   function e() {
                     var e = (null !== t && t.apply(this, arguments)) || this;
                     return (e._name = "pointerleave"), e;
                   }
                   return (
-                    Hi(e, t),
+                    ji(e, t),
                     (e.prototype._onActionStart = function (t) {
                       t.capturePointer.captureMoveEvents;
                     }),
@@ -15537,15 +15446,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     e
                   );
-                })(Ui),
-                Zi = (function (t) {
+                })(Fi),
+                qi = (function (t) {
                   function e() {
                     var e = (null !== t && t.apply(this, arguments)) || this;
                     return (e._name = "pointercancel"), e;
                   }
-                  return Hi(e, t), e;
-                })(Ui),
-                Ki = (function (t) {
+                  return ji(e, t), e;
+                })(Fi),
+                Vi = (function (t) {
                   function e(e, n, i, r, o, s, a, c, h, u, l, p) {
                     var d = t.call(this) || this;
                     return (
@@ -15564,34 +15473,34 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       d
                     );
                   }
-                  return Hi(e, t), e;
-                })(ht);
-              function Yi(t, e, n, i, r, o, s) {
+                  return ji(e, t), e;
+                })(at);
+              function Gi(t, e, n, i, r, o, s) {
                 var a;
                 switch (t) {
                   case "up":
-                    a = new Wi(qi);
+                    a = new Ii(zi);
                     break;
                   case "down":
-                    a = new Wi(Vi);
+                    a = new Ii(Hi);
                     break;
                   case "move":
-                    a = new Wi(Gi);
+                    a = new Ii(Ui);
                     break;
                   case "cancel":
-                    a = new Wi(Zi);
+                    a = new Ii(qi);
                     break;
                   case "enter":
-                    a = new Wi(Xi);
+                    a = new Ii(Wi);
                     break;
                   case "leave":
-                    a = new Wi(Qi);
+                    a = new Ii(Ni);
                 }
                 return a.create(e, n, i, r, o, s);
               }
-              var Ji,
-                $i,
-                tr = (function () {
+              var Xi,
+                Qi,
+                Zi = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -15616,7 +15525,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                er = (function (t) {
+                Ki = (function (t) {
                   function e(e) {
                     var n = t.call(this) || this;
                     return (
@@ -15628,14 +15537,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       (n._pointers = []),
                       (n._activePointers = []),
                       (n._engine = e),
-                      n._pointers.push(new zi()),
+                      n._pointers.push(new Ri()),
                       (n._activePointers = [-1]),
                       (n.primary = n._pointers[0]),
                       n
                     );
                   }
                   return (
-                    tr(e, t),
+                    Zi(e, t),
                     (e.prototype.on = function (e, n) {
                       t.prototype.on.call(this, e, n);
                     }),
@@ -15724,8 +15633,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             ));
                       var e = {
                         passive: !(
-                          this._engine.pageScrollPreventionMode === or.All ||
-                          this._engine.pageScrollPreventionMode === or.Canvas
+                          this._engine.pageScrollPreventionMode === tr.All ||
+                          this._engine.pageScrollPreventionMode === tr.Canvas
                         ),
                       };
                       "onwheel" in document.createElement("div")
@@ -15747,17 +15656,17 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           );
                     }),
                     (e.prototype.triggerEvent = function (t, e, n, i, r) {
-                      void 0 === n && (n = Fi.Left),
+                      void 0 === n && (n = Mi.Left),
                         void 0 === i && (i = "mouse"),
                         void 0 === r && (r = 0);
                       var o,
                         s = 0,
                         a = 0;
-                      e instanceof Z
+                      e instanceof Q
                         ? ((s = e.pagePos.x), (a = e.pagePos.y), (o = e))
                         : ((s = e.x),
                           (a = e.y),
-                          (o = new Z(e.clone(), e.clone(), e.clone())));
+                          (o = new Q(e.clone(), e.clone(), e.clone())));
                       var c = {
                         pageX: s,
                         pageY: a,
@@ -15790,7 +15699,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       ) {
                         var l = u[h],
                           p = l.traits.filter(function (t) {
-                            return t instanceof Ke;
+                            return t instanceof Xe;
                           })[0];
                         p && p.update(l, this._engine, 1);
                       }
@@ -15812,7 +15721,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           e < n;
                           e++
                         )
-                          this._pointers.push(new zi()),
+                          this._pointers.push(new Ri()),
                             this._activePointers.push(-1);
                       return this._pointers[t];
                     }),
@@ -15862,9 +15771,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             !r.pointer.isActorAliveUnderPointer(a)
                           ) {
                             t[r.pointer.id + "+" + a.id] = r;
-                            var c = Yi(
+                            var c = Gi(
                               "leave",
-                              new Z(r.worldPos, r.pagePos, r.screenPos),
+                              new Q(r.worldPos, r.pagePos, r.screenPos),
                               r.pointer,
                               r.index,
                               r.pointerType,
@@ -15896,9 +15805,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             r.pointer.isActorAliveUnderPointer(a)
                           ) {
                             t[r.pointer.id] = r;
-                            var c = Yi(
+                            var c = Gi(
                               "enter",
-                              new Z(r.worldPos, r.pagePos, r.screenPos),
+                              new Q(r.worldPos, r.pagePos, r.screenPos),
                               r.pointer,
                               r.index,
                               r.pointerType,
@@ -15946,13 +15855,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       return function (i) {
                         i.preventDefault();
                         var r = n.at(0),
-                          o = Z.fromPagePosition(i.pageX, i.pageY, n._engine),
-                          s = Yi(
+                          o = Q.fromPagePosition(i.pageX, i.pageY, n._engine),
+                          s = Gi(
                             t,
                             o,
                             r,
                             0,
-                            Bi.Mouse,
+                            Si.Mouse,
                             n._nativeButtonToPointerButton(i.button),
                             i
                           );
@@ -15976,12 +15885,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                               : 0;
                           if (-1 !== s) {
                             var a = n.at(s),
-                              c = Z.fromPagePosition(
+                              c = Q.fromPagePosition(
                                 i.changedTouches[r].pageX,
                                 i.changedTouches[r].pageY,
                                 n._engine
                               ),
-                              h = Yi(t, c, a, s, Bi.Touch, Ii.Unknown, i);
+                              h = Gi(t, c, a, s, Si.Touch, Di.Unknown, i);
                             e.push(h),
                               a.eventDispatcher.emit(t, h),
                               n._pointers.length > 1 &&
@@ -16006,8 +15915,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           var s = i.at(o),
                             a =
                               n ||
-                              Z.fromPagePosition(r.pageX, r.pageY, i._engine),
-                            c = Yi(
+                              Q.fromPagePosition(r.pageX, r.pageY, i._engine),
+                            c = Gi(
                               t,
                               a,
                               s,
@@ -16029,13 +15938,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e.prototype._handleWheelEvent = function (t, e) {
                       var n = this;
                       return function (i) {
-                        (n._engine.pageScrollPreventionMode === or.All ||
-                          (n._engine.pageScrollPreventionMode === or.Canvas &&
+                        (n._engine.pageScrollPreventionMode === tr.All ||
+                          (n._engine.pageScrollPreventionMode === tr.Canvas &&
                             i.target === n._engine.canvas)) &&
                           i.preventDefault();
                         var r = i.pageX - E(n._engine.canvas).x,
                           o = i.pageY - E(n._engine.canvas).y,
-                          s = n._engine.screenToWorldCoordinates(new V(r, o)),
+                          s = n._engine.screenToWorldCoordinates(new q(r, o)),
                           a = i.deltaX || -0.025 * i.wheelDeltaX || 0,
                           c =
                             i.deltaY ||
@@ -16044,12 +15953,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             i.detail ||
                             0,
                           h = i.deltaZ || 0,
-                          u = Li.Pixel;
+                          u = ki.Pixel;
                         i.deltaMode &&
                           (1 === i.deltaMode
-                            ? (u = Li.Line)
-                            : 2 === i.deltaMode && (u = Li.Page));
-                        var l = new Ki(
+                            ? (u = ki.Line)
+                            : 2 === i.deltaMode && (u = ki.Page));
+                        var l = new Vi(
                           s.x,
                           s.y,
                           i.pageX,
@@ -16075,16 +15984,16 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (e.prototype._nativeButtonToPointerButton = function (t) {
                       switch (t) {
-                        case Fi.NoButton:
-                          return Ii.NoButton;
-                        case Fi.Left:
-                          return Ii.Left;
-                        case Fi.Middle:
-                          return Ii.Middle;
-                        case Fi.Right:
-                          return Ii.Right;
-                        case Fi.Unknown:
-                          return Ii.Unknown;
+                        case Mi.NoButton:
+                          return Di.NoButton;
+                        case Mi.Left:
+                          return Di.Left;
+                        case Mi.Middle:
+                          return Di.Middle;
+                        case Mi.Right:
+                          return Di.Right;
+                        case Mi.Unknown:
+                          return Di.Unknown;
                         default:
                           return k(t);
                       }
@@ -16092,19 +16001,19 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e.prototype._stringToPointerType = function (t) {
                       switch (t) {
                         case "touch":
-                          return Bi.Touch;
+                          return Si.Touch;
                         case "mouse":
-                          return Bi.Mouse;
+                          return Si.Mouse;
                         case "pen":
-                          return Bi.Pen;
+                          return Si.Pen;
                         default:
-                          return Bi.Unknown;
+                          return Si.Unknown;
                       }
                     }),
                     e
                   );
-                })(ee),
-                nr = (function () {
+                })($t),
+                Yi = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -16129,7 +16038,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                ir = (function (t) {
+                Ji = (function (t) {
                   function e() {
                     var e = t.call(this) || this;
                     return (
@@ -16145,7 +16054,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     );
                   }
                   return (
-                    nr(e, t),
+                    Yi(e, t),
                     (e.prototype.init = function () {
                       this.supported &&
                         (this._initSuccess ||
@@ -16197,7 +16106,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                                 this._isGamepadValid(t[e]) &&
                                 this.eventDispatcher.emit(
                                   "connect",
-                                  new Pt(e, this.at(e))
+                                  new wt(e, this.at(e))
                                 ),
                               (this.at(e).connected = !0),
                               !t[e].timestamp ||
@@ -16210,8 +16119,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                                 r = void 0,
                                 o = void 0,
                                 s = void 0;
-                              for (n in Ji)
-                                "number" == typeof (i = Ji[n]) &&
+                              for (n in Xi)
+                                "number" == typeof (i = Xi[n]) &&
                                   t[e].buttons[i] &&
                                   (s = t[e].buttons[i].value) !==
                                     this._oldPads[e].getButton(i) &&
@@ -16219,17 +16128,17 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                                     ? (this.at(e).updateButton(i, s),
                                       this.at(e).eventDispatcher.emit(
                                         "button",
-                                        new Et(i, s, this.at(e))
+                                        new Pt(i, s, this.at(e))
                                       ))
                                     : this.at(e).updateButton(i, 0));
-                              for (r in $i)
-                                "number" == typeof (o = $i[r]) &&
+                              for (r in Qi)
+                                "number" == typeof (o = Qi[r]) &&
                                   (s = t[e].axes[o]) !==
                                     this._oldPads[e].getAxes(o) &&
                                   (this.at(e).updateAxes(o, s),
                                   this.at(e).eventDispatcher.emit(
                                     "axis",
-                                    new St(o, s, this.at(e))
+                                    new At(o, s, this.at(e))
                                   ));
                               this._oldPads[e] = this._clonePad(t[e]);
                             }
@@ -16238,7 +16147,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             a.connected &&
                               this.eventDispatcher.emit(
                                 "disconnect",
-                                new At(e, a)
+                                new xt(e, a)
                               ),
                               (a.connected = !1);
                           }
@@ -16247,8 +16156,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e.prototype.at = function (t) {
                       if ((this._enableAndUpdate(), t >= this._pads.length))
                         for (var e = this._pads.length - 1, n = t; e < n; e++)
-                          this._pads.push(new rr()),
-                            this._oldPads.push(new rr());
+                          this._pads.push(new $i()),
+                            this._oldPads.push(new $i());
                       return this._pads[t];
                     }),
                     (e.prototype.getValidGamepads = function () {
@@ -16272,7 +16181,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e.prototype._clonePad = function (t) {
                       var e,
                         n,
-                        i = new rr();
+                        i = new $i();
                       if (!t) return i;
                       for (e = 0, n = t.buttons.length; e < n; e++)
                         t.buttons[e] && i.updateButton(e, t.buttons[e].value);
@@ -16283,8 +16192,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e.MinAxisMoveThreshold = 0.05),
                     e
                   );
-                })(ee),
-                rr = (function (t) {
+                })($t),
+                $i = (function (t) {
                   function e() {
                     var e = t.call(this) || this;
                     (e.connected = !1),
@@ -16296,7 +16205,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     return e;
                   }
                   return (
-                    nr(e, t),
+                    Yi(e, t),
                     (e.prototype.isButtonPressed = function (t, e) {
                       return void 0 === e && (e = 1), this._buttons[t] >= e;
                     }),
@@ -16305,7 +16214,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (e.prototype.getAxes = function (t) {
                       var e = this._axes[t];
-                      return Math.abs(e) < ir.MinAxisMoveThreshold ? 0 : e;
+                      return Math.abs(e) < Ji.MinAxisMoveThreshold ? 0 : e;
                     }),
                     (e.prototype.updateButton = function (t, e) {
                       this._buttons[t] = e;
@@ -16315,7 +16224,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     e
                   );
-                })(ee);
+                })($t);
               !(function (t) {
                 (t[(t.Face1 = 0)] = "Face1"),
                   (t[(t.Face2 = 1)] = "Face2"),
@@ -16333,15 +16242,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   (t[(t.DpadDown = 13)] = "DpadDown"),
                   (t[(t.DpadLeft = 14)] = "DpadLeft"),
                   (t[(t.DpadRight = 15)] = "DpadRight");
-              })(Ji || (Ji = {})),
+              })(Xi || (Xi = {})),
                 (function (t) {
                   (t[(t.LeftStickX = 0)] = "LeftStickX"),
                     (t[(t.LeftStickY = 1)] = "LeftStickY"),
                     (t[(t.RightStickX = 2)] = "RightStickX"),
                     (t[(t.RightStickY = 3)] = "RightStickY");
-                })($i || ($i = {}));
-              var or,
-                sr = (function () {
+                })(Qi || (Qi = {}));
+              var tr,
+                er = (function () {
                   function t(t) {
                     (this.nativeComponent = t),
                       (this._paused = !1),
@@ -16380,12 +16289,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                ar = (function () {
+                nr = (function () {
                   function t(t, e) {
                     (this._windowGlobal = t),
                       (this._documentGlobal = e),
-                      (this._windowComponent = new sr(this._windowGlobal)),
-                      (this._documentComponent = new sr(this._documentGlobal));
+                      (this._windowComponent = new er(this._windowGlobal)),
+                      (this._documentComponent = new er(this._documentGlobal));
                   }
                   return (
                     Object.defineProperty(t.prototype, "window", {
@@ -16414,7 +16323,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                cr = (function () {
+                ir = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -16439,8 +16348,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                hr = function () {
-                  return (hr =
+                rr = function () {
+                  return (rr =
                     Object.assign ||
                     function (t) {
                       for (var e, n = 1, i = arguments.length; n < i; n++)
@@ -16455,9 +16364,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   (t[(t.None = 0)] = "None"),
                     (t[(t.Canvas = 1)] = "Canvas"),
                     (t[(t.All = 2)] = "All");
-                })(or || (or = {}));
-              var ur,
-                lr = (function (t) {
+                })(tr || (tr = {}));
+              var or,
+                sr = (function (t) {
                   function e(n) {
                     var i,
                       r,
@@ -16470,7 +16379,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       (s._suppressPlayButton = !1),
                       (s.pauseAudioWhenHidden = !0),
                       (s.isDebug = !1),
-                      (s.debugColor = new et(255, 255, 255)),
+                      (s.debugColor = new tt(255, 255, 255)),
                       (s.enableCanvasTransparency = !0),
                       (s.onFatalException = function (t) {
                         R.getInstance().fatal(t);
@@ -16478,9 +16387,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       (s._timescale = 1),
                       (s._isLoading = !1),
                       (s._isInitialized = !1),
-                      (n = hr(hr({}, e._DefaultEngineOptions), n)),
-                      (s.browser = new ar(window, document));
-                    var a = new In();
+                      (n = rr(rr({}, e._DefaultEngineOptions), n)),
+                      (s.browser = new nr(window, document));
+                    var a = new kn();
                     if (
                       !n.suppressMinimumBrowserFeatureDetection &&
                       !(s._compatible = a.test())
@@ -16506,7 +16415,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       console.log &&
                         !n.suppressConsoleBootMessage &&
                         (console.log(
-                          "%cPowered by Excalibur.js (v" + $r + ")",
+                          "%cPowered by Excalibur.js (v" + Qr + ")",
                           "background: #176BAA; color: white; border-radius: 5px; padding: 15px; font-size: 1.5em; line-height: 80px;"
                         ),
                         console.log(
@@ -16542,10 +16451,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     var u =
                       null !== (i = n.displayMode) && void 0 !== i
                         ? i
-                        : Vt.Fixed;
+                        : Nt.Fixed;
                     return (
                       (n.width && n.height) || n.viewport
-                        ? (void 0 === n.displayMode && (u = Vt.Fixed),
+                        ? (void 0 === n.displayMode && (u = Nt.Fixed),
                           s._logger.debug(
                             "Engine viewport is size " +
                               n.width +
@@ -16554,11 +16463,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           ))
                         : n.displayMode ||
                           (s._logger.debug("Engine viewport is fullscreen"),
-                          (u = Vt.FullScreen)),
+                          (u = Nt.FullScreen)),
                       (s.ctx = s.canvas.getContext("2d", {
                         alpha: s.enableCanvasTransparency,
                       })),
-                      (s.screen = new $t({
+                      (s.screen = new Yt({
                         canvas: s.canvas,
                         context: s.ctx,
                         antialiasing:
@@ -16577,17 +16486,17 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       n.backgroundColor &&
                         (s.backgroundColor = n.backgroundColor.clone()),
                       (s.enableCanvasTransparency = n.enableCanvasTransparency),
-                      (s._loader = new jn()),
-                      (s.debug = new Si(s)),
+                      (s._loader = new Mn()),
+                      (s.debug = new xi(s)),
                       s._initialize(n),
-                      (s.rootScene = s.currentScene = new xi(s)),
+                      (s.rootScene = s.currentScene = new vi(s)),
                       s.addScene("root", s.rootScene),
                       s.goToScene("root"),
                       s
                     );
                   }
                   return (
-                    cr(e, t),
+                    ir(e, t),
                     Object.defineProperty(e.prototype, "canvasWidth", {
                       get: function () {
                         return this.screen.canvasWidth;
@@ -16706,7 +16615,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       configurable: !0,
                     }),
                     (e.prototype.playAnimation = function (t, e, n) {
-                      this._animations.push(new pr(t, e, n));
+                      this._animations.push(new ar(t, e, n));
                     }),
                     (e.prototype.addTileMap = function (t) {
                       this.currentScene.addTileMap(t);
@@ -16730,7 +16639,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         (this.scenes[t] = e);
                     }),
                     (e.prototype.removeScene = function (t) {
-                      if (t instanceof xi)
+                      if (t instanceof vi)
                         for (var e in this.scenes)
                           this.scenes.hasOwnProperty(e) &&
                             this.scenes[e] === t &&
@@ -16738,21 +16647,21 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       "string" == typeof t && delete this.scenes[t];
                     }),
                     (e.prototype.add = function (t) {
-                      t instanceof Pn
+                      t instanceof bn
                         ? this.currentScene.addScreenElement(t)
-                        : (t instanceof bn && this._addChild(t),
-                          t instanceof En && this.addTimer(t),
-                          t instanceof Cn && this.addTileMap(t),
+                        : (t instanceof vn && this._addChild(t),
+                          t instanceof xn && this.addTimer(t),
+                          t instanceof An && this.addTileMap(t),
                           2 === arguments.length &&
                             this.addScene(arguments[0], arguments[1]));
                     }),
                     (e.prototype.remove = function (t) {
-                      t instanceof Pn
+                      t instanceof bn
                         ? this.currentScene.removeScreenElement(t)
-                        : (t instanceof bn && this._removeChild(t),
-                          t instanceof En && this.removeTimer(t),
-                          t instanceof Cn && this.removeTileMap(t),
-                          t instanceof xi && this.removeScene(t),
+                        : (t instanceof vn && this._removeChild(t),
+                          t instanceof xn && this.removeTimer(t),
+                          t instanceof An && this.removeTileMap(t),
+                          t instanceof vi && this.removeScene(t),
                           "string" == typeof t && this.removeScene(t));
                     }),
                     (e.prototype._addChild = function (t) {
@@ -16773,7 +16682,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             ),
                             this.currentScene.eventDispatcher.emit(
                               "deactivate",
-                              new It(n, this.currentScene)
+                              new jt(n, this.currentScene)
                             )),
                           (this.currentScene = n),
                           this.screen.setCurrentCamera(n.camera),
@@ -16784,7 +16693,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           ]),
                           this.currentScene.eventDispatcher.emit(
                             "activate",
-                            new Ft(e, this.currentScene)
+                            new Rt(e, this.currentScene)
                           );
                       } else this._logger.error("Scene", t, "does not exist!");
                     }),
@@ -16800,13 +16709,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         i = this;
                       (this.pageScrollPreventionMode = t.scrollPreventionMode),
                         (this.input = {
-                          keyboard: new ki(),
-                          pointers: new er(this),
-                          gamepads: new ir(),
+                          keyboard: new Ti(),
+                          pointers: new Ki(this),
+                          gamepads: new Ji(),
                         }),
                         this.input.keyboard.init(),
                         this.input.pointers.init(
-                          t && t.pointerScope === Mi.Document
+                          t && t.pointerScope === Ci.Document
                             ? document
                             : this.canvas
                         ),
@@ -16820,9 +16729,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             (n = "webkitvisibilitychange")),
                         this.browser.document.on(n, function () {
                           document[e]
-                            ? (i.eventDispatcher.emit("hidden", new Bt(i)),
+                            ? (i.eventDispatcher.emit("hidden", new Ot(i)),
                               i._logger.debug("Window hidden"))
-                            : (i.eventDispatcher.emit("visible", new Tt(i)),
+                            : (i.eventDispatcher.emit("visible", new Ct(i)),
                               i._logger.debug("Window visible"));
                         }),
                         this.canvasElementId ||
@@ -16849,7 +16758,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         t.prototype.emit.call(
                           this,
                           "initialize",
-                          new jt(e, this)
+                          new kt(e, this)
                         ),
                         (this._isInitialized = !0));
                     }),
@@ -16875,12 +16784,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         this._postupdate(t);
                     }),
                     (e.prototype._preupdate = function (t) {
-                      this.emit("preupdate", new mt(this, t, this)),
+                      this.emit("preupdate", new _t(this, t, this)),
                         this.onPreUpdate(this, t);
                     }),
                     (e.prototype.onPreUpdate = function (t, e) {}),
                     (e.prototype._postupdate = function (t) {
-                      this.emit("postupdate", new bt(this, t, this)),
+                      this.emit("postupdate", new vt(this, t, this)),
                         this.onPostUpdate(this, t);
                     }),
                     (e.prototype.onPostUpdate = function (t, e) {}),
@@ -16910,7 +16819,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             this.ctx.fillText(
                               r[o].toString() +
                                 " : " +
-                                (Pi[r[o]] ? Pi[r[o]] : "Not Mapped"),
+                                (mi[r[o]] ? mi[r[o]] : "Not Mapped"),
                               100,
                               10 * o + 10
                             );
@@ -16935,12 +16844,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       }
                     }),
                     (e.prototype._predraw = function (t, e) {
-                      this.emit("predraw", new yt(t, e, this)),
+                      this.emit("predraw", new dt(t, e, this)),
                         this.onPreDraw(t, e);
                     }),
                     (e.prototype.onPreDraw = function (t, e) {}),
                     (e.prototype._postdraw = function (t, e) {
-                      this.emit("postdraw", new gt(t, e, this)),
+                      this.emit("postdraw", new ft(t, e, this)),
                         this.onPostDraw(t, e);
                     }),
                     (e.prototype.onPostDraw = function (t, e) {}),
@@ -16962,7 +16871,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           n.then(function () {
                             i.screen.popResolutionAndViewport(),
                               i.screen.applyResolutionAndViewport(),
-                              i.emit("start", new dt(i));
+                              i.emit("start", new lt(i));
                           }),
                           this._hasStarted ||
                             ((this._hasStarted = !0),
@@ -16985,7 +16894,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         if (t._hasStarted)
                           try {
                             (t._requestId = e(r)),
-                              t.emit("preframe", new wt(t, t.stats.prevFrame));
+                              t.emit("preframe", new mt(t, t.stats.prevFrame));
                             var o = n(),
                               s = Math.floor(o - i) || 1;
                             s > 200 && (s = 1);
@@ -17003,7 +16912,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             (t.stats.currFrame.duration.update = u - h),
                               (t.stats.currFrame.duration.draw = l - u),
                               (i = o),
-                              t.emit("postframe", new xt(t, t.stats.currFrame)),
+                              t.emit("postframe", new bt(t, t.stats.currFrame)),
                               t.stats.prevFrame.reset(t.stats.currFrame);
                           } catch (e) {
                             window.cancelAnimationFrame(t._requestId),
@@ -17014,7 +16923,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (e.prototype.stop = function () {
                       this._hasStarted &&
-                        (this.emit("stop", new ft(this)),
+                        (this.emit("stop", new pt(this)),
                         this.browser.pause(),
                         (this._hasStarted = !1),
                         this._logger.debug("Game stopped"));
@@ -17048,21 +16957,21 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       enableCanvasTransparency: !0,
                       canvasElementId: "",
                       canvasElement: void 0,
-                      pointerScope: Mi.Document,
+                      pointerScope: Ci.Document,
                       suppressConsoleBootMessage: null,
                       suppressMinimumBrowserFeatureDetection: null,
                       suppressHiDPIScaling: null,
                       suppressPlayButton: null,
-                      scrollPreventionMode: or.Canvas,
-                      backgroundColor: et.fromHex("#2185d0"),
+                      scrollPreventionMode: tr.Canvas,
+                      backgroundColor: tt.fromHex("#2185d0"),
                     }),
                     e
                   );
-                })(ee),
-                pr = function (t, e, n) {
+                })($t),
+                ar = function (t, e, n) {
                   (this.animation = t), (this.x = e), (this.y = n);
                 },
-                dr = (function () {
+                cr = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -17087,14 +16996,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                fr = (function (t) {
+                hr = (function (t) {
                   function e(e, n) {
                     void 0 === n && (n = "MediaEvent");
                     var i = t.call(this) || this;
                     return (i.target = e), (i._name = n), i;
                   }
                   return (
-                    dr(e, t),
+                    cr(e, t),
                     Object.defineProperty(e.prototype, "bubbles", {
                       get: function () {
                         return !1;
@@ -17117,23 +17026,23 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (e.prototype.layPath = function (t) {}),
                     e
                   );
-                })(ht),
-                yr = (function (t) {
+                })(at),
+                ur = (function (t) {
                   function e(e, n) {
                     var i = t.call(this, e, "NativeSoundEvent") || this;
                     return (i.track = n), i;
                   }
-                  return dr(e, t), e;
-                })(fr),
-                gr = (function (t) {
+                  return cr(e, t), e;
+                })(hr),
+                lr = (function (t) {
                   function e(e, n) {
                     var i =
                       t.call(this, e, "NativeSoundProcessedEvent") || this;
                     return (i.processedData = n), (i.data = i.processedData), i;
                   }
-                  return dr(e, t), e;
-                })(fr),
-                _r = (function () {
+                  return cr(e, t), e;
+                })(hr),
+                pr = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -17161,40 +17070,40 @@ parcelRequire = (function (modules, cache, entry, globalName) {
               !(function (t) {
                 (t[(t.Circle = 0)] = "Circle"),
                   (t[(t.Rectangle = 1)] = "Rectangle");
-              })(ur || (ur = {}));
-              var vr = (function (t) {
+              })(or || (or = {}));
+              var dr = (function (t) {
                   function e(e, n, i, r, o, s, a, c, h, u) {
                     return t.call(this, e, n, i, r, o, s, a, c, h, u) || this;
                   }
-                  return _r(e, t), e;
+                  return pr(e, t), e;
                 })(
-                  fe(
+                  pe(
                     (function () {
                       function t(t, e, n, i, r, o, s, a, c, h) {
-                        (this.position = new V(0, 0)),
-                          (this.velocity = new V(0, 0)),
-                          (this.acceleration = new V(0, 0)),
+                        (this.position = new q(0, 0)),
+                          (this.velocity = new q(0, 0)),
+                          (this.acceleration = new q(0, 0)),
                           (this.particleRotationalVelocity = 0),
                           (this.currentRotation = 0),
                           (this.focus = null),
                           (this.focusAccel = 0),
                           (this.opacity = 1),
-                          (this.beginColor = et.White),
-                          (this.endColor = et.White),
+                          (this.beginColor = tt.White),
+                          (this.endColor = tt.White),
                           (this.life = 300),
                           (this.fadeFlag = !1),
                           (this._rRate = 1),
                           (this._gRate = 1),
                           (this._bRate = 1),
                           (this._aRate = 0),
-                          (this._currentColor = et.White),
+                          (this._currentColor = tt.White),
                           (this.emitter = null),
                           (this.particleSize = 5),
                           (this.particleSprite = null),
                           (this.sizeRate = 0),
                           (this.elapsedMultiplier = 0);
                         var u = t;
-                        if (u && !(t instanceof mr)) {
+                        if (u && !(t instanceof fr)) {
                           var l = t;
                           (u = l.emitter),
                             (e = l.life),
@@ -17323,20 +17232,20 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     })()
                   )
                 ),
-                mr = (function (t) {
+                fr = (function (t) {
                   function e(e, n, i, r) {
                     return t.call(this, e, n, i, r) || this;
                   }
-                  return _r(e, t), e;
+                  return pr(e, t), e;
                 })(
-                  fe(
+                  pe(
                     (function (t) {
                       function e(e, n, i, r) {
                         var o =
                           t.call(
                             this,
                             "number" == typeof e
-                              ? { pos: new V(e, n), width: i, height: r }
+                              ? { pos: new q(e, n), width: i, height: r }
                               : e
                           ) || this;
                         (o.numParticles = 0),
@@ -17345,7 +17254,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           (o.deadParticles = null),
                           (o.minVel = 0),
                           (o.maxVel = 0),
-                          (o.acceleration = new V(0, 0)),
+                          (o.acceleration = new q(0, 0)),
                           (o.minAngle = 0),
                           (o.maxAngle = 0),
                           (o.emitRate = 1),
@@ -17358,24 +17267,24 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           (o.endSize = null),
                           (o.minSize = 5),
                           (o.maxSize = 5),
-                          (o.beginColor = et.White),
-                          (o.endColor = et.White),
+                          (o.beginColor = tt.White),
+                          (o.endColor = tt.White),
                           (o.particleSprite = null),
-                          (o.emitterType = ur.Rectangle),
+                          (o.emitterType = or.Rectangle),
                           (o.radius = 0),
                           (o.particleRotationalVelocity = 0),
                           (o.randomRotation = !1),
                           (o._particlesToEmit = 0),
-                          (o.body.collider.type = ct.PreventCollision),
+                          (o.body.collider.type = st.PreventCollision),
                           (o.particles = new D()),
                           (o.deadParticles = new D()),
                           (o.random = new f());
                         for (var s = 0; s < o.traits.length; s++)
-                          o.traits[s] instanceof Ze && o.traits.splice(s, 1);
+                          o.traits[s] instanceof Ge && o.traits.splice(s, 1);
                         return o;
                       }
                       return (
-                        _r(e, t),
+                        pr(e, t),
                         (e.prototype.removeParticle = function (t) {
                           this.deadParticles.push(t);
                         }),
@@ -17396,7 +17305,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                               b(this.minSize, this.maxSize, this.random),
                             o = i * Math.cos(n),
                             s = i * Math.sin(n);
-                          if (this.emitterType === ur.Rectangle)
+                          if (this.emitterType === or.Rectangle)
                             (t = b(
                               this.pos.x,
                               this.pos.x + this.width,
@@ -17407,19 +17316,19 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                                 this.pos.y + this.height,
                                 this.random
                               ));
-                          else if (this.emitterType === ur.Circle) {
+                          else if (this.emitterType === or.Circle) {
                             var a = b(0, this.radius, this.random);
                             (t = a * Math.cos(n) + this.pos.x),
                               (e = a * Math.sin(n) + this.pos.y);
                           }
-                          var c = new vr(
+                          var c = new dr(
                             this,
                             this.particleLife,
                             this.opacity,
                             this.beginColor,
                             this.endColor,
-                            new V(t, e),
-                            new V(o, s),
+                            new q(t, e),
+                            new q(o, s),
                             this.acceleration,
                             this.startSize,
                             this.endSize
@@ -17438,7 +17347,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                               )),
                             this.focus &&
                               ((c.focus = this.focus.add(
-                                new V(this.pos.x, this.pos.y)
+                                new q(this.pos.x, this.pos.y)
                               )),
                               (c.focusAccel = this.focusAccel)),
                             c
@@ -17472,7 +17381,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         }),
                         (e.prototype.debugDraw = function (e) {
                           t.prototype.debugDraw.call(this, e),
-                            (e.fillStyle = et.Black.toString()),
+                            (e.fillStyle = tt.Black.toString()),
                             e.fillText(
                               "Particles: " + this.particles.count(),
                               this.pos.x,
@@ -17485,9 +17394,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                                 3,
                                 3
                               ),
-                              Ye(
+                              Qe(
                                 e,
-                                et.Yellow,
+                                tt.Yellow,
                                 this.focus.x + this.pos.x,
                                 this.focus.y + this.pos.y,
                                 this.center.x,
@@ -17501,11 +17410,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         }),
                         e
                       );
-                    })(bn)
+                    })(vn)
                   )
                 ),
-                br = { Actions: o },
-                wr = (function () {
+                yr = { Actions: o },
+                gr = (function () {
                   function t() {}
                   return (
                     (t.create = function (t, e) {
@@ -17519,7 +17428,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         throw new Error(
                           "Collision group " + t + " already exists"
                         );
-                      var n = new nn(
+                      var n = new $e(
                         t,
                         this._currentBit,
                         void 0 !== e ? e : ~this._currentBit
@@ -17554,8 +17463,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                xr = function () {
-                  return (xr =
+                _r = function () {
+                  return (_r =
                     Object.assign ||
                     function (t) {
                       for (var e, n = 1, i = arguments.length; n < i; n++)
@@ -17565,15 +17474,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       return t;
                     }).apply(this, arguments);
                 },
-                Pr = (function () {
+                vr = (function () {
                   function t(t) {
                     (this.lineWidth = 5),
                       (this.filled = !1),
                       (this._points = []),
-                      (this.anchor = V.Zero),
-                      (this.offset = V.Zero),
+                      (this.anchor = q.Zero),
+                      (this.offset = q.Zero),
                       (this.rotation = 0),
-                      (this.scale = V.One),
+                      (this.scale = q.One),
                       (this.opacity = 1),
                       (this._points = t);
                     var e = this._points.reduce(function (t, e) {
@@ -17612,7 +17521,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         s,
                         a,
                         c,
-                        h = xr(xr({}, t), {
+                        h = _r(_r({}, t), {
                           rotation:
                             null !== (e = t.rotation) && void 0 !== e
                               ? e
@@ -17685,7 +17594,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Ar = (function () {
+                mr = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -17710,13 +17619,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                Er = (function (t) {
+                br = (function (t) {
                   function e(e, n, i, r, o, s) {
                     return t.call(this, e, n, i, r, o, s) || this;
                   }
-                  return Ar(e, t), e;
+                  return mr(e, t), e;
                 })(
-                  fe(
+                  pe(
                     (function () {
                       function t(t, e, n, i, r, o) {
                         var s = this;
@@ -17731,7 +17640,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         if (
                           (t instanceof Array
                             ? (this.sprites = t)
-                            : (!t || t instanceof be
+                            : (!t || t instanceof ve
                                 ? ((this.image = t),
                                   (this.columns = e),
                                   (this.rows = n),
@@ -17748,7 +17657,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                                 this.columns * this.rows
                               )),
                               (a = !0)),
-                          this.image instanceof be)
+                          this.image instanceof ve)
                         ) {
                           var c = !1,
                             h = !1;
@@ -17782,7 +17691,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         if (a)
                           for (var u = 0; u < this.rows; u++)
                             for (var l = 0; l < this.columns; l++)
-                              this.sprites[l + u * this.columns] = new ve(
+                              this.sprites[l + u * this.columns] = new ge(
                                 this.image,
                                 l * this.spWidth +
                                   this.spacing * l +
@@ -17808,7 +17717,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             (r = r.map(function (t) {
                               return t.clone();
                             })),
-                            new Pe(t, r, n)
+                            new we(t, r, n)
                           );
                         }),
                         (t.prototype.getAnimationBetween = function (
@@ -17822,14 +17731,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             (r = r.map(function (t) {
                               return t.clone();
                             })),
-                            new Pe(t, r, i)
+                            new we(t, r, i)
                           );
                         }),
                         (t.prototype.getAnimationForAll = function (t, e) {
                           var n = this.sprites.map(function (t) {
                             return t.clone();
                           });
-                          return new Pe(t, n, e);
+                          return new we(t, n, e);
                         }),
                         (t.prototype.getSprite = function (t) {
                           if (t >= 0 && t < this.sprites.length)
@@ -17846,9 +17755,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             (a.image = a.image || this.image),
                               (i = Math.max(i, a.drawWidth)),
                               (r = Math.max(r, a.drawHeight)),
-                              (o[s] = new ve(a));
+                              (o[s] = new ge(a));
                           }
-                          var c = new Pe(t, o, n);
+                          var c = new we(t, o, n);
                           return (c.drawWidth = i), (c.drawHeight = r), c;
                         }),
                         t
@@ -17856,19 +17765,19 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     })()
                   )
                 ),
-                Sr = (function (t) {
+                wr = (function (t) {
                   function e(e, n, i, r, o, s, a, c) {
                     return t.call(this, e, n, i, r, o, s, a, c) || this;
                   }
-                  return Ar(e, t), e;
+                  return mr(e, t), e;
                 })(
-                  fe(
+                  pe(
                     (function (t) {
                       function e(e, n, i, r, o, s, a, c) {
                         var h =
                           t.call(
                             this,
-                            e instanceof be
+                            e instanceof ve
                               ? {
                                   image: e,
                                   spWidth: s,
@@ -17880,17 +17789,17 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                               : e
                           ) || this;
                         return (
-                          (h._currentColor = et.Black),
+                          (h._currentColor = tt.Black),
                           (h._currentOpacity = 1),
                           (h._sprites = {}),
                           (h._textShadowOn = !1),
                           (h._textShadowDirty = !0),
-                          (h._textShadowColor = et.Black),
+                          (h._textShadowColor = tt.Black),
                           (h._textShadowSprites = {}),
                           (h._shadowOffsetX = 5),
                           (h._shadowOffsetY = 5),
                           !e ||
-                            e instanceof be ||
+                            e instanceof ve ||
                             ((n = e.alphabet), (i = e.caseInsensitive)),
                           (h._alphabet = n),
                           (h._caseInsensitive = i),
@@ -17899,7 +17808,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         );
                       }
                       return (
-                        Ar(e, t),
+                        mr(e, t),
                         (e.prototype.getTextSprites = function () {
                           for (
                             var t = {}, e = 0;
@@ -17949,7 +17858,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                             for (var s in this._textShadowSprites)
                               this._textShadowSprites[s].clearEffects(),
                                 this._textShadowSprites[s].addEffect(
-                                  new pe(this._textShadowColor.clone())
+                                  new ue(this._textShadowColor.clone())
                                 );
                             this._textShadowDirty = !1;
                           }
@@ -17960,19 +17869,19 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                               e.length * a.drawWidth * h +
                               e.length * r.letterSpacing,
                             l = n;
-                          r.textAlign === Xn.Left || r.textAlign === Xn.Start
+                          r.textAlign === Nn.Left || r.textAlign === Nn.Start
                             ? (l = n)
-                            : r.textAlign === Xn.Right || r.textAlign === Xn.End
+                            : r.textAlign === Nn.Right || r.textAlign === Nn.End
                             ? (l = n - u)
-                            : r.textAlign === Xn.Center && (l = n - u / 2);
+                            : r.textAlign === Nn.Center && (l = n - u / 2);
                           var p = i - c * h;
-                          r.baseAlign === Qn.Top || r.baseAlign === Qn.Hanging
+                          r.baseAlign === qn.Top || r.baseAlign === qn.Hanging
                             ? (p = i)
-                            : r.baseAlign === Qn.Ideographic ||
-                              r.baseAlign === Qn.Bottom ||
-                              r.baseAlign === Qn.Alphabetic
+                            : r.baseAlign === qn.Ideographic ||
+                              r.baseAlign === qn.Bottom ||
+                              r.baseAlign === qn.Alphabetic
                             ? (p = i - c * h)
-                            : r.baseAlign === Qn.Middle &&
+                            : r.baseAlign === qn.Middle &&
                               (p = i - (c * h) / 2);
                           for (var d = 0; d < e.length; d++) {
                             var f = e[d];
@@ -18002,14 +17911,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           return {
                             fontSize: t.fontSize || 10,
                             letterSpacing: t.letterSpacing || 0,
-                            color: t.color || et.Black,
+                            color: t.color || tt.Black,
                             textAlign:
                               void 0 === typeof t.textAlign
-                                ? Xn.Left
+                                ? Nn.Left
                                 : t.textAlign,
                             baseAlign:
                               void 0 === typeof t.baseAlign
-                                ? Qn.Bottom
+                                ? qn.Bottom
                                 : t.baseAlign,
                             maxWidth: t.maxWidth || -1,
                             opacity: t.opacity || 0,
@@ -18017,10 +17926,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         }),
                         e
                       );
-                    })(Er)
+                    })(br)
                   )
                 ),
-                Cr = (function () {
+                xr = (function () {
                   function t() {}
                   return (
                     (t.type = {
@@ -18034,37 +17943,37 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })();
-              function Or(t) {
+              function Pr(t) {
                 return !!t._initialize;
               }
-              function Tr(t) {
+              function Ar(t) {
                 return !!t.onInitialize;
               }
-              function Br(t) {
+              function Er(t) {
                 return !!t._preupdate;
               }
-              function Mr(t) {
+              function Sr(t) {
                 return !!t.onPreUpdate;
               }
-              function Dr(t) {
+              function Cr(t) {
                 return !!t.onPostUpdate;
               }
-              function kr(t) {
+              function Or(t) {
                 return !!t.onPostUpdate;
               }
-              function Rr(t) {
+              function Tr(t) {
                 return !!t.onPreDraw;
               }
-              function jr(t) {
+              function Br(t) {
                 return !!t.onPostDraw;
               }
-              function Fr(t, e, n) {
+              function Mr(t, e, n) {
                 return e + t * (n - e);
               }
-              function Ir(t) {
+              function Dr(t) {
                 return t * t * t * (t * (6 * t - 15) + 10);
               }
-              var Lr = (function () {
+              var kr = (function () {
                   function t(t) {
                     (this._perm = [
                       151,
@@ -18411,8 +18320,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     (t.prototype._noise1d = function (t) {
                       var e = 255 & Math.floor(t);
                       return (
-                        (Fr(
-                          Ir((t -= Math.floor(t))),
+                        (Mr(
+                          Dr((t -= Math.floor(t))),
                           this._gradient1d(this._p[e], t),
                           this._gradient1d(this._p[e + 1], t - 1)
                         ) +
@@ -18424,19 +18333,19 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       var n = 255 & Math.floor(t),
                         i = 255 & Math.floor(e);
                       (t -= Math.floor(t)), (e -= Math.floor(e));
-                      var r = Ir(t),
-                        o = Ir(e),
+                      var r = Dr(t),
+                        o = Dr(e),
                         s = this._p[n] + i,
                         a = this._p[n + 1] + i;
                       return (
-                        (Fr(
+                        (Mr(
                           o,
-                          Fr(
+                          Mr(
                             r,
                             this._gradient2d(this._p[s], t, e),
                             this._gradient2d(this._p[a], t - 1, e)
                           ),
-                          Fr(
+                          Mr(
                             r,
                             this._gradient2d(this._p[s + 1], t, e - 1),
                             this._gradient2d(this._p[a + 1], t - 1, e - 1)
@@ -18453,9 +18362,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       (t -= Math.floor(t)),
                         (e -= Math.floor(e)),
                         (n -= Math.floor(n));
-                      var s = Ir(t),
-                        a = Ir(e),
-                        c = Ir(n),
+                      var s = Dr(t),
+                        a = Dr(e),
+                        c = Dr(n),
                         h = this._p[i] + r,
                         u = this._p[i + 1] + r,
                         l = this._p[h] + o,
@@ -18463,29 +18372,29 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         d = this._p[h + 1] + o,
                         f = this._p[u + 1] + o;
                       return (
-                        (Fr(
+                        (Mr(
                           c,
-                          Fr(
+                          Mr(
                             a,
-                            Fr(
+                            Mr(
                               s,
                               this._gradient3d(this._p[l], t, e, n),
                               this._gradient3d(this._p[p], t - 1, e, n)
                             ),
-                            Fr(
+                            Mr(
                               s,
                               this._gradient3d(this._p[d], t, e - 1, n),
                               this._gradient3d(this._p[f], t - 1, e - 1, n)
                             )
                           ),
-                          Fr(
+                          Mr(
                             a,
-                            Fr(
+                            Mr(
                               s,
                               this._gradient3d(this._p[l + 1], t, e, n - 1),
                               this._gradient3d(this._p[p + 1], t - 1, e, n - 1)
                             ),
-                            Fr(
+                            Mr(
                               s,
                               this._gradient3d(this._p[d + 1], t, e - 1, n - 1),
                               this._gradient3d(
@@ -18504,13 +18413,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                zr = (function () {
+                Rr = (function () {
                   function t(t, e) {
                     (this.generator = t),
                       (this.colorFcn = e),
                       e ||
                         (this.colorFcn = function (t) {
-                          return t < 125 ? et.Black : et.White;
+                          return t < 125 ? tt.Black : tt.White;
                         });
                   }
                   return (
@@ -18546,7 +18455,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Hr = (function () {
+                jr = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -18571,16 +18480,16 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                Ur = (function () {
+                Fr = (function () {
                   function t() {}
                   return (
                     (t.create = function (t) {
-                      return t instanceof AudioBuffer ? new Nr(t) : new Wr(t);
+                      return t instanceof AudioBuffer ? new Lr(t) : new Ir(t);
                     }),
                     t
                   );
                 })(),
-                Wr = (function () {
+                Ir = (function () {
                   function t(t) {
                     (this._src = t),
                       (this._volume = 1),
@@ -18660,11 +18569,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     t
                   );
                 })(),
-                Nr = (function (t) {
+                Lr = (function (t) {
                   function e(e) {
                     var n = t.call(this, e) || this;
                     return (
-                      (n._audioContext = Bn.create()),
+                      (n._audioContext = Cn.create()),
                       (n._volumeNode = n._audioContext.createGain()),
                       (n._currentOffset = 0),
                       n._createNewBufferSource(),
@@ -18672,7 +18581,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     );
                   }
                   return (
-                    Hr(e, t),
+                    jr(e, t),
                     Object.defineProperty(e.prototype, "volume", {
                       get: function () {
                         return this._volume;
@@ -18757,8 +18666,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     e
                   );
-                })(Wr);
-              function qr(t) {
+                })(Ir);
+              function zr(t) {
                 try {
                   var e = new Audio(),
                     n = t.match(/.*\.([A-Za-z0-9]+)$/)[1];
@@ -18773,7 +18682,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   );
                 }
               }
-              var Vr = (function () {
+              var Hr = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -18798,7 +18707,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                Gr = (function (t) {
+                Ur = (function (t) {
                   function e() {
                     for (var e = [], n = 0; n < arguments.length; n++)
                       e[n] = arguments[n];
@@ -18811,11 +18720,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       (i._tracks = []),
                       (i._wasPlayingOnHidden = !1),
                       (i._processedData = new d()),
-                      (i._audioContext = Bn.create()),
+                      (i._audioContext = Cn.create()),
                       i._detectResponseType();
                     for (var r = 0, o = e; r < o.length; r++) {
                       var s = o[r];
-                      if (qr(s)) {
+                      if (zr(s)) {
                         i.path = s;
                         break;
                       }
@@ -18832,16 +18741,15 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     );
                   }
                   return (
-                    Vr(e, t),
+                    Hr(e, t),
                     Object.defineProperty(e.prototype, "loop", {
                       get: function () {
                         return this._loop;
                       },
                       set: function (t) {
                         this._loop = t;
-                        for (var e = 0, n = this._tracks; e < n.length; e++) {
+                        for (var e = 0, n = this._tracks; e < n.length; e++)
                           n[e].loop = this._loop;
-                        }
                         this.logger.debug(
                           "Set loop for all instances of sound",
                           this.path,
@@ -18858,10 +18766,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       },
                       set: function (t) {
                         this._volume = t;
-                        for (var e = 0, n = this._tracks; e < n.length; e++) {
+                        for (var e = 0, n = this._tracks; e < n.length; e++)
                           n[e].volume = this._volume;
-                        }
-                        this.emit("volumechange", new yr(this)),
+                        this.emit("volumechange", new ur(this)),
                           this.logger.debug(
                             "Set loop for all instances of sound",
                             this.path,
@@ -18935,11 +18842,10 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (e.prototype.pause = function () {
                       if (this.isPlaying()) {
-                        for (var t = 0, e = this._tracks; t < e.length; t++) {
+                        for (var t = 0, e = this._tracks; t < e.length; t++)
                           e[t].pause();
-                        }
                         (this._isPaused = !0),
-                          this.emit("pause", new yr(this)),
+                          this.emit("pause", new ur(this)),
                           this.logger.debug(
                             "Paused all instances of sound",
                             this.path
@@ -18947,10 +18853,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       }
                     }),
                     (e.prototype.stop = function () {
-                      for (var t = 0, e = this._tracks; t < e.length; t++) {
+                      for (var t = 0, e = this._tracks; t < e.length; t++)
                         e[t].stop();
-                      }
-                      this.emit("stop", new yr(this)),
+                      this.emit("stop", new ur(this)),
                         (this._isPaused = !1),
                         (this._tracks.length = 0),
                         this.logger.debug(
@@ -18959,7 +18864,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         );
                     }),
                     (e.prototype.setData = function (t) {
-                      this.emit("emptied", new yr(this)),
+                      this.emit("emptied", new ur(this)),
                         (this.data = t),
                         (this._processedData = new d());
                     }),
@@ -18987,7 +18892,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         }
                         return (
                           (this._isPaused = !1),
-                          this.emit("resume", new yr(this)),
+                          this.emit("resume", new ur(this)),
                           this.logger.debug(
                             "Resuming paused instances for sound",
                             this.path,
@@ -19006,13 +18911,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         e.then(function (e) {
                           e.play().then(function (i) {
                             return (
-                              t.emit("playbackend", new yr(t, e)),
+                              t.emit("playbackend", new ur(t, e)),
                               t._tracks.splice(t.getTrackId(e), 1),
                               n.resolve(i),
                               i
                             );
                           }),
-                            t.emit("playbackstart", new yr(t, e)),
+                            t.emit("playbackstart", new ur(t, e)),
                             t.logger.debug(
                               "Playing new instance for sound",
                               t.path
@@ -19049,7 +18954,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       this._processedData.resolve(t),
                         (this._duration =
                           "object" == typeof t ? t.duration : void 0),
-                        this.emit("processed", new gr(this, t));
+                        this.emit("processed", new lr(this, t));
                     }),
                     (e.prototype._createNewTrack = function () {
                       var t = this,
@@ -19072,7 +18977,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       );
                     }),
                     (e.prototype._getTrackInstance = function (t) {
-                      var e = Ur.create(t);
+                      var e = Fr.create(t);
                       return (
                         (e.loop = this.loop),
                         (e.volume = this.volume),
@@ -19083,13 +18988,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     (e.prototype._detectResponseType = function () {
                       window.AudioContext
-                        ? (this.responseType = Cr.type.arraybuffer)
-                        : (this.responseType = Cr.type.blob);
+                        ? (this.responseType = xr.type.arraybuffer)
+                        : (this.responseType = xr.type.blob);
                     }),
                     e
                   );
-                })(ie),
-                Xr = (function () {
+                })(ee),
+                Wr = (function () {
                   var t = function (e, n) {
                     return (t =
                       Object.setPrototypeOf ||
@@ -19114,9 +19019,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           : ((i.prototype = n.prototype), new i()));
                   };
                 })(),
-                Qr = (function (t) {
+                Nr = (function (t) {
                   function e(e, n, i) {
-                    void 0 === n && (n = et.Magenta), void 0 === i && (i = !0);
+                    void 0 === n && (n = tt.Magenta), void 0 === i && (i = !0);
                     var r = t.call(this, e, "arraybuffer", i) || this;
                     return (
                       (r.path = e),
@@ -19134,7 +19039,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     );
                   }
                   return (
-                    Xr(e, t),
+                    Wr(e, t),
                     (e.prototype.isLoaded = function () {
                       return this._isLoaded;
                     }),
@@ -19144,14 +19049,14 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       return (
                         t.prototype.load.call(this).then(
                           function () {
-                            (e._stream = new Yr(e.getData())),
-                              (e._gif = new Jr(e._stream, e._transparentColor));
+                            (e._stream = new Gr(e.getData())),
+                              (e._gif = new Xr(e._stream, e._transparentColor));
                             for (
                               var t = [], i = 0;
                               i < e._gif.images.length;
                               i++
                             ) {
-                              var r = new be(e._gif.images[i].src, !1);
+                              var r = new ve(e._gif.images[i].src, !1);
                               e._texture.push(r), t.push(r.load());
                             }
                             d.join(t).then(function () {
@@ -19174,7 +19079,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                       var t = this._texture.map(function (t) {
                         return t.asSprite();
                       });
-                      return new Er(t);
+                      return new br(t);
                     }),
                     (e.prototype.asAnimation = function (t, e) {
                       var n = this.asSpriteSheet();
@@ -19192,17 +19097,17 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     }),
                     e
                   );
-                })(ie),
-                Zr = function (t) {
+                })(ee),
+                qr = function (t) {
                   return t.reduce(function (t, e) {
                     return 2 * t + e;
                   }, 0);
                 },
-                Kr = function (t) {
+                Vr = function (t) {
                   for (var e = [], n = 7; n >= 0; n--) e.push(!!(t & (1 << n)));
                   return e;
                 },
-                Yr = function (t) {
+                Gr = function (t) {
                   var e = this;
                   if (
                     ((this.data = null),
@@ -19234,9 +19139,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                   )
                     throw new Error("No data loaded from file");
                 },
-                Jr = function (t, e) {
+                Xr = function (t, e) {
                   var n = this;
-                  void 0 === e && (e = et.Magenta),
+                  void 0 === e && (e = tt.Magenta),
                     (this._st = null),
                     (this._handler = {}),
                     (this._transparentColor = null),
@@ -19289,11 +19194,11 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         throw new Error("Not a GIF file.");
                       (t.width = n._st.readUnsigned()),
                         (t.height = n._st.readUnsigned());
-                      var e = Kr(n._st.readByte());
+                      var e = Vr(n._st.readByte());
                       (t.gctFlag = e.shift()),
-                        (t.colorRes = Zr(e.splice(0, 3))),
+                        (t.colorRes = qr(e.splice(0, 3))),
                         (t.sorted = e.shift()),
-                        (t.globalColorTableSize = Zr(e.splice(0, 3))),
+                        (t.globalColorTableSize = qr(e.splice(0, 3))),
                         (t.bgColor = n._st.readByte()),
                         (t.pixelAspectRatio = n._st.readByte()),
                         t.gctFlag &&
@@ -19311,9 +19216,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                           (t.extType = "gce"),
                             (function (t) {
                               n.checkBytes.push(n._st.readByte());
-                              var e = Kr(n._st.readByte());
+                              var e = Vr(n._st.readByte());
                               (t.reserved = e.splice(0, 3)),
-                                (t.disposalMethod = Zr(e.splice(0, 3))),
+                                (t.disposalMethod = qr(e.splice(0, 3))),
                                 (t.userInput = e.shift()),
                                 (t.transparencyGiven = e.shift()),
                                 (t.delayTime = n._st.readUnsigned()),
@@ -19393,12 +19298,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                         (t.topPos = n._st.readUnsigned()),
                         (t.width = n._st.readUnsigned()),
                         (t.height = n._st.readUnsigned());
-                      var e = Kr(n._st.readByte());
+                      var e = Vr(n._st.readByte());
                       (t.lctFlag = e.shift()),
                         (t.interlaced = e.shift()),
                         (t.sorted = e.shift()),
                         (t.reserved = e.splice(0, 2)),
-                        (t.lctSize = Zr(e.splice(0, 3))),
+                        (t.lctSize = qr(e.splice(0, 3))),
                         t.lctFlag &&
                           (t.lct = n.parseColorTable(1 << (t.lctSize + 1))),
                         (t.lzwMinCodeSize = n._st.readByte());
@@ -19517,7 +19422,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
                     this.parseHeader(),
                     this.parseBlock();
                 },
-                $r = "0.24.5";
+                Qr = "0.24.5";
               l();
             },
           ]);
@@ -19525,3933 +19430,2132 @@ parcelRequire = (function (modules, cache, entry, globalName) {
       },
       {},
     ],
-    "src/images/sword_idle.png": [
+    QBtd: [
       function (require, module, exports) {
-        module.exports = "/sword_idle.ba676f79.png";
+        module.exports = "sword_idle.9644fc8d.png";
       },
       {},
     ],
-    "src/images/sword_walk.png": [
+    PQsI: [
       function (require, module, exports) {
-        module.exports = "/sword_walk.86f78bcb.png";
+        module.exports = "sword_walk.355090ac.png";
       },
       {},
     ],
-    "src/images/sword_atk.png": [
+    icnx: [
       function (require, module, exports) {
-        module.exports = "/sword_atk.9cc6d16f.png";
+        module.exports = "sword_atk.ea09caf5.png";
       },
       {},
     ],
-    "src/images/bow_idle.png": [
+    mn1F: [
       function (require, module, exports) {
-        module.exports = "/bow_idle.7f156829.png";
+        module.exports = "bow_idle.04a25157.png";
       },
       {},
     ],
-    "src/images/bow_walk.png": [
+    V7vf: [
       function (require, module, exports) {
-        module.exports = "/bow_walk.dd1b5820.png";
+        module.exports = "bow_walk.1ce666bc.png";
       },
       {},
     ],
-    "src/images/bow_atk.png": [
+    DNyR: [
       function (require, module, exports) {
-        module.exports = "/bow_atk.fdb5f84c.png";
+        module.exports = "bow_atk.c15f3447.png";
       },
       {},
     ],
-    "src/images/magic_idle.png": [
+    LAbl: [
       function (require, module, exports) {
-        module.exports = "/magic_idle.c1b1acc7.png";
+        module.exports = "magic_idle.ba25bd95.png";
       },
       {},
     ],
-    "src/images/magic_walk.png": [
+    Kmd8: [
       function (require, module, exports) {
-        module.exports = "/magic_walk.11f24531.png";
+        module.exports = "magic_walk.256c60f9.png";
       },
       {},
     ],
-    "src/images/magic_atk.png": [
+    Kxor: [
       function (require, module, exports) {
-        module.exports = "/magic_atk.d6364d32.png";
+        module.exports = "magic_atk.fa0ec399.png";
       },
       {},
     ],
-    "src/images/enemysword_idle.png": [
+    byj1: [
       function (require, module, exports) {
-        module.exports = "/enemysword_idle.1154fb88.png";
+        module.exports = "enemysword_idle.1c913caf.png";
       },
       {},
     ],
-    "src/images/enemysword_walk.png": [
+    p6yI: [
       function (require, module, exports) {
-        module.exports = "/enemysword_walk.0b35a420.png";
+        module.exports = "enemysword_walk.03ebfa6e.png";
       },
       {},
     ],
-    "src/images/enemysword_atk.png": [
+    M3kD: [
       function (require, module, exports) {
-        module.exports = "/enemysword_atk.1ecbee91.png";
+        module.exports = "enemysword_atk.318264b9.png";
       },
       {},
     ],
-    "src/images/enemybow_idle.png": [
+    VDWP: [
       function (require, module, exports) {
-        module.exports = "/enemybow_idle.72e3373e.png";
+        module.exports = "enemybow_idle.c52fcedb.png";
       },
       {},
     ],
-    "src/images/enemybow_walk.png": [
+    TnSE: [
       function (require, module, exports) {
-        module.exports = "/enemybow_walk.aab4d478.png";
+        module.exports = "enemybow_walk.ba6b7ec8.png";
       },
       {},
     ],
-    "src/images/enemybow_atk.png": [
+    VPQa: [
       function (require, module, exports) {
-        module.exports = "/enemybow_atk.7f1d4fa8.png";
+        module.exports = "enemybow_atk.8f9295bd.png";
       },
       {},
     ],
-    "src/images/enemymagic_idle.png": [
+    cmPR: [
       function (require, module, exports) {
-        module.exports = "/enemymagic_idle.d68db78a.png";
+        module.exports = "enemymagic_idle.5dce4144.png";
       },
       {},
     ],
-    "src/images/enemymagic_walk.png": [
+    YoBC: [
       function (require, module, exports) {
-        module.exports = "/enemymagic_walk.f0fa1035.png";
+        module.exports = "enemymagic_walk.0db69524.png";
       },
       {},
     ],
-    "src/images/enemymagic_atk.png": [
+    HVIT: [
       function (require, module, exports) {
-        module.exports = "/enemymagic_atk.f269e54e.png";
+        module.exports = "enemymagic_atk.712b10d5.png";
       },
       {},
     ],
-    "src/images/dungeontiles_1.png": [
+    Cgt9: [
       function (require, module, exports) {
-        module.exports = "/dungeontiles_1.d032c678.png";
+        module.exports = "dungeontiles_1.1bcdd6da.png";
       },
       {},
     ],
-    "src/images/endturn.png": [
+    ZUDz: [
       function (require, module, exports) {
-        module.exports = "/endturn.240c0f43.png";
+        module.exports = "endturn.0cf949a4.png";
       },
       {},
     ],
-    "src/images/title.png": [
+    iSd5: [
       function (require, module, exports) {
-        module.exports = "/title.9582e90e.png";
+        module.exports = "title.f659c42b.png";
       },
       {},
     ],
-    "src/images/gameover.png": [
+    j0vF: [
       function (require, module, exports) {
-        module.exports = "/gameover.a953ef76.png";
+        module.exports = "gameover.72b8397b.png";
       },
       {},
     ],
-    "src/resources.ts": [
+    x5mp: [
       function (require, module, exports) {
         "use strict";
-
-        Object.defineProperty(exports, "__esModule", {
-          value: true,
-        });
-        exports.GameOverResources = exports.MainMenuResources = exports.Resources = void 0;
-
-        var _excalibur = require("excalibur");
-
-        var _sword_idle = _interopRequireDefault(
-          require("./images/sword_idle.png")
-        );
-
-        var _sword_walk = _interopRequireDefault(
-          require("./images/sword_walk.png")
-        );
-
-        var _sword_atk = _interopRequireDefault(
-          require("./images/sword_atk.png")
-        );
-
-        var _bow_idle = _interopRequireDefault(
-          require("./images/bow_idle.png")
-        );
-
-        var _bow_walk = _interopRequireDefault(
-          require("./images/bow_walk.png")
-        );
-
-        var _bow_atk = _interopRequireDefault(require("./images/bow_atk.png"));
-
-        var _magic_idle = _interopRequireDefault(
-          require("./images/magic_idle.png")
-        );
-
-        var _magic_walk = _interopRequireDefault(
-          require("./images/magic_walk.png")
-        );
-
-        var _magic_atk = _interopRequireDefault(
-          require("./images/magic_atk.png")
-        );
-
-        var _enemysword_idle = _interopRequireDefault(
-          require("./images/enemysword_idle.png")
-        );
-
-        var _enemysword_walk = _interopRequireDefault(
-          require("./images/enemysword_walk.png")
-        );
-
-        var _enemysword_atk = _interopRequireDefault(
-          require("./images/enemysword_atk.png")
-        );
-
-        var _enemybow_idle = _interopRequireDefault(
-          require("./images/enemybow_idle.png")
-        );
-
-        var _enemybow_walk = _interopRequireDefault(
-          require("./images/enemybow_walk.png")
-        );
-
-        var _enemybow_atk = _interopRequireDefault(
-          require("./images/enemybow_atk.png")
-        );
-
-        var _enemymagic_idle = _interopRequireDefault(
-          require("./images/enemymagic_idle.png")
-        );
-
-        var _enemymagic_walk = _interopRequireDefault(
-          require("./images/enemymagic_walk.png")
-        );
-
-        var _enemymagic_atk = _interopRequireDefault(
-          require("./images/enemymagic_atk.png")
-        );
-
-        var _dungeontiles_ = _interopRequireDefault(
-          require("./images/dungeontiles_1.png")
-        );
-
-        var _endturn = _interopRequireDefault(require("./images/endturn.png"));
-
-        var _title = _interopRequireDefault(require("./images/title.png"));
-
-        var _gameover = _interopRequireDefault(
-          require("./images/gameover.png")
-        );
-
-        function _interopRequireDefault(obj) {
-          return obj && obj.__esModule ? obj : { default: obj };
+        Object.defineProperty(exports, "__esModule", { value: !0 }),
+          (exports.GameOverResources = exports.MainMenuResources = exports.Resources = void 0);
+        var e = require("excalibur"),
+          r = M(require("./images/sword_idle.png")),
+          u = M(require("./images/sword_walk.png")),
+          a = M(require("./images/sword_atk.png")),
+          t = M(require("./images/bow_idle.png")),
+          n = M(require("./images/bow_walk.png")),
+          i = M(require("./images/bow_atk.png")),
+          g = M(require("./images/magic_idle.png")),
+          l = M(require("./images/magic_walk.png")),
+          d = M(require("./images/magic_atk.png")),
+          s = M(require("./images/enemysword_idle.png")),
+          w = M(require("./images/enemysword_walk.png")),
+          m = M(require("./images/enemysword_atk.png")),
+          o = M(require("./images/enemybow_idle.png")),
+          x = M(require("./images/enemybow_walk.png")),
+          p = M(require("./images/enemybow_atk.png")),
+          T = M(require("./images/enemymagic_idle.png")),
+          f = M(require("./images/enemymagic_walk.png")),
+          k = M(require("./images/enemymagic_atk.png")),
+          q = M(require("./images/dungeontiles_1.png")),
+          _ = M(require("./images/endturn.png")),
+          c = M(require("./images/title.png")),
+          y = M(require("./images/gameover.png"));
+        function M(e) {
+          return e && e.__esModule ? e : { default: e };
         }
-
-        var MainMenuResources = {
-          title: new _excalibur.Texture(_title.default),
+        var v = { title: new e.Texture(c.default) };
+        exports.MainMenuResources = v;
+        var E = { end: new e.Texture(y.default) };
+        exports.GameOverResources = E;
+        var b = {
+          SwordIdle: new e.Texture(r.default),
+          SwordWalk: new e.Texture(u.default),
+          SwordAtk: new e.Texture(a.default),
+          BowIdle: new e.Texture(t.default),
+          BowWalk: new e.Texture(n.default),
+          BowAtk: new e.Texture(i.default),
+          MagicIdle: new e.Texture(g.default),
+          MagicWalk: new e.Texture(l.default),
+          MagicAtk: new e.Texture(d.default),
+          EnemySwordIdle: new e.Texture(s.default),
+          EnemySwordWalk: new e.Texture(w.default),
+          EnemySwordAtk: new e.Texture(m.default),
+          EnemyBowIdle: new e.Texture(o.default),
+          EnemyBowWalk: new e.Texture(x.default),
+          EnemyBowAtk: new e.Texture(p.default),
+          EnemyMagicIdle: new e.Texture(T.default),
+          EnemyMagicWalk: new e.Texture(f.default),
+          EnemyMagicAtk: new e.Texture(k.default),
+          TileTexture: new e.Texture(q.default),
+          NextTurnTexture: new e.Texture(_.default),
         };
-        exports.MainMenuResources = MainMenuResources;
-        var GameOverResources = {
-          end: new _excalibur.Texture(_gameover.default),
-        };
-        exports.GameOverResources = GameOverResources;
-        var Resources = {
-          SwordIdle: new _excalibur.Texture(_sword_idle.default),
-          SwordWalk: new _excalibur.Texture(_sword_walk.default),
-          SwordAtk: new _excalibur.Texture(_sword_atk.default),
-          BowIdle: new _excalibur.Texture(_bow_idle.default),
-          BowWalk: new _excalibur.Texture(_bow_walk.default),
-          BowAtk: new _excalibur.Texture(_bow_atk.default),
-          MagicIdle: new _excalibur.Texture(_magic_idle.default),
-          MagicWalk: new _excalibur.Texture(_magic_walk.default),
-          MagicAtk: new _excalibur.Texture(_magic_atk.default),
-          EnemySwordIdle: new _excalibur.Texture(_enemysword_idle.default),
-          EnemySwordWalk: new _excalibur.Texture(_enemysword_walk.default),
-          EnemySwordAtk: new _excalibur.Texture(_enemysword_atk.default),
-          EnemyBowIdle: new _excalibur.Texture(_enemybow_idle.default),
-          EnemyBowWalk: new _excalibur.Texture(_enemybow_walk.default),
-          EnemyBowAtk: new _excalibur.Texture(_enemybow_atk.default),
-          EnemyMagicIdle: new _excalibur.Texture(_enemymagic_idle.default),
-          EnemyMagicWalk: new _excalibur.Texture(_enemymagic_walk.default),
-          EnemyMagicAtk: new _excalibur.Texture(_enemymagic_atk.default),
-          TileTexture: new _excalibur.Texture(_dungeontiles_.default),
-          NextTurnTexture: new _excalibur.Texture(_endturn.default),
-        };
-        exports.Resources = Resources;
+        exports.Resources = b;
       },
       {
-        excalibur: "node_modules/excalibur/dist/excalibur.min.js",
-        "./images/sword_idle.png": "src/images/sword_idle.png",
-        "./images/sword_walk.png": "src/images/sword_walk.png",
-        "./images/sword_atk.png": "src/images/sword_atk.png",
-        "./images/bow_idle.png": "src/images/bow_idle.png",
-        "./images/bow_walk.png": "src/images/bow_walk.png",
-        "./images/bow_atk.png": "src/images/bow_atk.png",
-        "./images/magic_idle.png": "src/images/magic_idle.png",
-        "./images/magic_walk.png": "src/images/magic_walk.png",
-        "./images/magic_atk.png": "src/images/magic_atk.png",
-        "./images/enemysword_idle.png": "src/images/enemysword_idle.png",
-        "./images/enemysword_walk.png": "src/images/enemysword_walk.png",
-        "./images/enemysword_atk.png": "src/images/enemysword_atk.png",
-        "./images/enemybow_idle.png": "src/images/enemybow_idle.png",
-        "./images/enemybow_walk.png": "src/images/enemybow_walk.png",
-        "./images/enemybow_atk.png": "src/images/enemybow_atk.png",
-        "./images/enemymagic_idle.png": "src/images/enemymagic_idle.png",
-        "./images/enemymagic_walk.png": "src/images/enemymagic_walk.png",
-        "./images/enemymagic_atk.png": "src/images/enemymagic_atk.png",
-        "./images/dungeontiles_1.png": "src/images/dungeontiles_1.png",
-        "./images/endturn.png": "src/images/endturn.png",
-        "./images/title.png": "src/images/title.png",
-        "./images/gameover.png": "src/images/gameover.png",
+        excalibur: "jZN7",
+        "./images/sword_idle.png": "QBtd",
+        "./images/sword_walk.png": "PQsI",
+        "./images/sword_atk.png": "icnx",
+        "./images/bow_idle.png": "mn1F",
+        "./images/bow_walk.png": "V7vf",
+        "./images/bow_atk.png": "DNyR",
+        "./images/magic_idle.png": "LAbl",
+        "./images/magic_walk.png": "Kmd8",
+        "./images/magic_atk.png": "Kxor",
+        "./images/enemysword_idle.png": "byj1",
+        "./images/enemysword_walk.png": "p6yI",
+        "./images/enemysword_atk.png": "M3kD",
+        "./images/enemybow_idle.png": "VDWP",
+        "./images/enemybow_walk.png": "TnSE",
+        "./images/enemybow_atk.png": "VPQa",
+        "./images/enemymagic_idle.png": "cmPR",
+        "./images/enemymagic_walk.png": "YoBC",
+        "./images/enemymagic_atk.png": "HVIT",
+        "./images/dungeontiles_1.png": "Cgt9",
+        "./images/endturn.png": "ZUDz",
+        "./images/title.png": "iSd5",
+        "./images/gameover.png": "j0vF",
       },
     ],
-    "src/character/class.ts": [
+    RoBB: [
       function (require, module, exports) {
         "use strict";
-
-        Object.defineProperty(exports, "__esModule", {
-          value: true,
-        });
-        exports.Magic = exports.Bow = exports.Sword = exports.CharacterClass = void 0;
-
-        var _excalibur = require("excalibur");
-
-        var _resources = require("../resources");
-
-        var __extends =
-          (void 0 && (void 0).__extends) ||
-          (function () {
-            var _extendStatics = function extendStatics(d, b) {
-              _extendStatics =
+        Object.defineProperty(exports, "__esModule", { value: !0 }),
+          (exports.Magic = exports.Bow = exports.Sword = exports.CharacterClass = void 0);
+        var e = require("excalibur"),
+          t = require("../resources"),
+          a = (function () {
+            var e = function (t, a) {
+              return (e =
                 Object.setPrototypeOf ||
-                ({
-                  __proto__: [],
-                } instanceof Array &&
-                  function (d, b) {
-                    d.__proto__ = b;
+                ({ __proto__: [] } instanceof Array &&
+                  function (e, t) {
+                    e.__proto__ = t;
                   }) ||
-                function (d, b) {
-                  for (var p in b) {
-                    if (b.hasOwnProperty(p)) d[p] = b[p];
-                  }
-                };
-
-              return _extendStatics(d, b);
+                function (e, t) {
+                  for (var a in t) t.hasOwnProperty(a) && (e[a] = t[a]);
+                })(t, a);
             };
-
-            return function (d, b) {
-              _extendStatics(d, b);
-
-              function __() {
-                this.constructor = d;
+            return function (t, a) {
+              function r() {
+                this.constructor = t;
               }
-
-              d.prototype =
-                b === null
-                  ? Object.create(b)
-                  : ((__.prototype = b.prototype), new __());
+              e(t, a),
+                (t.prototype =
+                  null === a
+                    ? Object.create(a)
+                    : ((r.prototype = a.prototype), new r()));
             };
-          })();
-
-        var CharacterClass =
-          /** @class */
-          (function () {
-            function CharacterClass() {
+          })(),
+          r = (function () {
+            function e() {
               this.level = 1;
             }
-
-            CharacterClass.prototype.feltDamage = function (attack) {
-              var magicDamage = Math.max(
-                attack.magicalDamage - this.defence.magic,
-                0
-              );
-              var physicalDamage = Math.max(
-                attack.physicalDamage - this.defence.physical,
-                0
-              );
-              return magicDamage + physicalDamage;
-            };
-
-            return CharacterClass;
+            return (
+              (e.prototype.feltDamage = function (e) {
+                return (
+                  Math.max(e.magicalDamage - this.defence.magic, 0) +
+                  Math.max(e.physicalDamage - this.defence.physical, 0)
+                );
+              }),
+              e
+            );
           })();
-
-        exports.CharacterClass = CharacterClass;
-
-        var Sword =
-          /** @class */
-          (function (_super) {
-            __extends(Sword, _super);
-
-            function Sword(controllable) {
-              var _this = _super.call(this) || this;
-
-              _this.moveRange = {
-                inner: 3,
-                outer: 3,
-              };
-              _this.defence = {
-                magic: 2,
-                physical: 10,
-              };
-              _this.attack = {
-                range: 1,
-                magicalDamage: 0,
-                physicalDamage: 20,
-              };
-              _this.health = {
-                maxHealth: 40,
-                healOnNoMove: 10,
-              };
-
-              if (controllable) {
-                _this.idleSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.SwordIdle,
-                  4,
-                  1,
-                  40,
-                  40
-                );
-                _this.atkSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.SwordAtk,
-                  6,
-                  1,
-                  40,
-                  40
-                );
-                _this.walkSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.SwordWalk,
-                  6,
-                  1,
-                  40,
-                  40
-                );
-              } else {
-                _this.idleSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.EnemySwordIdle,
-                  4,
-                  1,
-                  40,
-                  40
-                );
-                _this.atkSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.EnemySwordAtk,
-                  6,
-                  1,
-                  40,
-                  40
-                );
-                _this.walkSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.EnemySwordWalk,
-                  6,
-                  1,
-                  40,
-                  40
-                );
-              }
-
-              return _this;
-            }
-
-            Sword.prototype.levelUp = function () {
-              this.moveRange.inner += 1;
-              this.moveRange.outer += 1;
-              this.defence.magic += 5;
-              this.defence.physical += 5;
-              this.attack.physicalDamage += 10;
-              this.health.maxHealth += 20;
-              this.health.healOnNoMove += 10;
-              this.level += 1;
-              return this;
-            };
-
-            Sword.prototype.expForNextLevel = function () {
-              return this.level * 5;
-            };
-
-            Sword.prototype.deathExp = function () {
-              return this.level * 5;
-            };
-
-            return Sword;
-          })(CharacterClass);
-
-        exports.Sword = Sword;
-
-        var Bow =
-          /** @class */
-          (function (_super) {
-            __extends(Bow, _super);
-
-            function Bow(controllable) {
-              var _this = _super.call(this) || this;
-
-              _this.moveRange = {
-                inner: 5,
-                outer: 5,
-              };
-              _this.defence = {
-                magic: 2,
-                physical: 2,
-              };
-              _this.attack = {
-                range: 4,
-                magicalDamage: 0,
-                physicalDamage: 20,
-              };
-              _this.health = {
-                maxHealth: 30,
-                healOnNoMove: 15,
-              };
-
-              if (controllable) {
-                _this.idleSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.BowIdle,
-                  4,
-                  1,
-                  40,
-                  40
-                );
-                _this.atkSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.BowAtk,
-                  6,
-                  1,
-                  40,
-                  40
-                );
-                _this.walkSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.BowWalk,
-                  6,
-                  1,
-                  40,
-                  40
-                );
-              } else {
-                _this.idleSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.EnemyBowIdle,
-                  4,
-                  1,
-                  40,
-                  40
-                );
-                _this.atkSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.EnemyBowAtk,
-                  6,
-                  1,
-                  40,
-                  40
-                );
-                _this.walkSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.EnemyBowWalk,
-                  6,
-                  1,
-                  40,
-                  40
-                );
-              }
-
-              return _this;
-            }
-
-            Bow.prototype.levelUp = function () {
-              this.moveRange.inner += 1;
-              this.moveRange.outer += 1;
-              this.defence.magic += 5;
-              this.defence.physical += 5;
-              this.attack.physicalDamage += 10;
-              this.health.maxHealth += 20;
-              this.health.healOnNoMove += 10;
-              this.level += 1;
-              return this;
-            };
-
-            Bow.prototype.expForNextLevel = function () {
-              return this.level * 5;
-            };
-
-            Bow.prototype.deathExp = function () {
-              return this.level * 5;
-            };
-
-            return Bow;
-          })(CharacterClass);
-
-        exports.Bow = Bow;
-
-        var Magic =
-          /** @class */
-          (function (_super) {
-            __extends(Magic, _super);
-
-            function Magic(controllable) {
-              var _this = _super.call(this) || this;
-
-              _this.moveRange = {
-                inner: 2,
-                outer: 2,
-              };
-              _this.defence = {
-                magic: 10,
-                physical: 2,
-              };
-              _this.attack = {
-                range: 5,
-                magicalDamage: 20,
-                physicalDamage: 0,
-              };
-              _this.health = {
-                maxHealth: 30,
-                healOnNoMove: 10,
-              };
-
-              if (controllable) {
-                _this.idleSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.MagicIdle,
-                  4,
-                  1,
-                  40,
-                  40
-                );
-                _this.atkSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.MagicAtk,
-                  6,
-                  1,
-                  40,
-                  40
-                );
-                _this.walkSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.MagicWalk,
-                  6,
-                  1,
-                  40,
-                  40
-                );
-              } else {
-                _this.idleSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.EnemyMagicIdle,
-                  4,
-                  1,
-                  40,
-                  40
-                );
-                _this.atkSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.EnemyMagicAtk,
-                  6,
-                  1,
-                  40,
-                  40
-                );
-                _this.walkSheet = new _excalibur.SpriteSheet(
-                  _resources.Resources.EnemyMagicWalk,
-                  6,
-                  1,
-                  40,
-                  40
-                );
-              }
-
-              return _this;
-            }
-
-            Magic.prototype.levelUp = function () {
-              this.moveRange.inner += 1;
-              this.moveRange.outer += 1;
-              this.defence.magic += 5;
-              this.defence.physical += 5;
-              this.attack.physicalDamage += 10;
-              this.health.maxHealth += 20;
-              this.health.healOnNoMove += 10;
-              this.level += 1;
-              return this;
-            };
-
-            Magic.prototype.expForNextLevel = function () {
-              return this.level * 5;
-            };
-
-            Magic.prototype.deathExp = function () {
-              return this.level * 5;
-            };
-
-            return Magic;
-          })(CharacterClass);
-
-        exports.Magic = Magic;
+        exports.CharacterClass = r;
+        var n = (function (r) {
+          function n(a) {
+            var n = r.call(this) || this;
+            return (
+              (n.moveRange = { inner: 3, outer: 3 }),
+              (n.defence = { magic: 2, physical: 10 }),
+              (n.attack = { range: 1, magicalDamage: 0, physicalDamage: 20 }),
+              (n.health = { maxHealth: 40, healOnNoMove: 10 }),
+              a
+                ? ((n.idleSheet = new e.SpriteSheet(
+                    t.Resources.SwordIdle,
+                    4,
+                    1,
+                    40,
+                    40
+                  )),
+                  (n.atkSheet = new e.SpriteSheet(
+                    t.Resources.SwordAtk,
+                    6,
+                    1,
+                    40,
+                    40
+                  )),
+                  (n.walkSheet = new e.SpriteSheet(
+                    t.Resources.SwordWalk,
+                    6,
+                    1,
+                    40,
+                    40
+                  )))
+                : ((n.idleSheet = new e.SpriteSheet(
+                    t.Resources.EnemySwordIdle,
+                    4,
+                    1,
+                    40,
+                    40
+                  )),
+                  (n.atkSheet = new e.SpriteSheet(
+                    t.Resources.EnemySwordAtk,
+                    6,
+                    1,
+                    40,
+                    40
+                  )),
+                  (n.walkSheet = new e.SpriteSheet(
+                    t.Resources.EnemySwordWalk,
+                    6,
+                    1,
+                    40,
+                    40
+                  ))),
+              n
+            );
+          }
+          return (
+            a(n, r),
+            (n.prototype.levelUp = function () {
+              return (
+                (this.moveRange.inner += 1),
+                (this.moveRange.outer += 1),
+                (this.defence.magic += 5),
+                (this.defence.physical += 5),
+                (this.attack.physicalDamage += 10),
+                (this.health.maxHealth += 20),
+                (this.health.healOnNoMove += 10),
+                (this.level += 1),
+                this
+              );
+            }),
+            (n.prototype.expForNextLevel = function () {
+              return 5 * this.level;
+            }),
+            (n.prototype.deathExp = function () {
+              return 5 * this.level;
+            }),
+            n
+          );
+        })(r);
+        exports.Sword = n;
+        var i = (function (r) {
+          function n(a) {
+            var n = r.call(this) || this;
+            return (
+              (n.moveRange = { inner: 5, outer: 5 }),
+              (n.defence = { magic: 2, physical: 2 }),
+              (n.attack = { range: 4, magicalDamage: 0, physicalDamage: 20 }),
+              (n.health = { maxHealth: 30, healOnNoMove: 15 }),
+              a
+                ? ((n.idleSheet = new e.SpriteSheet(
+                    t.Resources.BowIdle,
+                    4,
+                    1,
+                    40,
+                    40
+                  )),
+                  (n.atkSheet = new e.SpriteSheet(
+                    t.Resources.BowAtk,
+                    6,
+                    1,
+                    40,
+                    40
+                  )),
+                  (n.walkSheet = new e.SpriteSheet(
+                    t.Resources.BowWalk,
+                    6,
+                    1,
+                    40,
+                    40
+                  )))
+                : ((n.idleSheet = new e.SpriteSheet(
+                    t.Resources.EnemyBowIdle,
+                    4,
+                    1,
+                    40,
+                    40
+                  )),
+                  (n.atkSheet = new e.SpriteSheet(
+                    t.Resources.EnemyBowAtk,
+                    6,
+                    1,
+                    40,
+                    40
+                  )),
+                  (n.walkSheet = new e.SpriteSheet(
+                    t.Resources.EnemyBowWalk,
+                    6,
+                    1,
+                    40,
+                    40
+                  ))),
+              n
+            );
+          }
+          return (
+            a(n, r),
+            (n.prototype.levelUp = function () {
+              return (
+                (this.moveRange.inner += 1),
+                (this.moveRange.outer += 1),
+                (this.defence.magic += 5),
+                (this.defence.physical += 5),
+                (this.attack.physicalDamage += 10),
+                (this.health.maxHealth += 20),
+                (this.health.healOnNoMove += 10),
+                (this.level += 1),
+                this
+              );
+            }),
+            (n.prototype.expForNextLevel = function () {
+              return 5 * this.level;
+            }),
+            (n.prototype.deathExp = function () {
+              return 5 * this.level;
+            }),
+            n
+          );
+        })(r);
+        exports.Bow = i;
+        var o = (function (r) {
+          function n(a) {
+            var n = r.call(this) || this;
+            return (
+              (n.moveRange = { inner: 2, outer: 2 }),
+              (n.defence = { magic: 10, physical: 2 }),
+              (n.attack = { range: 5, magicalDamage: 20, physicalDamage: 0 }),
+              (n.health = { maxHealth: 30, healOnNoMove: 10 }),
+              a
+                ? ((n.idleSheet = new e.SpriteSheet(
+                    t.Resources.MagicIdle,
+                    4,
+                    1,
+                    40,
+                    40
+                  )),
+                  (n.atkSheet = new e.SpriteSheet(
+                    t.Resources.MagicAtk,
+                    6,
+                    1,
+                    40,
+                    40
+                  )),
+                  (n.walkSheet = new e.SpriteSheet(
+                    t.Resources.MagicWalk,
+                    6,
+                    1,
+                    40,
+                    40
+                  )))
+                : ((n.idleSheet = new e.SpriteSheet(
+                    t.Resources.EnemyMagicIdle,
+                    4,
+                    1,
+                    40,
+                    40
+                  )),
+                  (n.atkSheet = new e.SpriteSheet(
+                    t.Resources.EnemyMagicAtk,
+                    6,
+                    1,
+                    40,
+                    40
+                  )),
+                  (n.walkSheet = new e.SpriteSheet(
+                    t.Resources.EnemyMagicWalk,
+                    6,
+                    1,
+                    40,
+                    40
+                  ))),
+              n
+            );
+          }
+          return (
+            a(n, r),
+            (n.prototype.levelUp = function () {
+              return (
+                (this.moveRange.inner += 1),
+                (this.moveRange.outer += 1),
+                (this.defence.magic += 5),
+                (this.defence.physical += 5),
+                (this.attack.physicalDamage += 10),
+                (this.health.maxHealth += 20),
+                (this.health.healOnNoMove += 10),
+                (this.level += 1),
+                this
+              );
+            }),
+            (n.prototype.expForNextLevel = function () {
+              return 5 * this.level;
+            }),
+            (n.prototype.deathExp = function () {
+              return 5 * this.level;
+            }),
+            n
+          );
+        })(r);
+        exports.Magic = o;
       },
-      {
-        excalibur: "node_modules/excalibur/dist/excalibur.min.js",
-        "../resources": "src/resources.ts",
-      },
+      { excalibur: "jZN7", "../resources": "x5mp" },
     ],
-    "src/character/index.ts": [
+    T3UV: [
       function (require, module, exports) {
         "use strict";
-
-        Object.defineProperty(exports, "__esModule", {
-          value: true,
-        });
-        Object.defineProperty(exports, "CharacterClass", {
-          enumerable: true,
-          get: function () {
-            return _class.CharacterClass;
-          },
-        });
-        Object.defineProperty(exports, "Sword", {
-          enumerable: true,
-          get: function () {
-            return _class.Sword;
-          },
-        });
-        Object.defineProperty(exports, "Bow", {
-          enumerable: true,
-          get: function () {
-            return _class.Bow;
-          },
-        });
-        Object.defineProperty(exports, "Magic", {
-          enumerable: true,
-          get: function () {
-            return _class.Magic;
-          },
-        });
-        exports.Enemy = exports.Player = exports.Character = void 0;
-
-        var _excalibur = require("excalibur");
-
-        var _class = require("./class");
-
-        var __extends =
-          (void 0 && (void 0).__extends) ||
-          (function () {
-            var _extendStatics = function extendStatics(d, b) {
-              _extendStatics =
+        Object.defineProperty(exports, "__esModule", { value: !0 }),
+          Object.defineProperty(exports, "CharacterClass", {
+            enumerable: !0,
+            get: function () {
+              return e.CharacterClass;
+            },
+          }),
+          Object.defineProperty(exports, "Sword", {
+            enumerable: !0,
+            get: function () {
+              return e.Sword;
+            },
+          }),
+          Object.defineProperty(exports, "Bow", {
+            enumerable: !0,
+            get: function () {
+              return e.Bow;
+            },
+          }),
+          Object.defineProperty(exports, "Magic", {
+            enumerable: !0,
+            get: function () {
+              return e.Magic;
+            },
+          }),
+          (exports.Enemy = exports.Player = exports.Character = void 0);
+        var t = require("excalibur"),
+          e = require("./class"),
+          a = (function () {
+            var t = function (e, a) {
+              return (t =
                 Object.setPrototypeOf ||
-                ({
-                  __proto__: [],
-                } instanceof Array &&
-                  function (d, b) {
-                    d.__proto__ = b;
+                ({ __proto__: [] } instanceof Array &&
+                  function (t, e) {
+                    t.__proto__ = e;
                   }) ||
-                function (d, b) {
-                  for (var p in b) {
-                    if (b.hasOwnProperty(p)) d[p] = b[p];
+                function (t, e) {
+                  for (var a in e) e.hasOwnProperty(a) && (t[a] = e[a]);
+                })(e, a);
+            };
+            return function (e, a) {
+              function r() {
+                this.constructor = e;
+              }
+              t(e, a),
+                (e.prototype =
+                  null === a
+                    ? Object.create(a)
+                    : ((r.prototype = a.prototype), new r()));
+            };
+          })(),
+          r = (function (e) {
+            function r(t, a) {
+              var n = e.call(this, { pos: t, width: 40, height: 40 }) || this;
+              return (
+                (n.exp = 0),
+                (n.moveExhausted = { inner: !1, outer: !1 }),
+                (n.goTo = function (t) {
+                  var e = t.length - 1;
+                  n.moveExhausted.inner ||
+                    ((n.moveExhausted.inner = !0),
+                    (e -= n.cClass.moveRange.inner)),
+                    e > 0 && (n.moveExhausted.outer = !0),
+                    n.setDrawing("walk");
+                  for (
+                    var a = n.actions.delay(0),
+                      i = function (t) {
+                        a.asPromise().then(function () {
+                          n.currentDrawing.flipHorizontal = t.x < n.pos.x;
+                        }),
+                          (a = a.moveTo(t.x, t.y, r.SPEED));
+                      },
+                      o = 0,
+                      s = t;
+                    o < s.length;
+                    o++
+                  ) {
+                    i(s[o]);
                   }
-                };
-
-              return _extendStatics(d, b);
-            };
-
-            return function (d, b) {
-              _extendStatics(d, b);
-
-              function __() {
-                this.constructor = d;
-              }
-
-              d.prototype =
-                b === null
-                  ? Object.create(b)
-                  : ((__.prototype = b.prototype), new __());
-            };
-          })();
-
-        var Character =
-          /** @class */
-          (function (_super) {
-            __extends(Character, _super);
-
-            function Character(spawnPosition, characterClass) {
-              var _this =
-                _super.call(this, {
-                  pos: spawnPosition,
-                  width: 40,
-                  height: 40,
-                }) || this;
-
-              _this.exp = 0;
-              _this.moveExhausted = {
-                inner: false,
-                outer: false,
-              };
-
-              _this.goTo = function (path) {
-                var steps = path.length - 1;
-
-                if (!_this.moveExhausted.inner) {
-                  _this.moveExhausted.inner = true;
-                  steps -= _this.cClass.moveRange.inner;
-                }
-
-                if (steps > 0) {
-                  _this.moveExhausted.outer = true;
-                }
-
-                _this.setDrawing("walk");
-
-                var action = _this.actions.delay(0);
-
-                var _loop_1 = function _loop_1(waypoint) {
-                  action.asPromise().then(function () {
-                    _this.currentDrawing.flipHorizontal =
-                      waypoint.x < _this.pos.x;
+                  return a.asPromise().then(function () {
+                    return n.setDrawing("idle");
                   });
-                  action = action.moveTo(
-                    waypoint.x,
-                    waypoint.y,
-                    Character.SPEED
+                }),
+                (n.getStats = function () {
+                  return [
+                    "HP: " + n.health + " / " + n.cClass.health.maxHealth,
+                    "DEF(M): " + n.cClass.defence.magic,
+                    "DEF(P): " + n.cClass.defence.physical,
+                    "ATK: " +
+                      n.cClass.attack.magicalDamage +
+                      "(M) " +
+                      n.cClass.attack.physicalDamage +
+                      "(P)",
+                    "RNG: " + n.cClass.attack.range,
+                    "EXP: " + n.exp + " / " + n.cClass.expForNextLevel(),
+                    "LVL: " + n.cClass.level,
+                  ];
+                }),
+                (n.cClass = a),
+                (n._health = a.health.maxHealth),
+                n
+              );
+            }
+            return (
+              a(r, e),
+              (r.prototype.onInitialize = function (a) {
+                e.prototype.onInitialize.call(this, a),
+                  (this.healthBar = new t.Actor({
+                    x: 0,
+                    y: 24,
+                    width: 30,
+                    height: 4,
+                    color: this.controllable ? t.Color.Green : t.Color.Red,
+                  })),
+                  this.add(
+                    new t.Actor({
+                      x: this.healthBar.pos.x,
+                      y: this.healthBar.pos.y,
+                      width: this.healthBar.width + 4,
+                      height: this.healthBar.height + 4,
+                      color: t.Color.Black,
+                    })
+                  ),
+                  this.add(this.healthBar),
+                  this.addDrawing(
+                    "idle",
+                    this.cClass.idleSheet.getAnimationForAll(a, 1e3 / 6)
                   );
-                };
-
-                for (var _i = 0, path_1 = path; _i < path_1.length; _i++) {
-                  var waypoint = path_1[_i];
-
-                  _loop_1(waypoint);
-                }
-
-                return action.asPromise().then(function () {
-                  return _this.setDrawing("idle");
-                });
-              };
-
-              _this.getStats = function () {
-                return [
-                  "HP: " + _this.health + " / " + _this.cClass.health.maxHealth,
-                  "DEF(M): " + _this.cClass.defence.magic,
-                  "DEF(P): " + _this.cClass.defence.physical,
-                  "ATK: " +
-                    _this.cClass.attack.magicalDamage +
-                    "(M) " +
-                    _this.cClass.attack.physicalDamage +
-                    "(P)",
-                  "RNG: " + _this.cClass.attack.range,
-                  "EXP: " + _this.exp + " / " + _this.cClass.expForNextLevel(),
-                  "LVL: " + _this.cClass.level,
-                ];
-              };
-
-              _this.cClass = characterClass;
-              _this._health = characterClass.health.maxHealth;
-              return _this;
-            }
-
-            Character.prototype.onInitialize = function (engine) {
-              _super.prototype.onInitialize.call(this, engine);
-
-              this.healthBar = new _excalibur.Actor({
-                x: 0,
-                y: 24,
-                width: 30,
-                height: 4,
-                color: this.controllable
-                  ? _excalibur.Color.Green
-                  : _excalibur.Color.Red,
-              });
-              this.add(
-                new _excalibur.Actor({
-                  x: this.healthBar.pos.x,
-                  y: this.healthBar.pos.y,
-                  width: this.healthBar.width + 4,
-                  height: this.healthBar.height + 4,
-                  color: _excalibur.Color.Black,
-                })
-              );
-              this.add(this.healthBar);
-              this.addDrawing(
-                "idle",
-                this.cClass.idleSheet.getAnimationForAll(engine, 1000 / 6)
-              );
-              var atkAnim = this.cClass.atkSheet.getAnimationForAll(
-                engine,
-                1000 / 6
-              );
-              atkAnim.loop = false;
-              this.addDrawing("atk", atkAnim);
-              this.addDrawing(
-                "walk",
-                this.cClass.walkSheet.getAnimationForAll(engine, 1000 / 6)
-              );
-              this.setDrawing("idle");
-            };
-
-            Object.defineProperty(Character.prototype, "health", {
-              get: function get() {
-                return this._health;
-              },
-              set: function set(val) {
-                this._health = val;
-
-                if (this.healthBar) {
-                  var newWidth =
-                    (this._health / this.cClass.health.maxHealth) * 30;
-                  this.healthBar.pos.x -= (this.healthBar.width - newWidth) / 2;
-                  this.healthBar.width = newWidth;
-                }
-              },
-              enumerable: false,
-              configurable: true,
-            });
-
-            Character.prototype.damage = function (damage) {
-              var _this = this;
-
-              var feltDamage = this.cClass.feltDamage(damage);
-              var damageLabelActor = new _excalibur.Actor();
-              this.add(damageLabelActor);
-              var damageLabel = new _excalibur.Label();
-              damageLabel.color = _excalibur.Color.White;
-              damageLabel.fontSize = 15;
-              damageLabel.fontStyle = _excalibur.FontStyle.Oblique;
-              damageLabel.text = "" + feltDamage;
-              damageLabel.pos = new _excalibur.Vector(0, 0);
-              damageLabelActor.add(damageLabel);
-              damageLabelActor.actions.moveBy(10, -10, 50);
-              damageLabel.actions
-                .fade(0, 1000)
-                .asPromise()
-                .then(function () {
-                  _this.remove(damageLabelActor);
-                });
-              this.currentDrawing.addEffect(Character.DAMAGE_EFFECT);
-              this.actions
-                .delay(100)
-                .asPromise()
-                .then(function () {
-                  _this.currentDrawing.removeEffect(Character.DAMAGE_EFFECT);
-                });
-              this.health -= feltDamage;
-
-              if (this.health <= 0) {
-                this.kill();
-                return true;
-              }
-
-              return false;
-            };
-
-            Character.prototype.gainExp = function (exp) {
-              this.exp += exp;
-              var nextLevelExp = this.cClass.expForNextLevel();
-
-              if (this.exp >= nextLevelExp) {
-                this.exp -= nextLevelExp;
-                var currentStatDisplay = this.getStats();
-                var oldMaxHealth = this.cClass.health.maxHealth;
-                this.cClass.levelUp();
-                this.health += this.cClass.health.maxHealth - oldMaxHealth;
-                var newStatDisplay_1 = this.getStats().map(function (s) {
-                  return s.split(": ")[1];
-                });
-                var levelUpDisplay = currentStatDisplay.map(function (s, i) {
-                  return s + " => " + newStatDisplay_1[i];
-                });
-                return levelUpDisplay;
-              }
-
-              return null;
-            };
-
-            Object.defineProperty(Character.prototype, "canAttack", {
-              get: function get() {
-                return this.moveExhausted.inner && this.moveExhausted.outer;
-              },
-              enumerable: false,
-              configurable: true,
-            });
-
-            Character.prototype.spendAttack = function () {
-              this.moveExhausted.inner = true;
-              this.moveExhausted.outer = true;
-            };
-
-            Character.prototype.nextTurn = function () {
-              if (this.canAttack) {
-                this.health = Math.min(
-                  this.cClass.health.maxHealth,
-                  this.health + this.cClass.health.healOnNoMove
+                var r = this.cClass.atkSheet.getAnimationForAll(a, 1e3 / 6);
+                (r.loop = !1),
+                  this.addDrawing("atk", r),
+                  this.addDrawing(
+                    "walk",
+                    this.cClass.walkSheet.getAnimationForAll(a, 1e3 / 6)
+                  ),
+                  this.setDrawing("idle");
+              }),
+              Object.defineProperty(r.prototype, "health", {
+                get: function () {
+                  return this._health;
+                },
+                set: function (t) {
+                  if (((this._health = t), this.healthBar)) {
+                    var e = (this._health / this.cClass.health.maxHealth) * 30;
+                    (this.healthBar.pos.x -= (this.healthBar.width - e) / 2),
+                      (this.healthBar.width = e);
+                  }
+                },
+                enumerable: !1,
+                configurable: !0,
+              }),
+              (r.prototype.damage = function (e) {
+                var a = this,
+                  n = this.cClass.feltDamage(e),
+                  i = new t.Actor();
+                this.add(i);
+                var o = new t.Label();
+                return (
+                  (o.color = t.Color.White),
+                  (o.fontSize = 15),
+                  (o.fontStyle = t.FontStyle.Oblique),
+                  (o.text = "" + n),
+                  (o.pos = new t.Vector(0, 0)),
+                  i.add(o),
+                  i.actions.moveBy(10, -10, 50),
+                  o.actions
+                    .fade(0, 1e3)
+                    .asPromise()
+                    .then(function () {
+                      a.remove(i);
+                    }),
+                  this.currentDrawing.addEffect(r.DAMAGE_EFFECT),
+                  this.actions
+                    .delay(100)
+                    .asPromise()
+                    .then(function () {
+                      a.currentDrawing.removeEffect(r.DAMAGE_EFFECT);
+                    }),
+                  (this.health -= n),
+                  this.health <= 0 && (this.kill(), !0)
                 );
-              }
-
-              this.moveExhausted.inner = false;
-              this.moveExhausted.outer = false;
-            };
-
-            Character.SPEED = 150;
-            Character.DAMAGE_EFFECT = new _excalibur.Effects.Colorize(
-              _excalibur.Color.Red
-            );
-            return Character;
-          })(_excalibur.Actor);
-
-        exports.Character = Character;
-
-        var Player =
-          /** @class */
-          (function (_super) {
-            __extends(Player, _super);
-
-            function Player(spawnPosition, characterClass) {
-              var _this =
-                _super.call(this, spawnPosition, characterClass) || this;
-
-              _this.controllable = true;
-              return _this;
-            }
-
-            return Player;
-          })(Character);
-
-        exports.Player = Player;
-
-        var Enemy =
-          /** @class */
-          (function (_super) {
-            __extends(Enemy, _super);
-
-            function Enemy(spawnPosition, characterClass) {
-              var _this =
-                _super.call(this, spawnPosition, characterClass) || this;
-
-              _this.controllable = false;
-              return _this;
-            }
-
-            return Enemy;
-          })(Character);
-
-        exports.Enemy = Enemy;
-      },
-      {
-        excalibur: "node_modules/excalibur/dist/excalibur.min.js",
-        "./class": "src/character/class.ts",
-      },
-    ],
-    "node_modules/heap/lib/heap.js": [
-      function (require, module, exports) {
-        // Generated by CoffeeScript 1.8.0
-        (function () {
-          var Heap,
-            defaultCmp,
-            floor,
-            heapify,
-            heappop,
-            heappush,
-            heappushpop,
-            heapreplace,
-            insort,
-            min,
-            nlargest,
-            nsmallest,
-            updateItem,
-            _siftdown,
-            _siftup;
-
-          (floor = Math.floor), (min = Math.min);
-
-          /*
-  Default comparison function to be used
-   */
-
-          defaultCmp = function (x, y) {
-            if (x < y) {
-              return -1;
-            }
-            if (x > y) {
-              return 1;
-            }
-            return 0;
-          };
-
-          /*
-  Insert item x in list a, and keep it sorted assuming a is sorted.
-  
-  If x is already in a, insert it to the right of the rightmost x.
-  
-  Optional args lo (default 0) and hi (default a.length) bound the slice
-  of a to be searched.
-   */
-
-          insort = function (a, x, lo, hi, cmp) {
-            var mid;
-            if (lo == null) {
-              lo = 0;
-            }
-            if (cmp == null) {
-              cmp = defaultCmp;
-            }
-            if (lo < 0) {
-              throw new Error("lo must be non-negative");
-            }
-            if (hi == null) {
-              hi = a.length;
-            }
-            while (lo < hi) {
-              mid = floor((lo + hi) / 2);
-              if (cmp(x, a[mid]) < 0) {
-                hi = mid;
-              } else {
-                lo = mid + 1;
-              }
-            }
-            return [].splice.apply(a, [lo, lo - lo].concat(x)), x;
-          };
-
-          /*
-  Push item onto heap, maintaining the heap invariant.
-   */
-
-          heappush = function (array, item, cmp) {
-            if (cmp == null) {
-              cmp = defaultCmp;
-            }
-            array.push(item);
-            return _siftdown(array, 0, array.length - 1, cmp);
-          };
-
-          /*
-  Pop the smallest item off the heap, maintaining the heap invariant.
-   */
-
-          heappop = function (array, cmp) {
-            var lastelt, returnitem;
-            if (cmp == null) {
-              cmp = defaultCmp;
-            }
-            lastelt = array.pop();
-            if (array.length) {
-              returnitem = array[0];
-              array[0] = lastelt;
-              _siftup(array, 0, cmp);
-            } else {
-              returnitem = lastelt;
-            }
-            return returnitem;
-          };
-
-          /*
-  Pop and return the current smallest value, and add the new item.
-  
-  This is more efficient than heappop() followed by heappush(), and can be
-  more appropriate when using a fixed size heap. Note that the value
-  returned may be larger than item! That constrains reasonable use of
-  this routine unless written as part of a conditional replacement:
-      if item > array[0]
-        item = heapreplace(array, item)
-   */
-
-          heapreplace = function (array, item, cmp) {
-            var returnitem;
-            if (cmp == null) {
-              cmp = defaultCmp;
-            }
-            returnitem = array[0];
-            array[0] = item;
-            _siftup(array, 0, cmp);
-            return returnitem;
-          };
-
-          /*
-  Fast version of a heappush followed by a heappop.
-   */
-
-          heappushpop = function (array, item, cmp) {
-            var _ref;
-            if (cmp == null) {
-              cmp = defaultCmp;
-            }
-            if (array.length && cmp(array[0], item) < 0) {
-              (_ref = [array[0], item]), (item = _ref[0]), (array[0] = _ref[1]);
-              _siftup(array, 0, cmp);
-            }
-            return item;
-          };
-
-          /*
-  Transform list into a heap, in-place, in O(array.length) time.
-   */
-
-          heapify = function (array, cmp) {
-            var i, _i, _j, _len, _ref, _ref1, _results, _results1;
-            if (cmp == null) {
-              cmp = defaultCmp;
-            }
-            _ref1 = function () {
-              _results1 = [];
-              for (
-                var _j = 0, _ref = floor(array.length / 2);
-                0 <= _ref ? _j < _ref : _j > _ref;
-                0 <= _ref ? _j++ : _j--
-              ) {
-                _results1.push(_j);
-              }
-              return _results1;
-            }
-              .apply(this)
-              .reverse();
-            _results = [];
-            for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-              i = _ref1[_i];
-              _results.push(_siftup(array, i, cmp));
-            }
-            return _results;
-          };
-
-          /*
-  Update the position of the given item in the heap.
-  This function should be called every time the item is being modified.
-   */
-
-          updateItem = function (array, item, cmp) {
-            var pos;
-            if (cmp == null) {
-              cmp = defaultCmp;
-            }
-            pos = array.indexOf(item);
-            if (pos === -1) {
-              return;
-            }
-            _siftdown(array, 0, pos, cmp);
-            return _siftup(array, pos, cmp);
-          };
-
-          /*
-  Find the n largest elements in a dataset.
-   */
-
-          nlargest = function (array, n, cmp) {
-            var elem, result, _i, _len, _ref;
-            if (cmp == null) {
-              cmp = defaultCmp;
-            }
-            result = array.slice(0, n);
-            if (!result.length) {
-              return result;
-            }
-            heapify(result, cmp);
-            _ref = array.slice(n);
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              elem = _ref[_i];
-              heappushpop(result, elem, cmp);
-            }
-            return result.sort(cmp).reverse();
-          };
-
-          /*
-  Find the n smallest elements in a dataset.
-   */
-
-          nsmallest = function (array, n, cmp) {
-            var elem, i, los, result, _i, _j, _len, _ref, _ref1, _results;
-            if (cmp == null) {
-              cmp = defaultCmp;
-            }
-            if (n * 10 <= array.length) {
-              result = array.slice(0, n).sort(cmp);
-              if (!result.length) {
-                return result;
-              }
-              los = result[result.length - 1];
-              _ref = array.slice(n);
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                elem = _ref[_i];
-                if (cmp(elem, los) < 0) {
-                  insort(result, elem, 0, null, cmp);
-                  result.pop();
-                  los = result[result.length - 1];
+              }),
+              (r.prototype.gainExp = function (t) {
+                this.exp += t;
+                var e = this.cClass.expForNextLevel();
+                if (this.exp >= e) {
+                  this.exp -= e;
+                  var a = this.getStats(),
+                    r = this.cClass.health.maxHealth;
+                  this.cClass.levelUp(),
+                    (this.health += this.cClass.health.maxHealth - r);
+                  var n = this.getStats().map(function (t) {
+                    return t.split(": ")[1];
+                  });
+                  return a.map(function (t, e) {
+                    return t + " => " + n[e];
+                  });
                 }
-              }
-              return result;
-            }
-            heapify(array, cmp);
-            _results = [];
-            for (
-              i = _j = 0, _ref1 = min(n, array.length);
-              0 <= _ref1 ? _j < _ref1 : _j > _ref1;
-              i = 0 <= _ref1 ? ++_j : --_j
-            ) {
-              _results.push(heappop(array, cmp));
-            }
-            return _results;
-          };
-
-          _siftdown = function (array, startpos, pos, cmp) {
-            var newitem, parent, parentpos;
-            if (cmp == null) {
-              cmp = defaultCmp;
-            }
-            newitem = array[pos];
-            while (pos > startpos) {
-              parentpos = (pos - 1) >> 1;
-              parent = array[parentpos];
-              if (cmp(newitem, parent) < 0) {
-                array[pos] = parent;
-                pos = parentpos;
-                continue;
-              }
-              break;
-            }
-            return (array[pos] = newitem);
-          };
-
-          _siftup = function (array, pos, cmp) {
-            var childpos, endpos, newitem, rightpos, startpos;
-            if (cmp == null) {
-              cmp = defaultCmp;
-            }
-            endpos = array.length;
-            startpos = pos;
-            newitem = array[pos];
-            childpos = 2 * pos + 1;
-            while (childpos < endpos) {
-              rightpos = childpos + 1;
-              if (
-                rightpos < endpos &&
-                !(cmp(array[childpos], array[rightpos]) < 0)
-              ) {
-                childpos = rightpos;
-              }
-              array[pos] = array[childpos];
-              pos = childpos;
-              childpos = 2 * pos + 1;
-            }
-            array[pos] = newitem;
-            return _siftdown(array, startpos, pos, cmp);
-          };
-
-          Heap = (function () {
-            Heap.push = heappush;
-
-            Heap.pop = heappop;
-
-            Heap.replace = heapreplace;
-
-            Heap.pushpop = heappushpop;
-
-            Heap.heapify = heapify;
-
-            Heap.updateItem = updateItem;
-
-            Heap.nlargest = nlargest;
-
-            Heap.nsmallest = nsmallest;
-
-            function Heap(cmp) {
-              this.cmp = cmp != null ? cmp : defaultCmp;
-              this.nodes = [];
-            }
-
-            Heap.prototype.push = function (x) {
-              return heappush(this.nodes, x, this.cmp);
-            };
-
-            Heap.prototype.pop = function () {
-              return heappop(this.nodes, this.cmp);
-            };
-
-            Heap.prototype.peek = function () {
-              return this.nodes[0];
-            };
-
-            Heap.prototype.contains = function (x) {
-              return this.nodes.indexOf(x) !== -1;
-            };
-
-            Heap.prototype.replace = function (x) {
-              return heapreplace(this.nodes, x, this.cmp);
-            };
-
-            Heap.prototype.pushpop = function (x) {
-              return heappushpop(this.nodes, x, this.cmp);
-            };
-
-            Heap.prototype.heapify = function () {
-              return heapify(this.nodes, this.cmp);
-            };
-
-            Heap.prototype.updateItem = function (x) {
-              return updateItem(this.nodes, x, this.cmp);
-            };
-
-            Heap.prototype.clear = function () {
-              return (this.nodes = []);
-            };
-
-            Heap.prototype.empty = function () {
-              return this.nodes.length === 0;
-            };
-
-            Heap.prototype.size = function () {
-              return this.nodes.length;
-            };
-
-            Heap.prototype.clone = function () {
-              var heap;
-              heap = new Heap();
-              heap.nodes = this.nodes.slice(0);
-              return heap;
-            };
-
-            Heap.prototype.toArray = function () {
-              return this.nodes.slice(0);
-            };
-
-            Heap.prototype.insert = Heap.prototype.push;
-
-            Heap.prototype.top = Heap.prototype.peek;
-
-            Heap.prototype.front = Heap.prototype.peek;
-
-            Heap.prototype.has = Heap.prototype.contains;
-
-            Heap.prototype.copy = Heap.prototype.clone;
-
-            return Heap;
-          })();
-
-          if (
-            typeof module !== "undefined" && module !== null
-              ? module.exports
-              : void 0
-          ) {
-            module.exports = Heap;
-          } else {
-            window.Heap = Heap;
+                return null;
+              }),
+              Object.defineProperty(r.prototype, "canAttack", {
+                get: function () {
+                  return this.moveExhausted.inner && this.moveExhausted.outer;
+                },
+                enumerable: !1,
+                configurable: !0,
+              }),
+              (r.prototype.spendAttack = function () {
+                (this.moveExhausted.inner = !0),
+                  (this.moveExhausted.outer = !0);
+              }),
+              (r.prototype.nextTurn = function () {
+                this.canAttack &&
+                  (this.health = Math.min(
+                    this.cClass.health.maxHealth,
+                    this.health + this.cClass.health.healOnNoMove
+                  )),
+                  (this.moveExhausted.inner = !1),
+                  (this.moveExhausted.outer = !1);
+              }),
+              (r.SPEED = 150),
+              (r.DAMAGE_EFFECT = new t.Effects.Colorize(t.Color.Red)),
+              r
+            );
+          })(t.Actor);
+        exports.Character = r;
+        var n = (function (t) {
+          function e(e, a) {
+            var r = t.call(this, e, a) || this;
+            return (r.controllable = !0), r;
           }
+          return a(e, t), e;
+        })(r);
+        exports.Player = n;
+        var i = (function (t) {
+          function e(e, a) {
+            var r = t.call(this, e, a) || this;
+            return (r.controllable = !1), r;
+          }
+          return a(e, t), e;
+        })(r);
+        exports.Enemy = i;
+      },
+      { excalibur: "jZN7", "./class": "RoBB" },
+    ],
+    DPxs: [
+      function (require, module, exports) {
+        (function () {
+          var t, n, e, o, r, p, u, i, l, s, h, c, f, a, y;
+          (e = Math.floor),
+            (s = Math.min),
+            (n = function (t, n) {
+              return t < n ? -1 : t > n ? 1 : 0;
+            }),
+            (l = function (t, o, r, p, u) {
+              var i;
+              if ((null == r && (r = 0), null == u && (u = n), r < 0))
+                throw new Error("lo must be non-negative");
+              for (null == p && (p = t.length); r < p; )
+                u(o, t[(i = e((r + p) / 2))]) < 0 ? (p = i) : (r = i + 1);
+              return [].splice.apply(t, [r, r - r].concat(o)), o;
+            }),
+            (p = function (t, e, o) {
+              return null == o && (o = n), t.push(e), a(t, 0, t.length - 1, o);
+            }),
+            (r = function (t, e) {
+              var o, r;
+              return (
+                null == e && (e = n),
+                (o = t.pop()),
+                t.length ? ((r = t[0]), (t[0] = o), y(t, 0, e)) : (r = o),
+                r
+              );
+            }),
+            (i = function (t, e, o) {
+              var r;
+              return (
+                null == o && (o = n), (r = t[0]), (t[0] = e), y(t, 0, o), r
+              );
+            }),
+            (u = function (t, e, o) {
+              var r;
+              return (
+                null == o && (o = n),
+                t.length &&
+                  o(t[0], e) < 0 &&
+                  ((e = (r = [t[0], e])[0]), (t[0] = r[1]), y(t, 0, o)),
+                e
+              );
+            }),
+            (o = function (t, o) {
+              var r, p, u, i, l, s;
+              for (
+                null == o && (o = n),
+                  l = [],
+                  p = 0,
+                  u = (i = function () {
+                    s = [];
+                    for (
+                      var n = 0, o = e(t.length / 2);
+                      0 <= o ? n < o : n > o;
+                      0 <= o ? n++ : n--
+                    )
+                      s.push(n);
+                    return s;
+                  }
+                    .apply(this)
+                    .reverse()).length;
+                p < u;
+                p++
+              )
+                (r = i[p]), l.push(y(t, r, o));
+              return l;
+            }),
+            (f = function (t, e, o) {
+              var r;
+              if ((null == o && (o = n), -1 !== (r = t.indexOf(e))))
+                return a(t, 0, r, o), y(t, r, o);
+            }),
+            (h = function (t, e, r) {
+              var p, i, l, s, h;
+              if ((null == r && (r = n), !(i = t.slice(0, e)).length)) return i;
+              for (o(i, r), l = 0, s = (h = t.slice(e)).length; l < s; l++)
+                (p = h[l]), u(i, p, r);
+              return i.sort(r).reverse();
+            }),
+            (c = function (t, e, p) {
+              var u, i, h, c, f, a, y, d, g;
+              if ((null == p && (p = n), 10 * e <= t.length)) {
+                if (!(h = t.slice(0, e).sort(p)).length) return h;
+                for (
+                  i = h[h.length - 1], c = 0, a = (y = t.slice(e)).length;
+                  c < a;
+                  c++
+                )
+                  p((u = y[c]), i) < 0 &&
+                    (l(h, u, 0, null, p), h.pop(), (i = h[h.length - 1]));
+                return h;
+              }
+              for (
+                o(t, p), g = [], f = 0, d = s(e, t.length);
+                0 <= d ? f < d : f > d;
+                0 <= d ? ++f : --f
+              )
+                g.push(r(t, p));
+              return g;
+            }),
+            (a = function (t, e, o, r) {
+              var p, u, i;
+              for (
+                null == r && (r = n), p = t[o];
+                o > e && r(p, (u = t[(i = (o - 1) >> 1)])) < 0;
+
+              )
+                (t[o] = u), (o = i);
+              return (t[o] = p);
+            }),
+            (y = function (t, e, o) {
+              var r, p, u, i, l;
+              for (
+                null == o && (o = n),
+                  p = t.length,
+                  l = e,
+                  u = t[e],
+                  r = 2 * e + 1;
+                r < p;
+
+              )
+                (i = r + 1) < p && !(o(t[r], t[i]) < 0) && (r = i),
+                  (t[e] = t[r]),
+                  (r = 2 * (e = r) + 1);
+              return (t[e] = u), a(t, l, e, o);
+            }),
+            (t = (function () {
+              function t(t) {
+                (this.cmp = null != t ? t : n), (this.nodes = []);
+              }
+              return (
+                (t.push = p),
+                (t.pop = r),
+                (t.replace = i),
+                (t.pushpop = u),
+                (t.heapify = o),
+                (t.updateItem = f),
+                (t.nlargest = h),
+                (t.nsmallest = c),
+                (t.prototype.push = function (t) {
+                  return p(this.nodes, t, this.cmp);
+                }),
+                (t.prototype.pop = function () {
+                  return r(this.nodes, this.cmp);
+                }),
+                (t.prototype.peek = function () {
+                  return this.nodes[0];
+                }),
+                (t.prototype.contains = function (t) {
+                  return -1 !== this.nodes.indexOf(t);
+                }),
+                (t.prototype.replace = function (t) {
+                  return i(this.nodes, t, this.cmp);
+                }),
+                (t.prototype.pushpop = function (t) {
+                  return u(this.nodes, t, this.cmp);
+                }),
+                (t.prototype.heapify = function () {
+                  return o(this.nodes, this.cmp);
+                }),
+                (t.prototype.updateItem = function (t) {
+                  return f(this.nodes, t, this.cmp);
+                }),
+                (t.prototype.clear = function () {
+                  return (this.nodes = []);
+                }),
+                (t.prototype.empty = function () {
+                  return 0 === this.nodes.length;
+                }),
+                (t.prototype.size = function () {
+                  return this.nodes.length;
+                }),
+                (t.prototype.clone = function () {
+                  var n;
+                  return ((n = new t()).nodes = this.nodes.slice(0)), n;
+                }),
+                (t.prototype.toArray = function () {
+                  return this.nodes.slice(0);
+                }),
+                (t.prototype.insert = t.prototype.push),
+                (t.prototype.top = t.prototype.peek),
+                (t.prototype.front = t.prototype.peek),
+                (t.prototype.has = t.prototype.contains),
+                (t.prototype.copy = t.prototype.clone),
+                t
+              );
+            })()),
+            (
+              "undefined" != typeof module && null !== module
+                ? module.exports
+                : void 0
+            )
+              ? (module.exports = t)
+              : (window.Heap = t);
         }.call(this));
       },
       {},
     ],
-    "node_modules/heap/index.js": [
+    tAIw: [
       function (require, module, exports) {
         module.exports = require("./lib/heap");
       },
-      { "./lib/heap": "node_modules/heap/lib/heap.js" },
+      { "./lib/heap": "DPxs" },
     ],
-    "node_modules/pathfinding/src/core/Node.js": [
+    m2LD: [
       function (require, module, exports) {
-        /**
-         * A node in grid.
-         * This class holds some basic information about a node and custom
-         * attributes may be added, depending on the algorithms' needs.
-         * @constructor
-         * @param {number} x - The x coordinate of the node on the grid.
-         * @param {number} y - The y coordinate of the node on the grid.
-         * @param {boolean} [walkable] - Whether this node is walkable.
-         */
-        function Node(x, y, walkable) {
-          /**
-           * The x coordinate of the node on the grid.
-           * @type number
-           */
-          this.x = x;
-          /**
-           * The y coordinate of the node on the grid.
-           * @type number
-           */
-          this.y = y;
-          /**
-           * Whether this node can be walked through.
-           * @type boolean
-           */
-          this.walkable = walkable === undefined ? true : walkable;
+        function i(i, t, o) {
+          (this.x = i), (this.y = t), (this.walkable = void 0 === o || o);
         }
-
-        module.exports = Node;
+        module.exports = i;
       },
       {},
     ],
-    "node_modules/pathfinding/src/core/DiagonalMovement.js": [
+    WdVX: [
       function (require, module, exports) {
-        var DiagonalMovement = {
+        var e = {
           Always: 1,
           Never: 2,
           IfAtMostOneObstacle: 3,
           OnlyWhenNoObstacles: 4,
         };
-
-        module.exports = DiagonalMovement;
+        module.exports = e;
       },
       {},
     ],
-    "node_modules/pathfinding/src/core/Grid.js": [
+    vMCg: [
       function (require, module, exports) {
-        var Node = require("./Node");
-        var DiagonalMovement = require("./DiagonalMovement");
-
-        /**
-         * The Grid class, which serves as the encapsulation of the layout of the nodes.
-         * @constructor
-         * @param {number|Array<Array<(number|boolean)>>} width_or_matrix Number of columns of the grid, or matrix
-         * @param {number} height Number of rows of the grid.
-         * @param {Array<Array<(number|boolean)>>} [matrix] - A 0-1 matrix
-         *     representing the walkable status of the nodes(0 or false for walkable).
-         *     If the matrix is not supplied, all the nodes will be walkable.  */
-        function Grid(width_or_matrix, height, matrix) {
-          var width;
-
-          if (typeof width_or_matrix !== "object") {
-            width = width_or_matrix;
-          } else {
-            height = width_or_matrix.length;
-            width = width_or_matrix[0].length;
-            matrix = width_or_matrix;
-          }
-
-          /**
-           * The number of columns of the grid.
-           * @type number
-           */
-          this.width = width;
-          /**
-           * The number of rows of the grid.
-           * @type number
-           */
-          this.height = height;
-
-          /**
-           * A 2D array of nodes.
-           */
-          this.nodes = this._buildNodes(width, height, matrix);
+        var t = require("./Node"),
+          e = require("./DiagonalMovement");
+        function i(t, e, i) {
+          var s;
+          "object" != typeof t
+            ? (s = t)
+            : ((e = t.length), (s = t[0].length), (i = t)),
+            (this.width = s),
+            (this.height = e),
+            (this.nodes = this._buildNodes(s, e, i));
         }
-
-        /**
-         * Build and return the nodes.
-         * @private
-         * @param {number} width
-         * @param {number} height
-         * @param {Array<Array<number|boolean>>} [matrix] - A 0-1 matrix representing
-         *     the walkable status of the nodes.
-         * @see Grid
-         */
-        Grid.prototype._buildNodes = function (width, height, matrix) {
-          var i,
-            j,
-            nodes = new Array(height);
-
-          for (i = 0; i < height; ++i) {
-            nodes[i] = new Array(width);
-            for (j = 0; j < width; ++j) {
-              nodes[i][j] = new Node(j, i);
-            }
-          }
-
-          if (matrix === undefined) {
-            return nodes;
-          }
-
-          if (matrix.length !== height || matrix[0].length !== width) {
+        (i.prototype._buildNodes = function (e, i, s) {
+          var o,
+            r,
+            n = new Array(i);
+          for (o = 0; o < i; ++o)
+            for (n[o] = new Array(e), r = 0; r < e; ++r) n[o][r] = new t(r, o);
+          if (void 0 === s) return n;
+          if (s.length !== i || s[0].length !== e)
             throw new Error("Matrix size does not fit");
-          }
-
-          for (i = 0; i < height; ++i) {
-            for (j = 0; j < width; ++j) {
-              if (matrix[i][j]) {
-                // 0, false, null will be walkable
-                // while others will be un-walkable
-                nodes[i][j].walkable = false;
-              }
+          for (o = 0; o < i; ++o)
+            for (r = 0; r < e; ++r) s[o][r] && (n[o][r].walkable = !1);
+          return n;
+        }),
+          (i.prototype.getNodeAt = function (t, e) {
+            return this.nodes[e][t];
+          }),
+          (i.prototype.isWalkableAt = function (t, e) {
+            return this.isInside(t, e) && this.nodes[e][t].walkable;
+          }),
+          (i.prototype.isInside = function (t, e) {
+            return t >= 0 && t < this.width && e >= 0 && e < this.height;
+          }),
+          (i.prototype.setWalkableAt = function (t, e, i) {
+            this.nodes[e][t].walkable = i;
+          }),
+          (i.prototype.getNeighbors = function (t, i) {
+            var s = t.x,
+              o = t.y,
+              r = [],
+              n = !1,
+              h = !1,
+              a = !1,
+              l = !1,
+              u = !1,
+              f = !1,
+              p = !1,
+              d = !1,
+              b = this.nodes;
+            if (
+              (this.isWalkableAt(s, o - 1) && (r.push(b[o - 1][s]), (n = !0)),
+              this.isWalkableAt(s + 1, o) && (r.push(b[o][s + 1]), (a = !0)),
+              this.isWalkableAt(s, o + 1) && (r.push(b[o + 1][s]), (u = !0)),
+              this.isWalkableAt(s - 1, o) && (r.push(b[o][s - 1]), (p = !0)),
+              i === e.Never)
+            )
+              return r;
+            if (i === e.OnlyWhenNoObstacles)
+              (h = p && n), (l = n && a), (f = a && u), (d = u && p);
+            else if (i === e.IfAtMostOneObstacle)
+              (h = p || n), (l = n || a), (f = a || u), (d = u || p);
+            else {
+              if (i !== e.Always)
+                throw new Error("Incorrect value of diagonalMovement");
+              (h = !0), (l = !0), (f = !0), (d = !0);
             }
-          }
-
-          return nodes;
-        };
-
-        Grid.prototype.getNodeAt = function (x, y) {
-          return this.nodes[y][x];
-        };
-
-        /**
-         * Determine whether the node at the given position is walkable.
-         * (Also returns false if the position is outside the grid.)
-         * @param {number} x - The x coordinate of the node.
-         * @param {number} y - The y coordinate of the node.
-         * @return {boolean} - The walkability of the node.
-         */
-        Grid.prototype.isWalkableAt = function (x, y) {
-          return this.isInside(x, y) && this.nodes[y][x].walkable;
-        };
-
-        /**
-         * Determine whether the position is inside the grid.
-         * XXX: `grid.isInside(x, y)` is wierd to read.
-         * It should be `(x, y) is inside grid`, but I failed to find a better
-         * name for this method.
-         * @param {number} x
-         * @param {number} y
-         * @return {boolean}
-         */
-        Grid.prototype.isInside = function (x, y) {
-          return x >= 0 && x < this.width && y >= 0 && y < this.height;
-        };
-
-        /**
-         * Set whether the node on the given position is walkable.
-         * NOTE: throws exception if the coordinate is not inside the grid.
-         * @param {number} x - The x coordinate of the node.
-         * @param {number} y - The y coordinate of the node.
-         * @param {boolean} walkable - Whether the position is walkable.
-         */
-        Grid.prototype.setWalkableAt = function (x, y, walkable) {
-          this.nodes[y][x].walkable = walkable;
-        };
-
-        /**
-         * Get the neighbors of the given node.
-         *
-         *     offsets      diagonalOffsets:
-         *  +---+---+---+    +---+---+---+
-         *  |   | 0 |   |    | 0 |   | 1 |
-         *  +---+---+---+    +---+---+---+
-         *  | 3 |   | 1 |    |   |   |   |
-         *  +---+---+---+    +---+---+---+
-         *  |   | 2 |   |    | 3 |   | 2 |
-         *  +---+---+---+    +---+---+---+
-         *
-         *  When allowDiagonal is true, if offsets[i] is valid, then
-         *  diagonalOffsets[i] and
-         *  diagonalOffsets[(i + 1) % 4] is valid.
-         * @param {Node} node
-         * @param {DiagonalMovement} diagonalMovement
-         */
-        Grid.prototype.getNeighbors = function (node, diagonalMovement) {
-          var x = node.x,
-            y = node.y,
-            neighbors = [],
-            s0 = false,
-            d0 = false,
-            s1 = false,
-            d1 = false,
-            s2 = false,
-            d2 = false,
-            s3 = false,
-            d3 = false,
-            nodes = this.nodes;
-
-          // ↑
-          if (this.isWalkableAt(x, y - 1)) {
-            neighbors.push(nodes[y - 1][x]);
-            s0 = true;
-          }
-          // →
-          if (this.isWalkableAt(x + 1, y)) {
-            neighbors.push(nodes[y][x + 1]);
-            s1 = true;
-          }
-          // ↓
-          if (this.isWalkableAt(x, y + 1)) {
-            neighbors.push(nodes[y + 1][x]);
-            s2 = true;
-          }
-          // ←
-          if (this.isWalkableAt(x - 1, y)) {
-            neighbors.push(nodes[y][x - 1]);
-            s3 = true;
-          }
-
-          if (diagonalMovement === DiagonalMovement.Never) {
-            return neighbors;
-          }
-
-          if (diagonalMovement === DiagonalMovement.OnlyWhenNoObstacles) {
-            d0 = s3 && s0;
-            d1 = s0 && s1;
-            d2 = s1 && s2;
-            d3 = s2 && s3;
-          } else if (
-            diagonalMovement === DiagonalMovement.IfAtMostOneObstacle
-          ) {
-            d0 = s3 || s0;
-            d1 = s0 || s1;
-            d2 = s1 || s2;
-            d3 = s2 || s3;
-          } else if (diagonalMovement === DiagonalMovement.Always) {
-            d0 = true;
-            d1 = true;
-            d2 = true;
-            d3 = true;
-          } else {
-            throw new Error("Incorrect value of diagonalMovement");
-          }
-
-          // ↖
-          if (d0 && this.isWalkableAt(x - 1, y - 1)) {
-            neighbors.push(nodes[y - 1][x - 1]);
-          }
-          // ↗
-          if (d1 && this.isWalkableAt(x + 1, y - 1)) {
-            neighbors.push(nodes[y - 1][x + 1]);
-          }
-          // ↘
-          if (d2 && this.isWalkableAt(x + 1, y + 1)) {
-            neighbors.push(nodes[y + 1][x + 1]);
-          }
-          // ↙
-          if (d3 && this.isWalkableAt(x - 1, y + 1)) {
-            neighbors.push(nodes[y + 1][x - 1]);
-          }
-
-          return neighbors;
-        };
-
-        /**
-         * Get a clone of this grid.
-         * @return {Grid} Cloned grid.
-         */
-        Grid.prototype.clone = function () {
-          var i,
-            j,
-            width = this.width,
-            height = this.height,
-            thisNodes = this.nodes,
-            newGrid = new Grid(width, height),
-            newNodes = new Array(height);
-
-          for (i = 0; i < height; ++i) {
-            newNodes[i] = new Array(width);
-            for (j = 0; j < width; ++j) {
-              newNodes[i][j] = new Node(j, i, thisNodes[i][j].walkable);
-            }
-          }
-
-          newGrid.nodes = newNodes;
-
-          return newGrid;
-        };
-
-        module.exports = Grid;
-      },
-      {
-        "./Node": "node_modules/pathfinding/src/core/Node.js",
-        "./DiagonalMovement":
-          "node_modules/pathfinding/src/core/DiagonalMovement.js",
-      },
-    ],
-    "node_modules/pathfinding/src/core/Util.js": [
-      function (require, module, exports) {
-        /**
-         * Backtrace according to the parent records and return the path.
-         * (including both start and end nodes)
-         * @param {Node} node End node
-         * @return {Array<Array<number>>} the path
-         */
-        function backtrace(node) {
-          var path = [[node.x, node.y]];
-          while (node.parent) {
-            node = node.parent;
-            path.push([node.x, node.y]);
-          }
-          return path.reverse();
-        }
-        exports.backtrace = backtrace;
-
-        /**
-         * Backtrace from start and end node, and return the path.
-         * (including both start and end nodes)
-         * @param {Node}
-         * @param {Node}
-         */
-        function biBacktrace(nodeA, nodeB) {
-          var pathA = backtrace(nodeA),
-            pathB = backtrace(nodeB);
-          return pathA.concat(pathB.reverse());
-        }
-        exports.biBacktrace = biBacktrace;
-
-        /**
-         * Compute the length of the path.
-         * @param {Array<Array<number>>} path The path
-         * @return {number} The length of the path
-         */
-        function pathLength(path) {
-          var i,
-            sum = 0,
-            a,
-            b,
-            dx,
-            dy;
-          for (i = 1; i < path.length; ++i) {
-            a = path[i - 1];
-            b = path[i];
-            dx = a[0] - b[0];
-            dy = a[1] - b[1];
-            sum += Math.sqrt(dx * dx + dy * dy);
-          }
-          return sum;
-        }
-        exports.pathLength = pathLength;
-
-        /**
-         * Given the start and end coordinates, return all the coordinates lying
-         * on the line formed by these coordinates, based on Bresenham's algorithm.
-         * http://en.wikipedia.org/wiki/Bresenham's_line_algorithm#Simplification
-         * @param {number} x0 Start x coordinate
-         * @param {number} y0 Start y coordinate
-         * @param {number} x1 End x coordinate
-         * @param {number} y1 End y coordinate
-         * @return {Array<Array<number>>} The coordinates on the line
-         */
-        function interpolate(x0, y0, x1, y1) {
-          var abs = Math.abs,
-            line = [],
-            sx,
-            sy,
-            dx,
-            dy,
-            err,
-            e2;
-
-          dx = abs(x1 - x0);
-          dy = abs(y1 - y0);
-
-          sx = x0 < x1 ? 1 : -1;
-          sy = y0 < y1 ? 1 : -1;
-
-          err = dx - dy;
-
-          while (true) {
-            line.push([x0, y0]);
-
-            if (x0 === x1 && y0 === y1) {
-              break;
-            }
-
-            e2 = 2 * err;
-            if (e2 > -dy) {
-              err = err - dy;
-              x0 = x0 + sx;
-            }
-            if (e2 < dx) {
-              err = err + dx;
-              y0 = y0 + sy;
-            }
-          }
-
-          return line;
-        }
-        exports.interpolate = interpolate;
-
-        /**
-         * Given a compressed path, return a new path that has all the segments
-         * in it interpolated.
-         * @param {Array<Array<number>>} path The path
-         * @return {Array<Array<number>>} expanded path
-         */
-        function expandPath(path) {
-          var expanded = [],
-            len = path.length,
-            coord0,
-            coord1,
-            interpolated,
-            interpolatedLen,
-            i,
-            j;
-
-          if (len < 2) {
-            return expanded;
-          }
-
-          for (i = 0; i < len - 1; ++i) {
-            coord0 = path[i];
-            coord1 = path[i + 1];
-
-            interpolated = interpolate(
-              coord0[0],
-              coord0[1],
-              coord1[0],
-              coord1[1]
+            return (
+              h && this.isWalkableAt(s - 1, o - 1) && r.push(b[o - 1][s - 1]),
+              l && this.isWalkableAt(s + 1, o - 1) && r.push(b[o - 1][s + 1]),
+              f && this.isWalkableAt(s + 1, o + 1) && r.push(b[o + 1][s + 1]),
+              d && this.isWalkableAt(s - 1, o + 1) && r.push(b[o + 1][s - 1]),
+              r
             );
-            interpolatedLen = interpolated.length;
-            for (j = 0; j < interpolatedLen - 1; ++j) {
-              expanded.push(interpolated[j]);
-            }
-          }
-          expanded.push(path[len - 1]);
-
-          return expanded;
+          }),
+          (i.prototype.clone = function () {
+            var e,
+              s,
+              o = this.width,
+              r = this.height,
+              n = this.nodes,
+              h = new i(o, r),
+              a = new Array(r);
+            for (e = 0; e < r; ++e)
+              for (a[e] = new Array(o), s = 0; s < o; ++s)
+                a[e][s] = new t(s, e, n[e][s].walkable);
+            return (h.nodes = a), h;
+          }),
+          (module.exports = i);
+      },
+      { "./Node": "m2LD", "./DiagonalMovement": "WdVX" },
+    ],
+    ez0E: [
+      function (require, module, exports) {
+        function r(r) {
+          for (var t = [[r.x, r.y]]; r.parent; )
+            (r = r.parent), t.push([r.x, r.y]);
+          return t.reverse();
         }
-        exports.expandPath = expandPath;
+        function t(t, e) {
+          var n = r(t),
+            a = r(e);
+          return n.concat(a.reverse());
+        }
+        function e(r) {
+          var t,
+            e,
+            n,
+            a,
+            o,
+            s = 0;
+          for (t = 1; t < r.length; ++t)
+            (e = r[t - 1]),
+              (n = r[t]),
+              (a = e[0] - n[0]),
+              (o = e[1] - n[1]),
+              (s += Math.sqrt(a * a + o * o));
+          return s;
+        }
+        function n(r, t, e, n) {
+          var a,
+            o,
+            s,
+            h,
+            u,
+            p,
+            f = Math.abs,
+            l = [];
+          for (
+            a = r < e ? 1 : -1,
+              o = t < n ? 1 : -1,
+              u = (s = f(e - r)) - (h = f(n - t));
+            l.push([r, t]), r !== e || t !== n;
 
-        /**
-         * Smoothen the give path.
-         * The original path will not be modified; a new path will be returned.
-         * @param {PF.Grid} grid
-         * @param {Array<Array<number>>} path The path
-         */
-        function smoothenPath(grid, path) {
-          var len = path.length,
-            x0 = path[0][0], // path start x
-            y0 = path[0][1], // path start y
-            x1 = path[len - 1][0], // path end x
-            y1 = path[len - 1][1], // path end y
-            sx,
-            sy, // current start coordinate
-            ex,
-            ey, // current end coordinate
-            newPath,
-            i,
-            j,
-            coord,
-            line,
-            testCoord,
-            blocked;
-
-          sx = x0;
-          sy = y0;
-          newPath = [[sx, sy]];
-
-          for (i = 2; i < len; ++i) {
-            coord = path[i];
-            ex = coord[0];
-            ey = coord[1];
-            line = interpolate(sx, sy, ex, ey);
-
-            blocked = false;
-            for (j = 1; j < line.length; ++j) {
-              testCoord = line[j];
-
-              if (!grid.isWalkableAt(testCoord[0], testCoord[1])) {
-                blocked = true;
+          )
+            (p = 2 * u) > -h && ((u -= h), (r += a)),
+              p < s && ((u += s), (t += o));
+          return l;
+        }
+        function a(r) {
+          var t,
+            e,
+            a,
+            o,
+            s,
+            h,
+            u = [],
+            p = r.length;
+          if (p < 2) return u;
+          for (s = 0; s < p - 1; ++s)
+            for (
+              t = r[s],
+                e = r[s + 1],
+                o = (a = n(t[0], t[1], e[0], e[1])).length,
+                h = 0;
+              h < o - 1;
+              ++h
+            )
+              u.push(a[h]);
+          return u.push(r[p - 1]), u;
+        }
+        function o(r, t) {
+          var e,
+            a,
+            o,
+            s,
+            h,
+            u,
+            p,
+            f,
+            l,
+            i = t.length,
+            c = t[0][0],
+            x = t[0][1],
+            d = t[i - 1][0],
+            v = t[i - 1][1];
+          for (o = [[(e = c), (a = x)]], s = 2; s < i; ++s) {
+            for (
+              p = n(e, a, (u = t[s])[0], u[1]), l = !1, h = 1;
+              h < p.length;
+              ++h
+            )
+              if (((f = p[h]), !r.isWalkableAt(f[0], f[1]))) {
+                l = !0;
                 break;
               }
-            }
-            if (blocked) {
-              lastValidCoord = path[i - 1];
-              newPath.push(lastValidCoord);
-              sx = lastValidCoord[0];
-              sy = lastValidCoord[1];
-            }
+            l &&
+              ((lastValidCoord = t[s - 1]),
+              o.push(lastValidCoord),
+              (e = lastValidCoord[0]),
+              (a = lastValidCoord[1]));
           }
-          newPath.push([x1, y1]);
-
-          return newPath;
+          return o.push([d, v]), o;
         }
-        exports.smoothenPath = smoothenPath;
-
-        /**
-         * Compress a path, remove redundant nodes without altering the shape
-         * The original path is not modified
-         * @param {Array<Array<number>>} path The path
-         * @return {Array<Array<number>>} The compressed path
-         */
-        function compressPath(path) {
-          // nothing to compress
-          if (path.length < 3) {
-            return path;
-          }
-
-          var compressed = [],
-            sx = path[0][0], // start x
-            sy = path[0][1], // start y
-            px = path[1][0], // second point x
-            py = path[1][1], // second point y
-            dx = px - sx, // direction between the two points
-            dy = py - sy, // direction between the two points
-            lx,
-            ly,
-            ldx,
-            ldy,
-            sq,
-            i;
-
-          // normalize the direction
-          sq = Math.sqrt(dx * dx + dy * dy);
-          dx /= sq;
-          dy /= sq;
-
-          // start the new path
-          compressed.push([sx, sy]);
-
-          for (i = 2; i < path.length; i++) {
-            // store the last point
-            lx = px;
-            ly = py;
-
-            // store the last direction
-            ldx = dx;
-            ldy = dy;
-
-            // next point
-            px = path[i][0];
-            py = path[i][1];
-
-            // next direction
-            dx = px - lx;
-            dy = py - ly;
-
-            // normalize
-            sq = Math.sqrt(dx * dx + dy * dy);
-            dx /= sq;
-            dy /= sq;
-
-            // if the direction has changed, store the point
-            if (dx !== ldx || dy !== ldy) {
-              compressed.push([lx, ly]);
-            }
-          }
-
-          // store the last point
-          compressed.push([px, py]);
-
-          return compressed;
+        function s(r) {
+          if (r.length < 3) return r;
+          var t,
+            e,
+            n,
+            a,
+            o,
+            s,
+            h = [],
+            u = r[0][0],
+            p = r[0][1],
+            f = r[1][0],
+            l = r[1][1],
+            i = f - u,
+            c = l - p;
+          for (
+            i /= o = Math.sqrt(i * i + c * c), c /= o, h.push([u, p]), s = 2;
+            s < r.length;
+            s++
+          )
+            (t = f),
+              (e = l),
+              (n = i),
+              (a = c),
+              (i = (f = r[s][0]) - t),
+              (c = (l = r[s][1]) - e),
+              (c /= o = Math.sqrt(i * i + c * c)),
+              ((i /= o) === n && c === a) || h.push([t, e]);
+          return h.push([f, l]), h;
         }
-        exports.compressPath = compressPath;
+        (exports.backtrace = r),
+          (exports.biBacktrace = t),
+          (exports.pathLength = e),
+          (exports.interpolate = n),
+          (exports.expandPath = a),
+          (exports.smoothenPath = o),
+          (exports.compressPath = s);
       },
       {},
     ],
-    "node_modules/pathfinding/src/core/Heuristic.js": [
+    hqcn: [
       function (require, module, exports) {
-        /**
-         * @namespace PF.Heuristic
-         * @description A collection of heuristic functions.
-         */
         module.exports = {
-          /**
-           * Manhattan distance.
-           * @param {number} dx - Difference in x.
-           * @param {number} dy - Difference in y.
-           * @return {number} dx + dy
-           */
-          manhattan: function (dx, dy) {
-            return dx + dy;
+          manhattan: function (t, n) {
+            return t + n;
           },
-
-          /**
-           * Euclidean distance.
-           * @param {number} dx - Difference in x.
-           * @param {number} dy - Difference in y.
-           * @return {number} sqrt(dx * dx + dy * dy)
-           */
-          euclidean: function (dx, dy) {
-            return Math.sqrt(dx * dx + dy * dy);
+          euclidean: function (t, n) {
+            return Math.sqrt(t * t + n * n);
           },
-
-          /**
-           * Octile distance.
-           * @param {number} dx - Difference in x.
-           * @param {number} dy - Difference in y.
-           * @return {number} sqrt(dx * dx + dy * dy) for grids
-           */
-          octile: function (dx, dy) {
-            var F = Math.SQRT2 - 1;
-            return dx < dy ? F * dx + dy : F * dy + dx;
+          octile: function (t, n) {
+            var e = Math.SQRT2 - 1;
+            return t < n ? e * t + n : e * n + t;
           },
-
-          /**
-           * Chebyshev distance.
-           * @param {number} dx - Difference in x.
-           * @param {number} dy - Difference in y.
-           * @return {number} max(dx, dy)
-           */
-          chebyshev: function (dx, dy) {
-            return Math.max(dx, dy);
+          chebyshev: function (t, n) {
+            return Math.max(t, n);
           },
         };
       },
       {},
     ],
-    "node_modules/pathfinding/src/finders/AStarFinder.js": [
+    w8qd: [
       function (require, module, exports) {
-        var Heap = require("heap");
-        var Util = require("../core/Util");
-        var Heuristic = require("../core/Heuristic");
-        var DiagonalMovement = require("../core/DiagonalMovement");
-
-        /**
-         * A* path-finder. Based upon https://github.com/bgrins/javascript-astar
-         * @constructor
-         * @param {Object} opt
-         * @param {boolean} opt.allowDiagonal Whether diagonal movement is allowed.
-         *     Deprecated, use diagonalMovement instead.
-         * @param {boolean} opt.dontCrossCorners Disallow diagonal movement touching
-         *     block corners. Deprecated, use diagonalMovement instead.
-         * @param {DiagonalMovement} opt.diagonalMovement Allowed diagonal movement.
-         * @param {function} opt.heuristic Heuristic function to estimate the distance
-         *     (defaults to manhattan).
-         * @param {number} opt.weight Weight to apply to the heuristic to allow for
-         *     suboptimal paths, in order to speed up the search.
-         */
-        function AStarFinder(opt) {
-          opt = opt || {};
-          this.allowDiagonal = opt.allowDiagonal;
-          this.dontCrossCorners = opt.dontCrossCorners;
-          this.heuristic = opt.heuristic || Heuristic.manhattan;
-          this.weight = opt.weight || 1;
-          this.diagonalMovement = opt.diagonalMovement;
-
-          if (!this.diagonalMovement) {
-            if (!this.allowDiagonal) {
-              this.diagonalMovement = DiagonalMovement.Never;
-            } else {
-              if (this.dontCrossCorners) {
-                this.diagonalMovement = DiagonalMovement.OnlyWhenNoObstacles;
-              } else {
-                this.diagonalMovement = DiagonalMovement.IfAtMostOneObstacle;
-              }
-            }
-          }
-
-          // When diagonal movement is allowed the manhattan heuristic is not
-          //admissible. It should be octile instead
-          if (this.diagonalMovement === DiagonalMovement.Never) {
-            this.heuristic = opt.heuristic || Heuristic.manhattan;
-          } else {
-            this.heuristic = opt.heuristic || Heuristic.octile;
-          }
+        var e = require("heap"),
+          t = require("../core/Util"),
+          i = require("../core/Heuristic"),
+          o = require("../core/DiagonalMovement");
+        function n(e) {
+          (e = e || {}),
+            (this.allowDiagonal = e.allowDiagonal),
+            (this.dontCrossCorners = e.dontCrossCorners),
+            (this.heuristic = e.heuristic || i.manhattan),
+            (this.weight = e.weight || 1),
+            (this.diagonalMovement = e.diagonalMovement),
+            this.diagonalMovement ||
+              (this.allowDiagonal
+                ? this.dontCrossCorners
+                  ? (this.diagonalMovement = o.OnlyWhenNoObstacles)
+                  : (this.diagonalMovement = o.IfAtMostOneObstacle)
+                : (this.diagonalMovement = o.Never)),
+            this.diagonalMovement === o.Never
+              ? (this.heuristic = e.heuristic || i.manhattan)
+              : (this.heuristic = e.heuristic || i.octile);
         }
-
-        /**
-         * Find and return the the path.
-         * @return {Array<Array<number>>} The path, including both start and
-         *     end positions.
-         */
-        AStarFinder.prototype.findPath = function (
-          startX,
-          startY,
-          endX,
-          endY,
-          grid
-        ) {
-          var openList = new Heap(function (nodeA, nodeB) {
-              return nodeA.f - nodeB.f;
-            }),
-            startNode = grid.getNodeAt(startX, startY),
-            endNode = grid.getNodeAt(endX, endY),
-            heuristic = this.heuristic,
-            diagonalMovement = this.diagonalMovement,
-            weight = this.weight,
-            abs = Math.abs,
-            SQRT2 = Math.SQRT2,
-            node,
-            neighbors,
-            neighbor,
-            i,
+        (n.prototype.findPath = function (i, o, n, a, r) {
+          var s,
+            h,
             l,
-            x,
-            y,
-            ng;
-
-          // set the `g` and `f` value of the start node to be 0
-          startNode.g = 0;
-          startNode.f = 0;
-
-          // push the start node into the open list
-          openList.push(startNode);
-          startNode.opened = true;
-
-          // while the open list is not empty
-          while (!openList.empty()) {
-            // pop the position of node which has the minimum `f` value.
-            node = openList.pop();
-            node.closed = true;
-
-            // if reached the end position, construct the path and return it
-            if (node === endNode) {
-              return Util.backtrace(endNode);
-            }
-
-            // get neigbours of the current node
-            neighbors = grid.getNeighbors(node, diagonalMovement);
-            for (i = 0, l = neighbors.length; i < l; ++i) {
-              neighbor = neighbors[i];
-
-              if (neighbor.closed) {
-                continue;
-              }
-
-              x = neighbor.x;
-              y = neighbor.y;
-
-              // get the distance between current node and the neighbor
-              // and calculate the next g score
-              ng = node.g + (x - node.x === 0 || y - node.y === 0 ? 1 : SQRT2);
-
-              // check if the neighbor has not been inspected yet, or
-              // can be reached with smaller cost from the current node
-              if (!neighbor.opened || ng < neighbor.g) {
-                neighbor.g = ng;
-                neighbor.h =
-                  neighbor.h ||
-                  weight * heuristic(abs(x - endX), abs(y - endY));
-                neighbor.f = neighbor.g + neighbor.h;
-                neighbor.parent = node;
-
-                if (!neighbor.opened) {
-                  openList.push(neighbor);
-                  neighbor.opened = true;
-                } else {
-                  // the neighbor can be reached with smaller cost.
-                  // Since its f value has been updated, we have to
-                  // update its position in the open list
-                  openList.updateItem(neighbor);
-                }
-              }
-            } // end for each neighbor
-          } // end while not open list empty
-
-          // fail to find the path
-          return [];
-        };
-
-        module.exports = AStarFinder;
-      },
-      {
-        heap: "node_modules/heap/index.js",
-        "../core/Util": "node_modules/pathfinding/src/core/Util.js",
-        "../core/Heuristic": "node_modules/pathfinding/src/core/Heuristic.js",
-        "../core/DiagonalMovement":
-          "node_modules/pathfinding/src/core/DiagonalMovement.js",
-      },
-    ],
-    "node_modules/pathfinding/src/finders/BestFirstFinder.js": [
-      function (require, module, exports) {
-        var AStarFinder = require("./AStarFinder");
-
-        /**
-         * Best-First-Search path-finder.
-         * @constructor
-         * @extends AStarFinder
-         * @param {Object} opt
-         * @param {boolean} opt.allowDiagonal Whether diagonal movement is allowed.
-         *     Deprecated, use diagonalMovement instead.
-         * @param {boolean} opt.dontCrossCorners Disallow diagonal movement touching
-         *     block corners. Deprecated, use diagonalMovement instead.
-         * @param {DiagonalMovement} opt.diagonalMovement Allowed diagonal movement.
-         * @param {function} opt.heuristic Heuristic function to estimate the distance
-         *     (defaults to manhattan).
-         */
-        function BestFirstFinder(opt) {
-          AStarFinder.call(this, opt);
-
-          var orig = this.heuristic;
-          this.heuristic = function (dx, dy) {
-            return orig(dx, dy) * 1000000;
-          };
-        }
-
-        BestFirstFinder.prototype = new AStarFinder();
-        BestFirstFinder.prototype.constructor = BestFirstFinder;
-
-        module.exports = BestFirstFinder;
-      },
-      {
-        "./AStarFinder": "node_modules/pathfinding/src/finders/AStarFinder.js",
-      },
-    ],
-    "node_modules/pathfinding/src/finders/BreadthFirstFinder.js": [
-      function (require, module, exports) {
-        var Util = require("../core/Util");
-        var DiagonalMovement = require("../core/DiagonalMovement");
-
-        /**
-         * Breadth-First-Search path finder.
-         * @constructor
-         * @param {Object} opt
-         * @param {boolean} opt.allowDiagonal Whether diagonal movement is allowed.
-         *     Deprecated, use diagonalMovement instead.
-         * @param {boolean} opt.dontCrossCorners Disallow diagonal movement touching
-         *     block corners. Deprecated, use diagonalMovement instead.
-         * @param {DiagonalMovement} opt.diagonalMovement Allowed diagonal movement.
-         */
-        function BreadthFirstFinder(opt) {
-          opt = opt || {};
-          this.allowDiagonal = opt.allowDiagonal;
-          this.dontCrossCorners = opt.dontCrossCorners;
-          this.diagonalMovement = opt.diagonalMovement;
-
-          if (!this.diagonalMovement) {
-            if (!this.allowDiagonal) {
-              this.diagonalMovement = DiagonalMovement.Never;
-            } else {
-              if (this.dontCrossCorners) {
-                this.diagonalMovement = DiagonalMovement.OnlyWhenNoObstacles;
-              } else {
-                this.diagonalMovement = DiagonalMovement.IfAtMostOneObstacle;
-              }
-            }
-          }
-        }
-
-        /**
-         * Find and return the the path.
-         * @return {Array<Array<number>>} The path, including both start and
-         *     end positions.
-         */
-        BreadthFirstFinder.prototype.findPath = function (
-          startX,
-          startY,
-          endX,
-          endY,
-          grid
-        ) {
-          var openList = [],
-            diagonalMovement = this.diagonalMovement,
-            startNode = grid.getNodeAt(startX, startY),
-            endNode = grid.getNodeAt(endX, endY),
-            neighbors,
-            neighbor,
-            node,
-            i,
-            l;
-
-          // push the start pos into the queue
-          openList.push(startNode);
-          startNode.opened = true;
-
-          // while the queue is not empty
-          while (openList.length) {
-            // take the front node from the queue
-            node = openList.shift();
-            node.closed = true;
-
-            // reached the end position
-            if (node === endNode) {
-              return Util.backtrace(endNode);
-            }
-
-            neighbors = grid.getNeighbors(node, diagonalMovement);
-            for (i = 0, l = neighbors.length; i < l; ++i) {
-              neighbor = neighbors[i];
-
-              // skip this neighbor if it has been inspected before
-              if (neighbor.closed || neighbor.opened) {
-                continue;
-              }
-
-              openList.push(neighbor);
-              neighbor.opened = true;
-              neighbor.parent = node;
-            }
-          }
-
-          // fail to find the path
-          return [];
-        };
-
-        module.exports = BreadthFirstFinder;
-      },
-      {
-        "../core/Util": "node_modules/pathfinding/src/core/Util.js",
-        "../core/DiagonalMovement":
-          "node_modules/pathfinding/src/core/DiagonalMovement.js",
-      },
-    ],
-    "node_modules/pathfinding/src/finders/DijkstraFinder.js": [
-      function (require, module, exports) {
-        var AStarFinder = require("./AStarFinder");
-
-        /**
-         * Dijkstra path-finder.
-         * @constructor
-         * @extends AStarFinder
-         * @param {Object} opt
-         * @param {boolean} opt.allowDiagonal Whether diagonal movement is allowed.
-         *     Deprecated, use diagonalMovement instead.
-         * @param {boolean} opt.dontCrossCorners Disallow diagonal movement touching
-         *     block corners. Deprecated, use diagonalMovement instead.
-         * @param {DiagonalMovement} opt.diagonalMovement Allowed diagonal movement.
-         */
-        function DijkstraFinder(opt) {
-          AStarFinder.call(this, opt);
-          this.heuristic = function (dx, dy) {
-            return 0;
-          };
-        }
-
-        DijkstraFinder.prototype = new AStarFinder();
-        DijkstraFinder.prototype.constructor = DijkstraFinder;
-
-        module.exports = DijkstraFinder;
-      },
-      {
-        "./AStarFinder": "node_modules/pathfinding/src/finders/AStarFinder.js",
-      },
-    ],
-    "node_modules/pathfinding/src/finders/BiAStarFinder.js": [
-      function (require, module, exports) {
-        var Heap = require("heap");
-        var Util = require("../core/Util");
-        var Heuristic = require("../core/Heuristic");
-        var DiagonalMovement = require("../core/DiagonalMovement");
-
-        /**
-         * A* path-finder.
-         * based upon https://github.com/bgrins/javascript-astar
-         * @constructor
-         * @param {Object} opt
-         * @param {boolean} opt.allowDiagonal Whether diagonal movement is allowed.
-         *     Deprecated, use diagonalMovement instead.
-         * @param {boolean} opt.dontCrossCorners Disallow diagonal movement touching
-         *     block corners. Deprecated, use diagonalMovement instead.
-         * @param {DiagonalMovement} opt.diagonalMovement Allowed diagonal movement.
-         * @param {function} opt.heuristic Heuristic function to estimate the distance
-         *     (defaults to manhattan).
-         * @param {number} opt.weight Weight to apply to the heuristic to allow for
-         *     suboptimal paths, in order to speed up the search.
-         */
-        function BiAStarFinder(opt) {
-          opt = opt || {};
-          this.allowDiagonal = opt.allowDiagonal;
-          this.dontCrossCorners = opt.dontCrossCorners;
-          this.diagonalMovement = opt.diagonalMovement;
-          this.heuristic = opt.heuristic || Heuristic.manhattan;
-          this.weight = opt.weight || 1;
-
-          if (!this.diagonalMovement) {
-            if (!this.allowDiagonal) {
-              this.diagonalMovement = DiagonalMovement.Never;
-            } else {
-              if (this.dontCrossCorners) {
-                this.diagonalMovement = DiagonalMovement.OnlyWhenNoObstacles;
-              } else {
-                this.diagonalMovement = DiagonalMovement.IfAtMostOneObstacle;
-              }
-            }
-          }
-
-          //When diagonal movement is allowed the manhattan heuristic is not admissible
-          //It should be octile instead
-          if (this.diagonalMovement === DiagonalMovement.Never) {
-            this.heuristic = opt.heuristic || Heuristic.manhattan;
-          } else {
-            this.heuristic = opt.heuristic || Heuristic.octile;
-          }
-        }
-
-        /**
-         * Find and return the the path.
-         * @return {Array<Array<number>>} The path, including both start and
-         *     end positions.
-         */
-        BiAStarFinder.prototype.findPath = function (
-          startX,
-          startY,
-          endX,
-          endY,
-          grid
-        ) {
-          var cmp = function (nodeA, nodeB) {
-              return nodeA.f - nodeB.f;
-            },
-            startOpenList = new Heap(cmp),
-            endOpenList = new Heap(cmp),
-            startNode = grid.getNodeAt(startX, startY),
-            endNode = grid.getNodeAt(endX, endY),
-            heuristic = this.heuristic,
-            diagonalMovement = this.diagonalMovement,
-            weight = this.weight,
-            abs = Math.abs,
-            SQRT2 = Math.SQRT2,
-            node,
-            neighbors,
-            neighbor,
-            i,
-            l,
-            x,
-            y,
-            ng,
-            BY_START = 1,
-            BY_END = 2;
-
-          // set the `g` and `f` value of the start node to be 0
-          // and push it into the start open list
-          startNode.g = 0;
-          startNode.f = 0;
-          startOpenList.push(startNode);
-          startNode.opened = BY_START;
-
-          // set the `g` and `f` value of the end node to be 0
-          // and push it into the open open list
-          endNode.g = 0;
-          endNode.f = 0;
-          endOpenList.push(endNode);
-          endNode.opened = BY_END;
-
-          // while both the open lists are not empty
-          while (!startOpenList.empty() && !endOpenList.empty()) {
-            // pop the position of start node which has the minimum `f` value.
-            node = startOpenList.pop();
-            node.closed = true;
-
-            // get neigbours of the current node
-            neighbors = grid.getNeighbors(node, diagonalMovement);
-            for (i = 0, l = neighbors.length; i < l; ++i) {
-              neighbor = neighbors[i];
-
-              if (neighbor.closed) {
-                continue;
-              }
-              if (neighbor.opened === BY_END) {
-                return Util.biBacktrace(node, neighbor);
-              }
-
-              x = neighbor.x;
-              y = neighbor.y;
-
-              // get the distance between current node and the neighbor
-              // and calculate the next g score
-              ng = node.g + (x - node.x === 0 || y - node.y === 0 ? 1 : SQRT2);
-
-              // check if the neighbor has not been inspected yet, or
-              // can be reached with smaller cost from the current node
-              if (!neighbor.opened || ng < neighbor.g) {
-                neighbor.g = ng;
-                neighbor.h =
-                  neighbor.h ||
-                  weight * heuristic(abs(x - endX), abs(y - endY));
-                neighbor.f = neighbor.g + neighbor.h;
-                neighbor.parent = node;
-
-                if (!neighbor.opened) {
-                  startOpenList.push(neighbor);
-                  neighbor.opened = BY_START;
-                } else {
-                  // the neighbor can be reached with smaller cost.
-                  // Since its f value has been updated, we have to
-                  // update its position in the open list
-                  startOpenList.updateItem(neighbor);
-                }
-              }
-            } // end for each neighbor
-
-            // pop the position of end node which has the minimum `f` value.
-            node = endOpenList.pop();
-            node.closed = true;
-
-            // get neigbours of the current node
-            neighbors = grid.getNeighbors(node, diagonalMovement);
-            for (i = 0, l = neighbors.length; i < l; ++i) {
-              neighbor = neighbors[i];
-
-              if (neighbor.closed) {
-                continue;
-              }
-              if (neighbor.opened === BY_START) {
-                return Util.biBacktrace(neighbor, node);
-              }
-
-              x = neighbor.x;
-              y = neighbor.y;
-
-              // get the distance between current node and the neighbor
-              // and calculate the next g score
-              ng = node.g + (x - node.x === 0 || y - node.y === 0 ? 1 : SQRT2);
-
-              // check if the neighbor has not been inspected yet, or
-              // can be reached with smaller cost from the current node
-              if (!neighbor.opened || ng < neighbor.g) {
-                neighbor.g = ng;
-                neighbor.h =
-                  neighbor.h ||
-                  weight * heuristic(abs(x - startX), abs(y - startY));
-                neighbor.f = neighbor.g + neighbor.h;
-                neighbor.parent = node;
-
-                if (!neighbor.opened) {
-                  endOpenList.push(neighbor);
-                  neighbor.opened = BY_END;
-                } else {
-                  // the neighbor can be reached with smaller cost.
-                  // Since its f value has been updated, we have to
-                  // update its position in the open list
-                  endOpenList.updateItem(neighbor);
-                }
-              }
-            } // end for each neighbor
-          } // end while not open list empty
-
-          // fail to find the path
-          return [];
-        };
-
-        module.exports = BiAStarFinder;
-      },
-      {
-        heap: "node_modules/heap/index.js",
-        "../core/Util": "node_modules/pathfinding/src/core/Util.js",
-        "../core/Heuristic": "node_modules/pathfinding/src/core/Heuristic.js",
-        "../core/DiagonalMovement":
-          "node_modules/pathfinding/src/core/DiagonalMovement.js",
-      },
-    ],
-    "node_modules/pathfinding/src/finders/BiBestFirstFinder.js": [
-      function (require, module, exports) {
-        var BiAStarFinder = require("./BiAStarFinder");
-
-        /**
-         * Bi-direcitional Best-First-Search path-finder.
-         * @constructor
-         * @extends BiAStarFinder
-         * @param {Object} opt
-         * @param {boolean} opt.allowDiagonal Whether diagonal movement is allowed.
-         *     Deprecated, use diagonalMovement instead.
-         * @param {boolean} opt.dontCrossCorners Disallow diagonal movement touching
-         *     block corners. Deprecated, use diagonalMovement instead.
-         * @param {DiagonalMovement} opt.diagonalMovement Allowed diagonal movement.
-         * @param {function} opt.heuristic Heuristic function to estimate the distance
-         *     (defaults to manhattan).
-         */
-        function BiBestFirstFinder(opt) {
-          BiAStarFinder.call(this, opt);
-
-          var orig = this.heuristic;
-          this.heuristic = function (dx, dy) {
-            return orig(dx, dy) * 1000000;
-          };
-        }
-
-        BiBestFirstFinder.prototype = new BiAStarFinder();
-        BiBestFirstFinder.prototype.constructor = BiBestFirstFinder;
-
-        module.exports = BiBestFirstFinder;
-      },
-      {
-        "./BiAStarFinder":
-          "node_modules/pathfinding/src/finders/BiAStarFinder.js",
-      },
-    ],
-    "node_modules/pathfinding/src/finders/BiBreadthFirstFinder.js": [
-      function (require, module, exports) {
-        var Util = require("../core/Util");
-        var DiagonalMovement = require("../core/DiagonalMovement");
-
-        /**
-         * Bi-directional Breadth-First-Search path finder.
-         * @constructor
-         * @param {object} opt
-         * @param {boolean} opt.allowDiagonal Whether diagonal movement is allowed.
-         *     Deprecated, use diagonalMovement instead.
-         * @param {boolean} opt.dontCrossCorners Disallow diagonal movement touching
-         *     block corners. Deprecated, use diagonalMovement instead.
-         * @param {DiagonalMovement} opt.diagonalMovement Allowed diagonal movement.
-         */
-        function BiBreadthFirstFinder(opt) {
-          opt = opt || {};
-          this.allowDiagonal = opt.allowDiagonal;
-          this.dontCrossCorners = opt.dontCrossCorners;
-          this.diagonalMovement = opt.diagonalMovement;
-
-          if (!this.diagonalMovement) {
-            if (!this.allowDiagonal) {
-              this.diagonalMovement = DiagonalMovement.Never;
-            } else {
-              if (this.dontCrossCorners) {
-                this.diagonalMovement = DiagonalMovement.OnlyWhenNoObstacles;
-              } else {
-                this.diagonalMovement = DiagonalMovement.IfAtMostOneObstacle;
-              }
-            }
-          }
-        }
-
-        /**
-         * Find and return the the path.
-         * @return {Array<Array<number>>} The path, including both start and
-         *     end positions.
-         */
-        BiBreadthFirstFinder.prototype.findPath = function (
-          startX,
-          startY,
-          endX,
-          endY,
-          grid
-        ) {
-          var startNode = grid.getNodeAt(startX, startY),
-            endNode = grid.getNodeAt(endX, endY),
-            startOpenList = [],
-            endOpenList = [],
-            neighbors,
-            neighbor,
-            node,
-            diagonalMovement = this.diagonalMovement,
-            BY_START = 0,
-            BY_END = 1,
-            i,
-            l;
-
-          // push the start and end nodes into the queues
-          startOpenList.push(startNode);
-          startNode.opened = true;
-          startNode.by = BY_START;
-
-          endOpenList.push(endNode);
-          endNode.opened = true;
-          endNode.by = BY_END;
-
-          // while both the queues are not empty
-          while (startOpenList.length && endOpenList.length) {
-            // expand start open list
-
-            node = startOpenList.shift();
-            node.closed = true;
-
-            neighbors = grid.getNeighbors(node, diagonalMovement);
-            for (i = 0, l = neighbors.length; i < l; ++i) {
-              neighbor = neighbors[i];
-
-              if (neighbor.closed) {
-                continue;
-              }
-              if (neighbor.opened) {
-                // if this node has been inspected by the reversed search,
-                // then a path is found.
-                if (neighbor.by === BY_END) {
-                  return Util.biBacktrace(node, neighbor);
-                }
-                continue;
-              }
-              startOpenList.push(neighbor);
-              neighbor.parent = node;
-              neighbor.opened = true;
-              neighbor.by = BY_START;
-            }
-
-            // expand end open list
-
-            node = endOpenList.shift();
-            node.closed = true;
-
-            neighbors = grid.getNeighbors(node, diagonalMovement);
-            for (i = 0, l = neighbors.length; i < l; ++i) {
-              neighbor = neighbors[i];
-
-              if (neighbor.closed) {
-                continue;
-              }
-              if (neighbor.opened) {
-                if (neighbor.by === BY_START) {
-                  return Util.biBacktrace(neighbor, node);
-                }
-                continue;
-              }
-              endOpenList.push(neighbor);
-              neighbor.parent = node;
-              neighbor.opened = true;
-              neighbor.by = BY_END;
-            }
-          }
-
-          // fail to find the path
-          return [];
-        };
-
-        module.exports = BiBreadthFirstFinder;
-      },
-      {
-        "../core/Util": "node_modules/pathfinding/src/core/Util.js",
-        "../core/DiagonalMovement":
-          "node_modules/pathfinding/src/core/DiagonalMovement.js",
-      },
-    ],
-    "node_modules/pathfinding/src/finders/BiDijkstraFinder.js": [
-      function (require, module, exports) {
-        var BiAStarFinder = require("./BiAStarFinder");
-
-        /**
-         * Bi-directional Dijkstra path-finder.
-         * @constructor
-         * @extends BiAStarFinder
-         * @param {Object} opt
-         * @param {boolean} opt.allowDiagonal Whether diagonal movement is allowed.
-         *     Deprecated, use diagonalMovement instead.
-         * @param {boolean} opt.dontCrossCorners Disallow diagonal movement touching
-         *     block corners. Deprecated, use diagonalMovement instead.
-         * @param {DiagonalMovement} opt.diagonalMovement Allowed diagonal movement.
-         */
-        function BiDijkstraFinder(opt) {
-          BiAStarFinder.call(this, opt);
-          this.heuristic = function (dx, dy) {
-            return 0;
-          };
-        }
-
-        BiDijkstraFinder.prototype = new BiAStarFinder();
-        BiDijkstraFinder.prototype.constructor = BiDijkstraFinder;
-
-        module.exports = BiDijkstraFinder;
-      },
-      {
-        "./BiAStarFinder":
-          "node_modules/pathfinding/src/finders/BiAStarFinder.js",
-      },
-    ],
-    "node_modules/pathfinding/src/finders/IDAStarFinder.js": [
-      function (require, module, exports) {
-        var Util = require("../core/Util");
-        var Heuristic = require("../core/Heuristic");
-        var Node = require("../core/Node");
-        var DiagonalMovement = require("../core/DiagonalMovement");
-
-        /**
-         * Iterative Deeping A Star (IDA*) path-finder.
-         *
-         * Recursion based on:
-         *   http://www.apl.jhu.edu/~hall/AI-Programming/IDA-Star.html
-         *
-         * Path retracing based on:
-         *  V. Nageshwara Rao, Vipin Kumar and K. Ramesh
-         *  "A Parallel Implementation of Iterative-Deeping-A*", January 1987.
-         *  ftp://ftp.cs.utexas.edu/.snapshot/hourly.1/pub/AI-Lab/tech-reports/UT-AI-TR-87-46.pdf
-         *
-         * @author Gerard Meier (www.gerardmeier.com)
-         *
-         * @constructor
-         * @param {Object} opt
-         * @param {boolean} opt.allowDiagonal Whether diagonal movement is allowed.
-         *     Deprecated, use diagonalMovement instead.
-         * @param {boolean} opt.dontCrossCorners Disallow diagonal movement touching
-         *     block corners. Deprecated, use diagonalMovement instead.
-         * @param {DiagonalMovement} opt.diagonalMovement Allowed diagonal movement.
-         * @param {function} opt.heuristic Heuristic function to estimate the distance
-         *     (defaults to manhattan).
-         * @param {number} opt.weight Weight to apply to the heuristic to allow for
-         *     suboptimal paths, in order to speed up the search.
-         * @param {boolean} opt.trackRecursion Whether to track recursion for
-         *     statistical purposes.
-         * @param {number} opt.timeLimit Maximum execution time. Use <= 0 for infinite.
-         */
-        function IDAStarFinder(opt) {
-          opt = opt || {};
-          this.allowDiagonal = opt.allowDiagonal;
-          this.dontCrossCorners = opt.dontCrossCorners;
-          this.diagonalMovement = opt.diagonalMovement;
-          this.heuristic = opt.heuristic || Heuristic.manhattan;
-          this.weight = opt.weight || 1;
-          this.trackRecursion = opt.trackRecursion || false;
-          this.timeLimit = opt.timeLimit || Infinity; // Default: no time limit.
-
-          if (!this.diagonalMovement) {
-            if (!this.allowDiagonal) {
-              this.diagonalMovement = DiagonalMovement.Never;
-            } else {
-              if (this.dontCrossCorners) {
-                this.diagonalMovement = DiagonalMovement.OnlyWhenNoObstacles;
-              } else {
-                this.diagonalMovement = DiagonalMovement.IfAtMostOneObstacle;
-              }
-            }
-          }
-
-          // When diagonal movement is allowed the manhattan heuristic is not
-          // admissible, it should be octile instead
-          if (this.diagonalMovement === DiagonalMovement.Never) {
-            this.heuristic = opt.heuristic || Heuristic.manhattan;
-          } else {
-            this.heuristic = opt.heuristic || Heuristic.octile;
-          }
-        }
-
-        /**
-         * Find and return the the path. When an empty array is returned, either
-         * no path is possible, or the maximum execution time is reached.
-         *
-         * @return {Array<Array<number>>} The path, including both start and
-         *     end positions.
-         */
-        IDAStarFinder.prototype.findPath = function (
-          startX,
-          startY,
-          endX,
-          endY,
-          grid
-        ) {
-          // Used for statistics:
-          var nodesVisited = 0;
-
-          // Execution time limitation:
-          var startTime = new Date().getTime();
-
-          // Heuristic helper:
-          var h = function (a, b) {
-            return this.heuristic(Math.abs(b.x - a.x), Math.abs(b.y - a.y));
-          }.bind(this);
-
-          // Step cost from a to b:
-          var cost = function (a, b) {
-            return a.x === b.x || a.y === b.y ? 1 : Math.SQRT2;
-          };
-
-          /**
-           * IDA* search implementation.
-           *
-           * @param {Node} The node currently expanding from.
-           * @param {number} Cost to reach the given node.
-           * @param {number} Maximum search depth (cut-off value).
-           * @param {Array<Array<number>>} The found route.
-           * @param {number} Recursion depth.
-           *
-           * @return {Object} either a number with the new optimal cut-off depth,
-           * or a valid node instance, in which case a path was found.
-           */
-          var search = function (node, g, cutoff, route, depth) {
-            nodesVisited++;
-
-            // Enforce timelimit:
-            if (
-              this.timeLimit > 0 &&
-              new Date().getTime() - startTime > this.timeLimit * 1000
-            ) {
-              // Enforced as "path-not-found".
-              return Infinity;
-            }
-
-            var f = g + h(node, end) * this.weight;
-
-            // We've searched too deep for this iteration.
-            if (f > cutoff) {
-              return f;
-            }
-
-            if (node == end) {
-              route[depth] = [node.x, node.y];
-              return node;
-            }
-
-            var min, t, k, neighbour;
-
-            var neighbours = grid.getNeighbors(node, this.diagonalMovement); //Disable warning: Expected a conditional expression and instead saw an assignment
-
-            // Sort the neighbours, gives nicer paths. But, this deviates
-            // from the original algorithm - so I left it out.
-            //neighbours.sort(function(a, b){
-            //    return h(a, end) - h(b, end);
-            //});
-
-            /*jshint -W084 */ for (
-              k = 0, min = Infinity;
-              (neighbour = neighbours[k]);
-              ++k
-            ) {
-              /*jshint +W084 */ //Enable warning: Expected a conditional expression and instead saw an assignment
-              if (this.trackRecursion) {
-                // Retain a copy for visualisation. Due to recursion, this
-                // node may be part of other paths too.
-                neighbour.retainCount = neighbour.retainCount + 1 || 1;
-
-                if (neighbour.tested !== true) {
-                  neighbour.tested = true;
-                }
-              }
-
-              t = search(
-                neighbour,
-                g + cost(node, neighbour),
-                cutoff,
-                route,
-                depth + 1
-              );
-
-              if (t instanceof Node) {
-                route[depth] = [node.x, node.y];
-
-                // For a typical A* linked list, this would work:
-                // neighbour.parent = node;
-                return t;
-              }
-
-              // Decrement count, then determine whether it's actually closed.
-              if (this.trackRecursion && --neighbour.retainCount === 0) {
-                neighbour.tested = false;
-              }
-
-              if (t < min) {
-                min = t;
-              }
-            }
-
-            return min;
-          }.bind(this);
-
-          // Node instance lookups:
-          var start = grid.getNodeAt(startX, startY);
-          var end = grid.getNodeAt(endX, endY);
-
-          // Initial search depth, given the typical heuristic contraints,
-          // there should be no cheaper route possible.
-          var cutOff = h(start, end);
-
-          var j, route, t;
-
-          // With an overflow protection.
-          for (j = 0; true; ++j) {
-            route = [];
-
-            // Search till cut-off depth:
-            t = search(start, 0, cutOff, route, 0);
-
-            // Route not possible, or not found in time limit.
-            if (t === Infinity) {
-              return [];
-            }
-
-            // If t is a node, it's also the end node. Route is now
-            // populated with a valid path to the end node.
-            if (t instanceof Node) {
-              return route;
-            }
-
-            // Try again, this time with a deeper cut-off. The t score
-            // is the closest we got to the end node.
-            cutOff = t;
-          }
-
-          // This _should_ never to be reached.
-          return [];
-        };
-
-        module.exports = IDAStarFinder;
-      },
-      {
-        "../core/Util": "node_modules/pathfinding/src/core/Util.js",
-        "../core/Heuristic": "node_modules/pathfinding/src/core/Heuristic.js",
-        "../core/Node": "node_modules/pathfinding/src/core/Node.js",
-        "../core/DiagonalMovement":
-          "node_modules/pathfinding/src/core/DiagonalMovement.js",
-      },
-    ],
-    "node_modules/pathfinding/src/finders/JumpPointFinderBase.js": [
-      function (require, module, exports) {
-        /**
-         * @author imor / https://github.com/imor
-         */
-        var Heap = require("heap");
-        var Util = require("../core/Util");
-        var Heuristic = require("../core/Heuristic");
-        var DiagonalMovement = require("../core/DiagonalMovement");
-
-        /**
-         * Base class for the Jump Point Search algorithm
-         * @param {object} opt
-         * @param {function} opt.heuristic Heuristic function to estimate the distance
-         *     (defaults to manhattan).
-         */
-        function JumpPointFinderBase(opt) {
-          opt = opt || {};
-          this.heuristic = opt.heuristic || Heuristic.manhattan;
-          this.trackJumpRecursion = opt.trackJumpRecursion || false;
-        }
-
-        /**
-         * Find and return the path.
-         * @return {Array<Array<number>>} The path, including both start and
-         *     end positions.
-         */
-        JumpPointFinderBase.prototype.findPath = function (
-          startX,
-          startY,
-          endX,
-          endY,
-          grid
-        ) {
-          var openList = (this.openList = new Heap(function (nodeA, nodeB) {
-              return nodeA.f - nodeB.f;
-            })),
-            startNode = (this.startNode = grid.getNodeAt(startX, startY)),
-            endNode = (this.endNode = grid.getNodeAt(endX, endY)),
-            node;
-
-          this.grid = grid;
-
-          // set the `g` and `f` value of the start node to be 0
-          startNode.g = 0;
-          startNode.f = 0;
-
-          // push the start node into the open list
-          openList.push(startNode);
-          startNode.opened = true;
-
-          // while the open list is not empty
-          while (!openList.empty()) {
-            // pop the position of node which has the minimum `f` value.
-            node = openList.pop();
-            node.closed = true;
-
-            if (node === endNode) {
-              return Util.expandPath(Util.backtrace(endNode));
-            }
-
-            this._identifySuccessors(node);
-          }
-
-          // fail to find the path
-          return [];
-        };
-
-        /**
-         * Identify successors for the given node. Runs a jump point search in the
-         * direction of each available neighbor, adding any points found to the open
-         * list.
-         * @protected
-         */
-        JumpPointFinderBase.prototype._identifySuccessors = function (node) {
-          var grid = this.grid,
-            heuristic = this.heuristic,
-            openList = this.openList,
-            endX = this.endNode.x,
-            endY = this.endNode.y,
-            neighbors,
-            neighbor,
-            jumpPoint,
-            i,
-            l,
-            x = node.x,
-            y = node.y,
-            jx,
-            jy,
-            dx,
-            dy,
+            g,
             d,
-            ng,
-            jumpNode,
-            abs = Math.abs,
-            max = Math.max;
-
-          neighbors = this._findNeighbors(node);
-          for (i = 0, l = neighbors.length; i < l; ++i) {
-            neighbor = neighbors[i];
-            jumpPoint = this._jump(neighbor[0], neighbor[1], x, y);
-            if (jumpPoint) {
-              jx = jumpPoint[0];
-              jy = jumpPoint[1];
-              jumpNode = grid.getNodeAt(jx, jy);
-
-              if (jumpNode.closed) {
-                continue;
-              }
-
-              // include distance, as parent may not be immediately adjacent:
-              d = Heuristic.octile(abs(jx - x), abs(jy - y));
-              ng = node.g + d; // next `g` value
-
-              if (!jumpNode.opened || ng < jumpNode.g) {
-                jumpNode.g = ng;
-                jumpNode.h =
-                  jumpNode.h || heuristic(abs(jx - endX), abs(jy - endY));
-                jumpNode.f = jumpNode.g + jumpNode.h;
-                jumpNode.parent = node;
-
-                if (!jumpNode.opened) {
-                  openList.push(jumpNode);
-                  jumpNode.opened = true;
-                } else {
-                  openList.updateItem(jumpNode);
-                }
-              }
-            }
+            u,
+            c,
+            p,
+            m = new e(function (e, t) {
+              return e.f - t.f;
+            }),
+            v = r.getNodeAt(i, o),
+            f = r.getNodeAt(n, a),
+            M = this.heuristic,
+            w = this.diagonalMovement,
+            C = this.weight,
+            N = Math.abs,
+            b = Math.SQRT2;
+          for (v.g = 0, v.f = 0, m.push(v), v.opened = !0; !m.empty(); ) {
+            if ((((s = m.pop()).closed = !0), s === f)) return t.backtrace(f);
+            for (g = 0, d = (h = r.getNeighbors(s, w)).length; g < d; ++g)
+              (l = h[g]).closed ||
+                ((u = l.x),
+                (c = l.y),
+                (p = s.g + (u - s.x == 0 || c - s.y == 0 ? 1 : b)),
+                (!l.opened || p < l.g) &&
+                  ((l.g = p),
+                  (l.h = l.h || C * M(N(u - n), N(c - a))),
+                  (l.f = l.g + l.h),
+                  (l.parent = s),
+                  l.opened ? m.updateItem(l) : (m.push(l), (l.opened = !0))));
           }
-        };
-
-        module.exports = JumpPointFinderBase;
+          return [];
+        }),
+          (module.exports = n);
       },
       {
-        heap: "node_modules/heap/index.js",
-        "../core/Util": "node_modules/pathfinding/src/core/Util.js",
-        "../core/Heuristic": "node_modules/pathfinding/src/core/Heuristic.js",
-        "../core/DiagonalMovement":
-          "node_modules/pathfinding/src/core/DiagonalMovement.js",
+        heap: "tAIw",
+        "../core/Util": "ez0E",
+        "../core/Heuristic": "hqcn",
+        "../core/DiagonalMovement": "WdVX",
       },
     ],
-    "node_modules/pathfinding/src/finders/JPFNeverMoveDiagonally.js": [
+    ruAP: [
       function (require, module, exports) {
-        /**
-         * @author imor / https://github.com/imor
-         */
-        var JumpPointFinderBase = require("./JumpPointFinderBase");
-        var DiagonalMovement = require("../core/DiagonalMovement");
-
-        /**
-         * Path finder using the Jump Point Search algorithm allowing only horizontal
-         * or vertical movements.
-         */
-        function JPFNeverMoveDiagonally(opt) {
-          JumpPointFinderBase.call(this, opt);
+        var t = require("./AStarFinder");
+        function r(r) {
+          t.call(this, r);
+          var e = this.heuristic;
+          this.heuristic = function (t, r) {
+            return 1e6 * e(t, r);
+          };
         }
-
-        JPFNeverMoveDiagonally.prototype = new JumpPointFinderBase();
-        JPFNeverMoveDiagonally.prototype.constructor = JPFNeverMoveDiagonally;
-
-        /**
-         * Search recursively in the direction (parent -> child), stopping only when a
-         * jump point is found.
-         * @protected
-         * @return {Array<Array<number>>} The x, y coordinate of the jump point
-         *     found, or null if not found
-         */
-        JPFNeverMoveDiagonally.prototype._jump = function (x, y, px, py) {
-          var grid = this.grid,
-            dx = x - px,
-            dy = y - py;
-
-          if (!grid.isWalkableAt(x, y)) {
-            return null;
-          }
-
-          if (this.trackJumpRecursion === true) {
-            grid.getNodeAt(x, y).tested = true;
-          }
-
-          if (grid.getNodeAt(x, y) === this.endNode) {
-            return [x, y];
-          }
-
-          if (dx !== 0) {
-            if (
-              (grid.isWalkableAt(x, y - 1) &&
-                !grid.isWalkableAt(x - dx, y - 1)) ||
-              (grid.isWalkableAt(x, y + 1) && !grid.isWalkableAt(x - dx, y + 1))
-            ) {
-              return [x, y];
-            }
-          } else if (dy !== 0) {
-            if (
-              (grid.isWalkableAt(x - 1, y) &&
-                !grid.isWalkableAt(x - 1, y - dy)) ||
-              (grid.isWalkableAt(x + 1, y) && !grid.isWalkableAt(x + 1, y - dy))
-            ) {
-              return [x, y];
-            }
-            //When moving vertically, must check for horizontal jump points
-            if (this._jump(x + 1, y, x, y) || this._jump(x - 1, y, x, y)) {
-              return [x, y];
-            }
-          } else {
-            throw new Error(
-              "Only horizontal and vertical movements are allowed"
-            );
-          }
-
-          return this._jump(x + dx, y + dy, x, y);
-        };
-
-        /**
-         * Find the neighbors for the given node. If the node has a parent,
-         * prune the neighbors based on the jump point search algorithm, otherwise
-         * return all available neighbors.
-         * @return {Array<Array<number>>} The neighbors found.
-         */
-        JPFNeverMoveDiagonally.prototype._findNeighbors = function (node) {
-          var parent = node.parent,
-            x = node.x,
-            y = node.y,
-            grid = this.grid,
-            px,
-            py,
-            nx,
-            ny,
-            dx,
-            dy,
-            neighbors = [],
-            neighborNodes,
-            neighborNode,
-            i,
-            l;
-
-          // directed pruning: can ignore most neighbors, unless forced.
-          if (parent) {
-            px = parent.x;
-            py = parent.y;
-            // get the normalized direction of travel
-            dx = (x - px) / Math.max(Math.abs(x - px), 1);
-            dy = (y - py) / Math.max(Math.abs(y - py), 1);
-
-            if (dx !== 0) {
-              if (grid.isWalkableAt(x, y - 1)) {
-                neighbors.push([x, y - 1]);
-              }
-              if (grid.isWalkableAt(x, y + 1)) {
-                neighbors.push([x, y + 1]);
-              }
-              if (grid.isWalkableAt(x + dx, y)) {
-                neighbors.push([x + dx, y]);
-              }
-            } else if (dy !== 0) {
-              if (grid.isWalkableAt(x - 1, y)) {
-                neighbors.push([x - 1, y]);
-              }
-              if (grid.isWalkableAt(x + 1, y)) {
-                neighbors.push([x + 1, y]);
-              }
-              if (grid.isWalkableAt(x, y + dy)) {
-                neighbors.push([x, y + dy]);
-              }
-            }
-          }
-          // return all neighbors
-          else {
-            neighborNodes = grid.getNeighbors(node, DiagonalMovement.Never);
-            for (i = 0, l = neighborNodes.length; i < l; ++i) {
-              neighborNode = neighborNodes[i];
-              neighbors.push([neighborNode.x, neighborNode.y]);
-            }
-          }
-
-          return neighbors;
-        };
-
-        module.exports = JPFNeverMoveDiagonally;
+        (r.prototype = new t()),
+          (r.prototype.constructor = r),
+          (module.exports = r);
       },
-      {
-        "./JumpPointFinderBase":
-          "node_modules/pathfinding/src/finders/JumpPointFinderBase.js",
-        "../core/DiagonalMovement":
-          "node_modules/pathfinding/src/core/DiagonalMovement.js",
-      },
+      { "./AStarFinder": "w8qd" },
     ],
-    "node_modules/pathfinding/src/finders/JPFAlwaysMoveDiagonally.js": [
+    yTUG: [
       function (require, module, exports) {
-        /**
-         * @author imor / https://github.com/imor
-         */
-        var JumpPointFinderBase = require("./JumpPointFinderBase");
-        var DiagonalMovement = require("../core/DiagonalMovement");
-
-        /**
-         * Path finder using the Jump Point Search algorithm which always moves
-         * diagonally irrespective of the number of obstacles.
-         */
-        function JPFAlwaysMoveDiagonally(opt) {
-          JumpPointFinderBase.call(this, opt);
+        var e = require("../core/Util"),
+          o = require("../core/DiagonalMovement");
+        function t(e) {
+          (e = e || {}),
+            (this.allowDiagonal = e.allowDiagonal),
+            (this.dontCrossCorners = e.dontCrossCorners),
+            (this.diagonalMovement = e.diagonalMovement),
+            this.diagonalMovement ||
+              (this.allowDiagonal
+                ? this.dontCrossCorners
+                  ? (this.diagonalMovement = o.OnlyWhenNoObstacles)
+                  : (this.diagonalMovement = o.IfAtMostOneObstacle)
+                : (this.diagonalMovement = o.Never));
         }
-
-        JPFAlwaysMoveDiagonally.prototype = new JumpPointFinderBase();
-        JPFAlwaysMoveDiagonally.prototype.constructor = JPFAlwaysMoveDiagonally;
-
-        /**
-         * Search recursively in the direction (parent -> child), stopping only when a
-         * jump point is found.
-         * @protected
-         * @return {Array<Array<number>>} The x, y coordinate of the jump point
-         *     found, or null if not found
-         */
-        JPFAlwaysMoveDiagonally.prototype._jump = function (x, y, px, py) {
-          var grid = this.grid,
-            dx = x - px,
-            dy = y - py;
-
-          if (!grid.isWalkableAt(x, y)) {
-            return null;
+        (t.prototype.findPath = function (o, t, n, a, i) {
+          var s,
+            r,
+            l,
+            d,
+            h,
+            g = [],
+            v = this.diagonalMovement,
+            c = i.getNodeAt(o, t),
+            m = i.getNodeAt(n, a);
+          for (g.push(c), c.opened = !0; g.length; ) {
+            if ((((l = g.shift()).closed = !0), l === m)) return e.backtrace(m);
+            for (d = 0, h = (s = i.getNeighbors(l, v)).length; d < h; ++d)
+              (r = s[d]).closed ||
+                r.opened ||
+                (g.push(r), (r.opened = !0), (r.parent = l));
           }
-
-          if (this.trackJumpRecursion === true) {
-            grid.getNodeAt(x, y).tested = true;
-          }
-
-          if (grid.getNodeAt(x, y) === this.endNode) {
-            return [x, y];
-          }
-
-          // check for forced neighbors
-          // along the diagonal
-          if (dx !== 0 && dy !== 0) {
-            if (
-              (grid.isWalkableAt(x - dx, y + dy) &&
-                !grid.isWalkableAt(x - dx, y)) ||
-              (grid.isWalkableAt(x + dx, y - dy) &&
-                !grid.isWalkableAt(x, y - dy))
-            ) {
-              return [x, y];
-            }
-            // when moving diagonally, must check for vertical/horizontal jump points
-            if (this._jump(x + dx, y, x, y) || this._jump(x, y + dy, x, y)) {
-              return [x, y];
-            }
-          }
-          // horizontally/vertically
-          else {
-            if (dx !== 0) {
-              // moving along x
-              if (
-                (grid.isWalkableAt(x + dx, y + 1) &&
-                  !grid.isWalkableAt(x, y + 1)) ||
-                (grid.isWalkableAt(x + dx, y - 1) &&
-                  !grid.isWalkableAt(x, y - 1))
-              ) {
-                return [x, y];
-              }
-            } else {
-              if (
-                (grid.isWalkableAt(x + 1, y + dy) &&
-                  !grid.isWalkableAt(x + 1, y)) ||
-                (grid.isWalkableAt(x - 1, y + dy) &&
-                  !grid.isWalkableAt(x - 1, y))
-              ) {
-                return [x, y];
-              }
-            }
-          }
-
-          return this._jump(x + dx, y + dy, x, y);
-        };
-
-        /**
-         * Find the neighbors for the given node. If the node has a parent,
-         * prune the neighbors based on the jump point search algorithm, otherwise
-         * return all available neighbors.
-         * @return {Array<Array<number>>} The neighbors found.
-         */
-        JPFAlwaysMoveDiagonally.prototype._findNeighbors = function (node) {
-          var parent = node.parent,
-            x = node.x,
-            y = node.y,
-            grid = this.grid,
-            px,
-            py,
-            nx,
-            ny,
-            dx,
-            dy,
-            neighbors = [],
-            neighborNodes,
-            neighborNode,
-            i,
-            l;
-
-          // directed pruning: can ignore most neighbors, unless forced.
-          if (parent) {
-            px = parent.x;
-            py = parent.y;
-            // get the normalized direction of travel
-            dx = (x - px) / Math.max(Math.abs(x - px), 1);
-            dy = (y - py) / Math.max(Math.abs(y - py), 1);
-
-            // search diagonally
-            if (dx !== 0 && dy !== 0) {
-              if (grid.isWalkableAt(x, y + dy)) {
-                neighbors.push([x, y + dy]);
-              }
-              if (grid.isWalkableAt(x + dx, y)) {
-                neighbors.push([x + dx, y]);
-              }
-              if (grid.isWalkableAt(x + dx, y + dy)) {
-                neighbors.push([x + dx, y + dy]);
-              }
-              if (!grid.isWalkableAt(x - dx, y)) {
-                neighbors.push([x - dx, y + dy]);
-              }
-              if (!grid.isWalkableAt(x, y - dy)) {
-                neighbors.push([x + dx, y - dy]);
-              }
-            }
-            // search horizontally/vertically
-            else {
-              if (dx === 0) {
-                if (grid.isWalkableAt(x, y + dy)) {
-                  neighbors.push([x, y + dy]);
-                }
-                if (!grid.isWalkableAt(x + 1, y)) {
-                  neighbors.push([x + 1, y + dy]);
-                }
-                if (!grid.isWalkableAt(x - 1, y)) {
-                  neighbors.push([x - 1, y + dy]);
-                }
-              } else {
-                if (grid.isWalkableAt(x + dx, y)) {
-                  neighbors.push([x + dx, y]);
-                }
-                if (!grid.isWalkableAt(x, y + 1)) {
-                  neighbors.push([x + dx, y + 1]);
-                }
-                if (!grid.isWalkableAt(x, y - 1)) {
-                  neighbors.push([x + dx, y - 1]);
-                }
-              }
-            }
-          }
-          // return all neighbors
-          else {
-            neighborNodes = grid.getNeighbors(node, DiagonalMovement.Always);
-            for (i = 0, l = neighborNodes.length; i < l; ++i) {
-              neighborNode = neighborNodes[i];
-              neighbors.push([neighborNode.x, neighborNode.y]);
-            }
-          }
-
-          return neighbors;
-        };
-
-        module.exports = JPFAlwaysMoveDiagonally;
+          return [];
+        }),
+          (module.exports = t);
       },
-      {
-        "./JumpPointFinderBase":
-          "node_modules/pathfinding/src/finders/JumpPointFinderBase.js",
-        "../core/DiagonalMovement":
-          "node_modules/pathfinding/src/core/DiagonalMovement.js",
-      },
+      { "../core/Util": "ez0E", "../core/DiagonalMovement": "WdVX" },
     ],
-    "node_modules/pathfinding/src/finders/JPFMoveDiagonallyIfNoObstacles.js": [
+    ivAt: [
       function (require, module, exports) {
-        /**
-         * @author imor / https://github.com/imor
-         */
-        var JumpPointFinderBase = require("./JumpPointFinderBase");
-        var DiagonalMovement = require("../core/DiagonalMovement");
-
-        /**
-         * Path finder using the Jump Point Search algorithm which moves
-         * diagonally only when there are no obstacles.
-         */
-        function JPFMoveDiagonallyIfNoObstacles(opt) {
-          JumpPointFinderBase.call(this, opt);
+        var t = require("./AStarFinder");
+        function r(r) {
+          t.call(this, r),
+            (this.heuristic = function (t, r) {
+              return 0;
+            });
         }
-
-        JPFMoveDiagonallyIfNoObstacles.prototype = new JumpPointFinderBase();
-        JPFMoveDiagonallyIfNoObstacles.prototype.constructor = JPFMoveDiagonallyIfNoObstacles;
-
-        /**
-         * Search recursively in the direction (parent -> child), stopping only when a
-         * jump point is found.
-         * @protected
-         * @return {Array<Array<number>>} The x, y coordinate of the jump point
-         *     found, or null if not found
-         */
-        JPFMoveDiagonallyIfNoObstacles.prototype._jump = function (
-          x,
-          y,
-          px,
-          py
-        ) {
-          var grid = this.grid,
-            dx = x - px,
-            dy = y - py;
-
-          if (!grid.isWalkableAt(x, y)) {
-            return null;
-          }
-
-          if (this.trackJumpRecursion === true) {
-            grid.getNodeAt(x, y).tested = true;
-          }
-
-          if (grid.getNodeAt(x, y) === this.endNode) {
-            return [x, y];
-          }
-
-          // check for forced neighbors
-          // along the diagonal
-          if (dx !== 0 && dy !== 0) {
-            // if ((grid.isWalkableAt(x - dx, y + dy) && !grid.isWalkableAt(x - dx, y)) ||
-            // (grid.isWalkableAt(x + dx, y - dy) && !grid.isWalkableAt(x, y - dy))) {
-            // return [x, y];
-            // }
-            // when moving diagonally, must check for vertical/horizontal jump points
-            if (this._jump(x + dx, y, x, y) || this._jump(x, y + dy, x, y)) {
-              return [x, y];
-            }
-          }
-          // horizontally/vertically
-          else {
-            if (dx !== 0) {
-              if (
-                (grid.isWalkableAt(x, y - 1) &&
-                  !grid.isWalkableAt(x - dx, y - 1)) ||
-                (grid.isWalkableAt(x, y + 1) &&
-                  !grid.isWalkableAt(x - dx, y + 1))
-              ) {
-                return [x, y];
-              }
-            } else if (dy !== 0) {
-              if (
-                (grid.isWalkableAt(x - 1, y) &&
-                  !grid.isWalkableAt(x - 1, y - dy)) ||
-                (grid.isWalkableAt(x + 1, y) &&
-                  !grid.isWalkableAt(x + 1, y - dy))
-              ) {
-                return [x, y];
-              }
-              // When moving vertically, must check for horizontal jump points
-              // if (this._jump(x + 1, y, x, y) || this._jump(x - 1, y, x, y)) {
-              // return [x, y];
-              // }
-            }
-          }
-
-          // moving diagonally, must make sure one of the vertical/horizontal
-          // neighbors is open to allow the path
-          if (grid.isWalkableAt(x + dx, y) && grid.isWalkableAt(x, y + dy)) {
-            return this._jump(x + dx, y + dy, x, y);
-          } else {
-            return null;
-          }
-        };
-
-        /**
-         * Find the neighbors for the given node. If the node has a parent,
-         * prune the neighbors based on the jump point search algorithm, otherwise
-         * return all available neighbors.
-         * @return {Array<Array<number>>} The neighbors found.
-         */
-        JPFMoveDiagonallyIfNoObstacles.prototype._findNeighbors = function (
-          node
-        ) {
-          var parent = node.parent,
-            x = node.x,
-            y = node.y,
-            grid = this.grid,
-            px,
-            py,
-            nx,
-            ny,
-            dx,
-            dy,
-            neighbors = [],
-            neighborNodes,
-            neighborNode,
-            i,
-            l;
-
-          // directed pruning: can ignore most neighbors, unless forced.
-          if (parent) {
-            px = parent.x;
-            py = parent.y;
-            // get the normalized direction of travel
-            dx = (x - px) / Math.max(Math.abs(x - px), 1);
-            dy = (y - py) / Math.max(Math.abs(y - py), 1);
-
-            // search diagonally
-            if (dx !== 0 && dy !== 0) {
-              if (grid.isWalkableAt(x, y + dy)) {
-                neighbors.push([x, y + dy]);
-              }
-              if (grid.isWalkableAt(x + dx, y)) {
-                neighbors.push([x + dx, y]);
-              }
-              if (
-                grid.isWalkableAt(x, y + dy) &&
-                grid.isWalkableAt(x + dx, y)
-              ) {
-                neighbors.push([x + dx, y + dy]);
-              }
-            }
-            // search horizontally/vertically
-            else {
-              var isNextWalkable;
-              if (dx !== 0) {
-                isNextWalkable = grid.isWalkableAt(x + dx, y);
-                var isTopWalkable = grid.isWalkableAt(x, y + 1);
-                var isBottomWalkable = grid.isWalkableAt(x, y - 1);
-
-                if (isNextWalkable) {
-                  neighbors.push([x + dx, y]);
-                  if (isTopWalkable) {
-                    neighbors.push([x + dx, y + 1]);
-                  }
-                  if (isBottomWalkable) {
-                    neighbors.push([x + dx, y - 1]);
-                  }
-                }
-                if (isTopWalkable) {
-                  neighbors.push([x, y + 1]);
-                }
-                if (isBottomWalkable) {
-                  neighbors.push([x, y - 1]);
-                }
-              } else if (dy !== 0) {
-                isNextWalkable = grid.isWalkableAt(x, y + dy);
-                var isRightWalkable = grid.isWalkableAt(x + 1, y);
-                var isLeftWalkable = grid.isWalkableAt(x - 1, y);
-
-                if (isNextWalkable) {
-                  neighbors.push([x, y + dy]);
-                  if (isRightWalkable) {
-                    neighbors.push([x + 1, y + dy]);
-                  }
-                  if (isLeftWalkable) {
-                    neighbors.push([x - 1, y + dy]);
-                  }
-                }
-                if (isRightWalkable) {
-                  neighbors.push([x + 1, y]);
-                }
-                if (isLeftWalkable) {
-                  neighbors.push([x - 1, y]);
-                }
-              }
-            }
-          }
-          // return all neighbors
-          else {
-            neighborNodes = grid.getNeighbors(
-              node,
-              DiagonalMovement.OnlyWhenNoObstacles
-            );
-            for (i = 0, l = neighborNodes.length; i < l; ++i) {
-              neighborNode = neighborNodes[i];
-              neighbors.push([neighborNode.x, neighborNode.y]);
-            }
-          }
-
-          return neighbors;
-        };
-
-        module.exports = JPFMoveDiagonallyIfNoObstacles;
+        (r.prototype = new t()),
+          (r.prototype.constructor = r),
+          (module.exports = r);
       },
-      {
-        "./JumpPointFinderBase":
-          "node_modules/pathfinding/src/finders/JumpPointFinderBase.js",
-        "../core/DiagonalMovement":
-          "node_modules/pathfinding/src/core/DiagonalMovement.js",
-      },
+      { "./AStarFinder": "w8qd" },
     ],
-    "node_modules/pathfinding/src/finders/JPFMoveDiagonallyIfAtMostOneObstacle.js": [
+    X1Ev: [
       function (require, module, exports) {
-        /**
-         * @author imor / https://github.com/imor
-         */
-        var JumpPointFinderBase = require("./JumpPointFinderBase");
-        var DiagonalMovement = require("../core/DiagonalMovement");
-
-        /**
-         * Path finder using the Jump Point Search algorithm which moves
-         * diagonally only when there is at most one obstacle.
-         */
-        function JPFMoveDiagonallyIfAtMostOneObstacle(opt) {
-          JumpPointFinderBase.call(this, opt);
+        var e = require("heap"),
+          t = require("../core/Util"),
+          o = require("../core/Heuristic"),
+          i = require("../core/DiagonalMovement");
+        function n(e) {
+          (e = e || {}),
+            (this.allowDiagonal = e.allowDiagonal),
+            (this.dontCrossCorners = e.dontCrossCorners),
+            (this.diagonalMovement = e.diagonalMovement),
+            (this.heuristic = e.heuristic || o.manhattan),
+            (this.weight = e.weight || 1),
+            this.diagonalMovement ||
+              (this.allowDiagonal
+                ? this.dontCrossCorners
+                  ? (this.diagonalMovement = i.OnlyWhenNoObstacles)
+                  : (this.diagonalMovement = i.IfAtMostOneObstacle)
+                : (this.diagonalMovement = i.Never)),
+            this.diagonalMovement === i.Never
+              ? (this.heuristic = e.heuristic || o.manhattan)
+              : (this.heuristic = e.heuristic || o.octile);
         }
+        (n.prototype.findPath = function (o, i, n, r, a) {
+          var s,
+            h,
+            g,
+            d,
+            l,
+            p,
+            u,
+            c,
+            f = function (e, t) {
+              return e.f - t.f;
+            },
+            m = new e(f),
+            v = new e(f),
+            M = a.getNodeAt(o, i),
+            w = a.getNodeAt(n, r),
+            y = this.heuristic,
+            b = this.diagonalMovement,
+            N = this.weight,
+            C = Math.abs,
+            x = Math.SQRT2;
+          for (
+            M.g = 0,
+              M.f = 0,
+              m.push(M),
+              M.opened = 1,
+              w.g = 0,
+              w.f = 0,
+              v.push(w),
+              w.opened = 2;
+            !m.empty() && !v.empty();
 
-        JPFMoveDiagonallyIfAtMostOneObstacle.prototype = new JumpPointFinderBase();
-        JPFMoveDiagonallyIfAtMostOneObstacle.prototype.constructor = JPFMoveDiagonallyIfAtMostOneObstacle;
-
-        /**
-         * Search recursively in the direction (parent -> child), stopping only when a
-         * jump point is found.
-         * @protected
-         * @return {Array<Array<number>>} The x, y coordinate of the jump point
-         *     found, or null if not found
-         */
-        JPFMoveDiagonallyIfAtMostOneObstacle.prototype._jump = function (
-          x,
-          y,
-          px,
-          py
-        ) {
-          var grid = this.grid,
-            dx = x - px,
-            dy = y - py;
-
-          if (!grid.isWalkableAt(x, y)) {
-            return null;
-          }
-
-          if (this.trackJumpRecursion === true) {
-            grid.getNodeAt(x, y).tested = true;
-          }
-
-          if (grid.getNodeAt(x, y) === this.endNode) {
-            return [x, y];
-          }
-
-          // check for forced neighbors
-          // along the diagonal
-          if (dx !== 0 && dy !== 0) {
-            if (
-              (grid.isWalkableAt(x - dx, y + dy) &&
-                !grid.isWalkableAt(x - dx, y)) ||
-              (grid.isWalkableAt(x + dx, y - dy) &&
-                !grid.isWalkableAt(x, y - dy))
-            ) {
-              return [x, y];
-            }
-            // when moving diagonally, must check for vertical/horizontal jump points
-            if (this._jump(x + dx, y, x, y) || this._jump(x, y + dy, x, y)) {
-              return [x, y];
-            }
-          }
-          // horizontally/vertically
-          else {
-            if (dx !== 0) {
-              // moving along x
-              if (
-                (grid.isWalkableAt(x + dx, y + 1) &&
-                  !grid.isWalkableAt(x, y + 1)) ||
-                (grid.isWalkableAt(x + dx, y - 1) &&
-                  !grid.isWalkableAt(x, y - 1))
-              ) {
-                return [x, y];
-              }
-            } else {
-              if (
-                (grid.isWalkableAt(x + 1, y + dy) &&
-                  !grid.isWalkableAt(x + 1, y)) ||
-                (grid.isWalkableAt(x - 1, y + dy) &&
-                  !grid.isWalkableAt(x - 1, y))
-              ) {
-                return [x, y];
-              }
-            }
-          }
-
-          // moving diagonally, must make sure one of the vertical/horizontal
-          // neighbors is open to allow the path
-          if (grid.isWalkableAt(x + dx, y) || grid.isWalkableAt(x, y + dy)) {
-            return this._jump(x + dx, y + dy, x, y);
-          } else {
-            return null;
-          }
-        };
-
-        /**
-         * Find the neighbors for the given node. If the node has a parent,
-         * prune the neighbors based on the jump point search algorithm, otherwise
-         * return all available neighbors.
-         * @return {Array<Array<number>>} The neighbors found.
-         */
-        JPFMoveDiagonallyIfAtMostOneObstacle.prototype._findNeighbors = function (
-          node
-        ) {
-          var parent = node.parent,
-            x = node.x,
-            y = node.y,
-            grid = this.grid,
-            px,
-            py,
-            nx,
-            ny,
-            dx,
-            dy,
-            neighbors = [],
-            neighborNodes,
-            neighborNode,
-            i,
-            l;
-
-          // directed pruning: can ignore most neighbors, unless forced.
-          if (parent) {
-            px = parent.x;
-            py = parent.y;
-            // get the normalized direction of travel
-            dx = (x - px) / Math.max(Math.abs(x - px), 1);
-            dy = (y - py) / Math.max(Math.abs(y - py), 1);
-
-            // search diagonally
-            if (dx !== 0 && dy !== 0) {
-              if (grid.isWalkableAt(x, y + dy)) {
-                neighbors.push([x, y + dy]);
-              }
-              if (grid.isWalkableAt(x + dx, y)) {
-                neighbors.push([x + dx, y]);
-              }
-              if (
-                grid.isWalkableAt(x, y + dy) ||
-                grid.isWalkableAt(x + dx, y)
-              ) {
-                neighbors.push([x + dx, y + dy]);
-              }
-              if (
-                !grid.isWalkableAt(x - dx, y) &&
-                grid.isWalkableAt(x, y + dy)
-              ) {
-                neighbors.push([x - dx, y + dy]);
-              }
-              if (
-                !grid.isWalkableAt(x, y - dy) &&
-                grid.isWalkableAt(x + dx, y)
-              ) {
-                neighbors.push([x + dx, y - dy]);
-              }
-            }
-            // search horizontally/vertically
-            else {
-              if (dx === 0) {
-                if (grid.isWalkableAt(x, y + dy)) {
-                  neighbors.push([x, y + dy]);
-                  if (!grid.isWalkableAt(x + 1, y)) {
-                    neighbors.push([x + 1, y + dy]);
-                  }
-                  if (!grid.isWalkableAt(x - 1, y)) {
-                    neighbors.push([x - 1, y + dy]);
-                  }
-                }
-              } else {
-                if (grid.isWalkableAt(x + dx, y)) {
-                  neighbors.push([x + dx, y]);
-                  if (!grid.isWalkableAt(x, y + 1)) {
-                    neighbors.push([x + dx, y + 1]);
-                  }
-                  if (!grid.isWalkableAt(x, y - 1)) {
-                    neighbors.push([x + dx, y - 1]);
-                  }
-                }
-              }
-            }
-          }
-          // return all neighbors
-          else {
-            neighborNodes = grid.getNeighbors(
-              node,
-              DiagonalMovement.IfAtMostOneObstacle
-            );
-            for (i = 0, l = neighborNodes.length; i < l; ++i) {
-              neighborNode = neighborNodes[i];
-              neighbors.push([neighborNode.x, neighborNode.y]);
-            }
-          }
-
-          return neighbors;
-        };
-
-        module.exports = JPFMoveDiagonallyIfAtMostOneObstacle;
-      },
-      {
-        "./JumpPointFinderBase":
-          "node_modules/pathfinding/src/finders/JumpPointFinderBase.js",
-        "../core/DiagonalMovement":
-          "node_modules/pathfinding/src/core/DiagonalMovement.js",
-      },
-    ],
-    "node_modules/pathfinding/src/finders/JumpPointFinder.js": [
-      function (require, module, exports) {
-        /**
-         * @author aniero / https://github.com/aniero
-         */
-        var DiagonalMovement = require("../core/DiagonalMovement");
-        var JPFNeverMoveDiagonally = require("./JPFNeverMoveDiagonally");
-        var JPFAlwaysMoveDiagonally = require("./JPFAlwaysMoveDiagonally");
-        var JPFMoveDiagonallyIfNoObstacles = require("./JPFMoveDiagonallyIfNoObstacles");
-        var JPFMoveDiagonallyIfAtMostOneObstacle = require("./JPFMoveDiagonallyIfAtMostOneObstacle");
-
-        /**
-         * Path finder using the Jump Point Search algorithm
-         * @param {Object} opt
-         * @param {function} opt.heuristic Heuristic function to estimate the distance
-         *     (defaults to manhattan).
-         * @param {DiagonalMovement} opt.diagonalMovement Condition under which diagonal
-         *      movement will be allowed.
-         */
-        function JumpPointFinder(opt) {
-          opt = opt || {};
-          if (opt.diagonalMovement === DiagonalMovement.Never) {
-            return new JPFNeverMoveDiagonally(opt);
-          } else if (opt.diagonalMovement === DiagonalMovement.Always) {
-            return new JPFAlwaysMoveDiagonally(opt);
-          } else if (
-            opt.diagonalMovement === DiagonalMovement.OnlyWhenNoObstacles
           ) {
-            return new JPFMoveDiagonallyIfNoObstacles(opt);
-          } else {
-            return new JPFMoveDiagonallyIfAtMostOneObstacle(opt);
+            for (
+              (s = m.pop()).closed = !0,
+                d = 0,
+                l = (h = a.getNeighbors(s, b)).length;
+              d < l;
+              ++d
+            )
+              if (!(g = h[d]).closed) {
+                if (2 === g.opened) return t.biBacktrace(s, g);
+                (p = g.x),
+                  (u = g.y),
+                  (c = s.g + (p - s.x == 0 || u - s.y == 0 ? 1 : x)),
+                  (!g.opened || c < g.g) &&
+                    ((g.g = c),
+                    (g.h = g.h || N * y(C(p - n), C(u - r))),
+                    (g.f = g.g + g.h),
+                    (g.parent = s),
+                    g.opened ? m.updateItem(g) : (m.push(g), (g.opened = 1)));
+              }
+            for (
+              (s = v.pop()).closed = !0,
+                d = 0,
+                l = (h = a.getNeighbors(s, b)).length;
+              d < l;
+              ++d
+            )
+              if (!(g = h[d]).closed) {
+                if (1 === g.opened) return t.biBacktrace(g, s);
+                (p = g.x),
+                  (u = g.y),
+                  (c = s.g + (p - s.x == 0 || u - s.y == 0 ? 1 : x)),
+                  (!g.opened || c < g.g) &&
+                    ((g.g = c),
+                    (g.h = g.h || N * y(C(p - o), C(u - i))),
+                    (g.f = g.g + g.h),
+                    (g.parent = s),
+                    g.opened ? v.updateItem(g) : (v.push(g), (g.opened = 2)));
+              }
           }
-        }
-
-        module.exports = JumpPointFinder;
+          return [];
+        }),
+          (module.exports = n);
       },
       {
-        "../core/DiagonalMovement":
-          "node_modules/pathfinding/src/core/DiagonalMovement.js",
-        "./JPFNeverMoveDiagonally":
-          "node_modules/pathfinding/src/finders/JPFNeverMoveDiagonally.js",
-        "./JPFAlwaysMoveDiagonally":
-          "node_modules/pathfinding/src/finders/JPFAlwaysMoveDiagonally.js",
-        "./JPFMoveDiagonallyIfNoObstacles":
-          "node_modules/pathfinding/src/finders/JPFMoveDiagonallyIfNoObstacles.js",
-        "./JPFMoveDiagonallyIfAtMostOneObstacle":
-          "node_modules/pathfinding/src/finders/JPFMoveDiagonallyIfAtMostOneObstacle.js",
+        heap: "tAIw",
+        "../core/Util": "ez0E",
+        "../core/Heuristic": "hqcn",
+        "../core/DiagonalMovement": "WdVX",
       },
     ],
-    "node_modules/pathfinding/src/PathFinding.js": [
+    N9Fd: [
+      function (require, module, exports) {
+        var t = require("./BiAStarFinder");
+        function r(r) {
+          t.call(this, r);
+          var e = this.heuristic;
+          this.heuristic = function (t, r) {
+            return 1e6 * e(t, r);
+          };
+        }
+        (r.prototype = new t()),
+          (r.prototype.constructor = r),
+          (module.exports = r);
+      },
+      { "./BiAStarFinder": "X1Ev" },
+    ],
+    mBIn: [
+      function (require, module, exports) {
+        var e = require("../core/Util"),
+          o = require("../core/DiagonalMovement");
+        function t(e) {
+          (e = e || {}),
+            (this.allowDiagonal = e.allowDiagonal),
+            (this.dontCrossCorners = e.dontCrossCorners),
+            (this.diagonalMovement = e.diagonalMovement),
+            this.diagonalMovement ||
+              (this.allowDiagonal
+                ? this.dontCrossCorners
+                  ? (this.diagonalMovement = o.OnlyWhenNoObstacles)
+                  : (this.diagonalMovement = o.IfAtMostOneObstacle)
+                : (this.diagonalMovement = o.Never));
+        }
+        (t.prototype.findPath = function (o, t, n, i, s) {
+          var a,
+            r,
+            l,
+            d,
+            h,
+            g = s.getNodeAt(o, t),
+            f = s.getNodeAt(n, i),
+            p = [],
+            c = [],
+            b = this.diagonalMovement;
+          for (
+            p.push(g),
+              g.opened = !0,
+              g.by = 0,
+              c.push(f),
+              f.opened = !0,
+              f.by = 1;
+            p.length && c.length;
+
+          ) {
+            for (
+              (l = p.shift()).closed = !0,
+                d = 0,
+                h = (a = s.getNeighbors(l, b)).length;
+              d < h;
+              ++d
+            )
+              if (!(r = a[d]).closed)
+                if (r.opened) {
+                  if (1 === r.by) return e.biBacktrace(l, r);
+                } else p.push(r), (r.parent = l), (r.opened = !0), (r.by = 0);
+            for (
+              (l = c.shift()).closed = !0,
+                d = 0,
+                h = (a = s.getNeighbors(l, b)).length;
+              d < h;
+              ++d
+            )
+              if (!(r = a[d]).closed)
+                if (r.opened) {
+                  if (0 === r.by) return e.biBacktrace(r, l);
+                } else c.push(r), (r.parent = l), (r.opened = !0), (r.by = 1);
+          }
+          return [];
+        }),
+          (module.exports = t);
+      },
+      { "../core/Util": "ez0E", "../core/DiagonalMovement": "WdVX" },
+    ],
+    WN2S: [
+      function (require, module, exports) {
+        var t = require("./BiAStarFinder");
+        function r(r) {
+          t.call(this, r),
+            (this.heuristic = function (t, r) {
+              return 0;
+            });
+        }
+        (r.prototype = new t()),
+          (r.prototype.constructor = r),
+          (module.exports = r);
+      },
+      { "./BiAStarFinder": "X1Ev" },
+    ],
+    LiPS: [
+      function (require, module, exports) {
+        var t = require("../core/Util"),
+          e = require("../core/Heuristic"),
+          i = require("../core/Node"),
+          n = require("../core/DiagonalMovement");
+        function r(t) {
+          (t = t || {}),
+            (this.allowDiagonal = t.allowDiagonal),
+            (this.dontCrossCorners = t.dontCrossCorners),
+            (this.diagonalMovement = t.diagonalMovement),
+            (this.heuristic = t.heuristic || e.manhattan),
+            (this.weight = t.weight || 1),
+            (this.trackRecursion = t.trackRecursion || !1),
+            (this.timeLimit = t.timeLimit || 1 / 0),
+            this.diagonalMovement ||
+              (this.allowDiagonal
+                ? this.dontCrossCorners
+                  ? (this.diagonalMovement = n.OnlyWhenNoObstacles)
+                  : (this.diagonalMovement = n.IfAtMostOneObstacle)
+                : (this.diagonalMovement = n.Never)),
+            this.diagonalMovement === n.Never
+              ? (this.heuristic = t.heuristic || e.manhattan)
+              : (this.heuristic = t.heuristic || e.octile);
+        }
+        (r.prototype.findPath = function (t, e, n, r, o) {
+          var s,
+            a,
+            h,
+            u = new Date().getTime(),
+            c = function (t, e) {
+              return this.heuristic(Math.abs(e.x - t.x), Math.abs(e.y - t.y));
+            }.bind(this),
+            l = function (t, e, n, r, s) {
+              if (
+                (0,
+                this.timeLimit > 0 &&
+                  new Date().getTime() - u > 1e3 * this.timeLimit)
+              )
+                return 1 / 0;
+              var a,
+                h,
+                m,
+                g,
+                f = e + c(t, d) * this.weight;
+              if (f > n) return f;
+              if (t == d) return (r[s] = [t.x, t.y]), t;
+              var v,
+                M,
+                C = o.getNeighbors(t, this.diagonalMovement);
+              for (m = 0, a = 1 / 0; (g = C[m]); ++m) {
+                if (
+                  (this.trackRecursion &&
+                    ((g.retainCount = g.retainCount + 1 || 1),
+                    !0 !== g.tested && (g.tested = !0)),
+                  (h = l(
+                    g,
+                    e +
+                      ((M = g),
+                      (v = t).x === M.x || v.y === M.y ? 1 : Math.SQRT2),
+                    n,
+                    r,
+                    s + 1
+                  )) instanceof i)
+                )
+                  return (r[s] = [t.x, t.y]), h;
+                this.trackRecursion && 0 == --g.retainCount && (g.tested = !1),
+                  h < a && (a = h);
+              }
+              return a;
+            }.bind(this),
+            m = o.getNodeAt(t, e),
+            d = o.getNodeAt(n, r),
+            g = c(m, d);
+          for (s = 0; ; ++s) {
+            if ((h = l(m, 0, g, (a = []), 0)) === 1 / 0) return [];
+            if (h instanceof i) return a;
+            g = h;
+          }
+          return [];
+        }),
+          (module.exports = r);
+      },
+      {
+        "../core/Util": "ez0E",
+        "../core/Heuristic": "hqcn",
+        "../core/Node": "m2LD",
+        "../core/DiagonalMovement": "WdVX",
+      },
+    ],
+    DVK8: [
+      function (require, module, exports) {
+        var e = require("heap"),
+          t = require("../core/Util"),
+          i = require("../core/Heuristic"),
+          r = require("../core/DiagonalMovement");
+        function o(e) {
+          (e = e || {}),
+            (this.heuristic = e.heuristic || i.manhattan),
+            (this.trackJumpRecursion = e.trackJumpRecursion || !1);
+        }
+        (o.prototype.findPath = function (i, r, o, n, s) {
+          var h,
+            u = (this.openList = new e(function (e, t) {
+              return e.f - t.f;
+            })),
+            c = (this.startNode = s.getNodeAt(i, r)),
+            d = (this.endNode = s.getNodeAt(o, n));
+          for (
+            this.grid = s, c.g = 0, c.f = 0, u.push(c), c.opened = !0;
+            !u.empty();
+
+          ) {
+            if ((((h = u.pop()).closed = !0), h === d))
+              return t.expandPath(t.backtrace(d));
+            this._identifySuccessors(h);
+          }
+          return [];
+        }),
+          (o.prototype._identifySuccessors = function (e) {
+            var t,
+              r,
+              o,
+              n,
+              s,
+              h,
+              u,
+              c,
+              d,
+              a,
+              p = this.grid,
+              f = this.heuristic,
+              g = this.openList,
+              m = this.endNode.x,
+              N = this.endNode.y,
+              l = e.x,
+              y = e.y,
+              x = Math.abs;
+            Math.max;
+            for (n = 0, s = (t = this._findNeighbors(e)).length; n < s; ++n)
+              if (((r = t[n]), (o = this._jump(r[0], r[1], l, y)))) {
+                if (((h = o[0]), (u = o[1]), (a = p.getNodeAt(h, u)).closed))
+                  continue;
+                (c = i.octile(x(h - l), x(u - y))),
+                  (d = e.g + c),
+                  (!a.opened || d < a.g) &&
+                    ((a.g = d),
+                    (a.h = a.h || f(x(h - m), x(u - N))),
+                    (a.f = a.g + a.h),
+                    (a.parent = e),
+                    a.opened ? g.updateItem(a) : (g.push(a), (a.opened = !0)));
+              }
+          }),
+          (module.exports = o);
+      },
+      {
+        heap: "tAIw",
+        "../core/Util": "ez0E",
+        "../core/Heuristic": "hqcn",
+        "../core/DiagonalMovement": "WdVX",
+      },
+    ],
+    MqXc: [
+      function (require, module, exports) {
+        var e = require("./JumpPointFinderBase"),
+          t = require("../core/DiagonalMovement");
+        function a(t) {
+          e.call(this, t);
+        }
+        (a.prototype = new e()),
+          (a.prototype.constructor = a),
+          (a.prototype._jump = function (e, t, a, i) {
+            var r = this.grid,
+              l = e - a,
+              s = t - i;
+            if (!r.isWalkableAt(e, t)) return null;
+            if (
+              (!0 === this.trackJumpRecursion &&
+                (r.getNodeAt(e, t).tested = !0),
+              r.getNodeAt(e, t) === this.endNode)
+            )
+              return [e, t];
+            if (0 !== l) {
+              if (
+                (r.isWalkableAt(e, t - 1) && !r.isWalkableAt(e - l, t - 1)) ||
+                (r.isWalkableAt(e, t + 1) && !r.isWalkableAt(e - l, t + 1))
+              )
+                return [e, t];
+            } else {
+              if (0 === s)
+                throw new Error(
+                  "Only horizontal and vertical movements are allowed"
+                );
+              if (
+                (r.isWalkableAt(e - 1, t) && !r.isWalkableAt(e - 1, t - s)) ||
+                (r.isWalkableAt(e + 1, t) && !r.isWalkableAt(e + 1, t - s))
+              )
+                return [e, t];
+              if (this._jump(e + 1, t, e, t) || this._jump(e - 1, t, e, t))
+                return [e, t];
+            }
+            return this._jump(e + l, t + s, e, t);
+          }),
+          (a.prototype._findNeighbors = function (e) {
+            var a,
+              i,
+              r,
+              l,
+              s,
+              o,
+              n,
+              u,
+              h = e.parent,
+              p = e.x,
+              b = e.y,
+              A = this.grid,
+              k = [];
+            if (h)
+              (a = h.x),
+                (i = h.y),
+                (r = (p - a) / Math.max(Math.abs(p - a), 1)),
+                (l = (b - i) / Math.max(Math.abs(b - i), 1)),
+                0 !== r
+                  ? (A.isWalkableAt(p, b - 1) && k.push([p, b - 1]),
+                    A.isWalkableAt(p, b + 1) && k.push([p, b + 1]),
+                    A.isWalkableAt(p + r, b) && k.push([p + r, b]))
+                  : 0 !== l &&
+                    (A.isWalkableAt(p - 1, b) && k.push([p - 1, b]),
+                    A.isWalkableAt(p + 1, b) && k.push([p + 1, b]),
+                    A.isWalkableAt(p, b + l) && k.push([p, b + l]));
+            else
+              for (
+                n = 0, u = (s = A.getNeighbors(e, t.Never)).length;
+                n < u;
+                ++n
+              )
+                (o = s[n]), k.push([o.x, o.y]);
+            return k;
+          }),
+          (module.exports = a);
+      },
+      { "./JumpPointFinderBase": "DVK8", "../core/DiagonalMovement": "WdVX" },
+    ],
+    PtLR: [
+      function (require, module, exports) {
+        var t = require("./JumpPointFinderBase"),
+          e = require("../core/DiagonalMovement");
+        function a(e) {
+          t.call(this, e);
+        }
+        (a.prototype = new t()),
+          (a.prototype.constructor = a),
+          (a.prototype._jump = function (t, e, a, l) {
+            var s = this.grid,
+              i = t - a,
+              r = e - l;
+            if (!s.isWalkableAt(t, e)) return null;
+            if (
+              (!0 === this.trackJumpRecursion &&
+                (s.getNodeAt(t, e).tested = !0),
+              s.getNodeAt(t, e) === this.endNode)
+            )
+              return [t, e];
+            if (0 !== i && 0 !== r) {
+              if (
+                (s.isWalkableAt(t - i, e + r) && !s.isWalkableAt(t - i, e)) ||
+                (s.isWalkableAt(t + i, e - r) && !s.isWalkableAt(t, e - r))
+              )
+                return [t, e];
+              if (this._jump(t + i, e, t, e) || this._jump(t, e + r, t, e))
+                return [t, e];
+            } else if (0 !== i) {
+              if (
+                (s.isWalkableAt(t + i, e + 1) && !s.isWalkableAt(t, e + 1)) ||
+                (s.isWalkableAt(t + i, e - 1) && !s.isWalkableAt(t, e - 1))
+              )
+                return [t, e];
+            } else if (
+              (s.isWalkableAt(t + 1, e + r) && !s.isWalkableAt(t + 1, e)) ||
+              (s.isWalkableAt(t - 1, e + r) && !s.isWalkableAt(t - 1, e))
+            )
+              return [t, e];
+            return this._jump(t + i, e + r, t, e);
+          }),
+          (a.prototype._findNeighbors = function (t) {
+            var a,
+              l,
+              s,
+              i,
+              r,
+              u,
+              b,
+              p,
+              h = t.parent,
+              A = t.x,
+              n = t.y,
+              o = this.grid,
+              k = [];
+            if (h)
+              (a = h.x),
+                (l = h.y),
+                (s = (A - a) / Math.max(Math.abs(A - a), 1)),
+                (i = (n - l) / Math.max(Math.abs(n - l), 1)),
+                0 !== s && 0 !== i
+                  ? (o.isWalkableAt(A, n + i) && k.push([A, n + i]),
+                    o.isWalkableAt(A + s, n) && k.push([A + s, n]),
+                    o.isWalkableAt(A + s, n + i) && k.push([A + s, n + i]),
+                    o.isWalkableAt(A - s, n) || k.push([A - s, n + i]),
+                    o.isWalkableAt(A, n - i) || k.push([A + s, n - i]))
+                  : 0 === s
+                  ? (o.isWalkableAt(A, n + i) && k.push([A, n + i]),
+                    o.isWalkableAt(A + 1, n) || k.push([A + 1, n + i]),
+                    o.isWalkableAt(A - 1, n) || k.push([A - 1, n + i]))
+                  : (o.isWalkableAt(A + s, n) && k.push([A + s, n]),
+                    o.isWalkableAt(A, n + 1) || k.push([A + s, n + 1]),
+                    o.isWalkableAt(A, n - 1) || k.push([A + s, n - 1]));
+            else
+              for (
+                b = 0, p = (r = o.getNeighbors(t, e.Always)).length;
+                b < p;
+                ++b
+              )
+                (u = r[b]), k.push([u.x, u.y]);
+            return k;
+          }),
+          (module.exports = a);
+      },
+      { "./JumpPointFinderBase": "DVK8", "../core/DiagonalMovement": "WdVX" },
+    ],
+    LLTW: [
+      function (require, module, exports) {
+        var e = require("./JumpPointFinderBase"),
+          t = require("../core/DiagonalMovement");
+        function a(t) {
+          e.call(this, t);
+        }
+        (a.prototype = new e()),
+          (a.prototype.constructor = a),
+          (a.prototype._jump = function (e, t, a, s) {
+            var l = this.grid,
+              i = e - a,
+              r = t - s;
+            if (!l.isWalkableAt(e, t)) return null;
+            if (
+              (!0 === this.trackJumpRecursion &&
+                (l.getNodeAt(e, t).tested = !0),
+              l.getNodeAt(e, t) === this.endNode)
+            )
+              return [e, t];
+            if (0 !== i && 0 !== r) {
+              if (this._jump(e + i, t, e, t) || this._jump(e, t + r, e, t))
+                return [e, t];
+            } else if (0 !== i) {
+              if (
+                (l.isWalkableAt(e, t - 1) && !l.isWalkableAt(e - i, t - 1)) ||
+                (l.isWalkableAt(e, t + 1) && !l.isWalkableAt(e - i, t + 1))
+              )
+                return [e, t];
+            } else if (
+              0 !== r &&
+              ((l.isWalkableAt(e - 1, t) && !l.isWalkableAt(e - 1, t - r)) ||
+                (l.isWalkableAt(e + 1, t) && !l.isWalkableAt(e + 1, t - r)))
+            )
+              return [e, t];
+            return l.isWalkableAt(e + i, t) && l.isWalkableAt(e, t + r)
+              ? this._jump(e + i, t + r, e, t)
+              : null;
+          }),
+          (a.prototype._findNeighbors = function (e) {
+            var a,
+              s,
+              l,
+              i,
+              r,
+              u,
+              h,
+              p,
+              n,
+              o = e.parent,
+              b = e.x,
+              A = e.y,
+              k = this.grid,
+              W = [];
+            if (o) {
+              if (
+                ((a = o.x),
+                (s = o.y),
+                (l = (b - a) / Math.max(Math.abs(b - a), 1)),
+                (i = (A - s) / Math.max(Math.abs(A - s), 1)),
+                0 !== l && 0 !== i)
+              )
+                k.isWalkableAt(b, A + i) && W.push([b, A + i]),
+                  k.isWalkableAt(b + l, A) && W.push([b + l, A]),
+                  k.isWalkableAt(b, A + i) &&
+                    k.isWalkableAt(b + l, A) &&
+                    W.push([b + l, A + i]);
+              else if (0 !== l) {
+                n = k.isWalkableAt(b + l, A);
+                var f = k.isWalkableAt(b, A + 1),
+                  c = k.isWalkableAt(b, A - 1);
+                n &&
+                  (W.push([b + l, A]),
+                  f && W.push([b + l, A + 1]),
+                  c && W.push([b + l, A - 1])),
+                  f && W.push([b, A + 1]),
+                  c && W.push([b, A - 1]);
+              } else if (0 !== i) {
+                n = k.isWalkableAt(b, A + i);
+                var d = k.isWalkableAt(b + 1, A),
+                  m = k.isWalkableAt(b - 1, A);
+                n &&
+                  (W.push([b, A + i]),
+                  d && W.push([b + 1, A + i]),
+                  m && W.push([b - 1, A + i])),
+                  d && W.push([b + 1, A]),
+                  m && W.push([b - 1, A]);
+              }
+            } else
+              for (
+                h = 0,
+                  p = (r = k.getNeighbors(e, t.OnlyWhenNoObstacles)).length;
+                h < p;
+                ++h
+              )
+                (u = r[h]), W.push([u.x, u.y]);
+            return W;
+          }),
+          (module.exports = a);
+      },
+      { "./JumpPointFinderBase": "DVK8", "../core/DiagonalMovement": "WdVX" },
+    ],
+    iNYD: [
+      function (require, module, exports) {
+        var t = require("./JumpPointFinderBase"),
+          a = require("../core/DiagonalMovement");
+        function e(a) {
+          t.call(this, a);
+        }
+        (e.prototype = new t()),
+          (e.prototype.constructor = e),
+          (e.prototype._jump = function (t, a, e, l) {
+            var s = this.grid,
+              i = t - e,
+              r = a - l;
+            if (!s.isWalkableAt(t, a)) return null;
+            if (
+              (!0 === this.trackJumpRecursion &&
+                (s.getNodeAt(t, a).tested = !0),
+              s.getNodeAt(t, a) === this.endNode)
+            )
+              return [t, a];
+            if (0 !== i && 0 !== r) {
+              if (
+                (s.isWalkableAt(t - i, a + r) && !s.isWalkableAt(t - i, a)) ||
+                (s.isWalkableAt(t + i, a - r) && !s.isWalkableAt(t, a - r))
+              )
+                return [t, a];
+              if (this._jump(t + i, a, t, a) || this._jump(t, a + r, t, a))
+                return [t, a];
+            } else if (0 !== i) {
+              if (
+                (s.isWalkableAt(t + i, a + 1) && !s.isWalkableAt(t, a + 1)) ||
+                (s.isWalkableAt(t + i, a - 1) && !s.isWalkableAt(t, a - 1))
+              )
+                return [t, a];
+            } else if (
+              (s.isWalkableAt(t + 1, a + r) && !s.isWalkableAt(t + 1, a)) ||
+              (s.isWalkableAt(t - 1, a + r) && !s.isWalkableAt(t - 1, a))
+            )
+              return [t, a];
+            return s.isWalkableAt(t + i, a) || s.isWalkableAt(t, a + r)
+              ? this._jump(t + i, a + r, t, a)
+              : null;
+          }),
+          (e.prototype._findNeighbors = function (t) {
+            var e,
+              l,
+              s,
+              i,
+              r,
+              u,
+              b,
+              A,
+              k = t.parent,
+              W = t.x,
+              n = t.y,
+              p = this.grid,
+              h = [];
+            if (k)
+              (e = k.x),
+                (l = k.y),
+                (s = (W - e) / Math.max(Math.abs(W - e), 1)),
+                (i = (n - l) / Math.max(Math.abs(n - l), 1)),
+                0 !== s && 0 !== i
+                  ? (p.isWalkableAt(W, n + i) && h.push([W, n + i]),
+                    p.isWalkableAt(W + s, n) && h.push([W + s, n]),
+                    (p.isWalkableAt(W, n + i) || p.isWalkableAt(W + s, n)) &&
+                      h.push([W + s, n + i]),
+                    !p.isWalkableAt(W - s, n) &&
+                      p.isWalkableAt(W, n + i) &&
+                      h.push([W - s, n + i]),
+                    !p.isWalkableAt(W, n - i) &&
+                      p.isWalkableAt(W + s, n) &&
+                      h.push([W + s, n - i]))
+                  : 0 === s
+                  ? p.isWalkableAt(W, n + i) &&
+                    (h.push([W, n + i]),
+                    p.isWalkableAt(W + 1, n) || h.push([W + 1, n + i]),
+                    p.isWalkableAt(W - 1, n) || h.push([W - 1, n + i]))
+                  : p.isWalkableAt(W + s, n) &&
+                    (h.push([W + s, n]),
+                    p.isWalkableAt(W, n + 1) || h.push([W + s, n + 1]),
+                    p.isWalkableAt(W, n - 1) || h.push([W + s, n - 1]));
+            else
+              for (
+                b = 0,
+                  A = (r = p.getNeighbors(t, a.IfAtMostOneObstacle)).length;
+                b < A;
+                ++b
+              )
+                (u = r[b]), h.push([u.x, u.y]);
+            return h;
+          }),
+          (module.exports = e);
+      },
+      { "./JumpPointFinderBase": "DVK8", "../core/DiagonalMovement": "WdVX" },
+    ],
+    ao7B: [
+      function (require, module, exports) {
+        var e = require("../core/DiagonalMovement"),
+          o = require("./JPFNeverMoveDiagonally"),
+          a = require("./JPFAlwaysMoveDiagonally"),
+          n = require("./JPFMoveDiagonallyIfNoObstacles"),
+          l = require("./JPFMoveDiagonallyIfAtMostOneObstacle");
+        function r(r) {
+          return (r = r || {}).diagonalMovement === e.Never
+            ? new o(r)
+            : r.diagonalMovement === e.Always
+            ? new a(r)
+            : r.diagonalMovement === e.OnlyWhenNoObstacles
+            ? new n(r)
+            : new l(r);
+        }
+        module.exports = r;
+      },
+      {
+        "../core/DiagonalMovement": "WdVX",
+        "./JPFNeverMoveDiagonally": "MqXc",
+        "./JPFAlwaysMoveDiagonally": "PtLR",
+        "./JPFMoveDiagonallyIfNoObstacles": "LLTW",
+        "./JPFMoveDiagonallyIfAtMostOneObstacle": "iNYD",
+      },
+    ],
+    wwQQ: [
       function (require, module, exports) {
         module.exports = {
           Heap: require("heap"),
@@ -23473,2325 +21577,1365 @@ parcelRequire = (function (modules, cache, entry, globalName) {
         };
       },
       {
-        heap: "node_modules/heap/index.js",
-        "./core/Node": "node_modules/pathfinding/src/core/Node.js",
-        "./core/Grid": "node_modules/pathfinding/src/core/Grid.js",
-        "./core/Util": "node_modules/pathfinding/src/core/Util.js",
-        "./core/DiagonalMovement":
-          "node_modules/pathfinding/src/core/DiagonalMovement.js",
-        "./core/Heuristic": "node_modules/pathfinding/src/core/Heuristic.js",
-        "./finders/AStarFinder":
-          "node_modules/pathfinding/src/finders/AStarFinder.js",
-        "./finders/BestFirstFinder":
-          "node_modules/pathfinding/src/finders/BestFirstFinder.js",
-        "./finders/BreadthFirstFinder":
-          "node_modules/pathfinding/src/finders/BreadthFirstFinder.js",
-        "./finders/DijkstraFinder":
-          "node_modules/pathfinding/src/finders/DijkstraFinder.js",
-        "./finders/BiAStarFinder":
-          "node_modules/pathfinding/src/finders/BiAStarFinder.js",
-        "./finders/BiBestFirstFinder":
-          "node_modules/pathfinding/src/finders/BiBestFirstFinder.js",
-        "./finders/BiBreadthFirstFinder":
-          "node_modules/pathfinding/src/finders/BiBreadthFirstFinder.js",
-        "./finders/BiDijkstraFinder":
-          "node_modules/pathfinding/src/finders/BiDijkstraFinder.js",
-        "./finders/IDAStarFinder":
-          "node_modules/pathfinding/src/finders/IDAStarFinder.js",
-        "./finders/JumpPointFinder":
-          "node_modules/pathfinding/src/finders/JumpPointFinder.js",
+        heap: "tAIw",
+        "./core/Node": "m2LD",
+        "./core/Grid": "vMCg",
+        "./core/Util": "ez0E",
+        "./core/DiagonalMovement": "WdVX",
+        "./core/Heuristic": "hqcn",
+        "./finders/AStarFinder": "w8qd",
+        "./finders/BestFirstFinder": "ruAP",
+        "./finders/BreadthFirstFinder": "yTUG",
+        "./finders/DijkstraFinder": "ivAt",
+        "./finders/BiAStarFinder": "X1Ev",
+        "./finders/BiBestFirstFinder": "N9Fd",
+        "./finders/BiBreadthFirstFinder": "mBIn",
+        "./finders/BiDijkstraFinder": "WN2S",
+        "./finders/IDAStarFinder": "LiPS",
+        "./finders/JumpPointFinder": "ao7B",
       },
     ],
-    "node_modules/pathfinding/index.js": [
+    VWUg: [
       function (require, module, exports) {
         module.exports = require("./src/PathFinding");
       },
-      { "./src/PathFinding": "node_modules/pathfinding/src/PathFinding.js" },
+      { "./src/PathFinding": "wwQQ" },
     ],
-    "src/level.ts": [
+    pDJl: [
       function (require, module, exports) {
         "use strict";
-
-        Object.defineProperty(exports, "__esModule", {
-          value: true,
-        });
-        exports.manhattanDistance = manhattanDistance;
-        exports.Level = exports.CharacterAlignment = exports.CellType = void 0;
-
-        var _excalibur = require("excalibur");
-
-        var _character = require("./character");
-
-        var _pathfinding = require("pathfinding");
-
-        var _resources = require("./resources");
-
-        var _index = require("./index");
-
-        var __extends =
-          (void 0 && (void 0).__extends) ||
-          (function () {
-            var _extendStatics = function extendStatics(d, b) {
-              _extendStatics =
+        Object.defineProperty(exports, "__esModule", { value: !0 }),
+          (exports.manhattanDistance = p),
+          (exports.Level = exports.CharacterAlignment = exports.CellType = void 0);
+        var e,
+          t,
+          n = require("excalibur"),
+          r = require("./character"),
+          o = require("pathfinding"),
+          a = require("./resources"),
+          i = require("./index"),
+          l = (function () {
+            var e = function (t, n) {
+              return (e =
                 Object.setPrototypeOf ||
-                ({
-                  __proto__: [],
-                } instanceof Array &&
-                  function (d, b) {
-                    d.__proto__ = b;
+                ({ __proto__: [] } instanceof Array &&
+                  function (e, t) {
+                    e.__proto__ = t;
                   }) ||
-                function (d, b) {
-                  for (var p in b) {
-                    if (b.hasOwnProperty(p)) d[p] = b[p];
-                  }
-                };
-
-              return _extendStatics(d, b);
+                function (e, t) {
+                  for (var n in t) t.hasOwnProperty(n) && (e[n] = t[n]);
+                })(t, n);
             };
-
-            return function (d, b) {
-              _extendStatics(d, b);
-
-              function __() {
-                this.constructor = d;
+            return function (t, n) {
+              function r() {
+                this.constructor = t;
               }
-
-              d.prototype =
-                b === null
-                  ? Object.create(b)
-                  : ((__.prototype = b.prototype), new __());
+              e(t, n),
+                (t.prototype =
+                  null === n
+                    ? Object.create(n)
+                    : ((r.prototype = n.prototype), new r()));
             };
-          })();
-
-        var __spreadArrays =
-          (void 0 && (void 0).__spreadArrays) ||
-          function () {
-            for (var s = 0, i = 0, il = arguments.length; i < il; i++) {
-              s += arguments[i].length;
-            }
-
-            for (var r = Array(s), k = 0, i = 0; i < il; i++) {
-              for (
-                var a = arguments[i], j = 0, jl = a.length;
-                j < jl;
-                j++, k++
-              ) {
-                r[k] = a[j];
-              }
-            }
-
+          })(),
+          s = function () {
+            for (var e = 0, t = 0, n = arguments.length; t < n; t++)
+              e += arguments[t].length;
+            var r = Array(e),
+              o = 0;
+            for (t = 0; t < n; t++)
+              for (var a = arguments[t], i = 0, l = a.length; i < l; i++, o++)
+                r[o] = a[i];
             return r;
           };
-
-        var _a;
-
-        var CellType;
-        exports.CellType = CellType;
-
-        (function (CellType) {
-          CellType[(CellType["WALL"] = 0)] = "WALL";
-          CellType[(CellType["FLOOR"] = 1)] = "FLOOR";
-          CellType[(CellType["STAIR"] = 2)] = "STAIR";
-          CellType[(CellType["NONE"] = 3)] = "NONE";
-        })(CellType || (exports.CellType = CellType = {}));
-
-        var CELL_TYPE_DATA =
-          ((_a = {}),
-          (_a[CellType.WALL] = {
-            solid: true,
-          }),
-          (_a[CellType.FLOOR] = {
-            solid: false,
-          }),
-          (_a[CellType.STAIR] = {
-            solid: false,
-          }),
-          (_a[CellType.NONE] = {
-            solid: true,
-          }),
-          _a);
-        var CharacterAlignment;
-        exports.CharacterAlignment = CharacterAlignment;
-
-        (function (CharacterAlignment) {
-          CharacterAlignment[(CharacterAlignment["PLAYER"] = 0)] = "PLAYER";
-          CharacterAlignment[(CharacterAlignment["ENEMY"] = 1)] = "ENEMY";
-        })(
-          CharacterAlignment ||
-            (exports.CharacterAlignment = CharacterAlignment = {})
-        );
-
-        function manhattanDistance(a, b) {
-          return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+        (exports.CellType = t),
+          (function (e) {
+            (e[(e.WALL = 0)] = "WALL"),
+              (e[(e.FLOOR = 1)] = "FLOOR"),
+              (e[(e.STAIR = 2)] = "STAIR"),
+              (e[(e.NONE = 3)] = "NONE");
+          })(t || (exports.CellType = t = {}));
+        var c,
+          u =
+            (((e = {})[t.WALL] = { solid: !0 }),
+            (e[t.FLOOR] = { solid: !1 }),
+            (e[t.STAIR] = { solid: !1 }),
+            (e[t.NONE] = { solid: !0 }),
+            e);
+        function p(e, t) {
+          return Math.abs(e.x - t.x) + Math.abs(e.y - t.y);
         }
-
-        var Level =
-          /** @class */
-          (function (_super) {
-            __extends(Level, _super);
-
-            function Level(engine, terrain_data, spawnPoints, depth) {
-              var _this = _super.call(this, engine) || this;
-
-              _this.enemies = [];
-              _this.players = [];
-              _this.moveOverlay = [];
-              _this.attackOverlay = [];
-
-              _this.onClick = function (evt) {
-                if (!_this.playerTurn) {
-                  return;
-                }
-
-                var clickedOnCharacter = _this.characters.find(function (
-                  character
-                ) {
-                  return character.contains(evt.pos.x, evt.pos.y);
-                });
-
-                if (clickedOnCharacter) {
-                  if (evt.button == _excalibur.Input.PointerButton.Right) {
-                  }
-                } else {
-                  var coords = _this.pixelToTileCoords(evt.pos);
-
-                  console.log(coords, _this.terrain_data[coords.y][coords.x]);
-                }
-              };
-
-              _this.generateTextOverlay = function (lines, pos) {
-                var overlayHeight = (Level.TILE_SIZE * lines.length) / 2 + 5;
-                var labels = lines.map(function (line, i) {
-                  return new _excalibur.Label({
-                    text: line,
-                    color: _excalibur.Color.White,
-                    x: 2,
-                    y: 15 * (i + 1) - overlayHeight / 2,
-                  });
-                });
-                var overlayWidth =
-                  labels
-                    .map(function (label) {
-                      return label.getTextWidth(_this.engine.ctx);
-                    })
-                    .sort(function (a, b) {
-                      return a - b;
-                    })
-                    .pop() + 4;
-                labels.forEach(function (label) {
-                  return (label.pos.x -= overlayWidth / 2);
-                });
-                var overlayBg = new _excalibur.Actor({
-                  x: pos.x,
-                  y: pos.y,
-                  width: overlayWidth + 2,
-                  height: overlayHeight + 2,
-                  color: _excalibur.Color.White,
-                });
-                var overlay = new _excalibur.Actor({
-                  x: 0,
-                  y: 0,
-                  width: overlayWidth + 1,
-                  height: overlayHeight,
-                  color: _excalibur.Color.Black,
-                });
-                labels.forEach(function (overlayText) {
-                  return overlay.add(overlayText);
-                });
-                overlayBg.add(overlay);
-                return overlayBg;
-              };
-
-              _this.moveCharacter = function (oldPos, newPos, character) {
-                console.log("moving character " + character.id);
-
-                var path = _this
-                  .pathfind(oldPos, newPos)
-                  .map(_this.tileToPixelCoords);
-
-                _this.map_data[oldPos.x][oldPos.y].character = undefined;
-                _this.map_data[newPos.x][newPos.y].character = character;
-                return character.goTo(path).then(function () {
+        (exports.CharacterAlignment = c),
+          (function (e) {
+            (e[(e.PLAYER = 0)] = "PLAYER"), (e[(e.ENEMY = 1)] = "ENEMY");
+          })(c || (exports.CharacterAlignment = c = {}));
+        var h = (function (e) {
+          function h(l, s, d, f) {
+            var y = e.call(this, l) || this;
+            return (
+              (y.enemies = []),
+              (y.players = []),
+              (y.moveOverlay = []),
+              (y.attackOverlay = []),
+              (y.onClick = function (e) {
+                if (y.playerTurn)
                   if (
-                    character.controllable &&
-                    _this.terrain_data[newPos.x][newPos.y] == CellType.STAIR
-                  ) {
-                    console.log("Exit Level!");
-                    var nextLevel = (0, _index.generateLevel)(
-                      _this.engine,
-                      _this.depth + 1
-                    );
-
-                    _this.goToLevel(nextLevel);
-                  }
-                });
-              };
-
-              _this.tileToPixelCoords = function (tileCoords) {
-                return tileCoords
-                  .sub((0, _excalibur.vec)(_this.tilemap.x, _this.tilemap.y))
-                  .scale(Level.TILE_SIZE)
-                  .add(_excalibur.Vector.One.scale(Level.TILE_SIZE / 2));
-              };
-
-              _this.spawnCharacter = function (spawnPoint) {
-                var pixelCoords = _this.tileToPixelCoords(spawnPoint.spawnTile);
-
-                var spawnedCharacter;
-
-                switch (spawnPoint.alignment) {
-                  case CharacterAlignment.PLAYER:
-                    spawnedCharacter = new _character.Player(
-                      pixelCoords,
-                      spawnPoint.class
-                    );
-                    break;
-
-                  case CharacterAlignment.ENEMY:
-                    spawnedCharacter = new _character.Enemy(
-                      pixelCoords,
-                      spawnPoint.class
-                    );
-                    break;
-                }
-
-                if (spawnedCharacter.controllable) {
-                  spawnedCharacter.on("pointerup", function () {
-                    if (
-                      _this.selectedPlayer &&
-                      _this.selectedPlayer.id == spawnedCharacter.id
-                    ) {
-                      _this.deselectPlayer();
-                    } else {
-                      if (_this.selectedPlayer) {
-                        _this.deselectPlayer();
-                      }
-
-                      _this.selectPlayer(spawnedCharacter);
-
-                      if (_this.statOverlay) {
-                        _this.createStatOverlay(spawnedCharacter);
-                      }
-                    }
-                  });
-
-                  _this.players.push(spawnedCharacter);
-                } else {
-                  _this.enemies.push(spawnedCharacter);
-                } // stat overlay generation
-
-                spawnedCharacter.on("pointerenter", function () {
-                  _this.createStatOverlay(spawnedCharacter);
-                });
-                spawnedCharacter.on("pointerleave", function () {
-                  if (_this.statOverlay) {
-                    _this.statOverlay.kill();
-                  }
-
-                  _this.statOverlay = undefined;
-                });
-                _this.map_data[spawnPoint.spawnTile.x][
-                  spawnPoint.spawnTile.y
-                ].character = spawnedCharacter;
-                return spawnedCharacter;
-              };
-
-              _this.selectPlayer = function (player) {
-                _this.generateOverlay(player);
-
-                _this.selectedPlayer = player;
-              };
-
-              _this.getPossibleMoves = function (character, potentialEnemies) {
-                var characterPos = _this.pixelToTileCoords(character.pos);
-
-                var attackRange = character.cClass.attack.range;
-
-                var possibleDestinations = _this.getTilesWithinDist(
-                  characterPos,
-                  (character.moveExhausted.inner
-                    ? 0
-                    : character.cClass.moveRange.inner) +
-                    (character.moveExhausted.outer
-                      ? 0
-                      : character.cClass.moveRange.outer)
-                );
-
-                var placesToAttackFrom = [];
-
-                if (!character.moveExhausted.inner) {
-                  placesToAttackFrom = _this.getTilesWithinDist(
-                    characterPos,
-                    character.cClass.moveRange.inner
-                  );
-                }
-
-                if (!character.moveExhausted.outer) {
-                  placesToAttackFrom.push(characterPos);
-                }
-
-                var enemiesInRange = [];
-
-                if (!character.moveExhausted.outer) {
-                  potentialEnemies
-                    .map(function (enemy) {
-                      return {
-                        enemy: enemy,
-                        enemyPos: _this.pixelToTileCoords(enemy.pos),
-                      };
+                    y.characters.find(function (t) {
+                      return t.contains(e.pos.x, e.pos.y);
                     })
-                    .filter(function (_a) {
-                      var enemyPos = _a.enemyPos;
-                      return placesToAttackFrom.some(function (pos) {
-                        return manhattanDistance(enemyPos, pos) <= attackRange;
-                      });
-                    })
-                    .forEach(function (x) {
-                      return enemiesInRange.push(x);
-                    });
-                }
-
-                return {
-                  innerMoves: placesToAttackFrom,
-                  allMoves: possibleDestinations,
-                  attackableEnemies: enemiesInRange,
-                };
-              };
-
-              _this.attack = function (attacker, victim) {
-                attacker.setDrawing("atk");
-                attacker.currentDrawing.flipHorizontal =
-                  victim.pos.x < attacker.pos.x;
-                setTimeout(function () {
-                  attacker.setDrawing("idle");
-                }, 1000);
-                var victimDead = victim.damage(attacker.cClass.attack);
-
-                if (victimDead) {
-                  var overlayMessage = attacker.gainExp(
-                    victim.cClass.deathExp()
-                  );
-
-                  if (overlayMessage) {
-                    var actor_1 = _this.generateTextOverlay(
-                      overlayMessage,
-                      attacker.pos.add(
-                        (0, _excalibur.vec)(2.75 * Level.TILE_SIZE, 0)
-                      )
-                    );
-
-                    _this.engine.add(actor_1);
-
-                    actor_1.on("pointerdown", function (evt) {
-                      actor_1.kill();
-                    });
+                  )
+                    e.button, n.Input.PointerButton.Right;
+                  else {
+                    var t = y.pixelToTileCoords(e.pos);
+                    console.log(t, y.terrain_data[t.y][t.x]);
                   }
-
-                  var victimPos = _this.pixelToTileCoords(victim.pos);
-
-                  _this.players = _this.players.filter(function (player) {
-                    return player.id != victim.id;
+              }),
+              (y.generateTextOverlay = function (e, t) {
+                var r = (h.TILE_SIZE * e.length) / 2 + 5,
+                  o = e.map(function (e, t) {
+                    return new n.Label({
+                      text: e,
+                      color: n.Color.White,
+                      x: 2,
+                      y: 15 * (t + 1) - r / 2,
+                    });
+                  }),
+                  a =
+                    o
+                      .map(function (e) {
+                        return e.getTextWidth(y.engine.ctx);
+                      })
+                      .sort(function (e, t) {
+                        return e - t;
+                      })
+                      .pop() + 4;
+                o.forEach(function (e) {
+                  return (e.pos.x -= a / 2);
+                });
+                var i = new n.Actor({
+                    x: t.x,
+                    y: t.y,
+                    width: a + 2,
+                    height: r + 2,
+                    color: n.Color.White,
+                  }),
+                  l = new n.Actor({
+                    x: 0,
+                    y: 0,
+                    width: a + 1,
+                    height: r,
+                    color: n.Color.Black,
                   });
-                  _this.enemies = _this.enemies.filter(function (player) {
-                    return player.id != victim.id;
-                  });
-                  _this.map_data[victimPos.x][
-                    victimPos.y
-                  ].character = undefined;
-
-                  if (_this.players.length <= 0) {
-                    console.log("Game over!");
-
-                    _this.gameOver();
-                  }
-                }
-
-                attacker.spendAttack();
-                console.log(
-                  attacker.id +
-                    " attacking " +
-                    victim.id +
-                    " at " +
-                    _this.pixelToTileCoords(victim.pos) +
-                    ", its health is now " +
-                    victim.health
+                return (
+                  o.forEach(function (e) {
+                    return l.add(e);
+                  }),
+                  i.add(l),
+                  i
                 );
-              };
-
-              _this.moveToThenAttack = function (
-                attacker,
-                victim,
-                victimPos,
-                possibleMoves
-              ) {
-                var attackerPos = _this.pixelToTileCoords(attacker.pos);
-
-                var attackFrom = _this.getAttackStagingPoint(
-                  attackerPos,
-                  victimPos,
-                  attacker,
-                  possibleMoves
-                );
-
-                return _this
-                  .moveCharacter(attackerPos, attackFrom, attacker)
-                  .then(function () {
-                    return _this.attack(attacker, victim);
-                  });
-              };
-
-              _this.generateOverlay = function (player) {
-                var possibleMoves = _this.getPossibleMoves(
-                  player,
-                  _this.enemies
-                );
-
-                function inInnerMove(o) {
-                  return possibleMoves.innerMoves.some(function (p) {
-                    return p.equals(o);
-                  });
-                }
-
-                _this.moveOverlay = possibleMoves.allMoves.map(function (
-                  point
-                ) {
-                  var overlayPos = _this.tileToPixelCoords(point);
-
-                  var tile = new _excalibur.Actor({
-                    x: overlayPos.x + 2,
-                    y: overlayPos.y + 2,
-                    width: Level.TILE_SIZE - 4,
-                    height: Level.TILE_SIZE - 4,
-                    color: inInnerMove(point)
-                      ? _excalibur.Color.Blue
-                      : _excalibur.Color.Orange,
-                    opacity: 0.5,
-                  });
-                  tile.on("pointerdown", function (evt) {
-                    if (evt.button != _excalibur.Input.PointerButton.Left) {
-                      return;
+              }),
+              (y.moveCharacter = function (e, n, r) {
+                console.log("moving character " + r.id);
+                var o = y.pathfind(e, n).map(y.tileToPixelCoords);
+                return (
+                  (y.map_data[e.x][e.y].character = void 0),
+                  (y.map_data[n.x][n.y].character = r),
+                  r.goTo(o).then(function () {
+                    if (r.controllable && y.terrain_data[n.x][n.y] == t.STAIR) {
+                      console.log("Exit Level!");
+                      var e = (0, i.generateLevel)(y.engine, y.depth + 1);
+                      y.goToLevel(e);
                     }
-
-                    if (
-                      _this.selectedPlayer &&
-                      _this.selectedPlayer.controllable
-                    ) {
-                      // we have player selected
-                      var src = _this.pixelToTileCoords(
-                        _this.selectedPlayer.pos
-                      );
-
-                      _this.moveCharacter(src, point, _this.selectedPlayer);
-
-                      _this.deselectPlayer();
-                    }
-                  });
-
-                  tile.onPostDraw = function (ctx, _delta) {
-                    if (
-                      _this.engine.input.pointers.primary.isActorAliveUnderPointer(
-                        tile
-                      )
-                    ) {
-                      var playerPos = _this.pixelToTileCoords(player.pos);
-
-                      var path = _this
-                        .pathfind(playerPos, point)
-                        .map(_this.tileToPixelCoords)
-                        .map(function (pt) {
-                          return pt.sub(tile.pos);
+                  })
+                );
+              }),
+              (y.tileToPixelCoords = function (e) {
+                return e
+                  .sub((0, n.vec)(y.tilemap.x, y.tilemap.y))
+                  .scale(h.TILE_SIZE)
+                  .add(n.Vector.One.scale(h.TILE_SIZE / 2));
+              }),
+              (y.spawnCharacter = function (e) {
+                var t,
+                  n = y.tileToPixelCoords(e.spawnTile);
+                switch (e.alignment) {
+                  case c.PLAYER:
+                    t = new r.Player(n, e.class);
+                    break;
+                  case c.ENEMY:
+                    t = new r.Enemy(n, e.class);
+                }
+                return (
+                  t.controllable
+                    ? (t.on("pointerup", function () {
+                        y.selectedPlayer && y.selectedPlayer.id == t.id
+                          ? y.deselectPlayer()
+                          : (y.selectedPlayer && y.deselectPlayer(),
+                            y.selectPlayer(t),
+                            y.statOverlay && y.createStatOverlay(t));
+                      }),
+                      y.players.push(t))
+                    : y.enemies.push(t),
+                  t.on("pointerenter", function () {
+                    y.createStatOverlay(t);
+                  }),
+                  t.on("pointerleave", function () {
+                    y.statOverlay && y.statOverlay.kill(),
+                      (y.statOverlay = void 0);
+                  }),
+                  (y.map_data[e.spawnTile.x][e.spawnTile.y].character = t),
+                  t
+                );
+              }),
+              (y.selectPlayer = function (e) {
+                y.generateOverlay(e), (y.selectedPlayer = e);
+              }),
+              (y.getPossibleMoves = function (e, t) {
+                var n = y.pixelToTileCoords(e.pos),
+                  r = e.cClass.attack.range,
+                  o = y.getTilesWithinDist(
+                    n,
+                    (e.moveExhausted.inner ? 0 : e.cClass.moveRange.inner) +
+                      (e.moveExhausted.outer ? 0 : e.cClass.moveRange.outer)
+                  ),
+                  a = [];
+                e.moveExhausted.inner ||
+                  (a = y.getTilesWithinDist(n, e.cClass.moveRange.inner)),
+                  e.moveExhausted.outer || a.push(n);
+                var i = [];
+                return (
+                  e.moveExhausted.outer ||
+                    t
+                      .map(function (e) {
+                        return {
+                          enemy: e,
+                          enemyPos: y.pixelToTileCoords(e.pos),
+                        };
+                      })
+                      .filter(function (e) {
+                        var t = e.enemyPos;
+                        return a.some(function (e) {
+                          return p(t, e) <= r;
                         });
-
-                      for (var i = 0; i < path.length - 1; i++) {
-                        _excalibur.Util.DrawUtil.line(
-                          ctx,
-                          _excalibur.Color.White,
-                          path[i].x,
-                          path[i].y,
-                          path[i + 1].x,
-                          path[i + 1].y,
-                          5
-                        );
-                      }
-                    }
-                  };
-
-                  _this.add(tile);
-
-                  return tile;
+                      })
+                      .forEach(function (e) {
+                        return i.push(e);
+                      }),
+                  { innerMoves: a, allMoves: o, attackableEnemies: i }
+                );
+              }),
+              (y.attack = function (e, t) {
+                if (
+                  (e.setDrawing("atk"),
+                  (e.currentDrawing.flipHorizontal = t.pos.x < e.pos.x),
+                  setTimeout(function () {
+                    e.setDrawing("idle");
+                  }, 1e3),
+                  t.damage(e.cClass.attack))
+                ) {
+                  var r = e.gainExp(t.cClass.deathExp());
+                  if (r) {
+                    var o = y.generateTextOverlay(
+                      r,
+                      e.pos.add((0, n.vec)(2.75 * h.TILE_SIZE, 0))
+                    );
+                    y.engine.add(o),
+                      o.on("pointerdown", function (e) {
+                        o.kill();
+                      });
+                  }
+                  var a = y.pixelToTileCoords(t.pos);
+                  (y.players = y.players.filter(function (e) {
+                    return e.id != t.id;
+                  })),
+                    (y.enemies = y.enemies.filter(function (e) {
+                      return e.id != t.id;
+                    })),
+                    (y.map_data[a.x][a.y].character = void 0),
+                    y.players.length <= 0 &&
+                      (console.log("Game over!"), y.gameOver());
+                }
+                e.spendAttack(),
+                  console.log(
+                    e.id +
+                      " attacking " +
+                      t.id +
+                      " at " +
+                      y.pixelToTileCoords(t.pos) +
+                      ", its health is now " +
+                      t.health
+                  );
+              }),
+              (y.moveToThenAttack = function (e, t, n, r) {
+                var o = y.pixelToTileCoords(e.pos),
+                  a = y.getAttackStagingPoint(o, n, e, r);
+                return y.moveCharacter(o, a, e).then(function () {
+                  return y.attack(e, t);
                 });
-                _this.attackOverlay = possibleMoves.attackableEnemies.map(
-                  function (_a) {
-                    var enemy = _a.enemy,
-                      enemyPos = _a.enemyPos;
-
-                    var overlayPos = _this.tileToPixelCoords(enemyPos);
-
-                    var tile = new _excalibur.Actor({
-                      x: overlayPos.x + 2,
-                      y: overlayPos.y + 2,
-                      width: Level.TILE_SIZE - 4,
-                      height: Level.TILE_SIZE - 4,
-                      color: _excalibur.Color.Red,
+              }),
+              (y.generateOverlay = function (e) {
+                var t = y.getPossibleMoves(e, y.enemies);
+                (y.moveOverlay = t.allMoves.map(function (r) {
+                  var o,
+                    a = y.tileToPixelCoords(r),
+                    i = new n.Actor({
+                      x: a.x + 2,
+                      y: a.y + 2,
+                      width: h.TILE_SIZE - 4,
+                      height: h.TILE_SIZE - 4,
+                      color:
+                        ((o = r),
+                        t.innerMoves.some(function (e) {
+                          return e.equals(o);
+                        })
+                          ? n.Color.Blue
+                          : n.Color.Orange),
                       opacity: 0.5,
                     });
-                    tile.on("pointerdown", function (evt) {
-                      if (evt.button != _excalibur.Input.PointerButton.Left) {
-                        return;
-                      }
-
+                  return (
+                    i.on("pointerdown", function (e) {
                       if (
-                        _this.selectedPlayer &&
-                        _this.selectedPlayer.controllable
+                        e.button == n.Input.PointerButton.Left &&
+                        y.selectedPlayer &&
+                        y.selectedPlayer.controllable
                       ) {
-                        // we have player selected
-                        _this.moveToThenAttack(
-                          _this.selectedPlayer,
-                          enemy,
-                          enemyPos,
-                          possibleMoves.innerMoves
-                        );
-
-                        _this.deselectPlayer();
+                        var t = y.pixelToTileCoords(y.selectedPlayer.pos);
+                        y.moveCharacter(t, r, y.selectedPlayer),
+                          y.deselectPlayer();
                       }
-                    });
-
-                    tile.onPostDraw = function (ctx, delta) {
+                    }),
+                    (i.onPostDraw = function (t, o) {
                       if (
-                        _this.engine.input.pointers.primary.isActorAliveUnderPointer(
-                          tile
+                        y.engine.input.pointers.primary.isActorAliveUnderPointer(
+                          i
                         )
-                      ) {
-                        var playerPos = _this.pixelToTileCoords(player.pos);
-
-                        var stagingPoint = _this.getAttackStagingPoint(
-                          playerPos,
-                          enemyPos,
-                          player,
-                          possibleMoves.innerMoves
-                        );
-
-                        var path = _this
-                          .pathfind(playerPos, stagingPoint)
-                          .map(_this.tileToPixelCoords)
-                          .map(function (pt) {
-                            return pt.sub(tile.pos);
-                          });
-
-                        for (var i = 0; i < path.length - 1; i++) {
-                          _excalibur.Util.DrawUtil.line(
-                            ctx,
-                            _excalibur.Color.White,
-                            path[i].x,
-                            path[i].y,
-                            path[i + 1].x,
-                            path[i + 1].y,
+                      )
+                        for (
+                          var a = y.pixelToTileCoords(e.pos),
+                            l = y
+                              .pathfind(a, r)
+                              .map(y.tileToPixelCoords)
+                              .map(function (e) {
+                                return e.sub(i.pos);
+                              }),
+                            s = 0;
+                          s < l.length - 1;
+                          s++
+                        )
+                          n.Util.DrawUtil.line(
+                            t,
+                            n.Color.White,
+                            l[s].x,
+                            l[s].y,
+                            l[s + 1].x,
+                            l[s + 1].y,
                             5
                           );
-                        }
-                      }
-                    };
-
-                    _this.add(tile);
-
-                    return tile;
-                  }
-                );
-              };
-
-              _this.getTilesWithinDist = function (pos, dist) {
-                if (dist <= 0) {
-                  return [];
-                }
-
-                var ret = new Array();
-                var toGo = new Array();
-                var candidateDirections = [
-                  _excalibur.Vector.Up,
-                  _excalibur.Vector.Down,
-                  _excalibur.Vector.Left,
-                  _excalibur.Vector.Right,
-                ];
-                toGo.push({
-                  point: pos,
-                  dist: dist,
-                });
-
-                var _loop_1 = function _loop_1() {
-                  var curr = toGo.shift();
-                  ret.push(curr);
-
-                  if (curr.dist == 0) {
-                    return "continue";
-                  }
-
-                  var candidatePoints = candidateDirections
-                    .map(function (point) {
-                      return curr.point.add(point);
-                    })
-                    .filter(function (point) {
-                      return (
-                        !CELL_TYPE_DATA[_this.terrain_data[point.x][point.y]]
-                          .solid && !_this.map_data[point.x][point.y].character
-                      );
-                    })
-                    .filter(function (point) {
-                      return !ret.some(function (pt) {
-                        return pt.point.equals(point);
-                      });
-                    })
-                    .filter(function (point) {
-                      return !toGo.some(function (pt) {
-                        return pt.point.equals(point);
-                      });
-                    });
-                  candidatePoints.forEach(function (point) {
-                    toGo.push({
-                      point: point,
-                      dist: curr.dist - 1,
-                    });
-                  });
-                };
-
-                while (toGo.length > 0) {
-                  _loop_1();
-                }
-
-                ret.shift(); // remove origin
-
-                return ret.map(function (point) {
-                  return point.point;
-                });
-              };
-
-              _this.deselectPlayer = function () {
-                _this.moveOverlay.forEach(function (actor) {
-                  actor.off("pointerdown");
-                  actor.enableCapturePointer = false;
-                  actor.kill();
-                });
-
-                _this.moveOverlay = [];
-
-                _this.attackOverlay.forEach(function (actor) {
-                  actor.off("pointerdown");
-                  actor.enableCapturePointer = false;
-                  actor.kill();
-                });
-
-                _this.attackOverlay = [];
-                _this.selectedPlayer = undefined;
-              };
-
-              _this.nextTurnButtonClick = function (evt) {
-                var event = evt;
-                console.log("next turn button clicked!");
-
-                if (
-                  _this.nextTurnButton.contains(
-                    event.screenPos.x,
-                    event.screenPos.y
-                  )
-                ) {
-                  _this.nextTurn();
-                }
-              };
-
-              _this.nextTurn = function () {
-                if (_this.playerTurn) {
-                  _this.deselectPlayer();
-                }
-
-                _this.playerTurn = !_this.playerTurn;
-                console.log(
-                  "next turn: " + (_this.playerTurn ? "player" : "enemy")
-                );
-
-                if (_this.playerTurn) {
-                  _this.players.forEach(function (player) {
-                    return player.nextTurn();
-                  });
-
-                  _this.nextTurnButton.visible = true;
-
-                  _this.nextTurnButton.on(
-                    "pointerdown",
-                    _this.nextTurnButtonClick
+                    }),
+                    y.add(i),
+                    i
                   );
-                } else {
-                  _this.enemies.forEach(function (enemy) {
-                    return enemy.nextTurn();
-                  });
-
-                  _this.enemyTurn();
-
-                  _this.nextTurnButton.visible = false;
-
-                  _this.nextTurnButton.off("pointerdown");
-                }
-
-                console.log("finshed nextTurn function");
-              };
-
-              _this.enemyTurn = function () {
-                var i = 0;
-
-                var enemiesToMove = _this.enemies
-                  .slice()
-                  .filter(function (enemy) {
-                    return _this.players.some(function (player) {
-                      return (
-                        manhattanDistance(player.pos, enemy.pos) <
-                        10 * Level.TILE_SIZE
-                      );
-                    });
-                  });
-
-                console.log("moving " + enemiesToMove.length + " this turn");
-
-                var calculateNextEnemyMove = function calculateNextEnemyMove() {
-                  console.log("moving enemy #" + (i + 1));
-
-                  if (i < enemiesToMove.length) {
-                    _this
-                      .calculateEnemyMove(enemiesToMove[i])
-                      .then(calculateNextEnemyMove);
-
-                    i++;
-                  } else {
-                    _this.nextTurn();
-                  }
-                };
-
-                calculateNextEnemyMove();
-              };
-
-              _this.calculateEnemyMove = function (me) {
-                var myPos = _this.pixelToTileCoords(me.pos);
-
-                var _a = _this.getPossibleMoves(me, _this.players),
-                  innerMoves = _a.innerMoves,
-                  attackableEnemies = _a.attackableEnemies;
-
-                if (attackableEnemies.length > 0) {
-                  var closestPlayer = attackableEnemies.sort(function (
-                    playerA,
-                    playerB
-                  ) {
+                })),
+                  (y.attackOverlay = t.attackableEnemies.map(function (r) {
+                    var o = r.enemy,
+                      a = r.enemyPos,
+                      i = y.tileToPixelCoords(a),
+                      l = new n.Actor({
+                        x: i.x + 2,
+                        y: i.y + 2,
+                        width: h.TILE_SIZE - 4,
+                        height: h.TILE_SIZE - 4,
+                        color: n.Color.Red,
+                        opacity: 0.5,
+                      });
                     return (
-                      manhattanDistance(playerA.enemyPos, myPos) -
-                      manhattanDistance(playerB.enemyPos, myPos)
+                      l.on("pointerdown", function (e) {
+                        e.button == n.Input.PointerButton.Left &&
+                          y.selectedPlayer &&
+                          y.selectedPlayer.controllable &&
+                          (y.moveToThenAttack(
+                            y.selectedPlayer,
+                            o,
+                            a,
+                            t.innerMoves
+                          ),
+                          y.deselectPlayer());
+                      }),
+                      (l.onPostDraw = function (r, o) {
+                        if (
+                          y.engine.input.pointers.primary.isActorAliveUnderPointer(
+                            l
+                          )
+                        )
+                          for (
+                            var i = y.pixelToTileCoords(e.pos),
+                              s = y.getAttackStagingPoint(
+                                i,
+                                a,
+                                e,
+                                t.innerMoves
+                              ),
+                              c = y
+                                .pathfind(i, s)
+                                .map(y.tileToPixelCoords)
+                                .map(function (e) {
+                                  return e.sub(l.pos);
+                                }),
+                              u = 0;
+                            u < c.length - 1;
+                            u++
+                          )
+                            n.Util.DrawUtil.line(
+                              r,
+                              n.Color.White,
+                              c[u].x,
+                              c[u].y,
+                              c[u + 1].x,
+                              c[u + 1].y,
+                              5
+                            );
+                      }),
+                      y.add(l),
+                      l
                     );
-                  })[0];
-                  return _this.moveToThenAttack(
-                    me,
-                    closestPlayer.enemy,
-                    closestPlayer.enemyPos,
-                    innerMoves
-                  );
-                }
-
-                var potentialTargets = _this.players.map(function (player) {
-                  return {
-                    player: player,
-                    playerPos: _this.pixelToTileCoords(player.pos),
-                  };
-                });
-
-                potentialTargets.sort(function (playerA, playerB) {
-                  return (
-                    manhattanDistance(playerA.playerPos, myPos) -
-                    manhattanDistance(playerB.playerPos, myPos)
-                  );
-                });
-
+                  }));
+              }),
+              (y.getTilesWithinDist = function (e, t) {
+                if (t <= 0) return [];
+                var r = new Array(),
+                  o = new Array(),
+                  a = [
+                    n.Vector.Up,
+                    n.Vector.Down,
+                    n.Vector.Left,
+                    n.Vector.Right,
+                  ];
+                o.push({ point: e, dist: t });
                 for (
-                  var _i = 0, potentialTargets_1 = potentialTargets;
-                  _i < potentialTargets_1.length;
-                  _i++
-                ) {
-                  var closestPlayer = potentialTargets_1[_i];
+                  var i = function () {
+                    var e = o.shift();
+                    if ((r.push(e), 0 == e.dist)) return "continue";
+                    a.map(function (t) {
+                      return e.point.add(t);
+                    })
+                      .filter(function (e) {
+                        return (
+                          !u[y.terrain_data[e.x][e.y]].solid &&
+                          !y.map_data[e.x][e.y].character
+                        );
+                      })
+                      .filter(function (e) {
+                        return !r.some(function (t) {
+                          return t.point.equals(e);
+                        });
+                      })
+                      .filter(function (e) {
+                        return !o.some(function (t) {
+                          return t.point.equals(e);
+                        });
+                      })
+                      .forEach(function (t) {
+                        o.push({ point: t, dist: e.dist - 1 });
+                      });
+                  };
+                  o.length > 0;
 
-                  var pathToPlayer = _this.pathfind(
-                    myPos,
-                    closestPlayer.playerPos
-                  );
-
-                  var moveDistance =
-                    me.cClass.moveRange.inner + me.cClass.moveRange.outer;
-                  var moveTo = pathToPlayer[moveDistance];
-
-                  if (moveTo) {
-                    return _this.moveCharacter(myPos, moveTo, me);
-                  }
+                )
+                  i();
+                return (
+                  r.shift(),
+                  r.map(function (e) {
+                    return e.point;
+                  })
+                );
+              }),
+              (y.deselectPlayer = function () {
+                y.moveOverlay.forEach(function (e) {
+                  e.off("pointerdown"), (e.enableCapturePointer = !1), e.kill();
+                }),
+                  (y.moveOverlay = []),
+                  y.attackOverlay.forEach(function (e) {
+                    e.off("pointerdown"),
+                      (e.enableCapturePointer = !1),
+                      e.kill();
+                  }),
+                  (y.attackOverlay = []),
+                  (y.selectedPlayer = void 0);
+              }),
+              (y.nextTurnButtonClick = function (e) {
+                var t = e;
+                console.log("next turn button clicked!"),
+                  y.nextTurnButton.contains(t.screenPos.x, t.screenPos.y) &&
+                    y.nextTurn();
+              }),
+              (y.nextTurn = function () {
+                y.playerTurn && y.deselectPlayer(),
+                  (y.playerTurn = !y.playerTurn),
+                  console.log(
+                    "next turn: " + (y.playerTurn ? "player" : "enemy")
+                  ),
+                  y.playerTurn
+                    ? (y.players.forEach(function (e) {
+                        return e.nextTurn();
+                      }),
+                      (y.nextTurnButton.visible = !0),
+                      y.nextTurnButton.on("pointerdown", y.nextTurnButtonClick))
+                    : (y.enemies.forEach(function (e) {
+                        return e.nextTurn();
+                      }),
+                      y.enemyTurn(),
+                      (y.nextTurnButton.visible = !1),
+                      y.nextTurnButton.off("pointerdown")),
+                  console.log("finshed nextTurn function");
+              }),
+              (y.enemyTurn = function () {
+                var e = 0,
+                  t = y.enemies.slice().filter(function (e) {
+                    return y.players.some(function (t) {
+                      return p(t.pos, e.pos) < 10 * h.TILE_SIZE;
+                    });
+                  });
+                console.log("moving " + t.length + " this turn");
+                !(function n() {
+                  console.log("moving enemy #" + (e + 1)),
+                    e < t.length
+                      ? (y.calculateEnemyMove(t[e]).then(n), e++)
+                      : y.nextTurn();
+                })();
+              }),
+              (y.calculateEnemyMove = function (e) {
+                var t = y.pixelToTileCoords(e.pos),
+                  n = y.getPossibleMoves(e, y.players),
+                  r = n.innerMoves,
+                  o = n.attackableEnemies;
+                if (o.length > 0) {
+                  var a = o.sort(function (e, n) {
+                    return p(e.enemyPos, t) - p(n.enemyPos, t);
+                  })[0];
+                  return y.moveToThenAttack(e, a.enemy, a.enemyPos, r);
                 }
-
-                return _this.moveCharacter(myPos, myPos, me);
-              };
-
-              _this.depth = depth;
-              _this.level_depth_label = new _excalibur.Label();
-              _this.level_depth_label.fontSize = 25;
-              _this.level_depth_label.color = _excalibur.Color.White;
-              _this.level_depth_label.pos = new _excalibur.Vector(15, 40);
-              _this.level_depth_label.text = "Depth: " + depth;
-              engine.backgroundColor = _excalibur.Color.Black;
-              _this.terrain_data = terrain_data;
-              _this.tilemap = new _excalibur.TileMap(
+                var i = y.players.map(function (e) {
+                  return { player: e, playerPos: y.pixelToTileCoords(e.pos) };
+                });
+                i.sort(function (e, n) {
+                  return p(e.playerPos, t) - p(n.playerPos, t);
+                });
+                for (var l = 0, s = i; l < s.length; l++) {
+                  a = s[l];
+                  var c = y.pathfind(t, a.playerPos)[
+                    e.cClass.moveRange.inner + e.cClass.moveRange.outer
+                  ];
+                  if (c) return y.moveCharacter(t, c, e);
+                }
+                return y.moveCharacter(t, t, e);
+              }),
+              (y.depth = f),
+              (y.level_depth_label = new n.Label()),
+              (y.level_depth_label.fontSize = 25),
+              (y.level_depth_label.color = n.Color.White),
+              (y.level_depth_label.pos = new n.Vector(15, 40)),
+              (y.level_depth_label.text = "Depth: " + f),
+              (l.backgroundColor = n.Color.Black),
+              (y.terrain_data = s),
+              (y.tilemap = new n.TileMap(
                 0,
                 0,
-                Level.TILE_SIZE,
-                Level.TILE_SIZE,
-                terrain_data.length,
-                terrain_data[0].length
-              );
-              _this.map_data = new Array(_this.terrain_data.length)
+                h.TILE_SIZE,
+                h.TILE_SIZE,
+                s.length,
+                s[0].length
+              )),
+              (y.map_data = new Array(y.terrain_data.length)
                 .fill(null)
                 .map(function () {
                   return Array.from(
-                    {
-                      length: _this.terrain_data[0].length,
-                    },
+                    { length: y.terrain_data[0].length },
                     function () {
-                      return {
-                        character: undefined,
-                      };
+                      return { character: void 0 };
                     }
                   );
-                });
-              _this.tilesheet = new _excalibur.SpriteSheet({
-                image: _resources.Resources.TileTexture,
-                spWidth: Level.TILE_SIZE,
-                spHeight: Level.TILE_SIZE,
-                rows: _resources.Resources.TileTexture.height / Level.TILE_SIZE,
-                columns:
-                  _resources.Resources.TileTexture.width / Level.TILE_SIZE,
-              });
-
-              _this.tilemap.registerSpriteSheet("tile", _this.tilesheet);
-
-              spawnPoints.forEach(_this.spawnCharacter);
-              _this.engine = engine;
-              _this.path_finder = new _pathfinding.AStarFinder();
-              _this.playerTurn = true;
-              return _this;
-            }
-
-            Object.defineProperty(Level.prototype, "characters", {
-              get: function get() {
-                return __spreadArrays(this.enemies, this.players);
+                })),
+              (y.tilesheet = new n.SpriteSheet({
+                image: a.Resources.TileTexture,
+                spWidth: h.TILE_SIZE,
+                spHeight: h.TILE_SIZE,
+                rows: a.Resources.TileTexture.height / h.TILE_SIZE,
+                columns: a.Resources.TileTexture.width / h.TILE_SIZE,
+              })),
+              y.tilemap.registerSpriteSheet("tile", y.tilesheet),
+              d.forEach(y.spawnCharacter),
+              (y.engine = l),
+              (y.path_finder = new o.AStarFinder()),
+              (y.playerTurn = !0),
+              y
+            );
+          }
+          return (
+            l(h, e),
+            Object.defineProperty(h.prototype, "characters", {
+              get: function () {
+                return s(this.enemies, this.players);
               },
-              enumerable: false,
-              configurable: true,
-            });
-
-            Level.prototype.onInitialize = function (engine) {
-              var _this = this;
-
-              var depth_element = new _excalibur.ScreenElement({
-                x: 0,
-                y: 0,
-              });
-              depth_element.add(this.level_depth_label);
-              engine.add(depth_element);
-              engine.add(this.tilemap);
-              this.characters.forEach(function (character) {
-                engine.add(character);
-              });
-              this.syncTerrainData();
-              this.nextTurnButton = new _excalibur.ScreenElement({
-                x: engine.drawWidth - 100,
-                y: engine.drawHeight - 40,
-                width: 90,
-                height: 30,
-              });
-              var nextTurnSheet = new _excalibur.SpriteSheet(
-                _resources.Resources.NextTurnTexture,
+              enumerable: !1,
+              configurable: !0,
+            }),
+            (h.prototype.onInitialize = function (e) {
+              var t = this,
+                r = new n.ScreenElement({ x: 0, y: 0 });
+              r.add(this.level_depth_label),
+                e.add(r),
+                e.add(this.tilemap),
+                this.characters.forEach(function (t) {
+                  e.add(t);
+                }),
+                this.syncTerrainData(),
+                (this.nextTurnButton = new n.ScreenElement({
+                  x: e.drawWidth - 100,
+                  y: e.drawHeight - 40,
+                  width: 90,
+                  height: 30,
+                }));
+              var o = new n.SpriteSheet(
+                a.Resources.NextTurnTexture,
                 1,
                 2,
                 90,
                 30
               );
-              this.nextTurnButton.addDrawing(
-                "normal",
-                nextTurnSheet.getSprite(0)
-              );
-              this.nextTurnButton.addDrawing(
-                "hovered",
-                nextTurnSheet.getSprite(1)
-              );
-              this.nextTurnButton.setDrawing("normal");
-              this.nextTurnButton.on("pointerenter", function () {
-                var _a;
-
-                (_a = _this.nextTurnButton) === null || _a === void 0
-                  ? void 0
-                  : _a.setDrawing("hovered");
-              });
-              this.nextTurnButton.on("pointerleave", function () {
-                var _a;
-
-                (_a = _this.nextTurnButton) === null || _a === void 0
-                  ? void 0
-                  : _a.setDrawing("normal");
-              });
-              this.nextTurnButton.on("pointerdown", this.nextTurnButtonClick);
-              this.add(this.nextTurnButton);
-              this.engine.input.pointers.primary.on("down", this.onClick);
-              this.engine.input.keyboard.on("press", function (evt) {
-                switch (evt.key) {
-                  case _excalibur.Input.Keys.A:
-                    _this.camera.vel.x = -Level.CAMERA_SPEED;
-                    break;
-
-                  case _excalibur.Input.Keys.D:
-                    _this.camera.vel.x = Level.CAMERA_SPEED;
-                    break;
-
-                  case _excalibur.Input.Keys.W:
-                    _this.camera.vel.y = -Level.CAMERA_SPEED;
-                    break;
-
-                  case _excalibur.Input.Keys.S:
-                    _this.camera.vel.y = Level.CAMERA_SPEED;
-                    break;
-                }
-              });
-              this.engine.input.keyboard.on("release", function (evt) {
-                switch (evt.key) {
-                  case _excalibur.Input.Keys.A:
-                  case _excalibur.Input.Keys.D:
-                    _this.camera.vel.x = 0;
-                    break;
-
-                  case _excalibur.Input.Keys.W:
-                  case _excalibur.Input.Keys.S:
-                    _this.camera.vel.y = 0;
-                    break;
-                }
-              });
-            };
-
-            Level.prototype.syncTerrainData = function () {
-              var _this = this;
-
-              this.tilemap.data.forEach(function (cell, i) {
-                cell.clearSprites();
-                var y = Math.floor(i / _this.tilemap.cols);
-                var x = i % _this.tilemap.cols;
-
-                switch (_this.terrain_data[x][y]) {
-                  case CellType.WALL:
-                    cell.solid = CELL_TYPE_DATA[CellType.WALL].solid;
-                    var tileNum = 0;
-
-                    if (
-                      _this.terrain_data[x][y + 1] &&
-                      _this.terrain_data[x][y + 1] == CellType.FLOOR
-                    ) {
-                      tileNum = 1;
-                    }
-
-                    cell.pushSprite(new _excalibur.TileSprite("tile", tileNum));
-                    break;
-
-                  case CellType.FLOOR:
-                    cell.solid = CELL_TYPE_DATA[CellType.FLOOR].solid;
-                    cell.pushSprite(new _excalibur.TileSprite("tile", 2));
-                    break;
-
-                  case CellType.STAIR:
-                    cell.solid = CELL_TYPE_DATA[CellType.STAIR].solid;
-                    cell.pushSprite(new _excalibur.TileSprite("tile", 3));
-                    break;
-
-                  case CellType.NONE:
-                    cell.solid = CELL_TYPE_DATA[CellType.NONE].solid;
-                    cell.pushSprite(new _excalibur.TileSprite("tile", 0));
-                    break;
-                }
-              });
-            };
-
-            Level.prototype.goToLevel = function (nextLevel) {
-              this.engine.input.pointers.primary.off("up");
-              this.engine.input.pointers.primary.off("down", this.onClick);
-              this.engine.input.pointers.primary.off("move");
-              this.engine.add("test_level", nextLevel);
-              this.engine.goToScene("test_level");
-            };
-
-            Level.prototype.pathfind = function (from, to) {
-              console.log("pathfind: ", from, to);
-              var path_matrix = [];
-
-              for (var i = 0; i < this.terrain_data.length; i++) {
-                path_matrix.push([]);
-
-                for (var j = 0; j < this.terrain_data[i].length; j++) {
-                  if (
-                    CELL_TYPE_DATA[this.terrain_data[j][i]].solid ||
-                    (this.map_data[j][i].character &&
-                      !(from.x == j && from.y == i) &&
-                      !(to.x == j && to.y == i))
-                  ) {
-                    path_matrix[i].push(1);
-                  } else {
-                    path_matrix[i].push(0);
+              this.nextTurnButton.addDrawing("normal", o.getSprite(0)),
+                this.nextTurnButton.addDrawing("hovered", o.getSprite(1)),
+                this.nextTurnButton.setDrawing("normal"),
+                this.nextTurnButton.on("pointerenter", function () {
+                  var e;
+                  null === (e = t.nextTurnButton) ||
+                    void 0 === e ||
+                    e.setDrawing("hovered");
+                }),
+                this.nextTurnButton.on("pointerleave", function () {
+                  var e;
+                  null === (e = t.nextTurnButton) ||
+                    void 0 === e ||
+                    e.setDrawing("normal");
+                }),
+                this.nextTurnButton.on("pointerdown", this.nextTurnButtonClick),
+                this.add(this.nextTurnButton),
+                this.engine.input.pointers.primary.on("down", this.onClick),
+                this.engine.input.keyboard.on("press", function (e) {
+                  switch (e.key) {
+                    case n.Input.Keys.A:
+                      t.camera.vel.x = -h.CAMERA_SPEED;
+                      break;
+                    case n.Input.Keys.D:
+                      t.camera.vel.x = h.CAMERA_SPEED;
+                      break;
+                    case n.Input.Keys.W:
+                      t.camera.vel.y = -h.CAMERA_SPEED;
+                      break;
+                    case n.Input.Keys.S:
+                      t.camera.vel.y = h.CAMERA_SPEED;
                   }
-                }
-              }
-
-              return this.path_finder
-                .findPath(
-                  from.x,
-                  from.y,
-                  to.x,
-                  to.y,
-                  new _pathfinding.Grid(path_matrix)
-                )
-                .map(function (step) {
-                  return new _excalibur.Vector(step[0], step[1]);
+                }),
+                this.engine.input.keyboard.on("release", function (e) {
+                  switch (e.key) {
+                    case n.Input.Keys.A:
+                    case n.Input.Keys.D:
+                      t.camera.vel.x = 0;
+                      break;
+                    case n.Input.Keys.W:
+                    case n.Input.Keys.S:
+                      t.camera.vel.y = 0;
+                  }
                 });
-            };
-
-            Level.prototype.pixelToTileCoords = function (pixelCoords) {
-              var tileCoords = pixelCoords
-                .sub(_excalibur.Vector.One.scale(Level.TILE_SIZE / 2))
-                .scale(1 / Level.TILE_SIZE)
-                .add((0, _excalibur.vec)(this.tilemap.x, this.tilemap.y));
-              return (0, _excalibur.vec)(
-                Math.floor(tileCoords.x),
-                Math.floor(tileCoords.y)
-              );
-            };
-
-            Level.prototype.gameOver = function () {
-              var _this = this;
-
-              var gameOverLoader = new _excalibur.Loader();
-
-              for (var key in _resources.GameOverResources) {
-                gameOverLoader.addResource(_resources.GameOverResources[key]);
-              }
-
-              gameOverLoader.suppressPlayButton = true;
-              gameOverLoader.logo = "";
-              gameOverLoader.backgroundColor = "black";
-              var endCard = new _excalibur.Actor({
-                x: 360,
-                y: 240,
-                width: 720,
-                height: 480,
+            }),
+            (h.prototype.syncTerrainData = function () {
+              var e = this;
+              this.tilemap.data.forEach(function (r, o) {
+                r.clearSprites();
+                var a = Math.floor(o / e.tilemap.cols),
+                  i = o % e.tilemap.cols;
+                switch (e.terrain_data[i][a]) {
+                  case t.WALL:
+                    r.solid = u[t.WALL].solid;
+                    var l = 0;
+                    e.terrain_data[i][a + 1] &&
+                      e.terrain_data[i][a + 1] == t.FLOOR &&
+                      (l = 1),
+                      r.pushSprite(new n.TileSprite("tile", l));
+                    break;
+                  case t.FLOOR:
+                    (r.solid = u[t.FLOOR].solid),
+                      r.pushSprite(new n.TileSprite("tile", 2));
+                    break;
+                  case t.STAIR:
+                    (r.solid = u[t.STAIR].solid),
+                      r.pushSprite(new n.TileSprite("tile", 3));
+                    break;
+                  case t.NONE:
+                    (r.solid = u[t.NONE].solid),
+                      r.pushSprite(new n.TileSprite("tile", 0));
+                }
               });
-              endCard.addDrawing(
-                "title",
-                _resources.GameOverResources.end.asSprite()
-              );
-              endCard.on("pointerdown", function () {
-                endCard.off("pointerdown");
-
-                _this.engine.add(
-                  "level_1",
-                  (0, _index.generateLevel)(_this.engine, 1)
-                );
-
-                _this.engine.goToScene("level_1");
-              });
-              var clickText = new _excalibur.Label(
-                "- Click Anywhere to Try Again -"
-              );
-              clickText.fontSize = 20;
-              clickText.fontFamily = "serif";
-              clickText.color = _excalibur.Color.White;
-              clickText.pos = (0, _excalibur.vec)(
-                360 - clickText.getTextWidth(this.engine.ctx) / 2,
-                480 - (20 + 10)
-              );
-              clickText.actions.blink(500, 500).repeatForever();
-              var gameOver = new _excalibur.Scene(this.engine);
-              gameOver.add(endCard);
-              gameOver.add(clickText);
-              this.engine.start(gameOverLoader).then(function () {
-                _this.goToLevel(gameOver);
-              });
-            };
-
-            Level.prototype.getAttackStagingPoint = function (
-              attackerPos,
-              victimPos,
-              attacker,
-              possibleMoves
-            ) {
-              var attackFrom = attackerPos;
-
-              if (
-                manhattanDistance(victimPos, attackerPos) !=
-                attacker.cClass.attack.range
-              ) {
-                attackFrom = possibleMoves
-                  .filter(function (pt) {
-                    return (
-                      manhattanDistance(pt, victimPos) <=
-                      attacker.cClass.attack.range
-                    );
-                  })
-                  .sort(function (a, b) {
-                    return (
-                      manhattanDistance(a, attackerPos) -
-                      manhattanDistance(b, attackerPos)
-                    );
-                  })
-                  .shift();
+            }),
+            (h.prototype.goToLevel = function (e) {
+              this.engine.input.pointers.primary.off("up"),
+                this.engine.input.pointers.primary.off("down", this.onClick),
+                this.engine.input.pointers.primary.off("move"),
+                this.engine.add("test_level", e),
+                this.engine.goToScene("test_level");
+            }),
+            (h.prototype.pathfind = function (e, t) {
+              console.log("pathfind: ", e, t);
+              for (var r = [], a = 0; a < this.terrain_data.length; a++) {
+                r.push([]);
+                for (var i = 0; i < this.terrain_data[a].length; i++)
+                  u[this.terrain_data[i][a]].solid ||
+                  (this.map_data[i][a].character &&
+                    (e.x != i || e.y != a) &&
+                    (t.x != i || t.y != a))
+                    ? r[a].push(1)
+                    : r[a].push(0);
               }
-
-              return attackFrom;
-            };
-
-            Level.prototype.createStatOverlay = function (spawnedCharacter) {
-              if (this.statOverlay) {
-                this.statOverlay.kill();
-              }
-
-              this.statOverlay = this.generateTextOverlay(
-                spawnedCharacter.getStats(),
-                spawnedCharacter.pos.add(
-                  (0, _excalibur.vec)(1.75 * Level.TILE_SIZE, 0)
-                )
+              return this.path_finder
+                .findPath(e.x, e.y, t.x, t.y, new o.Grid(r))
+                .map(function (e) {
+                  return new n.Vector(e[0], e[1]);
+                });
+            }),
+            (h.prototype.pixelToTileCoords = function (e) {
+              var t = e
+                .sub(n.Vector.One.scale(h.TILE_SIZE / 2))
+                .scale(1 / h.TILE_SIZE)
+                .add((0, n.vec)(this.tilemap.x, this.tilemap.y));
+              return (0, n.vec)(Math.floor(t.x), Math.floor(t.y));
+            }),
+            (h.prototype.gameOver = function () {
+              var e = this,
+                t = new n.Loader();
+              for (var r in a.GameOverResources)
+                t.addResource(a.GameOverResources[r]);
+              (t.suppressPlayButton = !0),
+                (t.logo = ""),
+                (t.backgroundColor = "black");
+              var o = new n.Actor({ x: 360, y: 240, width: 720, height: 480 });
+              o.addDrawing("title", a.GameOverResources.end.asSprite()),
+                o.on("pointerdown", function () {
+                  o.off("pointerdown"),
+                    e.engine.add("level_1", (0, i.generateLevel)(e.engine, 1)),
+                    e.engine.goToScene("level_1");
+                });
+              var l = new n.Label("- Click Anywhere to Try Again -");
+              (l.fontSize = 20),
+                (l.fontFamily = "serif"),
+                (l.color = n.Color.White),
+                (l.pos = (0, n.vec)(
+                  360 - l.getTextWidth(this.engine.ctx) / 2,
+                  450
+                )),
+                l.actions.blink(500, 500).repeatForever();
+              var s = new n.Scene(this.engine);
+              s.add(o),
+                s.add(l),
+                this.engine.start(t).then(function () {
+                  e.goToLevel(s);
+                });
+            }),
+            (h.prototype.getAttackStagingPoint = function (e, t, n, r) {
+              var o = e;
+              return (
+                p(t, e) != n.cClass.attack.range &&
+                  (o = r
+                    .filter(function (e) {
+                      return p(e, t) <= n.cClass.attack.range;
+                    })
+                    .sort(function (t, n) {
+                      return p(t, e) - p(n, e);
+                    })
+                    .shift()),
+                o
               );
-              this.add(this.statOverlay);
-            };
-
-            Level.TILE_SIZE = 30;
-            Level.CAMERA_SPEED = 200;
-            return Level;
-          })(_excalibur.Scene);
-
-        exports.Level = Level;
+            }),
+            (h.prototype.createStatOverlay = function (e) {
+              this.statOverlay && this.statOverlay.kill(),
+                (this.statOverlay = this.generateTextOverlay(
+                  e.getStats(),
+                  e.pos.add((0, n.vec)(1.75 * h.TILE_SIZE, 0))
+                )),
+                this.add(this.statOverlay);
+            }),
+            (h.TILE_SIZE = 30),
+            (h.CAMERA_SPEED = 200),
+            h
+          );
+        })(n.Scene);
+        exports.Level = h;
       },
       {
-        excalibur: "node_modules/excalibur/dist/excalibur.min.js",
-        "./character": "src/character/index.ts",
-        pathfinding: "node_modules/pathfinding/index.js",
-        "./resources": "src/resources.ts",
-        "./index": "src/index.ts",
+        excalibur: "jZN7",
+        "./character": "T3UV",
+        pathfinding: "VWUg",
+        "./resources": "x5mp",
+        "./index": "B6dB",
       },
     ],
-    "src/dungeon.ts": [
+    eV2W: [
       function (require, module, exports) {
         "use strict";
-
-        Object.defineProperty(exports, "__esModule", {
-          value: true,
-        });
-        exports.getRandomInt = getRandomInt;
-        exports.Dungeon = void 0;
-
-        var _excalibur = require("excalibur");
-
-        var _level = require("./level");
-
-        var __spreadArrays =
-          (void 0 && (void 0).__spreadArrays) ||
-          function () {
-            for (var s = 0, i = 0, il = arguments.length; i < il; i++) {
-              s += arguments[i].length;
-            }
-
-            for (var r = Array(s), k = 0, i = 0; i < il; i++) {
-              for (
-                var a = arguments[i], j = 0, jl = a.length;
-                j < jl;
-                j++, k++
-              ) {
-                r[k] = a[j];
-              }
-            }
-
-            return r;
-          };
-
-        var CHUNK_SIZE = 9;
-
-        var Any =
-          /** @class */
-          (function () {
-            function Any() {
+        Object.defineProperty(exports, "__esModule", { value: !0 }),
+          (exports.getRandomInt = a),
+          (exports.Dungeon = void 0);
+        var t = require("excalibur"),
+          e = require("./level"),
+          n = function () {
+            for (var t = 0, e = 0, n = arguments.length; e < n; e++)
+              t += arguments[e].length;
+            var o = Array(t),
+              r = 0;
+            for (e = 0; e < n; e++)
+              for (var i = arguments[e], l = 0, h = i.length; l < h; l++, r++)
+                o[r] = i[l];
+            return o;
+          },
+          o = 9,
+          r = (function () {
+            return function () {
               this.type = "any";
-            }
-
-            return Any;
-          })();
-
-        var Floor =
-          /** @class */
-          (function () {
-            function Floor() {
+            };
+          })(),
+          i = (function () {
+            return function () {
               this.type = "floor";
-            }
-
-            return Floor;
-          })();
-
-        var Wall =
-          /** @class */
-          (function () {
-            function Wall() {
+            };
+          })(),
+          l = (function () {
+            return function () {
               this.type = "wall";
-            }
-
-            return Wall;
+            };
+          })(),
+          h = (function () {
+            return function (t) {
+              (this.type = "connecter"), (this.width = t);
+            };
           })();
-
-        var Connecter =
-          /** @class */
-          (function () {
-            function Connecter(width) {
-              this.type = "connecter";
-              this.width = width;
-            }
-
-            return Connecter;
-          })();
-
-        function getRandomInt(min, max) {
-          return Math.floor(Math.random() * (max - min + 1) + min);
+        function a(t, e) {
+          return Math.floor(Math.random() * (e - t + 1) + t);
         }
-
-        function getNRandomPointsIn(n, width, height) {
-          var array = [];
-
-          for (var i = 0; i < width; i++) {
-            for (var j = 0; j < height; j++) {
-              array.push(new _excalibur.Vector(i, j));
-            }
-          }
-
-          return new Array(n).fill(0).map(function () {
-            return array.splice(getRandomInt(0, array.length - 1), 1)[0];
+        function p(e, n, o) {
+          for (var r = [], i = 0; i < n; i++)
+            for (var l = 0; l < o; l++) r.push(new t.Vector(i, l));
+          return new Array(e).fill(0).map(function () {
+            return r.splice(a(0, r.length - 1), 1)[0];
           });
         }
-
-        var Road =
-          /** @class */
-          (function () {
-            function Road(left, top, right, bottom) {
-              this.left = left;
-              this.top = top;
-              this.right = right;
-              this.bottom = bottom;
+        var s = (function () {
+            function t(t, e, n, o) {
+              (this.left = t),
+                (this.top = e),
+                (this.right = n),
+                (this.bottom = o);
             }
-
-            Road.prototype.asCell2dArray = function () {
-              // TODO do actual selection and generation here
-              var data = [];
-
-              for (var x = 0; x < CHUNK_SIZE; x++) {
-                data.push([]);
-
-                for (var y = 0; y < CHUNK_SIZE; y++) {
-                  data[x].push(_level.CellType.WALL);
+            return (
+              (t.prototype.asCell2dArray = function () {
+                for (var t = [], n = 0; n < o; n++) {
+                  t.push([]);
+                  for (var r = 0; r < o; r++) t[n].push(e.CellType.WALL);
                 }
-              }
-
-              if (this.left.type === "connecter") {
-                for (
-                  var y = Math.ceil(CHUNK_SIZE / 2 - this.left.width);
-                  y < Math.floor(CHUNK_SIZE / 2 + this.left.width);
-                  y++
-                ) {
-                  for (var x = 0; x < CHUNK_SIZE / 2; x++) {
-                    data[x][y] = _level.CellType.FLOOR;
-                  }
-                }
-              }
-
-              if (this.top.type === "connecter") {
-                for (
-                  var x = Math.ceil(CHUNK_SIZE / 2 - this.top.width);
-                  x < Math.floor(CHUNK_SIZE / 2 + this.top.width);
-                  x++
-                ) {
-                  for (var y = 0; y < CHUNK_SIZE / 2; y++) {
-                    data[x][y] = _level.CellType.FLOOR;
-                  }
-                }
-              }
-
-              if (this.right.type === "connecter") {
-                for (
-                  var y = Math.ceil(CHUNK_SIZE / 2 - this.right.width);
-                  y < Math.floor(CHUNK_SIZE / 2 + this.right.width);
-                  y++
-                ) {
-                  for (var x = (CHUNK_SIZE - 1) / 2; x < CHUNK_SIZE; x++) {
-                    data[x][y] = _level.CellType.FLOOR;
-                  }
-                }
-              }
-
-              if (this.bottom.type === "connecter") {
-                for (
-                  var x = Math.ceil(CHUNK_SIZE / 2 - this.bottom.width);
-                  x < Math.floor(CHUNK_SIZE / 2 + this.bottom.width);
-                  x++
-                ) {
-                  for (var y = (CHUNK_SIZE - 1) / 2; y < CHUNK_SIZE; y++) {
-                    data[x][y] = _level.CellType.FLOOR;
-                  }
-                }
-              }
-
-              return data;
-            };
-
-            return Road;
-          })();
-
-        var Room =
-          /** @class */
-          (function () {
-            function Room(left, top, right, bottom) {
-              this.finalRoom = false;
-              this.left = left;
-              this.top = top;
-              this.right = right;
-              this.bottom = bottom;
-            }
-
-            Room.prototype.asCell2dArray = function () {
-              // TODO do actual selection and generation here
-              var data = [];
-
-              if (
-                this.left.type === "wall" &&
-                this.top.type === "wall" &&
-                this.right.type === "wall" &&
-                this.bottom.type === "wall"
-              ) {
-                for (var x = 0; x < CHUNK_SIZE; x++) {
-                  data.push([]);
-
-                  for (var y = 0; y < CHUNK_SIZE; y++) {
-                    data[x].push(_level.CellType.WALL);
-                  }
-                }
-
-                return data;
-              }
-
-              for (var x = 0; x < CHUNK_SIZE; x++) {
-                data.push([]);
-
-                for (var y = 0; y < CHUNK_SIZE; y++) {
-                  data[x].push(_level.CellType.FLOOR);
-                }
-              }
-
-              if (this.left.type === "wall" || this.left.type === "connecter") {
-                for (var y = 0; y < CHUNK_SIZE; y++) {
-                  data[0][y] = _level.CellType.WALL;
-                }
-              }
-
-              if (this.top.type === "wall" || this.top.type === "connecter") {
-                for (var x = 0; x < CHUNK_SIZE; x++) {
-                  data[x][0] = _level.CellType.WALL;
-                }
-              }
-
-              if (
-                this.right.type === "wall" ||
-                this.right.type === "connecter"
-              ) {
-                for (var y = 0; y < CHUNK_SIZE; y++) {
-                  data[CHUNK_SIZE - 1][y] = _level.CellType.WALL;
-                }
-              }
-
-              if (
-                this.bottom.type === "wall" ||
-                this.bottom.type === "connecter"
-              ) {
-                for (var x = 0; x < CHUNK_SIZE; x++) {
-                  data[x][CHUNK_SIZE - 1] = _level.CellType.WALL;
-                }
-              }
-
-              if (this.left.type === "connecter") {
-                for (
-                  var y = Math.ceil(CHUNK_SIZE / 2 - this.left.width);
-                  y < Math.floor(CHUNK_SIZE / 2 + this.left.width);
-                  y++
-                ) {
-                  data[0][y] = _level.CellType.FLOOR;
-                }
-              }
-
-              if (this.top.type === "connecter") {
-                for (
-                  var x = Math.ceil(CHUNK_SIZE / 2 - this.top.width);
-                  x < Math.floor(CHUNK_SIZE / 2 + this.top.width);
-                  x++
-                ) {
-                  data[x][0] = _level.CellType.FLOOR;
-                }
-              }
-
-              if (this.right.type === "connecter") {
-                for (
-                  var y = Math.ceil(CHUNK_SIZE / 2 - this.right.width);
-                  y < Math.floor(CHUNK_SIZE / 2 + this.right.width);
-                  y++
-                ) {
-                  data[CHUNK_SIZE - 1][y] = _level.CellType.FLOOR;
-                }
-              }
-
-              if (this.bottom.type === "connecter") {
-                for (
-                  var x = Math.ceil(CHUNK_SIZE / 2 - this.bottom.width);
-                  x < Math.floor(CHUNK_SIZE / 2 + this.bottom.width);
-                  x++
-                ) {
-                  data[x][CHUNK_SIZE - 1] = _level.CellType.FLOOR;
-                }
-              }
-
-              if (this.finalRoom) {
-                data[(CHUNK_SIZE - 1) / 2][(CHUNK_SIZE - 1) / 2] =
-                  _level.CellType.STAIR;
-              }
-
-              return data;
-            };
-
-            return Room;
-          })();
-
-        function resolveRequirement(req, can_floor) {
-          var options = [
-            new Floor(),
-            new Wall(),
-            new Connecter(getRandomInt(1, 2)),
-          ];
-          return req.type === "any"
-            ? options[getRandomInt(can_floor ? 0 : 1, 2)]
-            : req;
-        }
-
-        function connetableFromRequirement(left, top, right, bottom) {
-          if (
-            [left, top, right, bottom].every(function (side) {
-              return side.type !== "floor";
-            })
-          ) {
-            return Math.random() > 0.5
-              ? new Road(
-                  resolveRequirement(left),
-                  resolveRequirement(top),
-                  resolveRequirement(right),
-                  resolveRequirement(bottom)
-                )
-              : new Room(
-                  resolveRequirement(left, true),
-                  resolveRequirement(top, true),
-                  resolveRequirement(right, true),
-                  resolveRequirement(bottom, true)
-                );
-          } else {
-            return new Room(
-              resolveRequirement(left, true),
-              resolveRequirement(top, true),
-              resolveRequirement(right, true),
-              resolveRequirement(bottom, true)
+                if ("connecter" === this.left.type)
+                  for (
+                    r = Math.ceil(o / 2 - this.left.width);
+                    r < Math.floor(o / 2 + this.left.width);
+                    r++
+                  )
+                    for (n = 0; n < o / 2; n++) t[n][r] = e.CellType.FLOOR;
+                if ("connecter" === this.top.type)
+                  for (
+                    n = Math.ceil(o / 2 - this.top.width);
+                    n < Math.floor(o / 2 + this.top.width);
+                    n++
+                  )
+                    for (r = 0; r < o / 2; r++) t[n][r] = e.CellType.FLOOR;
+                if ("connecter" === this.right.type)
+                  for (
+                    r = Math.ceil(o / 2 - this.right.width);
+                    r < Math.floor(o / 2 + this.right.width);
+                    r++
+                  )
+                    for (n = (o - 1) / 2; n < o; n++)
+                      t[n][r] = e.CellType.FLOOR;
+                if ("connecter" === this.bottom.type)
+                  for (
+                    n = Math.ceil(o / 2 - this.bottom.width);
+                    n < Math.floor(o / 2 + this.bottom.width);
+                    n++
+                  )
+                    for (r = (o - 1) / 2; r < o; r++)
+                      t[n][r] = e.CellType.FLOOR;
+                return t;
+              }),
+              t
             );
-          }
-        }
-
-        var Chunk =
-          /** @class */
-          (function () {
-            function Chunk(parent_map, x, y) {
-              this.parent_map = parent_map;
-              this.x = x;
-              this.y = y;
+          })(),
+          c = (function () {
+            function t(t, e, n, o) {
+              (this.finalRoom = !1),
+                (this.left = t),
+                (this.top = e),
+                (this.right = n),
+                (this.bottom = o);
             }
-
-            Chunk.prototype.left = function () {
-              try {
-                return this.parent_map[this.x - 1][this.y];
-              } catch (_a) {
-                return null;
-              }
-            };
-
-            Chunk.prototype.top = function () {
-              try {
-                return this.parent_map[this.x][this.y - 1];
-              } catch (_a) {
-                return null;
-              }
-            };
-
-            Chunk.prototype.right = function () {
-              try {
-                return this.parent_map[this.x + 1][this.y];
-              } catch (_a) {
-                return null;
-              }
-            };
-
-            Chunk.prototype.bottom = function () {
-              try {
-                return this.parent_map[this.x][this.y + 1];
-              } catch (_a) {
-                return null;
-              }
-            };
-
-            return Chunk;
-          })();
-
-        var ChunkMap =
-          /** @class */
-          (function () {
-            function ChunkMap(half_size) {
-              this.map = [];
-              this.center = [half_size, half_size];
-
-              for (var i = 0; i < half_size * 2 + 1; i++) {
-                this.map.push([]);
-
-                for (var j = 0; j < half_size * 2 + 1; j++) {
-                  this.map[i].push(new Chunk(this.map, i, j));
+            return (
+              (t.prototype.asCell2dArray = function () {
+                var t = [];
+                if (
+                  "wall" === this.left.type &&
+                  "wall" === this.top.type &&
+                  "wall" === this.right.type &&
+                  "wall" === this.bottom.type
+                ) {
+                  for (var n = 0; n < o; n++) {
+                    t.push([]);
+                    for (var r = 0; r < o; r++) t[n].push(e.CellType.WALL);
+                  }
+                  return t;
                 }
+                for (n = 0; n < o; n++) {
+                  t.push([]);
+                  for (r = 0; r < o; r++) t[n].push(e.CellType.FLOOR);
+                }
+                if ("wall" === this.left.type || "connecter" === this.left.type)
+                  for (r = 0; r < o; r++) t[0][r] = e.CellType.WALL;
+                if ("wall" === this.top.type || "connecter" === this.top.type)
+                  for (n = 0; n < o; n++) t[n][0] = e.CellType.WALL;
+                if (
+                  "wall" === this.right.type ||
+                  "connecter" === this.right.type
+                )
+                  for (r = 0; r < o; r++) t[o - 1][r] = e.CellType.WALL;
+                if (
+                  "wall" === this.bottom.type ||
+                  "connecter" === this.bottom.type
+                )
+                  for (n = 0; n < o; n++) t[n][o - 1] = e.CellType.WALL;
+                if ("connecter" === this.left.type)
+                  for (
+                    r = Math.ceil(o / 2 - this.left.width);
+                    r < Math.floor(o / 2 + this.left.width);
+                    r++
+                  )
+                    t[0][r] = e.CellType.FLOOR;
+                if ("connecter" === this.top.type)
+                  for (
+                    n = Math.ceil(o / 2 - this.top.width);
+                    n < Math.floor(o / 2 + this.top.width);
+                    n++
+                  )
+                    t[n][0] = e.CellType.FLOOR;
+                if ("connecter" === this.right.type)
+                  for (
+                    r = Math.ceil(o / 2 - this.right.width);
+                    r < Math.floor(o / 2 + this.right.width);
+                    r++
+                  )
+                    t[o - 1][r] = e.CellType.FLOOR;
+                if ("connecter" === this.bottom.type)
+                  for (
+                    n = Math.ceil(o / 2 - this.bottom.width);
+                    n < Math.floor(o / 2 + this.bottom.width);
+                    n++
+                  )
+                    t[n][o - 1] = e.CellType.FLOOR;
+                return (
+                  this.finalRoom &&
+                    (t[(o - 1) / 2][(o - 1) / 2] = e.CellType.STAIR),
+                  t
+                );
+              }),
+              t
+            );
+          })();
+        function f(t, e) {
+          var n = [new i(), new l(), new h(a(1, 2))];
+          return "any" === t.type ? n[a(e ? 0 : 1, 2)] : t;
+        }
+        function u(t, e, n, o) {
+          return [t, e, n, o].every(function (t) {
+            return "floor" !== t.type;
+          }) && Math.random() > 0.5
+            ? new s(f(t), f(e), f(n), f(o))
+            : new c(f(t, !0), f(e, !0), f(n, !0), f(o, !0));
+        }
+        var y = (function () {
+            function t(t, e, n) {
+              (this.parent_map = t), (this.x = e), (this.y = n);
+            }
+            return (
+              (t.prototype.left = function () {
+                try {
+                  return this.parent_map[this.x - 1][this.y];
+                } catch (t) {
+                  return null;
+                }
+              }),
+              (t.prototype.top = function () {
+                try {
+                  return this.parent_map[this.x][this.y - 1];
+                } catch (t) {
+                  return null;
+                }
+              }),
+              (t.prototype.right = function () {
+                try {
+                  return this.parent_map[this.x + 1][this.y];
+                } catch (t) {
+                  return null;
+                }
+              }),
+              (t.prototype.bottom = function () {
+                try {
+                  return this.parent_map[this.x][this.y + 1];
+                } catch (t) {
+                  return null;
+                }
+              }),
+              t
+            );
+          })(),
+          v = (function () {
+            function t(t) {
+              (this.map = []), (this.center = [t, t]);
+              for (var e = 0; e < 2 * t + 1; e++) {
+                this.map.push([]);
+                for (var n = 0; n < 2 * t + 1; n++)
+                  this.map[e].push(new y(this.map, e, n));
               }
             }
-
-            ChunkMap.prototype.getCenterChunk = function () {
-              return this.map[this.center[0]][this.center[1]];
-            };
-
-            return ChunkMap;
-          })();
-
-        var Dungeon =
-          /** @class */
-          (function () {
-            function Dungeon(size) {
-              this.map = new ChunkMap(size);
-              this.size = size;
-              this.resolveMap(this.map.getCenterChunk()); // Select chunk for player spawn and floor spawn
-
-              var rooms = __spreadArrays(
+            return (
+              (t.prototype.getCenterChunk = function () {
+                return this.map[this.center[0]][this.center[1]];
+              }),
+              t
+            );
+          })(),
+          m = (function () {
+            function s(e) {
+              (this.map = new v(e)),
+                (this.size = e),
+                this.resolveMap(this.map.getCenterChunk());
+              var o = n(
                 this.getRoomChunksFromOuterLayer(0),
                 this.getRoomChunksFromOuterLayer(1)
               );
-
-              this.player_spawn_chunk = rooms.splice(
-                getRandomInt(0, rooms.length - 1),
-                1
-              )[0];
-              var player_spawn_chunk_point = new _excalibur.Vector(
-                this.player_spawn_chunk.x,
-                this.player_spawn_chunk.y
-              );
-              var sorted_rooms = rooms.sort(function (r1, r2) {
-                var _a, _b, _c, _d, _e, _f, _g, _h;
-
-                var r1d = new _excalibur.Vector(r1.x, r1.y).distance(
-                  player_spawn_chunk_point
-                );
-                var r2d = new _excalibur.Vector(r2.x, r2.y).distance(
-                  player_spawn_chunk_point
-                );
-                var r1w = 0;
-                var r2w = 0;
-                if (
-                  ((_a = r1.connectable) === null || _a === void 0
-                    ? void 0
-                    : _a.left.type) === "floor"
-                )
-                  r1w -= 1;
-                if (
-                  ((_b = r1.connectable) === null || _b === void 0
-                    ? void 0
-                    : _b.top.type) === "floor"
-                )
-                  r1w -= 1;
-                if (
-                  ((_c = r1.connectable) === null || _c === void 0
-                    ? void 0
-                    : _c.right.type) === "floor"
-                )
-                  r1w -= 1;
-                if (
-                  ((_d = r1.connectable) === null || _d === void 0
-                    ? void 0
-                    : _d.bottom.type) === "floor"
-                )
-                  r1w -= 1;
-                if (
-                  ((_e = r2.connectable) === null || _e === void 0
-                    ? void 0
-                    : _e.left.type) === "floor"
-                )
-                  r2w -= 1;
-                if (
-                  ((_f = r2.connectable) === null || _f === void 0
-                    ? void 0
-                    : _f.top.type) === "floor"
-                )
-                  r2w -= 1;
-                if (
-                  ((_g = r2.connectable) === null || _g === void 0
-                    ? void 0
-                    : _g.right.type) === "floor"
-                )
-                  r2w -= 1;
-                if (
-                  ((_h = r2.connectable) === null || _h === void 0
-                    ? void 0
-                    : _h.bottom.type) === "floor"
-                )
-                  r2w -= 1;
-                return r2w + r2d - (r1w + r1d);
-              });
-              this.next_level_chunk = sorted_rooms[0];
-              this.next_level_chunk.connectable.finalRoom = true;
+              this.player_spawn_chunk = o.splice(a(0, o.length - 1), 1)[0];
+              var r = new t.Vector(
+                  this.player_spawn_chunk.x,
+                  this.player_spawn_chunk.y
+                ),
+                i = o.sort(function (e, n) {
+                  var o,
+                    i,
+                    l,
+                    h,
+                    a,
+                    p,
+                    s,
+                    c,
+                    f = new t.Vector(e.x, e.y).distance(r),
+                    u = new t.Vector(n.x, n.y).distance(r),
+                    y = 0,
+                    v = 0;
+                  return (
+                    "floor" ===
+                      (null === (o = e.connectable) || void 0 === o
+                        ? void 0
+                        : o.left.type) && (y -= 1),
+                    "floor" ===
+                      (null === (i = e.connectable) || void 0 === i
+                        ? void 0
+                        : i.top.type) && (y -= 1),
+                    "floor" ===
+                      (null === (l = e.connectable) || void 0 === l
+                        ? void 0
+                        : l.right.type) && (y -= 1),
+                    "floor" ===
+                      (null === (h = e.connectable) || void 0 === h
+                        ? void 0
+                        : h.bottom.type) && (y -= 1),
+                    "floor" ===
+                      (null === (a = n.connectable) || void 0 === a
+                        ? void 0
+                        : a.left.type) && (v -= 1),
+                    "floor" ===
+                      (null === (p = n.connectable) || void 0 === p
+                        ? void 0
+                        : p.top.type) && (v -= 1),
+                    "floor" ===
+                      (null === (s = n.connectable) || void 0 === s
+                        ? void 0
+                        : s.right.type) && (v -= 1),
+                    "floor" ===
+                      (null === (c = n.connectable) || void 0 === c
+                        ? void 0
+                        : c.bottom.type) && (v -= 1),
+                    v + u - (y + f)
+                  );
+                });
+              (this.next_level_chunk = i[0]),
+                (this.next_level_chunk.connectable.finalRoom = !0);
             }
-
-            Dungeon.prototype.resolveMap = function (chunk) {
-              var _a, _b, _c, _d, _e, _f, _g, _h;
-
-              var seenNodesSet = new Set();
-              var room_options = [
-                new Floor(),
-                new Connecter(getRandomInt(1, 2)),
-              ];
-              chunk.connectable = new Room(
-                room_options[getRandomInt(0, 1)],
-                room_options[getRandomInt(0, 1)],
-                room_options[getRandomInt(0, 1)],
-                room_options[getRandomInt(0, 1)]
-              );
-              var resolveQueue = [chunk];
-
-              while (resolveQueue.length) {
-                var chunk_1 = resolveQueue.shift();
-                if (seenNodesSet.has(chunk_1)) continue;
-                else seenNodesSet.add(chunk_1);
-                var left = chunk_1.left();
-                var top = chunk_1.top();
-                var right = chunk_1.right();
-                var bottom = chunk_1.bottom();
-
-                if (!chunk_1.connectable) {
-                  var left_requirement = left
-                    ? ((_a =
-                        left === null || left === void 0
-                          ? void 0
-                          : left.connectable) === null || _a === void 0
-                        ? void 0
-                        : _a.right) || new Any()
-                    : new Wall();
-                  var top_requirement = top
-                    ? ((_b =
-                        top === null || top === void 0
-                          ? void 0
-                          : top.connectable) === null || _b === void 0
-                        ? void 0
-                        : _b.bottom) || new Any()
-                    : new Wall();
-                  var right_requirement = right
-                    ? ((_c =
-                        right === null || right === void 0
-                          ? void 0
-                          : right.connectable) === null || _c === void 0
-                        ? void 0
-                        : _c.left) || new Any()
-                    : new Wall();
-                  var bottom_requirement = bottom
-                    ? ((_d =
-                        bottom === null || bottom === void 0
-                          ? void 0
-                          : bottom.connectable) === null || _d === void 0
-                        ? void 0
-                        : _d.top) || new Any()
-                    : new Wall();
-                  chunk_1.connectable = connetableFromRequirement(
-                    left_requirement,
-                    top_requirement,
-                    right_requirement,
-                    bottom_requirement
-                  );
-                }
-
-                if (
-                  left &&
-                  ((_e = chunk_1.connectable) === null || _e === void 0
-                    ? void 0
-                    : _e.left.type) !== "wall"
-                )
-                  resolveQueue.push(left);
-                if (
-                  top &&
-                  ((_f = chunk_1.connectable) === null || _f === void 0
-                    ? void 0
-                    : _f.top.type) !== "wall"
-                )
-                  resolveQueue.push(top);
-                if (
-                  right &&
-                  ((_g = chunk_1.connectable) === null || _g === void 0
-                    ? void 0
-                    : _g.right.type) !== "wall"
-                )
-                  resolveQueue.push(right);
-                if (
-                  bottom &&
-                  ((_h = chunk_1.connectable) === null || _h === void 0
-                    ? void 0
-                    : _h.bottom.type) !== "wall"
-                )
-                  resolveQueue.push(bottom);
-              }
-            };
-
-            Dungeon.prototype.asCell2dArray = function () {
-              var _a;
-
-              var cell_array_root = [];
-
-              for (var i = 0; i < this.size * 2 + 1; i++) {
-                for (var x = 0; x < CHUNK_SIZE; x++) {
-                  cell_array_root.push([]);
-                }
-
-                for (var j = 0; j < this.size * 2 + 1; j++) {
-                  for (var x = 0; x < CHUNK_SIZE; x++) {
-                    for (var y = 0; y < CHUNK_SIZE; y++) {
-                      cell_array_root[i * CHUNK_SIZE + y].push(
-                        _level.CellType.WALL
-                      );
-                    }
-                  }
-
-                  var cell_array =
-                    (_a = this.map.map[i][j].connectable) === null ||
-                    _a === void 0
-                      ? void 0
-                      : _a.asCell2dArray();
-
-                  if (cell_array) {
-                    for (var x = 0; x < CHUNK_SIZE; x++) {
-                      for (var y = 0; y < CHUNK_SIZE; y++) {
-                        cell_array_root[i * CHUNK_SIZE + x][
-                          j * CHUNK_SIZE + y
-                        ] = cell_array[x][y];
-                      }
-                    }
-                  }
-                }
-              } // Fix the matrix by transposing it
-
-              var final_cell_array_root = [];
-
-              for (var i = 0; i < cell_array_root[0].length; i++) {
-                final_cell_array_root.push([]);
-
-                for (var j = 0; j < cell_array_root.length; j++) {
-                  final_cell_array_root[i][j] = cell_array_root[j][i];
-                }
-              }
-
-              return final_cell_array_root;
-            };
-
-            Dungeon.prototype.getRoomChunksFromOuterLayer = function (layer) {
-              var size = this.size * 2 + 1;
-              var room_chunks = [];
-
-              for (var x = layer; x < size - layer; x++) {
-                if (this.map.map[x][layer].connectable instanceof Room) {
-                  room_chunks.push(this.map.map[x][layer]);
-                }
-
-                if (
-                  this.map.map[x][size - (layer + 1)].connectable instanceof
-                  Room
-                ) {
-                  room_chunks.push(this.map.map[x][size - (layer + 1)]);
-                }
-              }
-
-              for (var y = layer + 1; y < size - (layer + 1); y++) {
-                if (this.map.map[layer][y].connectable instanceof Room) {
-                  room_chunks.push(this.map.map[layer][y]);
-                }
-
-                if (
-                  this.map.map[size - (layer + 1)][y].connectable instanceof
-                  Room
-                ) {
-                  room_chunks.push(this.map.map[size - (layer + 1)][y]);
-                }
-              }
-
-              return room_chunks;
-            }; // Always spawns in a new room
-
-            Dungeon.prototype.getPlayerSpawnPoints = function (num_players) {
-              var offsets = getNRandomPointsIn(
-                num_players,
-                CHUNK_SIZE - 2,
-                CHUNK_SIZE - 2
-              );
-              var spawn_offsets = new Array(num_players)
-                .fill(
-                  new _excalibur.Vector(
-                    this.player_spawn_chunk.x * CHUNK_SIZE,
-                    this.player_spawn_chunk.y * CHUNK_SIZE
-                  )
-                )
-                .map(function (point, i) {
-                  return new _excalibur.Vector(
-                    point.y + 1 + offsets[i].y,
-                    point.x + 1 + offsets[i].x
-                  );
-                });
-              return spawn_offsets;
-            }; // Will return diffrent points everytime
-
-            Dungeon.prototype.getEnemySpawnPoints = function (
-              chance,
-              min_batch_size,
-              max_batch_size
-            ) {
-              var size = this.size * 2 + 1;
-              var spawnable_chunks = [];
-
-              for (var x = 0; x < size; x++) {
-                for (var y = 0; y < size; y++) {
-                  if (
-                    this.map.map[x][y].connectable instanceof Room &&
-                    this.map.map[x][y] !== this.player_spawn_chunk &&
-                    Math.random() > 1 - chance
-                  ) {
-                    spawnable_chunks.push(this.map.map[x][y]);
-                  }
-                }
-              }
-
-              return spawnable_chunks.map(function (chunk) {
-                var batch_size = getRandomInt(min_batch_size, max_batch_size);
-                var offsets = getNRandomPointsIn(
-                  batch_size,
-                  CHUNK_SIZE - 2,
-                  CHUNK_SIZE - 2
+            return (
+              (s.prototype.resolveMap = function (t) {
+                var e,
+                  n,
+                  o,
+                  p,
+                  s,
+                  f,
+                  y,
+                  v,
+                  m = new Set(),
+                  d = [new i(), new h(a(1, 2))];
+                t.connectable = new c(
+                  d[a(0, 1)],
+                  d[a(0, 1)],
+                  d[a(0, 1)],
+                  d[a(0, 1)]
                 );
-                return offsets.map(function (offset) {
-                  return new _excalibur.Vector(
-                    chunk.y * CHUNK_SIZE + offset.y + 1,
-                    chunk.x * CHUNK_SIZE + offset.x + 1
-                  );
+                for (var w = [t]; w.length; ) {
+                  var b = w.shift();
+                  if (!m.has(b)) {
+                    m.add(b);
+                    var g = b.left(),
+                      C = b.top(),
+                      L = b.right(),
+                      M = b.bottom();
+                    if (!b.connectable) {
+                      var _ = g
+                          ? (null ===
+                              (e = null == g ? void 0 : g.connectable) ||
+                            void 0 === e
+                              ? void 0
+                              : e.right) || new r()
+                          : new l(),
+                        O = C
+                          ? (null ===
+                              (n = null == C ? void 0 : C.connectable) ||
+                            void 0 === n
+                              ? void 0
+                              : n.bottom) || new r()
+                          : new l(),
+                        x = L
+                          ? (null ===
+                              (o = null == L ? void 0 : L.connectable) ||
+                            void 0 === o
+                              ? void 0
+                              : o.left) || new r()
+                          : new l(),
+                        T = M
+                          ? (null ===
+                              (p = null == M ? void 0 : M.connectable) ||
+                            void 0 === p
+                              ? void 0
+                              : p.top) || new r()
+                          : new l();
+                      b.connectable = u(_, O, x, T);
+                    }
+                    g &&
+                      "wall" !==
+                        (null === (s = b.connectable) || void 0 === s
+                          ? void 0
+                          : s.left.type) &&
+                      w.push(g),
+                      C &&
+                        "wall" !==
+                          (null === (f = b.connectable) || void 0 === f
+                            ? void 0
+                            : f.top.type) &&
+                        w.push(C),
+                      L &&
+                        "wall" !==
+                          (null === (y = b.connectable) || void 0 === y
+                            ? void 0
+                            : y.right.type) &&
+                        w.push(L),
+                      M &&
+                        "wall" !==
+                          (null === (v = b.connectable) || void 0 === v
+                            ? void 0
+                            : v.bottom.type) &&
+                        w.push(M);
+                  }
+                }
+              }),
+              (s.prototype.asCell2dArray = function () {
+                for (var t, n = [], r = 0; r < 2 * this.size + 1; r++) {
+                  for (var i = 0; i < o; i++) n.push([]);
+                  for (var l = 0; l < 2 * this.size + 1; l++) {
+                    for (i = 0; i < o; i++)
+                      for (var h = 0; h < o; h++)
+                        n[r * o + h].push(e.CellType.WALL);
+                    var a =
+                      null === (t = this.map.map[r][l].connectable) ||
+                      void 0 === t
+                        ? void 0
+                        : t.asCell2dArray();
+                    if (a)
+                      for (i = 0; i < o; i++)
+                        for (h = 0; h < o; h++)
+                          n[r * o + i][l * o + h] = a[i][h];
+                  }
+                }
+                var p = [];
+                for (r = 0; r < n[0].length; r++) {
+                  p.push([]);
+                  for (l = 0; l < n.length; l++) p[r][l] = n[l][r];
+                }
+                return p;
+              }),
+              (s.prototype.getRoomChunksFromOuterLayer = function (t) {
+                for (var e = 2 * this.size + 1, n = [], o = t; o < e - t; o++)
+                  this.map.map[o][t].connectable instanceof c &&
+                    n.push(this.map.map[o][t]),
+                    this.map.map[o][e - (t + 1)].connectable instanceof c &&
+                      n.push(this.map.map[o][e - (t + 1)]);
+                for (var r = t + 1; r < e - (t + 1); r++)
+                  this.map.map[t][r].connectable instanceof c &&
+                    n.push(this.map.map[t][r]),
+                    this.map.map[e - (t + 1)][r].connectable instanceof c &&
+                      n.push(this.map.map[e - (t + 1)][r]);
+                return n;
+              }),
+              (s.prototype.getPlayerSpawnPoints = function (e) {
+                var n = p(e, o - 2, o - 2);
+                return new Array(e)
+                  .fill(
+                    new t.Vector(
+                      this.player_spawn_chunk.x * o,
+                      this.player_spawn_chunk.y * o
+                    )
+                  )
+                  .map(function (e, o) {
+                    return new t.Vector(e.y + 1 + n[o].y, e.x + 1 + n[o].x);
+                  });
+              }),
+              (s.prototype.getEnemySpawnPoints = function (e, n, r) {
+                for (var i = 2 * this.size + 1, l = [], h = 0; h < i; h++)
+                  for (var s = 0; s < i; s++)
+                    this.map.map[h][s].connectable instanceof c &&
+                      this.map.map[h][s] !== this.player_spawn_chunk &&
+                      Math.random() > 1 - e &&
+                      l.push(this.map.map[h][s]);
+                return l.map(function (e) {
+                  return p(a(n, r), o - 2, o - 2).map(function (n) {
+                    return new t.Vector(e.y * o + n.y + 1, e.x * o + n.x + 1);
+                  });
                 });
-              });
-            };
-
-            return Dungeon;
+              }),
+              s
+            );
           })();
-
-        exports.Dungeon = Dungeon;
+        exports.Dungeon = m;
       },
-      {
-        excalibur: "node_modules/excalibur/dist/excalibur.min.js",
-        "./level": "src/level.ts",
-      },
+      { excalibur: "jZN7", "./level": "pDJl" },
     ],
-    "src/index.ts": [
+    B6dB: [
       function (require, module, exports) {
         "use strict";
-
-        Object.defineProperty(exports, "__esModule", {
-          value: true,
-        });
-        exports.generateLevel = generateLevel;
-        exports.levelLoader = void 0;
-
-        var _excalibur = require("excalibur");
-
-        var _dungeon = require("./dungeon");
-
-        var _resources = require("./resources");
-
-        var _level = require("./level");
-
-        var _character = require("./character");
-
-        var game = new _excalibur.Engine({
-          viewport: {
-            width: 720,
-            height: 480,
-          },
-        });
-        var levelLoader = new _excalibur.Loader();
-        exports.levelLoader = levelLoader;
-
-        for (var key in _resources.Resources) {
-          levelLoader.addResource(_resources.Resources[key]);
-        }
-
-        levelLoader.suppressPlayButton = true;
-        levelLoader.logo = "";
-        levelLoader.backgroundColor = "black";
-
-        document.oncontextmenu = function () {
-          return false;
-        };
-
-        function generateLevel(game, depth) {
-          var dungeon = new _dungeon.Dungeon(1);
-          var player_spawns = dungeon.getPlayerSpawnPoints(3);
-          var enemy_spawns = dungeon.getEnemySpawnPoints(1, 2, 3);
-          var spawnPoints = [
-            {
-              alignment: _level.CharacterAlignment.PLAYER,
-              class: new _character.Bow(true).levelUp().levelUp(),
-              spawnTile: player_spawns[0],
-            },
-            {
-              alignment: _level.CharacterAlignment.PLAYER,
-              class: new _character.Sword(true).levelUp().levelUp(),
-              spawnTile: player_spawns[1],
-            },
-            {
-              alignment: _level.CharacterAlignment.PLAYER,
-              class: new _character.Magic(true).levelUp().levelUp(),
-              spawnTile: player_spawns[2],
-            },
-          ];
-          enemy_spawns.forEach(function (points) {
-            var classes = [
-              new _character.Sword(false),
-              new _character.Sword(false),
-              new _character.Bow(false),
-              new _character.Bow(false),
-              new _character.Magic(false),
-              new _character.Magic(false),
+        Object.defineProperty(exports, "__esModule", { value: !0 }),
+          (exports.generateLevel = s),
+          (exports.levelLoader = void 0);
+        var e = require("excalibur"),
+          n = require("./dungeon"),
+          r = require("./resources"),
+          o = require("./level"),
+          t = require("./character"),
+          a = new e.Engine({ viewport: { width: 720, height: 480 } }),
+          l = new e.Loader();
+        for (var i in ((exports.levelLoader = l), r.Resources))
+          l.addResource(r.Resources[i]);
+        function s(e, r) {
+          var a = new n.Dungeon(1),
+            l = a.getPlayerSpawnPoints(3),
+            i = a.getEnemySpawnPoints(1, 2, 3),
+            s = [
+              {
+                alignment: o.CharacterAlignment.PLAYER,
+                class: new t.Bow(!0).levelUp().levelUp(),
+                spawnTile: l[0],
+              },
+              {
+                alignment: o.CharacterAlignment.PLAYER,
+                class: new t.Sword(!0).levelUp().levelUp(),
+                spawnTile: l[1],
+              },
+              {
+                alignment: o.CharacterAlignment.PLAYER,
+                class: new t.Magic(!0).levelUp().levelUp(),
+                spawnTile: l[2],
+              },
             ];
-            points.forEach(function (point) {
-              return spawnPoints.push({
-                alignment: _level.CharacterAlignment.ENEMY,
-                class: classes.splice(
-                  (0, _dungeon.getRandomInt)(0, classes.length - 1),
-                  1
-                )[0],
-                spawnTile: point,
+          return (
+            i.forEach(function (e) {
+              var r = [
+                new t.Sword(!1),
+                new t.Sword(!1),
+                new t.Bow(!1),
+                new t.Bow(!1),
+                new t.Magic(!1),
+                new t.Magic(!1),
+              ];
+              e.forEach(function (e) {
+                return s.push({
+                  alignment: o.CharacterAlignment.ENEMY,
+                  class: r.splice((0, n.getRandomInt)(0, r.length - 1), 1)[0],
+                  spawnTile: e,
+                });
               });
-            });
-          });
-          return new _level.Level(
-            game,
-            dungeon.asCell2dArray(),
-            spawnPoints,
-            depth
+            }),
+            new o.Level(e, a.asCell2dArray(), s, r)
           );
         }
-
-        var mainMenuLoader = new _excalibur.Loader();
-
-        for (var key in _resources.MainMenuResources) {
-          mainMenuLoader.addResource(_resources.MainMenuResources[key]);
-        }
-
-        mainMenuLoader.suppressPlayButton = true;
-        mainMenuLoader.logo = "";
-        mainMenuLoader.backgroundColor = "black";
-        var title = new _excalibur.Actor({
-          x: 360,
-          y: 240,
-          width: 720,
-          height: 480,
-        });
-        title.addDrawing(
-          "title",
-          _resources.MainMenuResources.title.asSprite()
-        );
-        title.on("pointerdown", function () {
-          title.off("pointerdown");
-          game.start(levelLoader).then(function () {
-            game.add("level_1", generateLevel(game, 1));
-            game.goToScene("level_1");
+        (l.suppressPlayButton = !0),
+          (l.logo = ""),
+          (l.backgroundColor = "black"),
+          (document.oncontextmenu = function () {
+            return !1;
           });
-        });
-        var clickText = new _excalibur.Label("- Click Anywhere to Start -");
-        clickText.fontSize = 20;
-        clickText.fontFamily = "serif";
-        clickText.color = _excalibur.Color.White;
-        clickText.pos = (0, _excalibur.vec)(
-          360 - clickText.getTextWidth(game.ctx) / 2,
-          480 - (20 + 10)
-        );
-        clickText.actions.blink(500, 500).repeatForever();
-        var mainMenu = new _excalibur.Scene(game);
-        mainMenu.add(title);
-        mainMenu.add(clickText);
-        game.start(mainMenuLoader).then(function () {
-          game.add("main_menu", mainMenu);
-          game.goToScene("main_menu");
-        });
+        var c = new e.Loader();
+        for (var i in r.MainMenuResources)
+          c.addResource(r.MainMenuResources[i]);
+        (c.suppressPlayButton = !0),
+          (c.logo = ""),
+          (c.backgroundColor = "black");
+        var u = new e.Actor({ x: 360, y: 240, width: 720, height: 480 });
+        u.addDrawing("title", r.MainMenuResources.title.asSprite()),
+          u.on("pointerdown", function () {
+            u.off("pointerdown"),
+              a.start(l).then(function () {
+                a.add("level_1", s(a, 1)), a.goToScene("level_1");
+              });
+          });
+        var w = new e.Label("- Click Anywhere to Start -");
+        (w.fontSize = 20),
+          (w.fontFamily = "serif"),
+          (w.color = e.Color.White),
+          (w.pos = (0, e.vec)(360 - w.getTextWidth(a.ctx) / 2, 450)),
+          w.actions.blink(500, 500).repeatForever();
+        var d = new e.Scene(a);
+        d.add(u),
+          d.add(w),
+          a.start(c).then(function () {
+            a.add("main_menu", d), a.goToScene("main_menu");
+          });
       },
       {
-        excalibur: "node_modules/excalibur/dist/excalibur.min.js",
-        "./dungeon": "src/dungeon.ts",
-        "./resources": "src/resources.ts",
-        "./level": "src/level.ts",
-        "./character": "src/character/index.ts",
+        excalibur: "jZN7",
+        "./dungeon": "eV2W",
+        "./resources": "x5mp",
+        "./level": "pDJl",
+        "./character": "T3UV",
       },
-    ],
-    "node_modules/parcel-bundler/src/builtins/hmr-runtime.js": [
-      function (require, module, exports) {
-        var global = arguments[3];
-        var OVERLAY_ID = "__parcel__error__overlay__";
-        var OldModule = module.bundle.Module;
-
-        function Module(moduleName) {
-          OldModule.call(this, moduleName);
-          this.hot = {
-            data: module.bundle.hotData,
-            _acceptCallbacks: [],
-            _disposeCallbacks: [],
-            accept: function (fn) {
-              this._acceptCallbacks.push(fn || function () {});
-            },
-            dispose: function (fn) {
-              this._disposeCallbacks.push(fn);
-            },
-          };
-          module.bundle.hotData = null;
-        }
-
-        module.bundle.Module = Module;
-        var checkedAssets, assetsToAccept;
-        var parent = module.bundle.parent;
-
-        if (
-          (!parent || !parent.isParcelRequire) &&
-          typeof WebSocket !== "undefined"
-        ) {
-          var hostname = "" || location.hostname;
-          var protocol = location.protocol === "https:" ? "wss" : "ws";
-          var ws = new WebSocket(
-            protocol + "://" + hostname + ":" + "44357" + "/"
-          );
-
-          ws.onmessage = function (event) {
-            checkedAssets = {};
-            assetsToAccept = [];
-            var data = JSON.parse(event.data);
-
-            if (data.type === "update") {
-              var handled = false;
-              data.assets.forEach(function (asset) {
-                if (!asset.isNew) {
-                  var didAccept = hmrAcceptCheck(
-                    global.parcelRequire,
-                    asset.id
-                  );
-
-                  if (didAccept) {
-                    handled = true;
-                  }
-                }
-              }); // Enable HMR for CSS by default.
-
-              handled =
-                handled ||
-                data.assets.every(function (asset) {
-                  return asset.type === "css" && asset.generated.js;
-                });
-
-              if (handled) {
-                console.clear();
-                data.assets.forEach(function (asset) {
-                  hmrApply(global.parcelRequire, asset);
-                });
-                assetsToAccept.forEach(function (v) {
-                  hmrAcceptRun(v[0], v[1]);
-                });
-              } else if (location.reload) {
-                // `location` global exists in a web worker context but lacks `.reload()` function.
-                location.reload();
-              }
-            }
-
-            if (data.type === "reload") {
-              ws.close();
-
-              ws.onclose = function () {
-                location.reload();
-              };
-            }
-
-            if (data.type === "error-resolved") {
-              console.log("[parcel] ✨ Error resolved");
-              removeErrorOverlay();
-            }
-
-            if (data.type === "error") {
-              console.error(
-                "[parcel] 🚨  " + data.error.message + "\n" + data.error.stack
-              );
-              removeErrorOverlay();
-              var overlay = createErrorOverlay(data);
-              document.body.appendChild(overlay);
-            }
-          };
-        }
-
-        function removeErrorOverlay() {
-          var overlay = document.getElementById(OVERLAY_ID);
-
-          if (overlay) {
-            overlay.remove();
-          }
-        }
-
-        function createErrorOverlay(data) {
-          var overlay = document.createElement("div");
-          overlay.id = OVERLAY_ID; // html encode message and stack trace
-
-          var message = document.createElement("div");
-          var stackTrace = document.createElement("pre");
-          message.innerText = data.error.message;
-          stackTrace.innerText = data.error.stack;
-          overlay.innerHTML =
-            '<div style="background: black; font-size: 16px; color: white; position: fixed; height: 100%; width: 100%; top: 0px; left: 0px; padding: 30px; opacity: 0.85; font-family: Menlo, Consolas, monospace; z-index: 9999;">' +
-            '<span style="background: red; padding: 2px 4px; border-radius: 2px;">ERROR</span>' +
-            '<span style="top: 2px; margin-left: 5px; position: relative;">🚨</span>' +
-            '<div style="font-size: 18px; font-weight: bold; margin-top: 20px;">' +
-            message.innerHTML +
-            "</div>" +
-            "<pre>" +
-            stackTrace.innerHTML +
-            "</pre>" +
-            "</div>";
-          return overlay;
-        }
-
-        function getParents(bundle, id) {
-          var modules = bundle.modules;
-
-          if (!modules) {
-            return [];
-          }
-
-          var parents = [];
-          var k, d, dep;
-
-          for (k in modules) {
-            for (d in modules[k][1]) {
-              dep = modules[k][1][d];
-
-              if (
-                dep === id ||
-                (Array.isArray(dep) && dep[dep.length - 1] === id)
-              ) {
-                parents.push(k);
-              }
-            }
-          }
-
-          if (bundle.parent) {
-            parents = parents.concat(getParents(bundle.parent, id));
-          }
-
-          return parents;
-        }
-
-        function hmrApply(bundle, asset) {
-          var modules = bundle.modules;
-
-          if (!modules) {
-            return;
-          }
-
-          if (modules[asset.id] || !bundle.parent) {
-            var fn = new Function(
-              "require",
-              "module",
-              "exports",
-              asset.generated.js
-            );
-            asset.isNew = !modules[asset.id];
-            modules[asset.id] = [fn, asset.deps];
-          } else if (bundle.parent) {
-            hmrApply(bundle.parent, asset);
-          }
-        }
-
-        function hmrAcceptCheck(bundle, id) {
-          var modules = bundle.modules;
-
-          if (!modules) {
-            return;
-          }
-
-          if (!modules[id] && bundle.parent) {
-            return hmrAcceptCheck(bundle.parent, id);
-          }
-
-          if (checkedAssets[id]) {
-            return;
-          }
-
-          checkedAssets[id] = true;
-          var cached = bundle.cache[id];
-          assetsToAccept.push([bundle, id]);
-
-          if (cached && cached.hot && cached.hot._acceptCallbacks.length) {
-            return true;
-          }
-
-          return getParents(global.parcelRequire, id).some(function (id) {
-            return hmrAcceptCheck(global.parcelRequire, id);
-          });
-        }
-
-        function hmrAcceptRun(bundle, id) {
-          var cached = bundle.cache[id];
-          bundle.hotData = {};
-
-          if (cached) {
-            cached.hot.data = bundle.hotData;
-          }
-
-          if (cached && cached.hot && cached.hot._disposeCallbacks.length) {
-            cached.hot._disposeCallbacks.forEach(function (cb) {
-              cb(bundle.hotData);
-            });
-          }
-
-          delete bundle.cache[id];
-          bundle(id);
-          cached = bundle.cache[id];
-
-          if (cached && cached.hot && cached.hot._acceptCallbacks.length) {
-            cached.hot._acceptCallbacks.forEach(function (cb) {
-              cb();
-            });
-
-            return true;
-          }
-        }
-      },
-      {},
     ],
   },
   {},
-  ["node_modules/parcel-bundler/src/builtins/hmr-runtime.js", "src/index.ts"],
+  ["B6dB"],
   null
 );
-//# sourceMappingURL=/src.f10117fe.js.map
+//# sourceMappingURL=src.2c9b3e53.js.map

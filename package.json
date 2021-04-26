@@ -5,10 +5,10 @@
   "description": "",
   "main": "docs/index.js",
   "scripts": {
-    "start": "parcel index.html --no-autoinstall --port 8080 -d docs",
+    "start": "parcel index.html --no-autoinstall --port 8080",
     "test": "npm run build && node ./test/test.js",
     "typecheck": "tsc -p . --noEmit",
-    "build": "parcel build -d docs index.html"
+    "build": "parcel build --public-url . -d docs index.html"
   },
   "repository": {
     "type": "git",
