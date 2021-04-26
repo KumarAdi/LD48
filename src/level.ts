@@ -82,6 +82,7 @@ export class Level extends Scene {
   private statOverlay?: Actor;
 
   private depth: number;
+  private level_depth_label: Label;
 
   public playerTurn: boolean;
 
@@ -93,6 +94,11 @@ export class Level extends Scene {
   ) {
     super(engine);
     this.depth = depth;
+    this.level_depth_label = new Label();
+    this.level_depth_label.fontSize = 25;
+    this.level_depth_label.color = Color.White;
+    this.level_depth_label.pos = new Vector(15, 40);
+    this.level_depth_label.text = `Depth: ${depth}`;
 
     engine.backgroundColor = Color.Black;
 
@@ -135,6 +141,12 @@ export class Level extends Scene {
   }
 
   onInitialize(engine: Engine) {
+    const depth_element = new ScreenElement({
+      x: 0,
+      y: 0,
+    });
+    depth_element.add(this.level_depth_label);
+    engine.add(depth_element);
     engine.add(this.tilemap);
     this.characters.forEach((character: Character) => {
       engine.add(character);
