@@ -19,6 +19,7 @@ import { Bow, Character, Magic, Sword } from "./player";
 import { AStarFinder, Finder, Grid } from "pathfinding";
 import { Resources } from "./resources";
 import { generateLevel } from "./index";
+import { DrawUtil } from "excalibur/dist/Util/Index";
 
 export enum CellType {
   WALL,
@@ -581,6 +582,27 @@ export class Level extends Scene {
         }
       });
 
+      tile.onPostDraw = (ctx, delta) => {
+        if (this.engine.input.pointers.primary.isActorAliveUnderPointer(tile)) {
+          const playerPos = this.pixelToTileCoords(player.pos);
+
+          const path = this.pathfind(playerPos, point)
+            .map(this.tileToPixelCoords)
+            .map((pt) => pt.sub(tile.pos));
+
+          for (let i = 0; i < path.length - 1; i++) {
+            DrawUtil.line(
+              ctx,
+              Color.White,
+              path[i].x,
+              path[i].y,
+              path[i + 1].x,
+              path[i + 1].y,
+              5
+            );
+          }
+        }
+      };
       this.add(tile);
       return tile;
     });
