@@ -14,8 +14,7 @@ import { Level, CharacterAlignment } from "./level";
 import { Sword, Bow, Magic } from "./character";
 
 const game = new Engine({
-  width: 720,
-  height: 480,
+  viewport: { width: 720, height: 480 },
 });
 
 export const levelLoader = new Loader();
