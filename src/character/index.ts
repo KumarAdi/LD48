@@ -176,6 +176,8 @@ export abstract class Character extends Actor {
       let levelUpDisplay = currentStatDisplay.map(
         (s, i) => s + " => " + newStatDisplay[i]
       );
+      levelUpDisplay.push("");
+      levelUpDisplay.push("Click to dismiss");
       return levelUpDisplay;
     }
     return null;
