@@ -85,7 +85,6 @@ export class Level extends Scene {
   private attackOverlay: Actor[] = [];
   private nextTurnButton?: Actor;
   private statOverlay?: Actor;
-  private statOverlayCharacter?: Character;
 
   public playerTurn: boolean;
 
@@ -216,31 +215,8 @@ export class Level extends Scene {
 
     if (clickedOnCharacter) {
       if (evt.button == Input.PointerButton.Right) {
-        if (this.statOverlay) {
-          this.statOverlay.kill();
-        }
-
-        if (this.statOverlayCharacter?.id == clickedOnCharacter.id) {
-          this.statOverlayCharacter = undefined;
-          return;
-        }
-
-        this.statOverlay = this.generateTextOverlay(
-          clickedOnCharacter.getStats(),
-          clickedOnCharacter.pos.add(vec(1.75 * Level.TILE_SIZE, 0))
-        );
-        this.statOverlayCharacter = clickedOnCharacter;
-
-        this.add(this.statOverlay);
       }
     } else {
-      if (evt.button == Input.PointerButton.Right) {
-        if (this.statOverlay) {
-          this.statOverlay.kill();
-        }
-        this.statOverlay = undefined;
-        this.statOverlayCharacter = undefined;
-      }
       let coords = this.pixelToTileCoords(evt.pos);
       console.log(coords, this.terrain_data[coords.y][coords.x]);
     }
@@ -416,12 +392,28 @@ export class Level extends Scene {
             this.deselectPlayer();
           }
           this.selectPlayer(spawnedCharacter);
+          if (this.statOverlay) {
+            this.createStatOverlay(spawnedCharacter);
+          }
         }
       });
+
       this.players.push(spawnedCharacter);
     } else {
       this.enemies.push(spawnedCharacter);
     }
+
+    // stat overlay generation
+    spawnedCharacter.on("pointerenter", () => {
+      this.createStatOverlay(spawnedCharacter);
+    });
+
+    spawnedCharacter.on("pointerleave", () => {
+      if (this.statOverlay) {
+        this.statOverlay.kill();
+      }
+      this.statOverlay = undefined;
+    });
 
     this.map_data[spawnPoint.spawnTile.x][
       spawnPoint.spawnTile.y
@@ -776,4 +768,17 @@ export class Level extends Scene {
 
     return this.moveCharacter(myPos, myPos, me);
   };
+
+  private createStatOverlay(spawnedCharacter: Character) {
+    if (this.statOverlay) {
+      this.statOverlay.kill();
+    }
+
+    this.statOverlay = this.generateTextOverlay(
+      spawnedCharacter.getStats(),
+      spawnedCharacter.pos.add(vec(1.75 * Level.TILE_SIZE, 0))
+    );
+
+    this.add(this.statOverlay);
+  }
 }
