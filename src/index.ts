@@ -23,10 +23,6 @@ for (let key in Resources) {
   levelLoader.addResource(Resources[key]);
 }
 
-Object.values(MusicResources).forEach((music) =>
-  levelLoader.addResource(music)
-);
-
 levelLoader.suppressPlayButton = true;
 levelLoader.logo = "";
 levelLoader.backgroundColor = "black";
@@ -140,6 +136,14 @@ const mainMenu = new Scene(game);
 
 mainMenu.add(title);
 mainMenu.add(clickText);
+
+mainMenu.onInitialize = () => {
+  MusicResources.Title.play();
+};
+
+Object.values(MusicResources).forEach((music) =>
+  mainMenuLoader.addResource(music)
+);
 
 game.start(mainMenuLoader).then(() => {
   game.add("main_menu", mainMenu);
