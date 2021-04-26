@@ -76,12 +76,16 @@ export class Level extends Scene {
   private map_data: MapCell[][];
   private tilemap: TileMap;
   private path_finder: Finder;
+  private stairLocation: Vector;
 
   private selectedPlayer?: Character;
   private moveOverlay: Actor[] = [];
   private attackOverlay: Actor[] = [];
   private nextTurnButton?: Actor;
   private statOverlay?: Actor;
+
+  private tutorialOverlay?: Actor;
+  private skipTutorialButton?: Actor;
 
   private depth: number;
   private level_depth_label: Label;
@@ -92,7 +96,8 @@ export class Level extends Scene {
     engine: Engine,
     terrain_data: CellType[][],
     spawnPoints: SpawnPoint[],
-    depth: number
+    depth: number,
+    stairLocation: Vector
   ) {
     super(engine);
     this.depth = depth;
@@ -101,6 +106,7 @@ export class Level extends Scene {
     this.level_depth_label.color = Color.White;
     this.level_depth_label.pos = new Vector(15, 40);
     this.level_depth_label.text = `Depth: ${depth}`;
+    this.stairLocation = stairLocation;
 
     engine.backgroundColor = Color.Black;
 
@@ -136,6 +142,145 @@ export class Level extends Scene {
     this.path_finder = new AStarFinder();
 
     this.playerTurn = true;
+
+    if (this.depth == 1) {
+      this.launchTutorial();
+    }
+  }
+
+  private launchTutorial = () => {
+    this.add(this.createSkipTutorialButton());
+
+    const tutorialPlayerPos = this.players
+      .slice()
+      .sort((a, b) => a.pos.y - b.pos.y)[0].pos;
+    const tutorialEnemyPos = this.enemies
+      .slice()
+      .sort(
+        (a, b) =>
+          manhattanDistance(a.pos, tutorialPlayerPos) -
+          manhattanDistance(a.pos, tutorialPlayerPos)
+      )[0].pos;
+
+    this.showTutorialOverlay(
+      [
+        "Your characters have green healthbars",
+        "Hover over characters to see their stats",
+      ],
+      tutorialPlayerPos,
+      () => {
+        this.showTutorialOverlay(
+          ["Enemy characters have red healthbards"],
+          tutorialEnemyPos,
+          () => {
+            this.showTutorialOverlay(
+              [
+                "Click on a player to see possible moves they can make",
+                "",
+                "Red squares highlight enemies you can attack this turn",
+                "Orange and blue squares highlight places you can move to",
+                "If you move to a blue square you will still be able to attack afterwards",
+              ],
+              tutorialPlayerPos,
+              () => {
+                this.showTutorialOverlay(
+                  ["Click this button to end your turn"],
+                  this.camera.pos.add(vec(270, 220)),
+                  () => {
+                    this.showTutorialOverlay(
+                      [
+                        "Get to these stairs to move down to the next level",
+                        "Have fun!",
+                      ],
+                      this.tileToPixelCoords(this.stairLocation),
+                      () => {
+                        this.endTutorial();
+                      }
+                    );
+                  },
+                  false
+                );
+              }
+            );
+          }
+        );
+      }
+    );
+  };
+
+  private showTutorialOverlay(
+    tutorialText: string[],
+    pos: Vector,
+    onTutorialclick: () => void,
+    jumpCameraToPos = true
+  ) {
+    if (this.tutorialOverlay) {
+      this.tutorialOverlay?.off("pointerdown");
+      this.tutorialOverlay?.kill();
+    }
+
+    this.tutorialOverlay = this.generateTextOverlay(
+      [...tutorialText, "", "Click on this box to continue"],
+      pos.clone()
+    );
+
+    this.tutorialOverlay.pos.subEqual(vec(0, this.tutorialOverlay.height));
+
+    this.tutorialOverlay.on("pointerdown", onTutorialclick);
+    this.add(this.tutorialOverlay);
+    if (jumpCameraToPos) {
+      this.camera.pos = pos.clone();
+    }
+  }
+
+  private createSkipTutorialButton() {
+    this.skipTutorialButton = new ScreenElement({
+      x: 10,
+      y: this.engine.drawHeight - 40,
+      width: Resources.SkipTutorialTexture.width,
+      height: 30,
+    });
+
+    const skipTutorialSheet = new SpriteSheet(
+      Resources.SkipTutorialTexture,
+      1,
+      2,
+      Resources.SkipTutorialTexture.width,
+      30
+    );
+
+    this.skipTutorialButton.addDrawing(
+      "normal",
+      skipTutorialSheet.getSprite(0)
+    );
+    this.skipTutorialButton.addDrawing(
+      "hovered",
+      skipTutorialSheet.getSprite(1)
+    );
+    this.skipTutorialButton.setDrawing("normal");
+
+    this.skipTutorialButton.on("pointerenter", () => {
+      this.skipTutorialButton?.setDrawing("hovered");
+    });
+
+    this.skipTutorialButton.on("pointerleave", () => {
+      this.skipTutorialButton?.setDrawing("normal");
+    });
+
+    this.skipTutorialButton.on("pointerdown", () => {
+      if (this.tutorialOverlay) {
+        this.endTutorial();
+      }
+    });
+
+    return this.skipTutorialButton;
+  }
+
+  private endTutorial() {
+    this.tutorialOverlay?.off("pointerdown");
+    this.tutorialOverlay?.kill();
+    this.skipTutorialButton?.off("pointerdown");
+    this.skipTutorialButton?.kill();
   }
 
   get characters() {
