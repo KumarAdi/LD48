@@ -391,7 +391,7 @@ export class Dungeon {
   }
 
   public getstairLocation = () => {
-    return vec(this.next_level_chunk.x, this.next_level_chunk.y)
+    return vec(this.next_level_chunk.y, this.next_level_chunk.x)
       .scale(CHUNK_SIZE)
       .add(Vector.One.scale((CHUNK_SIZE - 1) / 2));
   };
