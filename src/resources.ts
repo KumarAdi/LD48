@@ -8,6 +8,15 @@ import bow_atk from "./images/bow_atk.png";
 import magic_idle from "./images/magic_idle.png";
 import magic_walk from "./images/magic_walk.png";
 import magic_atk from "./images/magic_atk.png";
+import enemy_sword_idle from "./images/enemysword_idle.png";
+import enemy_sword_walk from "./images/enemysword_walk.png";
+import enemy_sword_atk from "./images/enemysword_atk.png";
+import enemy_bow_idle from "./images/enemybow_idle.png";
+import enemy_bow_walk from "./images/enemybow_walk.png";
+import enemy_bow_atk from "./images/enemybow_atk.png";
+import enemy_magic_idle from "./images/enemymagic_idle.png";
+import enemy_magic_walk from "./images/enemymagic_walk.png";
+import enemy_magic_atk from "./images/enemymagic_atk.png";
 import tilesheet from "./images/dungeontiles_1.png";
 import next_turn from "./images/endturn.png";
 
@@ -21,6 +30,15 @@ let Resources = {
   MagicIdle: new Texture(magic_idle),
   MagicWalk: new Texture(magic_walk),
   MagicAtk: new Texture(magic_atk),
+  EnemySwordIdle: new Texture(enemy_sword_idle),
+  EnemySwordWalk: new Texture(enemy_sword_walk),
+  EnemySwordAtk: new Texture(enemy_sword_atk),
+  EnemyBowIdle: new Texture(enemy_bow_idle),
+  EnemyBowWalk: new Texture(enemy_bow_walk),
+  EnemyBowAtk: new Texture(enemy_bow_atk),
+  EnemyMagicIdle: new Texture(enemy_magic_idle),
+  EnemyMagicWalk: new Texture(enemy_magic_walk),
+  EnemyMagicAtk: new Texture(enemy_magic_atk),
   TileTexture: new Texture(tilesheet),
   NextTurnTexture: new Texture(next_turn),
 };

@@ -7,6 +7,7 @@ import {
   Effects,
   Label,
   FontStyle,
+  Texture,
 } from "excalibur";
 import { Level } from "level";
 import { Resources } from "./resources";
@@ -88,7 +89,7 @@ export abstract class Character extends Actor {
   protected healthBarColor: Color;
   private healthBar!: Actor;
 
-  private controllable: boolean;
+  protected controllable: boolean;
 
   constructor(
     spawnPosition: Vector,
@@ -141,6 +142,22 @@ export abstract class Character extends Actor {
     this.DAMAGE_LABEL.fontSize = 15;
     this.DAMAGE_LABEL.fontStyle = FontStyle.Oblique;
     this.add(this.DAMAGE_LABEL);
+  }
+
+  protected initAnims(
+    engine: Engine,
+    anims: { idle: Texture; walk: Texture; atk: Texture }
+  ) {
+    const idleSheet = new SpriteSheet(anims.idle, 4, 1, 40, 40);
+    this.addDrawing("idle", idleSheet.getAnimationForAll(engine, 1000 / 6));
+    const atkSheet = new SpriteSheet(anims.atk, 6, 1, 40, 40);
+    const atkAnim = atkSheet.getAnimationForAll(engine, 1000 / 6);
+    atkAnim.loop = false;
+    this.addDrawing("atk", atkAnim);
+    const walkSheet = new SpriteSheet(anims.walk, 6, 1, 40, 40);
+    this.addDrawing("walk", walkSheet.getAnimationForAll(engine, 1000 / 6));
+
+    this.setDrawing("idle");
   }
 
   private getLevel = () => {
@@ -292,16 +309,21 @@ export class Sword extends Character {
 
   onInitialize(engine: Engine) {
     super.onInitialize(engine);
-    const idleSheet = new SpriteSheet(Resources.SwordIdle, 4, 1, 40, 40);
-    this.addDrawing("idle", idleSheet.getAnimationForAll(engine, 1000 / 6));
-    const atkSheet = new SpriteSheet(Resources.SwordAtk, 6, 1, 40, 40);
-    const atkAnim = atkSheet.getAnimationForAll(engine, 1000 / 6);
-    atkAnim.loop = false;
-    this.addDrawing("atk", atkAnim);
-    const walkSheet = new SpriteSheet(Resources.SwordWalk, 6, 1, 40, 40);
-    this.addDrawing("walk", walkSheet.getAnimationForAll(engine, 1000 / 6));
+    let anims = {
+      idle: Resources.SwordIdle,
+      atk: Resources.SwordAtk,
+      walk: Resources.SwordWalk,
+    };
 
-    this.setDrawing("idle");
+    if (!this.controllable) {
+      anims = {
+        idle: Resources.EnemySwordIdle,
+        atk: Resources.EnemySwordAtk,
+        walk: Resources.EnemySwordWalk,
+      };
+    }
+
+    this.initAnims(engine, anims);
   }
 
   deathExp(): number {
@@ -338,16 +360,22 @@ export class Bow extends Character {
 
   onInitialize(engine: Engine) {
     super.onInitialize(engine);
-    const idleSheet = new SpriteSheet(Resources.BowIdle, 4, 1, 40, 40);
-    this.addDrawing("idle", idleSheet.getAnimationForAll(engine, 1000 / 6));
-    const atkSheet = new SpriteSheet(Resources.BowAtk, 6, 1, 40, 40);
-    const atkAnim = atkSheet.getAnimationForAll(engine, 1000 / 6);
-    atkAnim.loop = false;
-    this.addDrawing("atk", atkAnim);
-    const walkSheet = new SpriteSheet(Resources.BowWalk, 6, 1, 40, 40);
-    this.addDrawing("walk", walkSheet.getAnimationForAll(engine, 1000 / 6));
 
-    this.setDrawing("idle");
+    let anims = {
+      idle: Resources.BowIdle,
+      atk: Resources.BowAtk,
+      walk: Resources.BowWalk,
+    };
+
+    if (!this.controllable) {
+      anims = {
+        idle: Resources.EnemyBowIdle,
+        atk: Resources.EnemyBowAtk,
+        walk: Resources.EnemyBowWalk,
+      };
+    }
+
+    this.initAnims(engine, anims);
   }
 
   deathExp(): number {
@@ -384,16 +412,21 @@ export class Magic extends Character {
 
   onInitialize(engine: Engine) {
     super.onInitialize(engine);
-    const idleSheet = new SpriteSheet(Resources.MagicIdle, 4, 1, 40, 40);
-    this.addDrawing("idle", idleSheet.getAnimationForAll(engine, 1000 / 6));
-    const atkSheet = new SpriteSheet(Resources.MagicAtk, 6, 1, 40, 40);
-    const atkAnim = atkSheet.getAnimationForAll(engine, 1000 / 6);
-    atkAnim.loop = false;
-    this.addDrawing("atk", atkAnim);
-    const walkSheet = new SpriteSheet(Resources.MagicWalk, 6, 1, 40, 40);
-    this.addDrawing("walk", walkSheet.getAnimationForAll(engine, 1000 / 6));
+    let anims = {
+      idle: Resources.MagicIdle,
+      atk: Resources.MagicAtk,
+      walk: Resources.MagicWalk,
+    };
 
-    this.setDrawing("idle");
+    if (!this.controllable) {
+      anims = {
+        idle: Resources.EnemyMagicIdle,
+        atk: Resources.EnemyMagicAtk,
+        walk: Resources.EnemyMagicWalk,
+      };
+    }
+
+    this.initAnims(engine, anims);
   }
 
   deathExp(): number {
