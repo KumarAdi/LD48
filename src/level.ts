@@ -419,7 +419,8 @@ export class Level extends Scene {
     character: Character,
     potentialEnemies: Character[]
   ): {
-    moves: Vector[];
+    innerMoves: Vector[];
+    allMoves: Vector[];
     attackableEnemies: { enemyPos: Vector; enemy: Character }[];
   } => {
     const characterPos = this.pixelToTileCoords(character.pos);
@@ -427,11 +428,12 @@ export class Level extends Scene {
 
     const possibleDestinations = this.getTilesWithinDist(
       characterPos,
-      character.cClass.moveRange.inner + character.cClass.moveRange.outer
+      (character.moveExhausted.inner ? 0 : character.cClass.moveRange.inner) +
+        (character.moveExhausted.outer ? 0 : character.cClass.moveRange.outer)
     );
     const placesToAttackFrom = this.getTilesWithinDist(
       characterPos,
-      character.cClass.moveRange.inner
+      character.moveExhausted.inner ? 0 : character.cClass.moveRange.inner
     );
 
     const enemiesInRange = potentialEnemies
@@ -447,7 +449,8 @@ export class Level extends Scene {
         )
       );
     return {
-      moves: possibleDestinations,
+      innerMoves: placesToAttackFrom,
+      allMoves: possibleDestinations,
       attackableEnemies: enemiesInRange,
     };
   };
@@ -540,14 +543,18 @@ export class Level extends Scene {
   private generateOverlay = (player: Character) => {
     const possibleMoves = this.getPossibleMoves(player, this.enemies);
 
-    this.moveOverlay = possibleMoves.moves.map((point) => {
+    function inInnerMove(o: Vector): boolean {
+      return possibleMoves.innerMoves.some((p) => p.x === o.x && p.y === o.y);
+    }
+
+    this.moveOverlay = possibleMoves.allMoves.map((point) => {
       const overlayPos = this.tileToPixelCoords(point);
       const tile = new Actor({
         x: overlayPos.x + 2,
         y: overlayPos.y + 2,
         width: Level.TILE_SIZE - 4,
         height: Level.TILE_SIZE - 4,
-        color: Color.Blue,
+        color: inInnerMove(point) ? Color.Blue : Color.Orange,
         opacity: 0.5,
       });
 
@@ -610,7 +617,7 @@ export class Level extends Scene {
               this.selectedPlayer,
               enemy,
               enemyPos,
-              possibleMoves.moves
+              possibleMoves.innerMoves
             );
             this.deselectPlayer();
           }
@@ -626,7 +633,7 @@ export class Level extends Scene {
               playerPos,
               enemyPos,
               player,
-              possibleMoves.moves
+              possibleMoves.innerMoves
             );
 
             const path = this.pathfind(playerPos, stagingPoint)
@@ -655,8 +662,10 @@ export class Level extends Scene {
   };
 
   private getTilesWithinDist = (pos: Vector, dist: number): Vector[] => {
-    if (dist <= 0) {
+    if (dist < 0) {
       return [];
+    } else if (dist === 0) {
+      return [pos];
     }
     let ret = new Array<{ point: Vector; dist: number }>();
     let toGo = new Array<{ point: Vector; dist: number }>();
@@ -773,7 +782,7 @@ export class Level extends Scene {
   private calculateEnemyMove = (me: Character) => {
     const myPos = this.pixelToTileCoords(me.pos);
 
-    const { moves, attackableEnemies } = this.getPossibleMoves(
+    const { innerMoves, attackableEnemies } = this.getPossibleMoves(
       me,
       this.players
     );
@@ -788,7 +797,7 @@ export class Level extends Scene {
         me,
         closestPlayer.enemy,
         closestPlayer.enemyPos,
-        moves
+        innerMoves
       );
     }
 

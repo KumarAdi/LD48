@@ -23,11 +23,11 @@ export abstract class Character extends Actor {
   private healthBar!: Actor;
   private _health: number;
 
-  protected moveExhausted: MoveExhausted = { inner: false, outer: false };
   protected exp: number = 0;
 
   public readonly cClass: CharacterClass;
   public abstract readonly controllable: boolean;
+  public moveExhausted: MoveExhausted = { inner: false, outer: false };
 
   constructor(spawnPosition: Vector, characterClass: CharacterClass) {
     super({
@@ -88,7 +88,7 @@ export abstract class Character extends Actor {
   }
 
   public goTo = (path: Vector[]) => {
-    let steps = path.length;
+    let steps = path.length - 1;
     if (!this.moveExhausted.inner) {
       this.moveExhausted.inner = true;
       steps -= this.cClass.moveRange.inner;
