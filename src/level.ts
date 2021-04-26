@@ -13,13 +13,13 @@ import {
   GameEvent,
   Label,
   Input,
+  Util,
 } from "excalibur";
 
 import { Bow, Character, Magic, Sword } from "./player";
 import { AStarFinder, Finder, Grid } from "pathfinding";
 import { Resources } from "./resources";
 import { generateLevel } from "./index";
-import { DrawUtil } from "excalibur/dist/Util/Index";
 
 export enum CellType {
   WALL,
@@ -239,7 +239,7 @@ export class Level extends Scene {
     const overlayWidth =
       labels
         .map((label) => label.getTextWidth(this.engine.ctx))
-        .sort()
+        .sort((a, b) => a - b)
         .pop()! + 4;
 
     labels.forEach((label) => (label.pos.x -= overlayWidth / 2));
@@ -483,6 +483,17 @@ export class Level extends Scene {
     const victimDead = victim.damage(attacker.attackDamage());
 
     if (victimDead) {
+      let overlayMessage = attacker.gainExp(victim.deathExp());
+      if (overlayMessage) {
+        let actor = this.generateTextOverlay(
+          overlayMessage,
+          attacker.pos.add(vec(2.75 * Level.TILE_SIZE, 0))
+        );
+        this.engine.add(actor);
+        actor.on("pointerdown", (evt) => {
+          actor.kill();
+        });
+      }
       const victimPos = this.pixelToTileCoords(victim.pos);
       this.players = this.players.filter((player) => player.id != victim.id);
       this.enemies = this.enemies.filter((player) => player.id != victim.id);
@@ -545,7 +556,7 @@ export class Level extends Scene {
     return ret;
   };
 
-  private generateOverlay = (player: Sword) => {
+  private generateOverlay = (player: Character) => {
     const possibleMoves = this.getPossibleMoves(player, this.enemies);
 
     this.moveOverlay = possibleMoves.moves.map((point) => {
@@ -580,7 +591,7 @@ export class Level extends Scene {
             .map((pt) => pt.sub(tile.pos));
 
           for (let i = 0; i < path.length - 1; i++) {
-            DrawUtil.line(
+            Util.DrawUtil.line(
               ctx,
               Color.White,
               path[i].x,
@@ -642,7 +653,7 @@ export class Level extends Scene {
               .map((pt) => pt.sub(tile.pos));
 
             for (let i = 0; i < path.length - 1; i++) {
-              DrawUtil.line(
+              Util.DrawUtil.line(
                 ctx,
                 Color.White,
                 path[i].x,
@@ -748,6 +759,8 @@ export class Level extends Scene {
       this.nextTurnButton!.visible = false;
       this.nextTurnButton!.off("pointerdown");
     }
+
+    console.log(`finshed nextTurn function`);
   };
 
   private enemyTurn = () => {

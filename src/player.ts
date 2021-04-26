@@ -3,7 +3,6 @@ import {
   Color,
   Engine,
   SpriteSheet,
-  vec,
   Vector,
   Effects,
   Label,
@@ -61,11 +60,24 @@ export class Defense {
   }
 }
 
+type StatBonus = {
+  maxHealth: number;
+  maxEnergy: number;
+  moveCost: number;
+  defense: Defense;
+  attackCost: number;
+  attackRange: number;
+  attackDamage: number;
+};
+
 export abstract class Character extends Actor {
   private static readonly SPEED = 150;
   private static readonly DAMAGE_EFFECT = new Effects.Colorize(Color.Red);
   private readonly DAMAGE_LABEL = new Label();
   private readonly DEBUG_LABEL = new Label();
+
+  protected currentLevel: number;
+  protected storedExp: number;
 
   protected maxHealth: number;
   protected health: number;
@@ -98,6 +110,9 @@ export abstract class Character extends Actor {
     this.energy = maxEnergy;
 
     this.controllable = controllable;
+
+    this.currentLevel = 1;
+    this.storedExp = 0;
   }
 
   onInitialize(engine: Engine) {
@@ -110,7 +125,6 @@ export abstract class Character extends Actor {
     });
     this.DEBUG_LABEL.color = Color.White;
     this.DEBUG_LABEL.fontSize = 15;
-    this.z;
     this.add(this.DEBUG_LABEL);
     this.add(
       new Actor({
@@ -138,7 +152,6 @@ export abstract class Character extends Actor {
       `HP: ${this.health} / ${this.maxHealth}`,
       `DEF(M): ${this.defense().magic_defense}`,
       `DEF(P): ${this.defense().physical_defense}`,
-      `HP: ${this.health} / ${this.maxHealth}`,
       `ATK(${this.attackDamage().type()}): ${this.attackDamage().amount}`,
       `RNG: ${this.attackRange()}`,
       `MVMT: ${Math.floor(this.getEnergy() / this.moveCost())} / ${Math.floor(
@@ -148,7 +161,7 @@ export abstract class Character extends Actor {
   };
 
   getZIndex(): number {
-    return this.pos.y;
+    return this.pos.y * 10;
   }
 
   public goTo = (path: Vector[]) => {
@@ -218,19 +231,60 @@ export abstract class Character extends Actor {
     return this.controllable;
   }
 
-  abstract moveCost: () => number;
-  abstract defense: () => Defense;
-  abstract attackCost: () => number;
-  abstract attackRange: () => number;
-  abstract attackDamage: () => Damage;
+  public gainExp(exp: number): string[] | null {
+    console.log(this.storedExp, exp, this.levelUpExpReq());
+    this.storedExp += exp;
+    const nextLevelExp = this.levelUpExpReq();
+    if (this.storedExp >= nextLevelExp) {
+      this.storedExp -= nextLevelExp;
+      this.currentLevel += 1;
+      let statBonus = this.levelStatBonus(this.currentLevel);
+      let currentStatDisplay = this.getStats();
+
+      this.health += statBonus.maxHealth;
+      this.maxHealth += statBonus.maxHealth;
+      this.energy += statBonus.maxEnergy;
+      this.maxEnergy += statBonus.maxEnergy;
+      this.moveCostInner += statBonus.moveCost;
+      this.defenseInner.magic_defense += statBonus.defense.magic_defense;
+      this.defenseInner.physical_defense += statBonus.defense.physical_defense;
+      this.attackCostInner += statBonus.attackCost;
+      this.attackRangeInner += statBonus.attackRange;
+      this.attackDamageInner.amount += statBonus.attackDamage;
+
+      let newStatDisplay = this.getStats().map((s) => s.split(": ")[1]);
+
+      let levelUpDisplay = currentStatDisplay.map(
+        (s, i) => s + " => " + newStatDisplay[i]
+      );
+      console.log(levelUpDisplay);
+      return levelUpDisplay;
+    }
+    return null;
+  }
+
+  protected moveCostInner: number = 0;
+  protected defenseInner: Defense = new Defense(0, 0);
+  protected attackCostInner: number = 0;
+  protected attackRangeInner: number = 0;
+  protected attackDamageInner: Damage = new PhysicalDamage(0);
+  moveCost = () => this.moveCostInner;
+  defense = () => this.defenseInner;
+  attackCost = () => this.attackCostInner;
+  attackRange = () => this.attackRangeInner;
+  attackDamage = () => this.attackDamageInner;
+
+  abstract deathExp(): number;
+  abstract levelUpExpReq(): number;
+  abstract levelStatBonus(level: number): StatBonus;
 }
 
 export class Sword extends Character {
-  moveCost = () => 1;
-  defense = () => new Defense(2, 10);
-  attackCost = () => 1;
-  attackRange = () => 1;
-  attackDamage = () => new PhysicalDamage(10);
+  protected moveCostInner: number = 1;
+  protected defenseInner: Defense = new Defense(2, 10);
+  protected attackCostInner: number = 1;
+  protected attackRangeInner: number = 1;
+  protected attackDamageInner: Damage = new PhysicalDamage(20);
 
   constructor(spawnPosition: Vector, controllable: boolean) {
     super(spawnPosition, 100, 3, controllable);
@@ -249,14 +303,34 @@ export class Sword extends Character {
 
     this.setDrawing("idle");
   }
+
+  deathExp(): number {
+    return this.currentLevel * 5;
+  }
+
+  levelUpExpReq(): number {
+    return this.currentLevel * 5;
+  }
+
+  levelStatBonus(): StatBonus {
+    return {
+      maxHealth: 5,
+      maxEnergy: 5,
+      moveCost: 0,
+      defense: new Defense(5, 5),
+      attackCost: 0,
+      attackRange: 0,
+      attackDamage: 0,
+    };
+  }
 }
 
 export class Bow extends Character {
-  moveCost = () => 1;
-  defense = () => new Defense(2, 2);
-  attackCost = () => 2;
-  attackRange = () => 5;
-  attackDamage = () => new PhysicalDamage(20);
+  protected moveCostInner: number = 1;
+  protected defenseInner: Defense = new Defense(2, 10);
+  protected attackCostInner: number = 1;
+  protected attackRangeInner: number = 1;
+  protected attackDamageInner: Damage = new PhysicalDamage(20);
 
   constructor(spawnPosition: Vector, controllable: boolean) {
     super(spawnPosition, 75, 5, controllable);
@@ -275,14 +349,34 @@ export class Bow extends Character {
 
     this.setDrawing("idle");
   }
+
+  deathExp(): number {
+    return this.currentLevel * 5;
+  }
+
+  levelUpExpReq(): number {
+    return this.currentLevel * 5;
+  }
+
+  levelStatBonus(): StatBonus {
+    return {
+      maxHealth: 5,
+      maxEnergy: 5,
+      moveCost: 0,
+      defense: new Defense(5, 5),
+      attackCost: 0,
+      attackRange: 0,
+      attackDamage: 0,
+    };
+  }
 }
 
 export class Magic extends Character {
-  moveCost = () => 3;
-  defense = () => new Defense(10, 2);
-  attackCost = () => 2;
-  attackRange = () => 5;
-  attackDamage = () => new MagicDamage(20);
+  protected moveCostInner: number = 1;
+  protected defenseInner: Defense = new Defense(2, 10);
+  protected attackCostInner: number = 1;
+  protected attackRangeInner: number = 1;
+  protected attackDamageInner: Damage = new MagicDamage(20);
 
   constructor(spawnPosition: Vector, controllable: boolean) {
     super(spawnPosition, 75, 5, controllable);
@@ -300,5 +394,25 @@ export class Magic extends Character {
     this.addDrawing("walk", walkSheet.getAnimationForAll(engine, 1000 / 6));
 
     this.setDrawing("idle");
+  }
+
+  deathExp(): number {
+    return this.currentLevel * 5;
+  }
+
+  levelUpExpReq(): number {
+    return this.currentLevel * 5;
+  }
+
+  levelStatBonus(): StatBonus {
+    return {
+      maxHealth: 5,
+      maxEnergy: 5,
+      moveCost: 0,
+      defense: new Defense(5, 5),
+      attackCost: 0,
+      attackRange: 0,
+      attackDamage: 0,
+    };
   }
 }
