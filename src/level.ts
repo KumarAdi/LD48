@@ -367,6 +367,11 @@ export class Level extends Scene {
     if (this.depth == 1) {
       this.launchTutorial();
     }
+
+    if (!MusicResources.DarkHollows.isPlaying()) {
+      MusicResources.DarkHollows.loop = true;
+      MusicResources.DarkHollows.play();
+    }
   }
 
   private onClick = (evt: Input.PointerDownEvent) => {

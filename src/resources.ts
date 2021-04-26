@@ -59,7 +59,7 @@ let MusicResources = {
   Bow: new Sound(require("./music/bow.wav")),
   Sword: new Sound(require("./music/sword.wav")),
   Magic: new Sound(require("./music/magic.wav")),
-  DarkHollows: new Sound(require("./music/darkhollows.mp3")),
+  DarkHollows: new Sound(require("./music/darkhollows.wav")),
   Deselect: new Sound(require("./music/deselect.wav")),
   Die: new Sound(require("./music/die.wav")),
   Select: new Sound(require("./music/select.wav")),
