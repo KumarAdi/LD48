@@ -374,9 +374,6 @@ export class Level extends Scene {
     if (clickedOnCharacter) {
       if (evt.button == Input.PointerButton.Right) {
       }
-    } else {
-      let coords = this.pixelToTileCoords(evt.pos);
-      console.log(coords, this.terrain_data[coords.y][coords.x]);
     }
   };
 
@@ -492,7 +489,6 @@ export class Level extends Scene {
   }
 
   public pathfind(from: Vector, to: Vector): Vector[] {
-    console.log("pathfind: ", from, to);
     let path_matrix: number[][] = [];
     for (let i = 0; i < this.terrain_data.length; i++) {
       path_matrix.push([]);
@@ -1038,7 +1034,7 @@ export class Level extends Scene {
       this.engine.goToScene("level_1");
     });
 
-    const clickText = new Label("- Click Anywhere to Try Again -");
+    const clickText = new Label("Click Anywhere to Try Again");
     clickText.fontSize = 20;
     clickText.fontFamily = "serif";
     clickText.color = Color.White;

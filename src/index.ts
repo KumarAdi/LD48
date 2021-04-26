@@ -121,7 +121,7 @@ title.on("pointerdown", () => {
   });
 });
 
-const clickText = new Label("- Click Anywhere to Start -");
+const clickText = new Label("Click Anywhere to Start");
 clickText.fontSize = 20;
 clickText.fontFamily = "serif";
 clickText.color = Color.White;
