@@ -17,7 +17,7 @@ import {
   Loader,
 } from "excalibur";
 
-import { Bow, Character, Magic, Sword } from "./player";
+import { Character, CharacterClass, Player, Enemy } from "./character";
 import { AStarFinder, Finder, Grid } from "pathfinding";
 import { GameOverResources, Resources } from "./resources";
 import { generateLevel, levelLoader } from "./index";
@@ -53,12 +53,6 @@ export enum CharacterAlignment {
   ENEMY,
 }
 
-export enum CharacterClass {
-  SWORD,
-  BOW,
-  MAGIC,
-}
-
 export type SpawnPoint = {
   alignment: CharacterAlignment;
   class: CharacterClass;
@@ -88,14 +82,24 @@ export class Level extends Scene {
   private nextTurnButton?: Actor;
   private statOverlay?: Actor;
 
+  private depth: number;
+  private level_depth_label: Label;
+
   public playerTurn: boolean;
 
   constructor(
     engine: Engine,
     terrain_data: CellType[][],
-    spawnPoints: SpawnPoint[]
+    spawnPoints: SpawnPoint[],
+    depth: number
   ) {
     super(engine);
+    this.depth = depth;
+    this.level_depth_label = new Label();
+    this.level_depth_label.fontSize = 25;
+    this.level_depth_label.color = Color.White;
+    this.level_depth_label.pos = new Vector(15, 40);
+    this.level_depth_label.text = `Depth: ${depth}`;
 
     engine.backgroundColor = Color.Black;
 
@@ -138,6 +142,12 @@ export class Level extends Scene {
   }
 
   onInitialize(engine: Engine) {
+    const depth_element = new ScreenElement({
+      x: 0,
+      y: 0,
+    });
+    depth_element.add(this.level_depth_label);
+    engine.add(depth_element);
     engine.add(this.tilemap);
     this.characters.forEach((character: Character) => {
       engine.add(character);
@@ -309,14 +319,13 @@ export class Level extends Scene {
     const path = this.pathfind(oldPos, newPos).map(this.tileToPixelCoords);
     this.map_data[oldPos.x][oldPos.y].character = undefined;
     this.map_data[newPos.x][newPos.y].character = character;
-    character.spendEnergy(character.moveCost() * (path.length - 1));
     return character.goTo(path).then(() => {
       if (
-        character.isControllable() &&
+        character.controllable &&
         this.terrain_data[newPos.x][newPos.y] == CellType.STAIR
       ) {
         console.log("Exit Level!");
-        const nextLevel = generateLevel(this.engine);
+        const nextLevel = generateLevel(this.engine, this.depth + 1);
         this.goToLevel(nextLevel);
       }
     });
@@ -331,6 +340,7 @@ export class Level extends Scene {
   }
 
   public pathfind(from: Vector, to: Vector): Vector[] {
+    console.log("pathfind: ", from, to);
     let path_matrix: number[][] = [];
     for (let i = 0; i < this.terrain_data.length; i++) {
       path_matrix.push([]);
@@ -371,23 +381,17 @@ export class Level extends Scene {
   private spawnCharacter = (spawnPoint: SpawnPoint) => {
     const pixelCoords = this.tileToPixelCoords(spawnPoint.spawnTile);
 
-    const controllable = spawnPoint.alignment == CharacterAlignment.PLAYER;
-
     let spawnedCharacter!: Character;
-
-    switch (spawnPoint.class) {
-      case CharacterClass.SWORD:
-        spawnedCharacter = new Sword(pixelCoords, controllable);
+    switch (spawnPoint.alignment) {
+      case CharacterAlignment.PLAYER:
+        spawnedCharacter = new Player(pixelCoords, spawnPoint.class);
         break;
-      case CharacterClass.BOW:
-        spawnedCharacter = new Bow(pixelCoords, controllable);
-        break;
-      case CharacterClass.MAGIC:
-        spawnedCharacter = new Magic(pixelCoords, controllable);
+      case CharacterAlignment.ENEMY:
+        spawnedCharacter = new Enemy(pixelCoords, spawnPoint.class);
         break;
     }
 
-    if (controllable) {
+    if (spawnedCharacter.controllable) {
       spawnedCharacter.on("pointerup", () => {
         if (
           this.selectedPlayer &&
@@ -438,27 +442,25 @@ export class Level extends Scene {
     character: Character,
     potentialEnemies: Character[]
   ): {
-    moves: Vector[];
+    innerMoves: Vector[];
+    allMoves: Vector[];
     attackableEnemies: { enemyPos: Vector; enemy: Character }[];
   } => {
     const characterPos = this.pixelToTileCoords(character.pos);
-    const energyBudget = character.getEnergy();
-    const attackCost = character.attackCost();
-    const moveCost = character.moveCost();
-    const attackRange = character.attackRange();
-
-    const moveDistance = Math.floor(energyBudget / moveCost);
+    const attackRange = character.cClass.attack.range;
 
     const possibleDestinations = this.getTilesWithinDist(
       characterPos,
-      moveDistance
+      (character.moveExhausted.inner ? 0 : character.cClass.moveRange.inner) +
+        (character.moveExhausted.outer ? 0 : character.cClass.moveRange.outer)
     );
-
     const placesToAttackFrom = this.getTilesWithinDist(
       characterPos,
-      Math.floor((energyBudget - attackCost) / moveCost)
+      character.moveExhausted.inner ? 0 : character.cClass.moveRange.inner
     );
+    placesToAttackFrom.push(characterPos);
 
+    console.log(potentialEnemies);
     const enemiesInRange = potentialEnemies
       .map((enemy) => {
         return {
@@ -468,11 +470,12 @@ export class Level extends Scene {
       })
       .filter(({ enemyPos }) =>
         placesToAttackFrom.some(
-          (pos) => manhattanDistance(enemyPos, pos) == attackRange
+          (pos) => manhattanDistance(enemyPos, pos) <= attackRange
         )
       );
     return {
-      moves: possibleDestinations,
+      innerMoves: placesToAttackFrom,
+      allMoves: possibleDestinations,
       attackableEnemies: enemiesInRange,
     };
   };
@@ -486,10 +489,10 @@ export class Level extends Scene {
       attacker.setDrawing("idle");
     }, 1000);
 
-    const victimDead = victim.damage(attacker.attackDamage());
+    const victimDead = victim.damage(attacker.cClass.attack);
 
     if (victimDead) {
-      let overlayMessage = attacker.gainExp(victim.deathExp());
+      let overlayMessage = attacker.gainExp(victim.cClass.deathExp());
       if (overlayMessage) {
         let actor = this.generateTextOverlay(
           overlayMessage,
@@ -527,8 +530,8 @@ export class Level extends Scene {
 
         endCard.on("pointerdown", () => {
           endCard.off("pointerdown");
-          this.engine.add("test_level", generateLevel(this.engine));
-          this.engine.goToScene("test_level");
+          this.engine.add("level_1", generateLevel(this.engine, 1));
+          this.engine.goToScene("level_1");
         });
 
         const clickText = new Label("- Click Anywhere to Try Again -");
@@ -553,11 +556,11 @@ export class Level extends Scene {
       }
     }
 
-    attacker.spendEnergy(attacker.attackCost());
+    attacker.spendAttack();
     console.log(
       `${attacker.id} attacking ${victim.id} at ${this.pixelToTileCoords(
         victim.pos
-      )}, its health is now ${victim.getHealth()}`
+      )}, its health is now ${victim.health}`
     );
   };
 
@@ -611,14 +614,18 @@ export class Level extends Scene {
   private generateOverlay = (player: Character) => {
     const possibleMoves = this.getPossibleMoves(player, this.enemies);
 
-    this.moveOverlay = possibleMoves.moves.map((point) => {
+    function inInnerMove(o: Vector): boolean {
+      return possibleMoves.innerMoves.some((p) => p.x === o.x && p.y === o.y);
+    }
+
+    this.moveOverlay = possibleMoves.allMoves.map((point) => {
       const overlayPos = this.tileToPixelCoords(point);
       const tile = new Actor({
         x: overlayPos.x + 2,
         y: overlayPos.y + 2,
         width: Level.TILE_SIZE - 4,
         height: Level.TILE_SIZE - 4,
-        color: Color.Blue,
+        color: inInnerMove(point) ? Color.Blue : Color.Orange,
         opacity: 0.5,
       });
 
@@ -626,7 +633,7 @@ export class Level extends Scene {
         if (evt.button != Input.PointerButton.Left) {
           return;
         }
-        if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
+        if (this.selectedPlayer && this.selectedPlayer.controllable) {
           // we have player selected
           const src = this.pixelToTileCoords(this.selectedPlayer.pos);
           this.moveCharacter(src, point, this.selectedPlayer).then(() => {});
@@ -675,13 +682,13 @@ export class Level extends Scene {
           if (evt.button != Input.PointerButton.Left) {
             return;
           }
-          if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
+          if (this.selectedPlayer && this.selectedPlayer.controllable) {
             // we have player selected
             this.moveToThenAttack(
               this.selectedPlayer,
               enemy,
               enemyPos,
-              possibleMoves.moves
+              possibleMoves.innerMoves
             );
             this.deselectPlayer();
           }
@@ -697,7 +704,7 @@ export class Level extends Scene {
               playerPos,
               enemyPos,
               player,
-              possibleMoves.moves
+              possibleMoves.innerMoves
             );
 
             const path = this.pathfind(playerPos, stagingPoint)
@@ -802,11 +809,11 @@ export class Level extends Scene {
     console.log(`next turn: ${this.playerTurn ? "player" : "enemy"}`);
 
     if (this.playerTurn) {
-      this.players.forEach((player) => player.restoreEnergy());
+      this.players.forEach((player) => player.nextTurn());
       this.nextTurnButton!.visible = true;
       this.nextTurnButton!.on("pointerdown", this.nextTurnButtonClick);
     } else {
-      this.enemies.forEach((enemy) => enemy.restoreEnergy());
+      this.enemies.forEach((enemy) => enemy.nextTurn());
       this.enemyTurn();
       this.nextTurnButton!.visible = false;
       this.nextTurnButton!.off("pointerdown");
@@ -844,7 +851,7 @@ export class Level extends Scene {
   private calculateEnemyMove = (me: Character) => {
     const myPos = this.pixelToTileCoords(me.pos);
 
-    const { moves, attackableEnemies } = this.getPossibleMoves(
+    const { innerMoves, attackableEnemies } = this.getPossibleMoves(
       me,
       this.players
     );
@@ -859,7 +866,7 @@ export class Level extends Scene {
         me,
         closestPlayer.enemy,
         closestPlayer.enemyPos,
-        moves
+        innerMoves
       );
     }
 
@@ -878,7 +885,8 @@ export class Level extends Scene {
 
     for (let closestPlayer of potentialTargets) {
       const pathToPlayer = this.pathfind(myPos, closestPlayer.playerPos);
-      const moveDistance = Math.floor(me.getEnergy() / me.moveCost());
+      const moveDistance =
+        me.cClass.moveRange.inner + me.cClass.moveRange.outer;
       const moveTo = pathToPlayer[moveDistance];
       if (moveTo) {
         return this.moveCharacter(myPos, moveTo, me);
@@ -896,10 +904,13 @@ export class Level extends Scene {
   ) {
     let attackFrom = attackerPos;
 
-    if (manhattanDistance(victimPos, attackerPos) != attacker.attackRange()) {
+    if (
+      manhattanDistance(victimPos, attackerPos) != attacker.cClass.attack.range
+    ) {
       attackFrom = possibleMoves
         .filter(
-          (pt) => manhattanDistance(pt, victimPos) == attacker.attackRange()
+          (pt) =>
+            manhattanDistance(pt, victimPos) == attacker.cClass.attack.range
         )
         .shift()!;
     }
