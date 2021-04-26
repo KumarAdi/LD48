@@ -575,16 +575,31 @@ export class Level extends Scene {
     }
 
     // stat overlay generation
-    spawnedCharacter.on("pointerenter", () => {
-      this.createStatOverlay(spawnedCharacter);
-    });
-
-    spawnedCharacter.on("pointerleave", () => {
-      if (this.statOverlay) {
-        this.statOverlay.kill();
+    let myStatOverlay: Actor | undefined;
+    spawnedCharacter.onPostUpdate = () => {
+      if (
+        !myStatOverlay &&
+        this.engine.input.pointers.primary.checkActorUnderPointer(
+          spawnedCharacter
+        )
+      ) {
+        this.createStatOverlay(spawnedCharacter);
+        myStatOverlay = this.statOverlay;
       }
-      this.statOverlay = undefined;
-    });
+
+      if (
+        myStatOverlay &&
+        !this.engine.input.pointers.primary.checkActorUnderPointer(
+          spawnedCharacter
+        )
+      ) {
+        if (this.statOverlay) {
+          this.statOverlay.kill();
+        }
+        this.statOverlay = undefined;
+        myStatOverlay = undefined;
+      }
+    };
 
     this.map_data[spawnPoint.spawnTile.x][
       spawnPoint.spawnTile.y
