@@ -4,9 +4,17 @@ body {
   margin: 0;
 }
 
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
 canvas {
   image-rendering: pixelated !important;
   image-rendering: -moz-crisp-edges !important;
-  width: 100% !important;
-  height: auto !important;
+  // width: 100% !important;
+  // height: auto !important;
 }

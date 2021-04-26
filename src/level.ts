@@ -549,10 +549,10 @@ export class Level extends Scene {
     this.moveOverlay = possibleMoves.moves.map((point) => {
       const overlayPos = this.tileToPixelCoords(point);
       const tile = new Actor({
-        x: overlayPos.x,
-        y: overlayPos.y,
-        width: Level.TILE_SIZE,
-        height: Level.TILE_SIZE,
+        x: overlayPos.x + 2,
+        y: overlayPos.y + 2,
+        width: Level.TILE_SIZE - 4,
+        height: Level.TILE_SIZE - 4,
         color: Color.Blue,
         opacity: 0.5,
       });
@@ -579,10 +579,10 @@ export class Level extends Scene {
       ({ enemy, enemyPos }) => {
         const overlayPos = this.tileToPixelCoords(enemyPos);
         const tile = new Actor({
-          x: overlayPos.x,
-          y: overlayPos.y,
-          width: Level.TILE_SIZE,
-          height: Level.TILE_SIZE,
+          x: overlayPos.x + 2,
+          y: overlayPos.y + 2,
+          width: Level.TILE_SIZE - 4,
+          height: Level.TILE_SIZE - 4,
           color: Color.Red,
           opacity: 0.5,
         });

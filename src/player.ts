@@ -1,9 +1,21 @@
-import { Actor, Color, Engine, SpriteSheet, vec, Vector } from "excalibur";
+import {
+  Actor,
+  Color,
+  Engine,
+  SpriteSheet,
+  vec,
+  Vector,
+  Effects,
+  Label,
+  FontStyle,
+} from "excalibur";
 import { Level } from "level";
 import { Resources } from "./resources";
 
 export abstract class Character extends Actor {
-  private static readonly SPEED = 50;
+  private static readonly SPEED = 150;
+  private static readonly DAMAGE_EFFECT = new Effects.Colorize(Color.Red);
+  private readonly DAMAGE_LABEL = new Label();
 
   protected maxHealth: number;
   protected health: number;
@@ -56,6 +68,11 @@ export abstract class Character extends Actor {
       })
     );
     this.add(this.healthBar);
+
+    this.DAMAGE_LABEL.color = Color.White;
+    this.DAMAGE_LABEL.fontSize = 15;
+    this.DAMAGE_LABEL.fontStyle = FontStyle.Oblique;
+    this.add(this.DAMAGE_LABEL);
   }
 
   private getLevel = () => {
@@ -87,6 +104,23 @@ export abstract class Character extends Actor {
 
   public damage(damage: number): Boolean {
     this.health -= damage;
+    this.DAMAGE_LABEL.text = `${damage}`;
+    this.DAMAGE_LABEL.pos = new Vector(0, 0);
+    const damageLabelAnimation = (fade: number) => {
+      if (fade > 0) {
+        this.DAMAGE_LABEL.opacity = fade;
+        this.DAMAGE_LABEL.pos.addEqual(new Vector(0.1, -0.1));
+        setTimeout(() => damageLabelAnimation(fade - 0.02), 10);
+      } else {
+        this.DAMAGE_LABEL.opacity = 1;
+        this.DAMAGE_LABEL.text = "";
+      }
+    };
+    damageLabelAnimation(1);
+    this.currentDrawing.addEffect(Character.DAMAGE_EFFECT);
+    setTimeout(() => {
+      this.currentDrawing.removeEffect(Character.DAMAGE_EFFECT);
+    }, 100);
 
     if (this.health <= 0) {
       this.kill();
@@ -153,7 +187,7 @@ export class Sword extends Character {
 export class Bow extends Character {
   moveCost = () => 1;
   attackCost = () => 2;
-  attackRange = () => 2;
+  attackRange = () => 5;
   attackDamage = () => 20;
 
   constructor(spawnPosition: Vector, controllable: boolean) {
@@ -176,9 +210,9 @@ export class Bow extends Character {
 }
 
 export class Magic extends Character {
-  moveCost = () => 1;
+  moveCost = () => 5;
   attackCost = () => 2;
-  attackRange = () => 2;
+  attackRange = () => 5;
   attackDamage = () => 20;
 
   constructor(spawnPosition: Vector, controllable: boolean) {
