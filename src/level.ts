@@ -490,9 +490,7 @@ export class Level extends Scene {
   };
 
   private goToLevel(nextLevel: Scene) {
-    this.engine.input.pointers.primary.off("up");
     this.engine.input.pointers.primary.off("down", this.onClick);
-    this.engine.input.pointers.primary.off("move");
     this.engine.add("test_level", nextLevel);
     this.engine.goToScene("test_level");
   }
