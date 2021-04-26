@@ -11,6 +11,7 @@ import {
   Color,
   ScreenElement,
   GameEvent,
+  Label,
 } from "excalibur";
 
 import { Bow, Character, Magic, Sword } from "./player";
@@ -21,6 +22,7 @@ import {
   PointerDownEvent,
 } from "excalibur/dist/Input/PointerEvents";
 import { generateLevel } from "./index";
+import { Keys } from "excalibur/dist/Input/Keyboard";
 
 export enum CellType {
   WALL,
@@ -71,6 +73,7 @@ export function manhattanDistance(a: Vector, b: Vector) {
 
 export class Level extends Scene {
   public static readonly TILE_SIZE = 30;
+  private static readonly CAMERA_SPEED = 200;
   private tilesheet: SpriteSheet;
 
   private engine: Engine;
@@ -85,6 +88,8 @@ export class Level extends Scene {
   private moveOverlay: Actor[] = [];
   private attackOverlay: Actor[] = [];
   private nextTurnButton?: Actor;
+  private statOverlay?: Actor;
+  private statOverlayCharacter?: Character;
 
   public playerTurn: boolean;
 
@@ -155,26 +160,38 @@ export class Level extends Scene {
     this.add(this.nextTurnButton);
 
     this.engine.input.pointers.primary.on("down", this.onClick);
+    this.engine.input.keyboard.on("press", (evt) => {
+      switch (evt.key) {
+        case Keys.A:
+          this.camera.vel.x = -Level.CAMERA_SPEED;
+          break;
+        case Keys.D:
+          this.camera.vel.x = Level.CAMERA_SPEED;
+          break;
+        case Keys.W:
+          this.camera.vel.y = -Level.CAMERA_SPEED;
+          break;
+        case Keys.S:
+          this.camera.vel.y = Level.CAMERA_SPEED;
+          break;
+      }
+    });
+
+    this.engine.input.keyboard.on("release", (evt) => {
+      switch (evt.key) {
+        case Keys.A:
+        case Keys.D:
+          this.camera.vel.x = 0;
+          break;
+        case Keys.W:
+        case Keys.S:
+          this.camera.vel.y = 0;
+          break;
+      }
+    });
   }
 
   private onClick = (evt: PointerDownEvent) => {
-    if (evt.button == PointerButton.Right) {
-      this.engine.input.pointers.primary.on("move", (evt) => {
-        this.camera.pos.addEqual(
-          new Vector(-evt.ev.movementX, -evt.ev.movementY)
-        );
-      });
-
-      this.engine.input.pointers.primary.on("up", (evt) => {
-        if (evt.button == PointerButton.Right) {
-          this.engine.input.pointers.primary.off("move");
-          this.engine.input.pointers.primary.off("up");
-        }
-      });
-
-      return;
-    }
-
     if (!this.playerTurn) {
       return;
     }
@@ -184,7 +201,24 @@ export class Level extends Scene {
     );
 
     if (clickedOnCharacter) {
-      if (clickedOnCharacter.isControllable()) {
+      if (evt.button == PointerButton.Right) {
+        if (this.statOverlay) {
+          this.statOverlay.kill();
+        }
+
+        if (this.statOverlayCharacter?.id == clickedOnCharacter.id) {
+          this.statOverlayCharacter = undefined;
+          return;
+        }
+
+        this.statOverlay = this.generateStatOverlay(
+          clickedOnCharacter.getStats(),
+          clickedOnCharacter.pos.add(vec(1.75 * Level.TILE_SIZE, 0))
+        );
+        this.statOverlayCharacter = clickedOnCharacter;
+
+        this.add(this.statOverlay);
+      } else if (clickedOnCharacter.isControllable()) {
         if (
           this.selectedPlayer &&
           this.selectedPlayer.id == clickedOnCharacter.id
@@ -198,9 +232,54 @@ export class Level extends Scene {
         }
       }
     } else {
+      if ((evt.button = PointerButton.Right)) {
+        if (this.statOverlay) {
+          this.statOverlay.kill();
+        }
+        this.statOverlay = undefined;
+        this.statOverlayCharacter = undefined;
+      }
       let coords = this.pixelToTileCoords(evt.pos);
       console.log(coords, this.terrain_data[coords.y][coords.x]);
     }
+  };
+
+  private generateStatOverlay = (lines: string[], pos: Vector) => {
+    const overlayDimensions = vec(
+      3 * Level.TILE_SIZE,
+      (Level.TILE_SIZE * lines.length) / 2 + 5
+    );
+
+    const overlayBg = new Actor({
+      x: pos.x,
+      y: pos.y,
+      width: overlayDimensions.x + 2,
+      height: overlayDimensions.y + 2,
+      color: Color.White,
+    });
+
+    const overlay = new Actor({
+      x: 0,
+      y: 0,
+      width: overlayDimensions.x,
+      height: overlayDimensions.y,
+      color: Color.Black,
+    });
+
+    lines
+      .map(
+        (line, i) =>
+          new Label({
+            text: line,
+            color: Color.White,
+            x: -overlay.width / 2 + 5,
+            y: 15 * (i + 1) - overlay.height / 2,
+          })
+      )
+      .forEach((overlayText) => overlay.add(overlayText));
+
+    overlayBg.add(overlay);
+    return overlayBg;
   };
 
   syncTerrainData() {
@@ -478,14 +557,19 @@ export class Level extends Scene {
         opacity: 0.5,
       });
 
-      tile.on("pointerdown", (evt) => {
-        if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
-          // we have player selected
-          const src = this.pixelToTileCoords(this.selectedPlayer.pos);
-          this.moveCharacter(src, point, this.selectedPlayer).then(() => {});
-          this.deselectPlayer();
-        }
-      });
+      const tileSelect = () =>
+        tile.on("pointerdown", (evt) => {
+          if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
+            // we have player selected
+            const src = this.pixelToTileCoords(this.selectedPlayer.pos);
+            this.moveCharacter(src, point, this.selectedPlayer).then(() => {});
+            this.deselectPlayer();
+          }
+
+          this.engine.input.pointers.primary.off("up", tileSelect);
+        });
+
+      this.engine.input.pointers.primary.on("up", tileSelect);
 
       this.add(tile);
       return tile;

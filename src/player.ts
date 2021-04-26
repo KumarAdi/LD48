@@ -62,6 +62,17 @@ export abstract class Character extends Actor {
     return this.scene as Level;
   };
 
+  public getStats = (): string[] => {
+    return [
+      `HP: ${this.health} / ${this.maxHealth}`,
+      `ATK: ${this.attackDamage()}`,
+      `RNG: ${this.attackRange()}`,
+      `MVMT: ${this.getEnergy() / this.moveCost()} / ${
+        this.maxEnergy / this.moveCost()
+      }`,
+    ];
+  };
+
   public goTo = (path: Vector[]) => {
     this.setDrawing("walk");
     let action = this.actions.delay(0);
