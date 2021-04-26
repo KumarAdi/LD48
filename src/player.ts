@@ -12,10 +12,60 @@ import {
 import { Level } from "level";
 import { Resources } from "./resources";
 
+export interface Damage {
+  amount: number;
+
+  calculate(defense: Defense): number;
+  type(): string;
+}
+
+export class MagicDamage implements Damage {
+  public amount: number;
+
+  constructor(amount: number) {
+    this.amount = amount;
+  }
+
+  calculate(defense: Defense): number {
+    return Math.max(this.amount - defense.magic_defense, 0);
+  }
+
+  type(): string {
+    return "M";
+  }
+}
+
+export class PhysicalDamage implements Damage {
+  public amount: number;
+
+  constructor(amount: number) {
+    this.amount = amount;
+  }
+
+  calculate(defense: Defense): number {
+    return Math.max(this.amount - defense.physical_defense, 0);
+  }
+
+  type(): string {
+    return "P";
+  }
+}
+
+export class Defense {
+  public magic_defense: number;
+  public physical_defense: number;
+
+  constructor(magic_defense: number, physical_defense: number) {
+    this.magic_defense = magic_defense;
+    this.physical_defense = physical_defense;
+  }
+}
+
 export abstract class Character extends Actor {
   private static readonly SPEED = 150;
   private static readonly DAMAGE_EFFECT = new Effects.Colorize(Color.Red);
   private readonly DAMAGE_LABEL = new Label();
+  private readonly DEBUG_LABEL = new Label();
 
   protected maxHealth: number;
   protected health: number;
@@ -58,6 +108,10 @@ export abstract class Character extends Actor {
       height: 4,
       color: this.healthBarColor,
     });
+    this.DEBUG_LABEL.color = Color.White;
+    this.DEBUG_LABEL.fontSize = 15;
+    this.z;
+    this.add(this.DEBUG_LABEL);
     this.add(
       new Actor({
         x: this.healthBar.pos.x,
@@ -82,13 +136,20 @@ export abstract class Character extends Actor {
   public getStats = (): string[] => {
     return [
       `HP: ${this.health} / ${this.maxHealth}`,
-      `ATK: ${this.attackDamage()}`,
+      `DEF(M): ${this.defense().magic_defense}`,
+      `DEF(P): ${this.defense().physical_defense}`,
+      `HP: ${this.health} / ${this.maxHealth}`,
+      `ATK(${this.attackDamage().type()}): ${this.attackDamage().amount}`,
       `RNG: ${this.attackRange()}`,
       `MVMT: ${this.getEnergy() / this.moveCost()} / ${
         this.maxEnergy / this.moveCost()
       }`,
     ];
   };
+
+  getZIndex(): number {
+    return this.pos.y;
+  }
 
   public goTo = (path: Vector[]) => {
     this.setDrawing("walk");
@@ -98,13 +159,17 @@ export abstract class Character extends Actor {
         this.currentDrawing.flipHorizontal = waypoint.x < this.pos.x;
       });
       action = action.moveTo(waypoint.x, waypoint.y, Character.SPEED);
+      // action.asPromise().then(() => {
+      //   this.DEBUG_LABEL.text = `${this.z}`;
+      // });
     }
     return action.asPromise().then(() => this.setDrawing("idle"));
   };
 
-  public damage(damage: number): Boolean {
-    this.health -= damage;
-    this.DAMAGE_LABEL.text = `${damage}`;
+  public damage(damage: Damage): Boolean {
+    let computed_damage = damage.calculate(this.defense());
+    this.health -= computed_damage;
+    this.DAMAGE_LABEL.text = `${computed_damage}`;
     this.DAMAGE_LABEL.pos = new Vector(0, 0);
     const damageLabelAnimation = (fade: number) => {
       if (fade > 0) {
@@ -154,16 +219,18 @@ export abstract class Character extends Actor {
   }
 
   abstract moveCost: () => number;
+  abstract defense: () => Defense;
   abstract attackCost: () => number;
   abstract attackRange: () => number;
-  abstract attackDamage: () => number;
+  abstract attackDamage: () => Damage;
 }
 
 export class Sword extends Character {
   moveCost = () => 1;
+  defense = () => new Defense(2, 10);
   attackCost = () => 1;
   attackRange = () => 1;
-  attackDamage = () => 10;
+  attackDamage = () => new PhysicalDamage(10);
 
   constructor(spawnPosition: Vector, controllable: boolean) {
     super(spawnPosition, 100, 3, controllable);
@@ -186,9 +253,10 @@ export class Sword extends Character {
 
 export class Bow extends Character {
   moveCost = () => 1;
+  defense = () => new Defense(2, 2);
   attackCost = () => 2;
   attackRange = () => 5;
-  attackDamage = () => 20;
+  attackDamage = () => new PhysicalDamage(20);
 
   constructor(spawnPosition: Vector, controllable: boolean) {
     super(spawnPosition, 75, 5, controllable);
@@ -210,10 +278,11 @@ export class Bow extends Character {
 }
 
 export class Magic extends Character {
-  moveCost = () => 5;
+  moveCost = () => 3;
+  defense = () => new Defense(10, 2);
   attackCost = () => 2;
   attackRange = () => 5;
-  attackDamage = () => 20;
+  attackDamage = () => new MagicDamage(20);
 
   constructor(spawnPosition: Vector, controllable: boolean) {
     super(spawnPosition, 75, 5, controllable);

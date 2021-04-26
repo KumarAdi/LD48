@@ -12,17 +12,13 @@ import {
   ScreenElement,
   GameEvent,
   Label,
+  Input,
 } from "excalibur";
 
 import { Bow, Character, Magic, Sword } from "./player";
 import { AStarFinder, Finder, Grid } from "pathfinding";
 import { Resources } from "./resources";
-import {
-  PointerButton,
-  PointerDownEvent,
-} from "excalibur/dist/Input/PointerEvents";
 import { generateLevel } from "./index";
-import { Keys } from "excalibur/dist/Input/Keyboard";
 
 export enum CellType {
   WALL,
@@ -180,16 +176,16 @@ export class Level extends Scene {
     this.engine.input.pointers.primary.on("down", this.onClick);
     this.engine.input.keyboard.on("press", (evt) => {
       switch (evt.key) {
-        case Keys.A:
+        case Input.Keys.A:
           this.camera.vel.x = -Level.CAMERA_SPEED;
           break;
-        case Keys.D:
+        case Input.Keys.D:
           this.camera.vel.x = Level.CAMERA_SPEED;
           break;
-        case Keys.W:
+        case Input.Keys.W:
           this.camera.vel.y = -Level.CAMERA_SPEED;
           break;
-        case Keys.S:
+        case Input.Keys.S:
           this.camera.vel.y = Level.CAMERA_SPEED;
           break;
       }
@@ -197,19 +193,19 @@ export class Level extends Scene {
 
     this.engine.input.keyboard.on("release", (evt) => {
       switch (evt.key) {
-        case Keys.A:
-        case Keys.D:
+        case Input.Keys.A:
+        case Input.Keys.D:
           this.camera.vel.x = 0;
           break;
-        case Keys.W:
-        case Keys.S:
+        case Input.Keys.W:
+        case Input.Keys.S:
           this.camera.vel.y = 0;
           break;
       }
     });
   }
 
-  private onClick = (evt: PointerDownEvent) => {
+  private onClick = (evt: Input.PointerDownEvent) => {
     if (!this.playerTurn) {
       return;
     }
@@ -219,7 +215,7 @@ export class Level extends Scene {
     );
 
     if (clickedOnCharacter) {
-      if (evt.button == PointerButton.Right) {
+      if (evt.button == Input.PointerButton.Right) {
         if (this.statOverlay) {
           this.statOverlay.kill();
         }
@@ -250,7 +246,7 @@ export class Level extends Scene {
         }
       }
     } else {
-      if ((evt.button = PointerButton.Right)) {
+      if (evt.button == Input.PointerButton.Right) {
         if (this.statOverlay) {
           this.statOverlay.kill();
         }
@@ -567,10 +563,10 @@ export class Level extends Scene {
     this.moveOverlay = possibleMoves.moves.map((point) => {
       const overlayPos = this.tileToPixelCoords(point);
       const tile = new Actor({
-        x: overlayPos.x,
-        y: overlayPos.y,
-        width: Level.TILE_SIZE,
-        height: Level.TILE_SIZE,
+        x: overlayPos.x + 2,
+        y: overlayPos.y + 2,
+        width: Level.TILE_SIZE - 4,
+        height: Level.TILE_SIZE - 4,
         color: Color.Blue,
         opacity: 0.5,
       });
@@ -597,10 +593,10 @@ export class Level extends Scene {
       ({ enemy, enemyPos }) => {
         const overlayPos = this.tileToPixelCoords(enemyPos);
         const tile = new Actor({
-          x: overlayPos.x,
-          y: overlayPos.y,
-          width: Level.TILE_SIZE,
-          height: Level.TILE_SIZE,
+          x: overlayPos.x + 2,
+          y: overlayPos.y + 2,
+          width: Level.TILE_SIZE - 4,
+          height: Level.TILE_SIZE - 4,
           color: Color.Red,
           opacity: 0.5,
         });
@@ -682,7 +678,7 @@ export class Level extends Scene {
   };
 
   private nextTurnButtonClick = (evt: GameEvent<Actor, Actor>) => {
-    let event = evt as PointerDownEvent;
+    let event = evt as Input.PointerDownEvent;
     console.log(`next turn button clicked!`);
     if (this.nextTurnButton!.contains(event.screenPos.x, event.screenPos.y)) {
       this.nextTurn();
