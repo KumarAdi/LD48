@@ -170,7 +170,7 @@ export class Level extends Scene {
       tutorialPlayerPos,
       () => {
         this.showTutorialOverlay(
-          ["Enemy characters have red healthbards"],
+          ["Enemy characters have red healthbars"],
           tutorialEnemyPos,
           () => {
             this.showTutorialOverlay(
