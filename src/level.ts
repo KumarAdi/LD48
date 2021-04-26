@@ -454,13 +454,18 @@ export class Level extends Scene {
       (character.moveExhausted.inner ? 0 : character.cClass.moveRange.inner) +
         (character.moveExhausted.outer ? 0 : character.cClass.moveRange.outer)
     );
-    const placesToAttackFrom = this.getTilesWithinDist(
-      characterPos,
-      character.moveExhausted.inner ? 0 : character.cClass.moveRange.inner
-    );
-    placesToAttackFrom.push(characterPos);
 
-    console.log(potentialEnemies);
+    let placesToAttackFrom: Vector[] = [];
+    if (!character.moveExhausted.inner) {
+      placesToAttackFrom = this.getTilesWithinDist(
+        characterPos,
+        character.cClass.moveRange.inner
+      );
+    }
+    if (!character.moveExhausted.outer) {
+      placesToAttackFrom.push(characterPos);
+    }
+
     const enemiesInRange = potentialEnemies
       .map((enemy) => {
         return {
@@ -470,7 +475,7 @@ export class Level extends Scene {
       })
       .filter(({ enemyPos }) =>
         placesToAttackFrom.some(
-          (pos) => manhattanDistance(enemyPos, pos) <= attackRange
+          (pos) => manhattanDistance(enemyPos, pos) == attackRange
         )
       );
     return {
@@ -512,47 +517,7 @@ export class Level extends Scene {
       if (this.players.length <= 0) {
         console.log("Game over!");
 
-        const gameOverLoader = new Loader();
-        for (let key in GameOverResources) {
-          gameOverLoader.addResource(GameOverResources[key]);
-        }
-        gameOverLoader.suppressPlayButton = true;
-        gameOverLoader.logo = "";
-        gameOverLoader.backgroundColor = "black";
-
-        const endCard = new Actor({
-          x: 360,
-          y: 240,
-          width: 720,
-          height: 480,
-        });
-        endCard.addDrawing("title", GameOverResources.end.asSprite());
-
-        endCard.on("pointerdown", () => {
-          endCard.off("pointerdown");
-          this.engine.add("level_1", generateLevel(this.engine, 1));
-          this.engine.goToScene("level_1");
-        });
-
-        const clickText = new Label("- Click Anywhere to Try Again -");
-        clickText.fontSize = 20;
-        clickText.fontFamily = "serif";
-        clickText.color = Color.White;
-        clickText.pos = vec(
-          360 - clickText.getTextWidth(this.engine.ctx) / 2,
-          480 - (20 + 10)
-        );
-
-        clickText.actions.blink(500, 500).repeatForever();
-
-        const gameOver = new Scene(this.engine);
-
-        gameOver.add(endCard);
-        gameOver.add(clickText);
-
-        this.engine.start(gameOverLoader).then(() => {
-          this.goToLevel(gameOver);
-        });
+        this.gameOver();
       }
     }
 
@@ -584,38 +549,11 @@ export class Level extends Scene {
     );
   };
 
-  private getTilesAtExactlyDistance = (pos: Vector, dist: number) => {
-    const ret: Vector[] = [];
-    for (let i = 0; i <= dist; i++) {
-      let j = dist - i;
-      const offsets = [vec(i, j)];
-      if (i != 0) {
-        vec(-i, j);
-      }
-      if (j != 0) {
-        vec(i, -j);
-      }
-      if (i != 0 && j != 0) {
-        offsets.push(vec(-i, -j));
-      }
-      offsets
-        .map((pt) => pt.add(pos))
-        .filter(({ x, y }) => x >= 0 && y >= 0)
-        .filter(
-          (point) =>
-            !CELL_TYPE_DATA[this.terrain_data[point.x][point.y]].solid &&
-            !this.map_data[point.x][point.y].character
-        )
-        .forEach((pt) => ret.push(pt));
-    }
-    return ret;
-  };
-
   private generateOverlay = (player: Character) => {
     const possibleMoves = this.getPossibleMoves(player, this.enemies);
 
     function inInnerMove(o: Vector): boolean {
-      return possibleMoves.innerMoves.some((p) => p.x === o.x && p.y === o.y);
+      return possibleMoves.innerMoves.some((p) => p.equals(o));
     }
 
     this.moveOverlay = possibleMoves.allMoves.map((point) => {
@@ -636,12 +574,12 @@ export class Level extends Scene {
         if (this.selectedPlayer && this.selectedPlayer.controllable) {
           // we have player selected
           const src = this.pixelToTileCoords(this.selectedPlayer.pos);
-          this.moveCharacter(src, point, this.selectedPlayer).then(() => {});
+          this.moveCharacter(src, point, this.selectedPlayer);
           this.deselectPlayer();
         }
       });
 
-      tile.onPostDraw = (ctx, delta) => {
+      tile.onPostDraw = (ctx, _delta) => {
         if (this.engine.input.pointers.primary.isActorAliveUnderPointer(tile)) {
           const playerPos = this.pixelToTileCoords(player.pos);
 
@@ -895,6 +833,50 @@ export class Level extends Scene {
 
     return this.moveCharacter(myPos, myPos, me);
   };
+
+  private gameOver() {
+    const gameOverLoader = new Loader();
+    for (let key in GameOverResources) {
+      gameOverLoader.addResource(GameOverResources[key]);
+    }
+    gameOverLoader.suppressPlayButton = true;
+    gameOverLoader.logo = "";
+    gameOverLoader.backgroundColor = "black";
+
+    const endCard = new Actor({
+      x: 360,
+      y: 240,
+      width: 720,
+      height: 480,
+    });
+    endCard.addDrawing("title", GameOverResources.end.asSprite());
+
+    endCard.on("pointerdown", () => {
+      endCard.off("pointerdown");
+      this.engine.add("level_1", generateLevel(this.engine, 1));
+      this.engine.goToScene("level_1");
+    });
+
+    const clickText = new Label("- Click Anywhere to Try Again -");
+    clickText.fontSize = 20;
+    clickText.fontFamily = "serif";
+    clickText.color = Color.White;
+    clickText.pos = vec(
+      360 - clickText.getTextWidth(this.engine.ctx) / 2,
+      480 - (20 + 10)
+    );
+
+    clickText.actions.blink(500, 500).repeatForever();
+
+    const gameOver = new Scene(this.engine);
+
+    gameOver.add(endCard);
+    gameOver.add(clickText);
+
+    this.engine.start(gameOverLoader).then(() => {
+      this.goToLevel(gameOver);
+    });
+  }
 
   private getAttackStagingPoint(
     attackerPos: Vector,
