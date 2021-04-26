@@ -445,7 +445,9 @@ export class Level extends Scene {
           break;
         case CellType.FLOOR:
           cell.solid = CELL_TYPE_DATA[CellType.FLOOR].solid;
-          cell.pushSprite(new TileSprite("tile", 2));
+          const floorTiles = [2, 4, 5, 6, 7, 8];
+          tileNum = floorTiles[Math.floor(Math.random() * floorTiles.length)];
+          cell.pushSprite(new TileSprite("tile", tileNum));
           break;
         case CellType.STAIR:
           cell.solid = CELL_TYPE_DATA[CellType.STAIR].solid;
