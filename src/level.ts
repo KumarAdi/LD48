@@ -57,6 +57,7 @@ export type SpawnPoint = {
   alignment: CharacterAlignment;
   class: CharacterClass;
   spawnTile: Vector;
+  exp?: number;
 };
 
 export function manhattanDistance(a: Vector, b: Vector) {
@@ -325,7 +326,13 @@ export class Level extends Scene {
         this.terrain_data[newPos.x][newPos.y] == CellType.STAIR
       ) {
         console.log("Exit Level!");
-        const nextLevel = generateLevel(this.engine, this.depth + 1);
+        const nextLevel = generateLevel(
+          this.engine,
+          this.depth + 1,
+          this.players.map((player) => {
+            return { class: player.cClass, exp: player.exp };
+          })
+        );
         this.goToLevel(nextLevel);
       }
     });
@@ -384,10 +391,18 @@ export class Level extends Scene {
     let spawnedCharacter!: Character;
     switch (spawnPoint.alignment) {
       case CharacterAlignment.PLAYER:
-        spawnedCharacter = new Player(pixelCoords, spawnPoint.class);
+        spawnedCharacter = new Player(
+          pixelCoords,
+          spawnPoint.class,
+          spawnPoint.exp
+        );
         break;
       case CharacterAlignment.ENEMY:
-        spawnedCharacter = new Enemy(pixelCoords, spawnPoint.class);
+        spawnedCharacter = new Enemy(
+          pixelCoords,
+          spawnPoint.class,
+          spawnPoint.exp
+        );
         break;
     }
 
@@ -757,10 +772,10 @@ export class Level extends Scene {
       this.nextTurnButton!.visible = true;
       this.nextTurnButton!.on("pointerdown", this.nextTurnButtonClick);
     } else {
-      this.enemies.forEach((enemy) => enemy.nextTurn());
-      this.enemyTurn();
       this.nextTurnButton!.visible = false;
       this.nextTurnButton!.off("pointerdown");
+      this.enemyTurn();
+      this.enemies.forEach((enemy) => enemy.nextTurn());
     }
 
     console.log(`finshed nextTurn function`);

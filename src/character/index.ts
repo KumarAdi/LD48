@@ -23,13 +23,16 @@ export abstract class Character extends Actor {
   private healthBar!: Actor;
   private _health: number;
 
-  protected exp: number = 0;
-
+  public exp: number;
   public readonly cClass: CharacterClass;
   public abstract readonly controllable: boolean;
   public moveExhausted: MoveExhausted = { inner: false, outer: false };
 
-  constructor(spawnPosition: Vector, characterClass: CharacterClass) {
+  constructor(
+    spawnPosition: Vector,
+    characterClass: CharacterClass,
+    exp: number
+  ) {
     super({
       pos: spawnPosition,
       width: 40,
@@ -37,6 +40,7 @@ export abstract class Character extends Actor {
     });
     this.cClass = characterClass;
     this._health = characterClass.health.maxHealth;
+    this.exp = exp;
   }
 
   onInitialize(engine: Engine) {
@@ -178,7 +182,7 @@ export abstract class Character extends Actor {
   }
 
   get canAttack(): boolean {
-    return this.moveExhausted.inner && this.moveExhausted.outer;
+    return !this.moveExhausted.inner && !this.moveExhausted.outer;
   }
 
   spendAttack() {
@@ -202,15 +206,23 @@ export abstract class Character extends Actor {
 export class Player extends Character {
   public readonly controllable = true;
 
-  constructor(spawnPosition: Vector, characterClass: CharacterClass) {
-    super(spawnPosition, characterClass);
+  constructor(
+    spawnPosition: Vector,
+    characterClass: CharacterClass,
+    exp: number = 0
+  ) {
+    super(spawnPosition, characterClass, exp);
   }
 }
 
 export class Enemy extends Character {
   public readonly controllable = false;
 
-  constructor(spawnPosition: Vector, characterClass: CharacterClass) {
-    super(spawnPosition, characterClass);
+  constructor(
+    spawnPosition: Vector,
+    characterClass: CharacterClass,
+    exp: number = 0
+  ) {
+    super(spawnPosition, characterClass, exp);
   }
 }
