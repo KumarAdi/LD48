@@ -11,6 +11,7 @@ import {
   Color,
   ScreenElement,
   GameEvent,
+  Label,
 } from "excalibur";
 
 import { Bow, Character, Magic, Sword } from "./player";
@@ -87,6 +88,8 @@ export class Level extends Scene {
   private moveOverlay: Actor[] = [];
   private attackOverlay: Actor[] = [];
   private nextTurnButton?: Actor;
+  private statOverlay?: Actor;
+  private statOverlayCharacter?: Character;
 
   public playerTurn: boolean;
 
@@ -198,7 +201,24 @@ export class Level extends Scene {
     );
 
     if (clickedOnCharacter) {
-      if (clickedOnCharacter.isControllable()) {
+      if (evt.button == PointerButton.Right) {
+        if (this.statOverlay) {
+          this.statOverlay.kill();
+        }
+
+        if (this.statOverlayCharacter?.id == clickedOnCharacter.id) {
+          this.statOverlayCharacter = undefined;
+          return;
+        }
+
+        this.statOverlay = this.generateStatOverlay(
+          clickedOnCharacter.getStats(),
+          clickedOnCharacter.pos.add(vec(1.75 * Level.TILE_SIZE, 0))
+        );
+        this.statOverlayCharacter = clickedOnCharacter;
+
+        this.add(this.statOverlay);
+      } else if (clickedOnCharacter.isControllable()) {
         if (
           this.selectedPlayer &&
           this.selectedPlayer.id == clickedOnCharacter.id
@@ -212,9 +232,54 @@ export class Level extends Scene {
         }
       }
     } else {
+      if ((evt.button = PointerButton.Right)) {
+        if (this.statOverlay) {
+          this.statOverlay.kill();
+        }
+        this.statOverlay = undefined;
+        this.statOverlayCharacter = undefined;
+      }
       let coords = this.pixelToTileCoords(evt.pos);
       console.log(coords, this.terrain_data[coords.y][coords.x]);
     }
+  };
+
+  private generateStatOverlay = (lines: string[], pos: Vector) => {
+    const overlayDimensions = vec(
+      3 * Level.TILE_SIZE,
+      (Level.TILE_SIZE * lines.length) / 2 + 5
+    );
+
+    const overlayBg = new Actor({
+      x: pos.x,
+      y: pos.y,
+      width: overlayDimensions.x + 2,
+      height: overlayDimensions.y + 2,
+      color: Color.White,
+    });
+
+    const overlay = new Actor({
+      x: 0,
+      y: 0,
+      width: overlayDimensions.x,
+      height: overlayDimensions.y,
+      color: Color.Black,
+    });
+
+    lines
+      .map(
+        (line, i) =>
+          new Label({
+            text: line,
+            color: Color.White,
+            x: -overlay.width / 2 + 5,
+            y: 15 * (i + 1) - overlay.height / 2,
+          })
+      )
+      .forEach((overlayText) => overlay.add(overlayText));
+
+    overlayBg.add(overlay);
+    return overlayBg;
   };
 
   syncTerrainData() {
