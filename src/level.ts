@@ -570,6 +570,9 @@ export class Level extends Scene {
       });
 
       tile.on("pointerdown", (evt) => {
+        if (evt.button != Input.PointerButton.Left) {
+          return;
+        }
         if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
           // we have player selected
           const src = this.pixelToTileCoords(this.selectedPlayer.pos);
@@ -595,6 +598,9 @@ export class Level extends Scene {
         });
 
         tile.on("pointerdown", (evt) => {
+          if (evt.button != Input.PointerButton.Left) {
+            return;
+          }
           if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
             // we have player selected
             this.moveToThenAttack(this.selectedPlayer, enemy, enemyPos);
