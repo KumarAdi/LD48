@@ -501,14 +501,16 @@ export class Level extends Scene {
   private moveToThenAttack = (
     attacker: Character,
     victim: Character,
-    victimPos: Vector
+    victimPos: Vector,
+    possibleMoves: Vector[]
   ) => {
     const attackerPos = this.pixelToTileCoords(attacker.pos);
 
     let attackFrom = this.getAttackStagingPoint(
       attackerPos,
       victimPos,
-      attacker
+      attacker,
+      possibleMoves
     );
 
     return this.moveCharacter(attackerPos, attackFrom, attacker).then(() =>
@@ -612,7 +614,12 @@ export class Level extends Scene {
           }
           if (this.selectedPlayer && this.selectedPlayer.isControllable()) {
             // we have player selected
-            this.moveToThenAttack(this.selectedPlayer, enemy, enemyPos);
+            this.moveToThenAttack(
+              this.selectedPlayer,
+              enemy,
+              enemyPos,
+              possibleMoves.moves
+            );
             this.deselectPlayer();
           }
         });
@@ -626,7 +633,8 @@ export class Level extends Scene {
             const stagingPoint = this.getAttackStagingPoint(
               playerPos,
               enemyPos,
-              player
+              player,
+              possibleMoves.moves
             );
 
             const path = this.pathfind(playerPos, stagingPoint)
@@ -785,7 +793,8 @@ export class Level extends Scene {
       return this.moveToThenAttack(
         me,
         closestPlayer.enemy,
-        closestPlayer.enemyPos
+        closestPlayer.enemyPos,
+        moves
       );
     }
 
@@ -817,25 +826,17 @@ export class Level extends Scene {
   private getAttackStagingPoint(
     attackerPos: Vector,
     victimPos: Vector,
-    attacker: Character
+    attacker: Character,
+    possibleMoves: Vector[]
   ) {
     let attackFrom = attackerPos;
 
     if (manhattanDistance(victimPos, attackerPos) != attacker.attackRange()) {
-      attackFrom = this.getTilesAtExactlyDistance(
-        victimPos,
-        attacker.attackRange()
-      )
-        .map((point) => ({
-          point,
-          dist: this.pathfind(attackerPos, point).length,
-        }))
-        .sort((a, b) => a.dist - b.dist)
-        .map(({ point }) => point)
+      attackFrom = possibleMoves
+        .filter(
+          (pt) => manhattanDistance(pt, victimPos) == attacker.attackRange()
+        )
         .shift()!;
-      console.log(
-        `character ${attacker.id} is currently at ${attackerPos}, moving to ${attackFrom} to attack victim at ${victimPos}`
-      );
     }
     return attackFrom;
   }
