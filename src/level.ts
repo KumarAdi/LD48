@@ -306,6 +306,17 @@ export class Level extends Scene {
     depth_element.add(this.level_depth_label);
     engine.add(depth_element);
     engine.add(this.tilemap);
+
+    this.cursor = new Actor({
+      x: 0,
+      y: 0,
+      width: Resources.Cursor.width,
+      height: Resources.Cursor.height,
+    });
+    this.cursor.addDrawing(Resources.Cursor.asSprite());
+    this.cursor.visible = false;
+    this.add(this.cursor);
+
     this.characters.forEach((character: Character) => {
       engine.add(character);
     });
@@ -380,15 +391,6 @@ export class Level extends Scene {
       MusicResources.DarkHollows.loop = true;
       MusicResources.DarkHollows.play();
     }
-    this.cursor = new Actor({
-      x: 0,
-      y: 0,
-      width: Resources.Cursor.width,
-      height: Resources.Cursor.height,
-    });
-    this.cursor.addDrawing(Resources.Cursor.asSprite());
-    this.cursor.visible = false;
-    this.add(this.cursor);
 
     this.playerPhaseIndicator = new ScreenElement({
       x: 0,
