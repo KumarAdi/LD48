@@ -83,6 +83,7 @@ export class Level extends Scene {
   private attackOverlay: Actor[] = [];
   private nextTurnButton?: Actor;
   private statOverlay?: Actor;
+  private cursor?: Actor;
 
   private tutorialOverlay?: Actor;
   private skipTutorialButton?: Actor;
@@ -372,6 +373,31 @@ export class Level extends Scene {
       MusicResources.DarkHollows.loop = true;
       MusicResources.DarkHollows.play();
     }
+    this.cursor = new Actor({
+      x: 0,
+      y: 0,
+      width: Resources.Cursor.width,
+      height: Resources.Cursor.height,
+    });
+    this.cursor.addDrawing(Resources.Cursor.asSprite());
+    this.cursor.visible = false;
+    this.add(this.cursor);
+  }
+
+  onPostUpdate() {
+    const mouseTileCoords = this.pixelToTileCoords(
+      this.engine.input.pointers.primary.lastWorldPos
+    );
+    if (
+      this.cursor &&
+      this.terrain_data[mouseTileCoords.x] &&
+      this.terrain_data[mouseTileCoords.x][mouseTileCoords.y]
+    ) {
+      this.cursor.visible = true;
+      this.cursor.pos = this.tileToPixelCoords(mouseTileCoords);
+    } else if (this.cursor) {
+      this.cursor.visible = false;
+    }
   }
 
   private onClick = (evt: Input.PointerDownEvent) => {
@@ -531,7 +557,7 @@ export class Level extends Scene {
 
   public pixelToTileCoords(pixelCoords: Vector): Vector {
     const tileCoords = pixelCoords
-      .sub(Vector.One.scale(Level.TILE_SIZE / 2))
+      // .sub(Vector.One.scale(Level.TILE_SIZE / 2))
       .scale(1 / Level.TILE_SIZE)
       .add(vec(this.tilemap.x, this.tilemap.y));
 
