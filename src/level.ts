@@ -167,45 +167,55 @@ export class Level extends Scene {
       )[0].pos;
 
     this.showTutorialOverlay(
-      [
-        "Your characters have green healthbars",
-        "Hover over characters to see their stats",
-      ],
+      ["Use the WASD keys to pan the camera"],
       tutorialPlayerPos,
       () => {
         this.showTutorialOverlay(
-          ["Enemy characters have red healthbars"],
-          tutorialEnemyPos,
+          [
+            "Your characters have green healthbars",
+            "Hover over characters to see their stats",
+          ],
+          tutorialPlayerPos,
           () => {
             this.showTutorialOverlay(
-              [
-                "Click on a player to see possible moves they can make",
-                "",
-                "Red squares highlight enemies you can attack this turn",
-                "Orange and blue squares highlight places you can move to",
-                "If you move to a blue square you will still be able to attack afterwards",
-              ],
-              tutorialPlayerPos,
+              ["Enemy characters have red healthbars"],
+              tutorialEnemyPos,
               () => {
                 this.showTutorialOverlay(
-                  ["Click this button to end your turn"],
-                  this.camera.pos.add(vec(270, 220)),
+                  [
+                    "Click on a player to see possible moves they can make",
+                    "",
+                    "Red squares highlight enemies you can attack this turn",
+                    "Orange and blue squares highlight places you can move to",
+                    "If you move to a blue square you will still be able to attack afterwards",
+                  ],
+                  tutorialPlayerPos,
                   () => {
                     this.showTutorialOverlay(
-                      ["Get to these stairs to move down to the next level"],
-                      this.tileToPixelCoords(this.stairLocation),
+                      ["If a character does nothing for a turn they heal"],
+                      tutorialPlayerPos,
                       () => {
                         this.showTutorialOverlay(
-                          ["Use the WASD keys to pan the camera", "Have fun!"],
-                          tutorialPlayerPos,
+                          ["Click this button to end your turn"],
+                          this.camera.pos.add(vec(270, 220)),
                           () => {
-                            this.endTutorial();
-                          }
+                            this.showTutorialOverlay(
+                              [
+                                "Get to these stairs to move down to the next level",
+                                "Have fun!",
+                              ],
+                              this.tileToPixelCoords(this.stairLocation),
+                              () => {
+                                this.camera.pos = tutorialPlayerPos.clone();
+                                this.endTutorial();
+                              }
+                            );
+                          },
+                          false
                         );
                       }
                     );
-                  },
-                  false
+                  }
                 );
               }
             );
