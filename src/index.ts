@@ -55,17 +55,17 @@ export function generateLevel(
     let player_spawns = dungeon.getPlayerSpawnPoints(3);
     spawnPoints.push({
       alignment: CharacterAlignment.PLAYER,
-      class: new Bow(true),
+      class: new Bow(true).levelUp(),
       spawnTile: player_spawns[0],
     });
     spawnPoints.push({
       alignment: CharacterAlignment.PLAYER,
-      class: new Sword(true),
+      class: new Sword(true).levelUp(),
       spawnTile: player_spawns[1],
     });
     spawnPoints.push({
       alignment: CharacterAlignment.PLAYER,
-      class: new Magic(true),
+      class: new Magic(true).levelUp(),
       spawnTile: player_spawns[2],
     });
   }
@@ -140,7 +140,7 @@ mainMenu.add(title);
 mainMenu.add(clickText);
 
 mainMenu.onInitialize = () => {
-  MusicResources.Title.play();
+  MusicResources.Title.play(0.3);
 };
 
 Object.values(MusicResources).forEach((music) =>

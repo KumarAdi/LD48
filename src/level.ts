@@ -399,7 +399,7 @@ export class Level extends Scene {
 
     if (!MusicResources.DarkHollows.isPlaying()) {
       MusicResources.DarkHollows.loop = true;
-      MusicResources.DarkHollows.play();
+      MusicResources.DarkHollows.play(0.3);
     }
 
     console.log("about to add indicators");
@@ -639,7 +639,7 @@ export class Level extends Scene {
           this.selectedPlayer.id == spawnedCharacter.id
         ) {
           this.deselectPlayer();
-          MusicResources.Deselect.play();
+          MusicResources.Deselect.play(0.3);
         } else {
           if (this.selectedPlayer) {
             this.deselectPlayer();
@@ -691,7 +691,7 @@ export class Level extends Scene {
   };
 
   private selectPlayer = (player: Character) => {
-    MusicResources.Select.play();
+    MusicResources.Select.play(0.3);
     this.generateOverlay(player);
     this.selectedPlayer = player;
   };

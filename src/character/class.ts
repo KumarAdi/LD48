@@ -100,7 +100,7 @@ export class Sword extends CharacterClass {
   }
 
   playAttackSound() {
-    MusicResources.Sword.play();
+    MusicResources.Sword.play(0.3);
   }
 }
 
@@ -152,7 +152,7 @@ export class Bow extends CharacterClass {
   }
 
   playAttackSound() {
-    MusicResources.Bow.play();
+    MusicResources.Bow.play(0.3);
   }
 }
 
@@ -204,6 +204,6 @@ export class Magic extends CharacterClass {
   }
 
   playAttackSound() {
-    MusicResources.Magic.play();
+    MusicResources.Magic.play(0.3);
   }
 }
