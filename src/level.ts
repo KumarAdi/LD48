@@ -392,6 +392,8 @@ export class Level extends Scene {
       MusicResources.DarkHollows.play();
     }
 
+    console.log("about to add indicators");
+
     this.playerPhaseIndicator = new ScreenElement({
       x: 0,
       y: 240 - Resources.PlayerPhase.height / 2,
@@ -400,7 +402,7 @@ export class Level extends Scene {
     });
     this.playerPhaseIndicator.addDrawing(Resources.PlayerPhase);
     this.add(this.playerPhaseIndicator);
-    this.playerPhaseIndicator.actions.fade(0.001, 1);
+    this.playerPhaseIndicator.opacity = 0.001;
 
     this.enemyPhaseIndicator = new ScreenElement({
       x: 0,
@@ -410,7 +412,13 @@ export class Level extends Scene {
     });
     this.enemyPhaseIndicator.addDrawing(Resources.EnemyPhase);
     this.add(this.enemyPhaseIndicator);
-    this.enemyPhaseIndicator.actions.fade(0.001, 1);
+    this.enemyPhaseIndicator.opacity = 0.001;
+
+    console.log(
+      "initalize over",
+      this.playerPhaseIndicator,
+      this.enemyPhaseIndicator
+    );
   }
 
   onPostUpdate() {
