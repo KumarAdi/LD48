@@ -1020,7 +1020,6 @@ export class Level extends Scene {
       this.nextTurnButton!.off("pointerdown");
       this.enemyTurn();
       this.enemies.forEach((enemy) => enemy.nextTurn());
-      this.enemyPhaseIndicator?.actions.fade(1, 500).fade(0.001, 500);
     }
 
     console.log(this.enemyPhaseIndicator, this.playerPhaseIndicator);
@@ -1048,12 +1047,17 @@ export class Level extends Scene {
         this.calculateEnemyMove(enemiesToMove[i]).then(calculateNextEnemyMove);
         i++;
       } else {
-        setTimeout(() => {
-          this.nextTurn();
-        }, 1000);
+        this.nextTurn();
       }
     };
-    calculateNextEnemyMove();
+
+    this.enemyPhaseIndicator?.actions
+      .fade(1, 500)
+      .fade(0.001, 500)
+      .asPromise()
+      .then(() => {
+        calculateNextEnemyMove();
+      });
   };
 
   private calculateEnemyMove = (me: Character) => {
