@@ -59,7 +59,7 @@ export class Sword extends CharacterClass {
 
   public moveRange = { inner: 3, outer: 3 };
   public defence = { magic: 2, physical: 10 };
-  public attack = { range: 1, magicalDamage: 0, physicalDamage: 12 };
+  public attack = { range: 1, magicalDamage: 0, physicalDamage: 15 };
   public health = { maxHealth: 40, healOnNoMove: 10 };
 
   constructor(controllable: boolean) {
