@@ -23,6 +23,8 @@ import skip_tutorial from "./images/skip.png";
 import title from "./images/title.png";
 import end from "./images/gameover.png";
 import cursor from "./images/cursor.png";
+import playerphase from "./images/playerphase.png";
+import enemyphase from "./images/enemyphase.png";
 
 let MainMenuResources = {
   title: new Texture(title),
@@ -55,6 +57,8 @@ let Resources = {
   NextTurnTexture: new Texture(next_turn),
   SkipTutorialTexture: new Texture(skip_tutorial),
   Cursor: new Texture(cursor),
+  PlayerPhase: new Texture(playerphase),
+  EnemyPhase: new Texture(enemyphase),
 };
 
 let MusicResources = {

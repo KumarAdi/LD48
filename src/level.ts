@@ -88,6 +88,9 @@ export class Level extends Scene {
   private tutorialOverlay?: Actor;
   private skipTutorialButton?: Actor;
 
+  private playerPhaseIndicator?: Actor;
+  private enemyPhaseIndicator?: Actor;
+
   private depth: number;
   private level_depth_label: Label;
 
@@ -285,6 +288,10 @@ export class Level extends Scene {
     this.tutorialOverlay?.kill();
     this.skipTutorialButton?.off("pointerdown");
     this.skipTutorialButton?.kill();
+
+    if (this.playerTurn) {
+      this.playerPhaseIndicator?.actions.fade(1, 500).fade(0.001, 500);
+    }
   }
 
   get characters() {
@@ -382,6 +389,26 @@ export class Level extends Scene {
     this.cursor.addDrawing(Resources.Cursor.asSprite());
     this.cursor.visible = false;
     this.add(this.cursor);
+
+    this.playerPhaseIndicator = new ScreenElement({
+      x: 0,
+      y: 240 - Resources.PlayerPhase.height / 2,
+      width: Resources.PlayerPhase.width,
+      height: Resources.PlayerPhase.height,
+    });
+    this.playerPhaseIndicator.addDrawing(Resources.PlayerPhase);
+    this.add(this.playerPhaseIndicator);
+    this.playerPhaseIndicator.actions.fade(0.001, 1);
+
+    this.enemyPhaseIndicator = new ScreenElement({
+      x: 0,
+      y: 240 - Resources.EnemyPhase.height / 2,
+      width: Resources.EnemyPhase.width,
+      height: Resources.EnemyPhase.height,
+    });
+    this.enemyPhaseIndicator.addDrawing(Resources.EnemyPhase);
+    this.add(this.enemyPhaseIndicator);
+    this.enemyPhaseIndicator.actions.fade(0.001, 1);
   }
 
   onPostUpdate() {
@@ -967,12 +994,16 @@ export class Level extends Scene {
       this.players.forEach((player) => player.nextTurn());
       this.nextTurnButton!.visible = true;
       this.nextTurnButton!.on("pointerdown", this.nextTurnButtonClick);
+      this.playerPhaseIndicator?.actions.fade(1, 500).fade(0.001, 500);
     } else {
       this.nextTurnButton!.visible = false;
       this.nextTurnButton!.off("pointerdown");
       this.enemyTurn();
       this.enemies.forEach((enemy) => enemy.nextTurn());
+      this.enemyPhaseIndicator?.actions.fade(1, 500).fade(0.001, 500);
     }
+
+    console.log(this.enemyPhaseIndicator, this.playerPhaseIndicator);
 
     console.log(`finshed nextTurn function`);
   };
