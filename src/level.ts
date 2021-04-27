@@ -1048,7 +1048,9 @@ export class Level extends Scene {
         this.calculateEnemyMove(enemiesToMove[i]).then(calculateNextEnemyMove);
         i++;
       } else {
-        this.nextTurn();
+        setTimeout(() => {
+          this.nextTurn();
+        }, 1000);
       }
     };
     calculateNextEnemyMove();
