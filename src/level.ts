@@ -1014,7 +1014,12 @@ export class Level extends Scene {
       this.players.forEach((player) => player.nextTurn());
       this.nextTurnButton!.visible = true;
       this.nextTurnButton!.on("pointerdown", this.nextTurnButtonClick);
-      this.playerPhaseIndicator?.actions.fade(1, 500).fade(0.001, 500);
+      this.playerPhaseIndicator?.actions
+        .fade(1, 500)
+        .asPromise()
+        .then(() => {
+          this.playerPhaseIndicator?.actions.fade(0.001, 500);
+        });
     } else {
       this.nextTurnButton!.visible = false;
       this.nextTurnButton!.off("pointerdown");

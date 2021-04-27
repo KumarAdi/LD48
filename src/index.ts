@@ -7,6 +7,7 @@ import {
   Scene,
   Label,
   Color,
+  DisplayMode,
 } from "excalibur";
 import { Dungeon, getRandomInt } from "./dungeon";
 import { MainMenuResources, Resources, MusicResources } from "./resources";
@@ -15,6 +16,7 @@ import { Sword, Bow, Magic, CharacterClass } from "./character";
 
 const game = new Engine({
   viewport: { width: 720, height: 480 },
+  displayMode: DisplayMode.Fixed,
 });
 
 export const levelLoader = new Loader();
